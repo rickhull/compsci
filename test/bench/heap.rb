@@ -2,7 +2,7 @@ require 'compsci/heap'
 
 include CompSci
 
-INSERT_TEST = false
+INSERT_TEST = true
 BENCHMARK_TEST = true
 
 if INSERT_TEST
