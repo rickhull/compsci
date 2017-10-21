@@ -104,7 +104,7 @@ if __FILE__ == $0
     99.times {
       r = rand 99
       puts "push #{r}"
-      h.push rand 99
+      h.push r
       puts
     }
     p h.storage
