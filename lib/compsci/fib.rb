@@ -1,4 +1,6 @@
-module Fibonacci
+require 'compsci'
+
+module CompSci::Fibonacci
   def self.classic(n)
     n < 2 ? n : classic(n-1) + classic(n-2)
   end
@@ -22,11 +24,11 @@ module Fibonacci
 end
 
 if __FILE__ == $0
+  include CompSci
+
   require 'minitest/autorun'
   require 'minitest/benchmark'
   require 'benchmark/ips'
-
-  puts "Minitest #{Minitest::VERSION}"
 
   SPEC = true
   CLASS_BENCHMARK = true
