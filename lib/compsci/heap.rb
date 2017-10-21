@@ -1,3 +1,5 @@
+require 'compsci'
+
 # A Heap is a partially sorted, complete binary tree with the property:
 # * Every node has a value larger (or smaller) than that of its children.
 #
@@ -19,7 +21,7 @@
 # Sift_up and sift_down are O(log n) because they only have to check and swap
 #   nodes at each layer of the tree, and there are log n layers to the tree.
 #
-class Heap
+class CompSci::Heap
   # integer math says idx 2 and idx 1 both have parent at idx 0
   def self.parent_idx(idx)
     (idx-1) / 2
@@ -108,6 +110,8 @@ class Heap
 end
 
 if __FILE__ == $0
+  include CompSci
+
   SPEC_TEST = true
   EYEBALL_TEST = false
   INSERT_TEST = true
