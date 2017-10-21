@@ -1,12 +1,11 @@
-# A Heap is a partially sorted, complete binary tree with the following
-# property:
+# A Heap is a partially sorted, complete binary tree with the property:
 # * Every node has a value larger (or smaller) than that of its children.
 #
 # This class implements a heap using a simple array for storage.
 # Array index math is used to find:
 # * The root node (idx 0)
 # * The "bottom-most" leaf node (last idx)
-# * Parent idx (idx - 1 / 2)
+# * Parent idx (idx-1 / 2)
 # * Child idx (2*idx + 1, 2*idx + 2)
 #
 # Any Comparable may be used for node values.
