@@ -1,4 +1,6 @@
-module Benchmark
+require 'compsci'
+
+module CompSci::Timer
   def self.loop_average(count: 999, seconds: 1, &work)
     i = 0
     t = Time.now
@@ -17,7 +19,7 @@ if __FILE__ == $0
   t = Time.now
   puts
   print "running: "
-  block_time = Benchmark.loop_average(count: 50) {
+  block_time = Timer.loop_average(count: 50) {
     print '.'
     sleep 0.01
   }
@@ -29,7 +31,7 @@ if __FILE__ == $0
   t = Time.now
   puts
   print "running: "
-  block_time = Benchmark.loop_average(seconds: 0.5) {
+  block_time = Timer.loop_average(seconds: 0.5) {
     print '.'
     sleep 0.02
   }
@@ -41,7 +43,7 @@ if __FILE__ == $0
   t = Time.now
   puts
   print "running: "
-  block_time = Benchmark.loop_average(seconds: 1) {
+  block_time = Timer.loop_average(seconds: 1) {
     print '.'
     sleep 2
   }
