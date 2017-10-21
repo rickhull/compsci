@@ -11,10 +11,6 @@ class Heap
     [2*idx + 1, 2*idx + 2]
   end
 
-  def self.heapish?(parent, child, cmp_val)
-    (parent <=> child) != (cmp_val * -1)
-  end
-
   attr_reader :store
 
   def initialize(cmp_val: 1, minheap: false)
@@ -26,10 +22,6 @@ class Heap
       raise(ArgumentError, "unknown comparison value: #{cmp_val}")
     end
     @store = []
-  end
-
-  def heapish_idx?(pidx, cidx)
-    self.class.heapish?(@store[pidx], @store[cidx], @cmp_val)
   end
 
   def push(node)
@@ -44,14 +36,10 @@ class Heap
     node
   end
 
-  def last_idx
-    @store.length - 1
-  end
-
   def sift_up(idx)
     return self if idx <= 0
     pidx = self.class.parent_idx(idx)
-    if !self.heapish_idx?(pidx, idx)
+    if !self.heapish?(pidx, idx)
       @store[idx], @store[pidx] = @store[pidx], @store[idx] # swap
       self.sift_up(pidx)
     end
@@ -62,20 +50,27 @@ class Heap
     return self if idx > self.last_idx
     lidx, ridx = self.class.children_idx(idx)
     # take the child most likely to be a good parent
-    cidx = self.heapish_idx?(lidx, ridx) ? lidx : ridx
-
-    if !self.heapish_idx?(idx, cidx)
+    cidx = self.heapish?(lidx, ridx) ? lidx : ridx
+    if !self.heapish?(idx, cidx)
       @store[idx], @store[cidx] = @store[cidx], @store[idx] # swap
       self.sift_down(cidx)
     end
     self
   end
 
+  def heapish?(pidx, cidx)
+    (@store[pidx] <=> @store[cidx]) != (@cmp_val * -1)
+  end
+
+  def last_idx
+    @store.length - 1
+  end
+
   def heap?(idx: 0)
     check_children = []
     self.class.children_idx(idx).each { |cidx|
       if cidx <= self.last_idx
-        return false unless self.heapish_idx?(idx, cidx)
+        return false unless self.heapish?(idx, cidx)
         check_children << cidx
       end
     }
@@ -86,7 +81,7 @@ end
 
 if __FILE__ == $0
   EYEBALL_TEST = true
-  INSERT_TEST = false
+  INSERT_TEST = true
   BENCHMARK_TEST = true
 
   if EYEBALL_TEST
@@ -96,7 +91,7 @@ if __FILE__ == $0
     }
     p h.store
     p h.heap?
-
+    puts
     max = h.pop
     puts "popped #{max}"
     p h.store
@@ -115,7 +110,7 @@ if __FILE__ == $0
       e1 = Time.now - t1
       elapsed = Time.now - t
       count += 1
-      puts "%ith insert: %0.5f s" % [count, e1] if count % 100 == 0
+      puts "%ith insert: %0.5f s" % [count, e1] if count % 10000 == 0
     end
 
     puts "inserted %i items in %0.1f s" % [count, elapsed]
