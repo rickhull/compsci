@@ -50,7 +50,7 @@ if CLASS_BENCHMARK
         Fibonacci.classic(n)
         Time.now - t
       }
-      a, b, r2 = self.fit_exponential(RANGE, times)
+      _a, _b, r2 = self.fit_exponential(RANGE, times)
       puts
       puts "Fibonacci.classic(n) exponential fit: %0.3f" % r2
       puts
