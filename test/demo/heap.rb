@@ -7,26 +7,28 @@ include CompSci
 #
 
 h = Heap.new
+print "push: ["
 99.times {
   item = rand 99
   h.push item
-  puts "pushed %i" % item
+  print "%i, " % item
 }
-p h.store
+puts "]"
+puts "heap store: #{h.store.inspect}"
 puts "heap: #{h.heap?}"
 puts
 
-max = h.pop
-puts "popped #{max}"
-p h.store
+print "pop: %i" % h.pop
+puts "heap store: #{h.store.inspect}"
 puts "heap: #{h.heap?}"
 puts
 
+print "pop: ["
 9.times {
-  max = h.pop
-  puts "popped #{max}"
+  print "%i, " % h.pop
 }
-p h.store
+puts "]"
+puts "heap store: #{h.store.inspect}"
 puts "heap: #{h.heap?}"
 puts
 
@@ -45,7 +47,7 @@ while elapsed < 3
   e1 = Time.now - t1
   elapsed = Time.now - t
   count += 1
-  puts "%ith insert: %0.8f s" % [count, e1] if count % 10000 == 0
+  puts "%ith push: %0.8f s" % [count, e1] if count % 10000 == 0
 end
 
-puts "inserted %i items in %0.1f s" % [count, elapsed]
+puts "pushed %i items in %0.1f s" % [count, elapsed]
