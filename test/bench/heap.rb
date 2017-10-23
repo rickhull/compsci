@@ -9,7 +9,7 @@ describe "Heap#push Benchmark" do
     @heap = Heap.new
   end
 
-  bench_performance_constant "push constant 0.9999", 0.9999 do |n|
+  bench_performance_constant "Heap#push (constant, 0.9999)", 0.9999 do |n|
     n.times { @heap.push rand 99999 }
   end
 end
