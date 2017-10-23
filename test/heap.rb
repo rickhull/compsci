@@ -3,8 +3,6 @@ require 'minitest/autorun'
 
 include CompSci
 
-EYEBALL_TEST = false
-
 describe Heap do
   it "must calculate a parent index" do
     valid = {
@@ -103,18 +101,4 @@ describe Heap do
       @maxheap.heap?.must_equal true
     end
   end
-end
-
-if EYEBALL_TEST
-  h = Heap.new
-  99.times {
-    h.push rand 99
-  }
-  p h.store
-  p h.heap?
-  puts
-  max = h.pop
-  puts "popped #{max}"
-  p h.store
-  p h.heap?
 end
