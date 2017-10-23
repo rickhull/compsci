@@ -5,7 +5,7 @@ include CompSci
 start = Time.now
 t = Time.now
 puts
-print "running: "
+print "running sleep 0.01 (50x): "
 block_time = Timer.loop_average(count: 50) {
   print '.'
   sleep 0.01
@@ -17,7 +17,7 @@ puts "cumulative: %0.3f" % (Time.now - start)
 
 t = Time.now
 puts
-print "running: "
+print "running sleep 0.02 (0.5 s): "
 block_time = Timer.loop_average(seconds: 0.5) {
   print '.'
   sleep 0.02
@@ -29,7 +29,7 @@ puts "cumulative: %0.3f" % (Time.now - start)
 
 t = Time.now
 puts
-print "running: "
+print "running sleep 2 (1 s): "
 block_time = Timer.loop_average(seconds: 1) {
   print '.'
   sleep 2
