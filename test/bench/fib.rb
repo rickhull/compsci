@@ -53,19 +53,19 @@ if BENCHMARK_IPS
     b.config time: 3, warmup: 0.5
     num = 25
 
-    b.report("classic(#{num})") {
+    b.report("Fibonacci.classic(#{num})") {
       Fibonacci.classic(num)
     }
 
-    b.report("cache_recursive(#{num})") {
+    b.report("Fibonacci.cache_recursive(#{num})") {
       Fibonacci.cache_recursive(num)
     }
 
-    b.report("cache_iterative(#{num})") {
+    b.report("Fibonacci.cache_iterative(#{num})") {
       Fibonacci.cache_iterative(num)
     }
 
-    b.report("dynamic(#{num})") {
+    b.report("Fibonacci.dynamic(#{num})") {
       Fibonacci.dynamic(num)
     }
 
