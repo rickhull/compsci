@@ -1,9 +1,11 @@
 require 'compsci/fib'
+require 'minitest/autorun'
+require 'minitest/benchmark'
 
 include CompSci
 
-# RANGE = [3, 5, 10, 15, 20, 25, 30, 31, 32, 33, 34, 35]
-RANGE = [10, 15, 20, 25, 30, 31, 32, 33, 34, 35]
+# CLASSIC_RANGE = [3, 5, 10, 15, 20, 25, 30, 31, 32, 33, 34, 35]
+CLASSIC_RANGE = [10, 15, 20, 25, 30, 31, 32, 33, 34, 35]
 
 SPEC_BENCHMARK = true
 CLASS_BENCHMARK = true
@@ -11,38 +13,34 @@ BENCHMARK_IPS = true
 
 
 if SPEC_BENCHMARK
-  require 'minitest/autorun'
-  require 'minitest/benchmark'
-
   describe "Benchmark" do
     bench_range do
-      RANGE
+      CLASSIC_RANGE
     end
 
-    bench_performance_exponential "classic exponential", 0.95 do |n|
+    fc = ["Fibonacci.classic (exponential, 0.95)", 0.95]
+    bench_performance_exponential(*fc) do |n|
       Fibonacci.classic(n)
     end
 
-    # bench_performance_linear "cache_recursive linear", 0.95 do |n|
-    #   Fibonacci.cache_recursive(n)
-    # end
+    fcr = ["Fibonacci.cache_recursive (linear, 0.95)", 0.95]
+    bench_performance_linear(*fcr) do |n|
+      Fibonacci.cache_recursive(n)
+    end
   end
 end
 
 if CLASS_BENCHMARK
-  require 'minitest/autorun'
-  require 'minitest/benchmark'
-
   class BenchFib < Minitest::Benchmark
     def bench_fib
-      times = RANGE.map { |n|
+      times = CLASSIC_RANGE.map { |n|
         t = Time.now
         Fibonacci.classic(n)
         Time.now - t
       }
-      _a, _b, r2 = self.fit_exponential(RANGE, times)
+      _a, _b, r2 = self.fit_exponential(CLASSIC_RANGE, times)
       puts
-      puts "Fibonacci.classic(n) exponential fit: %0.3f" % r2
+      puts "self-timed Fibonacci.classic(n) exponential fit: %0.3f" % r2
       puts
     end
   end
