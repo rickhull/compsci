@@ -7,9 +7,9 @@ Provided are some toy implementations for some basic computer science problems.
 * Heap (min- or max-)
 * Fibonacci function
   - `Fibonacci.classic(n)` - naive, recursive
-  - `Fibonacci.cache_recursive(n)` - cache already computed results
+  - `Fibonacci.cache_recursive(n)` - as above, caching already computed results
   - `Fibonacci.cache_iterative(n)` - as above but iterative
-  - `Fibonacci.dynamic(n)` - similar to above but without a cache structure
+  - `Fibonacci.dynamic(n)` - as above but without a cache structure
 
 ## Heap
 
