@@ -15,4 +15,4 @@ Rake::TestTask.new(demo: :test) do |t|
   t.warning = true
 end
 
-task default: :bench
+task default: :test
