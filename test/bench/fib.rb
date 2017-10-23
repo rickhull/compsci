@@ -50,7 +50,7 @@ if BENCHMARK_IPS
   require 'benchmark/ips'
 
   Benchmark.ips do |b|
-    b.config time: 5, warmup: 2
+    b.config time: 3, warmup: 0.5
     num = 25
 
     b.report("classic(#{num})") {
