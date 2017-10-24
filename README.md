@@ -4,7 +4,7 @@
 
 Provided are some toy implementations for some basic computer science problems.
 
-* Tree data structures
+* [Tree data structures](/lib/compsci/fib.rb)
   - `Tree` (enforces number of children per node)
   - `Tree::Node` (references parent and children nodes)
   - `BinaryTree` (subclass of `Tree`; child_slots == 2)
@@ -15,6 +15,8 @@ Provided are some toy implementations for some basic computer science problems.
   - `Fibonacci.cache_recursive(n)` - as above, caching already computed results
   - `Fibonacci.cache_iterative(n)` - as above but iterative
   - `Fibonacci.dynamic(n)` - as above but without a cache structure
+* Timer
+  - `Timer.loop_average` - e.g. loop until one second elapses
 
 ## Heap
 
