@@ -4,18 +4,19 @@
 
 Provided are some toy implementations for some basic computer science problems.
 
-* [Tree data structures](/lib/compsci/fib.rb)
+* [Tree data structures](/lib/compsci/tree.rb)
   - `Tree` (enforces number of children per node)
   - `Tree::Node` (references parent and children nodes)
   - `BinaryTree` (subclass of `Tree`; child_slots == 2)
   - `CompleteBinaryTree` (efficient Array implementation)
-* Heap (min- or max-, implemented with CompleteBinaryTree)
-* Fibonacci function
+* [Heap data structure](/lib/compsci/heap.rb)
+  - `Heap` (min- or max-, implemented with `CompleteBinaryTree`)
+* [Fibonacci functions](/lib/compsci/fib.rb)
   - `Fibonacci.classic(n)` - naive, recursive
   - `Fibonacci.cache_recursive(n)` - as above, caching already computed results
   - `Fibonacci.cache_iterative(n)` - as above but iterative
   - `Fibonacci.dynamic(n)` - as above but without a cache structure
-* Timer
+* [Timer](/lib/compsci/timer.rb)
   - `Timer.loop_average` - e.g. loop until one second elapses
 
 ## Heap
