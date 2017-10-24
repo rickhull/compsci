@@ -79,7 +79,11 @@ module CompSci
       end
 
       def inspect
-        "#<Node: %s @children=[%s]>" % [self.to_s, @children.to_s]
+        "#<%s:0x%0xi @value=%s @children=[%s]>" %
+          [self.class,
+           self.object_id,
+           self.to_s,
+           @children.map(&:to_s).join(', ')]
       end
     end
   end
