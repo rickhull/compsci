@@ -21,7 +21,7 @@ require 'compsci/binary_tree'
 # Sift_up and sift_down are O(log n) because they only have to check and swap
 #   nodes at each layer of the tree, and there are log n layers to the tree.
 #
-class CompSci::Heap < CompSci::BinaryTree
+class CompSci::Heap < CompSci::CompleteBinaryTree
   # defaults to a MaxHeap, with the largest node at the root
   # specify a minheap with minheap: true or cmp_val: -1
   #

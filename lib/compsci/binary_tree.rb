@@ -1,6 +1,6 @@
 require 'compsci'
 
-class CompSci::BinaryTree
+class CompSci::CompleteBinaryTree
   # integer math says idx 2 and idx 1 both have parent at idx 0
   def self.parent_idx(idx)
     (idx-1) / 2
