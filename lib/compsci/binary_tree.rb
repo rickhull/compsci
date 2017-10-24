@@ -106,8 +106,12 @@ module CompSci
       @store = []
     end
 
+    def size
+      @store.size
+    end
+
     def last_idx
-      @store.length - 1 unless @store.empty?
+      self.size - 1 unless @store.empty?
     end
   end
 end
