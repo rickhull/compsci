@@ -51,6 +51,11 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
     node
   end
 
+  # return what pop would return
+  def peek
+    @store.first
+  end
+
   # called recursively; idx represents the node suspected to violate the heap
   def sift_up(idx)
     return self if idx <= 0
