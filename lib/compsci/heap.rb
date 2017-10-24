@@ -1,4 +1,4 @@
-require 'compsci'
+require 'compsci/bintree'
 
 # A Heap is a partially sorted, complete binary tree with the property:
 # * Every node has a value larger (or smaller) than that of its children.
@@ -21,22 +21,12 @@ require 'compsci'
 # Sift_up and sift_down are O(log n) because they only have to check and swap
 #   nodes at each layer of the tree, and there are log n layers to the tree.
 #
-class CompSci::Heap
-  # integer math says idx 2 and idx 1 both have parent at idx 0
-  def self.parent_idx(idx)
-    (idx-1) / 2
-  end
-
-  def self.children_idx(idx)
-    [2*idx + 1, 2*idx + 2]
-  end
-
-  attr_reader :store
-
+class CompSci::Heap < CompSci::BinaryTree
   # defaults to a MaxHeap, with the largest node at the root
   # specify a minheap with minheap: true or cmp_val: -1
   #
   def initialize(cmp_val: 1, minheap: false)
+    super()
     cmp_val = -1 if minheap
     case cmp_val
     when -1, 1
@@ -44,7 +34,6 @@ class CompSci::Heap
     else
       raise(ArgumentError, "unknown comparison value: #{cmp_val}")
     end
-    @store = []
   end
 
   # append to the array; sift_up
@@ -88,11 +77,6 @@ class CompSci::Heap
   # are parent and child in accordance with heap property?
   def heapish?(pidx, cidx)
     (@store[pidx] <=> @store[cidx]) != (@cmp_val * -1)
-  end
-
-  # helper, used in 3 places
-  def last_idx
-    @store.length - 1
   end
 
   # not used internally; checks that every node satisfies the heap property
