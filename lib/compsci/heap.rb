@@ -1,4 +1,4 @@
-require 'compsci/binary_tree'
+require 'compsci/tree'
 
 # A Heap is a partially sorted, complete binary tree with the property:
 # * Every node has a value larger (or smaller) than that of its children.
