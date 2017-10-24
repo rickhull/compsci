@@ -4,7 +4,11 @@
 
 Provided are some toy implementations for some basic computer science problems.
 
-* Heap (min- or max-)
+* Tree (enforces number of children per node)
+* Tree::Node (references parent and children nodes)
+* BinaryTree (child_slots == 2)
+* CompleteBinaryTree (efficient Array implementation)
+* Heap (min- or max-, implemented with CompleteBinaryTree)
 * Fibonacci function
   - `Fibonacci.classic(n)` - naive, recursive
   - `Fibonacci.cache_recursive(n)` - as above, caching already computed results
@@ -20,7 +24,7 @@ which can be executed (among other demos) via `rake demo`.
 
 ## Fibonacci
 
-Simpler and easier to show than tell:
+Simpler and easier to show than to tell:
 
 ```ruby
 require 'compsci'
