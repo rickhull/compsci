@@ -17,6 +17,6 @@ class CompSci::CompleteBinaryTree
   end
 
   def last_idx
-    @store.length - 1
+    @store.length - 1 unless @store.empty?
   end
 end
