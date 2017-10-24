@@ -21,20 +21,48 @@ module CompSci
 
     def open_parent
       return @open_parent if @open_parent.open?
-      @open_parent = self.walk_until { |n| n.open? }
+      @open_parent = self.bf_search { |n| n.open? }
     end
 
-    def walk_until(node: nil, &blk)
+    def df_search(node: nil, &blk)
       node ||= @root
+      puts "visited #{node}"
       return node if yield node
-      if node.left
-        left_node = self.walk_until(node: node.left, &blk)
-        return left_node if left_node
+      node.children.each { |c|
+        stop_node = self.df_search(node: c, &blk)
+        return stop_node if stop_node
+      }
+      nil
+    end
+
+    def df_search_generic(node: nil, &blk)
+      # Perform pre-order operation
+      # children.each { Perform in-order operation }
+      # Perform post-order operation
+      puts "not defined yet"
+    end
+
+    def bf_search(node: nil, &blk)
+      node ||= @root
+      destinations = [node]
+      while !destinations.empty?
+        node = destinations.shift
+        return node if yield node
+        destinations += node.children
       end
-      if node.right
-        right_node = self.walk_until(node: node.right, &blk)
-        return right_node if right_node
-      end
+    end
+
+    def bf_print(node: nil, width: 80)
+      count = 0
+      self.bf_search(node: node) { |n|
+        count += 1
+        str = n.to_s
+        level = Math.log(count, 2).floor
+        block_width = width / (2**level)
+        puts if 2**level == count and count > 1
+        print n.to_s.ljust(block_width / 2, ' ').rjust(block_width, ' ')
+      }
+      puts
     end
 
     class Node
@@ -46,6 +74,7 @@ module CompSci
         @parent = nil
         @left = nil
         @right = nil
+        # @metadata = {}
       end
 
       def add_child(node)
@@ -81,11 +110,9 @@ module CompSci
       end
 
       def inspect
-        "#<%s:0x%0x @value=%s @left=%s @right=%s>" % [self.class.name,
-                                                      self.object_id,
-                                                      value.to_s,
-                                                      @left.inspect,
-                                                      @right.inspect]
+        "#<Node: %s @left=%s @right=%s>" % [@value.to_s,
+                                            @left.inspect,
+                                            @right.inspect]
       end
     end
   end
