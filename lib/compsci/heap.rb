@@ -45,7 +45,8 @@ class CompSci::Heap < CompSci::BinaryTree
   # remove from the front of the array; move last node to root; sift_down
   def pop
     node = @store.shift
-    @store.unshift(@store.pop)
+    replacement = @store.pop
+    @store.unshift replacement if replacement
     self.sift_down(0)
     node
   end
@@ -74,7 +75,7 @@ class CompSci::Heap < CompSci::BinaryTree
     self
   end
 
-  # are parent and child in accordance with heap property?
+  # are values of parent and child (by index) in accordance with heap property?
   def heapish?(pidx, cidx)
     (@store[pidx] <=> @store[cidx]) != (@cmp_val * -1)
   end
