@@ -51,7 +51,7 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
     node
   end
 
-  # return what pop would return
+  # return what pop would return (avoid sifting)
   def peek
     @store.first
   end
