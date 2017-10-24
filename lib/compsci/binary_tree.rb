@@ -82,10 +82,10 @@ module CompSci
 
       def inspect
         "#<%s:0x%0x @value=%s @left=%s @right=%s>" % [self.class.name,
-                                                    self.object_id,
-                                                    value.to_s,
-                                                    @left.inspect,
-                                                    @right.inspect]
+                                                      self.object_id,
+                                                      value.to_s,
+                                                      @left.inspect,
+                                                      @right.inspect]
       end
     end
   end
