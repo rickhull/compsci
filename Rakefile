@@ -17,4 +17,13 @@ Rake::TestTask.new demo: :test do |t|
   t.description = "Run demos"
 end
 
-task default: :test
+desc "Run example scripts"
+task examples: :test do
+  Dir['examples/**/*.rb'].each { |filepath|
+    puts
+    sh "ruby -Ilib #{filepath}"
+    puts
+  }
+end
+
+task default: :examples
