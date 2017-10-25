@@ -121,8 +121,9 @@ module CompSci
 
     attr_reader :store
 
-    def initialize
-      @store = []
+    def initialize(store: [])
+      @store = store
+      yield self if block_given?
     end
 
     def size
