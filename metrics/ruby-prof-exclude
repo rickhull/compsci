@@ -1,0 +1,218 @@
+0.06 0.02 0.00 1/74 7337
+[6, 67, 98, 89, 33, 71, 82, 14, 96, 77, 64, 80, 22, 77, 26, 0, 73, 9, 69, 52, 63, 30, 11, 61, 76, 60, 58, 47, 51, 62]
+                                        6                                       
+                    67                                      98                  
+          89                  33                  71                  82        
+     14        96        77        64        80        22        77        26   
+   0    73   9    69   52   63   30   11   61   76   60   58   47   51   62
+visited 6
+visited 67
+visited 89
+visited 14
+visited 0
+visited 73
+visited 96
+visited 9
+visited 69
+visited 33
+visited 77
+visited 52
+visited 63
+visited 64
+visited 30
+visited 11
+visited 98
+visited 71
+visited 80
+visited 61
+visited 76
+visited 22
+visited 60
+visited 58
+visited 82
+visited 77
+visited 47
+visited 51
+visited 26
+visited 62
+
+#<CompSci::BinaryTree:0x005640d17d6640 @root=#<CompSci::Tree::Node:0x2b2068beb384i @value=6 @children=[67, 98]>, @child_slots=2, @open_parent=#<CompSci::Tree::Node:0x2b2068bea808i @value=26 @children=[62]>>
+Measure Mode: wall_time
+Thread ID: 47418195131400
+Fiber ID: 47418195057280
+Total: 0.003319
+Sort by: self_time
+
+ %self      total      self      wait     child     calls  name
+ 11.65      0.001     0.000     0.000     0.001       15   CompSci::Tree#bf_search
+  3.78      0.000     0.000     0.000     0.000      148   CompSci::Tree#open_parent?
+  2.80      0.000     0.000     0.000     0.000      180   Array#empty?
+  2.01      0.000     0.000     0.000     0.000      135   Array#+
+  1.94      0.000     0.000     0.000     0.000      179   Array#shift
+  1.79      0.003     0.000     0.000     0.003        2   Global#[No method]
+  1.75      0.000     0.000     0.000     0.000        2   CompSci::Tree::Node#inspect
+  1.59      0.000     0.000     0.000     0.000       29   CompSci::Tree::Node#add_child
+  1.44      0.000     0.000     0.000     0.000        2   Kernel#p
+  1.44      0.000     0.000     0.000     0.000       30   CompSci::Tree::Node#initialize
+  1.35      0.000     0.000     0.000     0.000       65   CompSci::Tree::Node#to_s
+  1.14      0.000     0.000     0.000     0.000       96   IO#write
+  1.03      0.000     0.000     0.000     0.000       29   CompSci::Tree::Node#new_child
+  1.01      0.000     0.000     0.000     0.000       96   Integer#to_s
+  0.98      0.001     0.000     0.000     0.001       29   CompSci::Tree#open_parent
+  0.97      0.000     0.000     0.000     0.000       30   <Module::Math>#log
+  0.97      0.000     0.000     0.000     0.000      148   Array#length
+  0.94      0.001     0.000     0.000     0.001       29   CompSci::Tree#push
+  0.91      0.000     0.000     0.000     0.000       59   Array#<<
+  0.88      0.000     0.000     0.000     0.000       30   String#rjust
+  0.88      0.000     0.000     0.000     0.000        6   IO#set_encoding
+  0.88      0.000     0.000     0.000     0.000      148   Integer#<
+  0.80      0.000     0.000     0.000     0.000       36   IO#puts
+  0.77      0.000     0.000     0.000     0.000      150   BasicObject#!
+  0.73      0.000     0.000     0.000     0.000       36   Kernel#puts
+  0.60      0.000     0.000     0.000     0.000       31   Class#new
+  0.57      0.000     0.000     0.000     0.000       60   Integer#**
+  0.50      0.000     0.000     0.000     0.000        2   <Module::Gem>#find_unresolved_default_spec
+  0.49      0.000     0.000     0.000     0.000       60   Integer#/
+  0.48      0.000     0.000     0.000     0.000       30   Kernel#rand
+  0.47      0.000     0.000     0.000     0.000       30   String#ljust
+  0.47      0.000     0.000     0.000     0.000        3   Module#attr_reader
+  0.46      0.000     0.000     0.000     0.000       30   Kernel#print
+  0.42      0.000     0.000     0.000     0.000       29   BasicObject#!=
+  0.40      0.000     0.000     0.000     0.000       26   Module#method_added
+  0.40      0.000     0.000     0.000     0.000        1   Kernel#inspect
+  0.39      0.000     0.000     0.000     0.000        1   Array#inspect
+  0.37      0.000     0.000     0.000     0.000       30   Float#floor
+  0.32      0.000     0.000     0.000     0.000        2   String#%
+  0.27      0.000     0.000     0.000     0.000       30  *CompSci::Tree#df_search
+  0.25      0.002     0.000     0.000     0.002        4  *Kernel#require
+  0.24      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_exit
+  0.24      0.000     0.000     0.000     0.000       31   Kernel#class
+  0.22      0.000     0.000     0.000     0.000        2   Module#to_s
+  0.22      0.000     0.000     0.000     0.000       30   Integer#==
+  0.22      0.000     0.000     0.000     0.000       30   Integer#+
+  0.22      0.000     0.000     0.000     0.000        1   Module#attr_accessor
+  0.22      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_enter
+  0.21      0.000     0.000     0.000     0.000       29   BasicObject#==
+  0.18      0.000     0.000     0.000     0.000        1   CompSci::BinaryTree#bf_print
+  0.17      0.000     0.000     0.000     0.000        6   <Class::Thread>#current
+  0.16      0.000     0.000     0.000     0.000        2   <Module::Gem>#suffixes
+  0.15      0.000     0.000     0.000     0.000        8   BasicObject#singleton_method_added
+  0.13      0.000     0.000     0.000     0.000        1   CompSci::BinaryTree#initialize
+  0.09      0.000     0.000     0.000     0.000        2   Thread::Mutex#lock
+  0.09      0.000     0.000     0.000     0.000        2   Array#join
+  0.09      0.000     0.000     0.000     0.000        1   CompSci::Tree#initialize
+  0.09      0.000     0.000     0.000     0.000        4   Class#inherited
+  0.09      0.000     0.000     0.000     0.000        2   <Class::Gem::Specification>#unresolved_deps
+  0.06      0.000     0.000     0.000     0.000        5   Integer#>
+  0.06      0.000     0.000     0.000     0.000        1   Module#append_features
+  0.06      0.000     0.000     0.000     0.000        1   <Object::Object>#include
+  0.06      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_check_owner
+  0.06      0.000     0.000     0.000     0.000        2   Kernel#respond_to?
+  0.04      0.000     0.000     0.000     0.000        1   Module#included
+  0.03      0.000     0.000     0.000     0.000        2   Kernel#object_id
+  0.03      0.000     0.000     0.000     0.000        2   Thread::Mutex#unlock
+
+* indicates recursively called methods
+10000th push: 0.00001214 s
+20000th push: 0.00002003 s
+30000th push: 0.00002015 s
+40000th push: 0.00005447 s
+50000th push: 0.00004589 s
+60000th push: 0.00003128 s
+70000th push: 0.00001999 s
+80000th push: 0.00002015 s
+pushed 85585 items in 3.0 s
+
+still a heap with 85585 items? YES - 0.97 sec
+
+push: [45, 55, 20, 40, 0, 70, 82, 72, 31, 38, 83, 55, 44, 95, 39, 6, 76, 57, 81, 67, 17, 25, 86, 48, 5, 17, 93, 88, 11, 54, 92, 31, 5, 11, 94, 37, 87, 31, 48, 45, 60, 80, 40, 55, 8, 48, 6, 22, 46, 16, 47, 67, 80, 49, 94, 73, 52, 15, 89, 44, 95, 92, 82, 71, 5, 38, 26, 85, 93, 29, 46, 92, 5, 8, 11, 37, 98, 57, 83, 58, 86, 47, 55, 64, 78, 11, 48, 30, 82, 24, 69, 21, 82, 0, 67, 64, 69, 63, 70, ]
+heap store: [98, 95, 95, 94, 86, 93, 94, 87, 93, 82, 82, 70, 83, 89, 92, 71, 85, 86, 92, 80, 78, 72, 82, 69, 47, 67, 80, 70, 73, 88, 92, 31, 38, 81, 46, 76, 37, 57, 83, 60, 55, 67, 48, 55, 69, 48, 67, 48, 64, 5, 16, 17, 55, 44, 49, 55, 52, 11, 15, 39, 44, 54, 82, 6, 5, 5, 26, 11, 45, 29, 40, 31, 5, 8, 11, 31, 37, 48, 57, 0, 58, 45, 47, 17, 64, 11, 40, 25, 30, 8, 24, 21, 38, 0, 6, 20, 46, 22, 63]
+heap: true
+
+pop: 98
+heap store: [95, 94, 95, 93, 86, 93, 94, 87, 92, 82, 82, 70, 83, 89, 92, 71, 85, 86, 83, 80, 78, 72, 82, 69, 47, 67, 80, 70, 73, 88, 92, 31, 38, 81, 46, 76, 37, 57, 63, 60, 55, 67, 48, 55, 69, 48, 67, 48, 64, 5, 16, 17, 55, 44, 49, 55, 52, 11, 15, 39, 44, 54, 82, 6, 5, 5, 26, 11, 45, 29, 40, 31, 5, 8, 11, 31, 37, 48, 57, 0, 58, 45, 47, 17, 64, 11, 40, 25, 30, 8, 24, 21, 38, 0, 6, 20, 46, 22]
+heap: true
+
+pop: [95, 95, 94, 94, 93, 93, 92, 92, 92, ]
+heap store: [89, 87, 88, 86, 86, 83, 82, 85, 83, 82, 82, 70, 80, 73, 54, 71, 81, 76, 63, 80, 78, 72, 82, 69, 47, 67, 49, 70, 21, 44, 24, 31, 38, 45, 46, 46, 37, 57, 57, 60, 55, 67, 48, 55, 69, 48, 67, 48, 64, 5, 16, 17, 55, 44, 20, 55, 52, 11, 15, 39, 0, 8, 22, 6, 5, 5, 26, 11, 6, 29, 40, 31, 5, 8, 11, 31, 37, 48, 38, 0, 58, 45, 47, 17, 64, 11, 40, 25, 30]
+heap: true
+
+Measure Mode: wall_time
+Thread ID: 47039699098640
+Fiber ID: 47039699051660
+Total: 3.978179
+Sort by: self_time
+
+ %self      total      self      wait     child     calls  name
+  9.38      0.815     0.373     0.000     0.442   280837   CompSci::Heap#heapish?
+  8.35      3.978     0.332     0.000     3.646        2   Global#[No method]
+  6.34      1.620     0.252     0.000     1.368   194866  *CompSci::Heap#sift_up
+  4.48      0.380     0.178     0.000     0.202   256759   <Class::Time>#now
+  4.31      0.171     0.171     0.000     0.000   780140   Array#[]
+  3.81      0.247     0.152     0.000     0.095   194848   <Class::CompSci::CompleteBinaryTree>#parent_idx
+  3.45      0.202     0.137     0.000     0.065   256759   Time#initialize
+  3.15      0.125     0.125     0.000     0.000   514208   Integer#+
+  3.09      0.299     0.123     0.000     0.176   171171   Time#-
+  3.07      1.810     0.122     0.000     1.688    85684   CompSci::Heap#push
+  3.06      0.184     0.122     0.000     0.063   280837   BasicObject#!=
+  2.87      0.114     0.114     0.000     0.000   451703   Integer#-
+  2.84      0.113     0.113     0.000     0.000   452701   Integer#*
+  2.67      0.106     0.106     0.000     0.000   452000   Integer#==
+  2.55      0.180     0.101     0.000     0.078    85932   <Class::CompSci::CompleteBinaryTree>#children_idx
+  2.07      0.131     0.082     0.000     0.049   171171   Numeric#quo
+  1.88      0.075     0.075     0.000     0.000   280780   Kernel#class
+  1.65      0.066     0.066     0.000     0.000   280830   Integer#<=>
+  1.47      0.058     0.058     0.000     0.000   257488   Array#length
+  1.39      0.055     0.055     0.000     0.000   218466   Array#[]=
+  1.28      0.051     0.051     0.000     0.000   194866   Integer#<=
+  1.22      0.049     0.049     0.000     0.000   171551   Array#<<
+  1.22      0.049     0.049     0.000     0.000   171171   Integer#fdiv
+  1.17      0.047     0.047     0.000     0.000   171170   Integer#%
+  1.17      0.046     0.046     0.000     0.000   194848   Integer#/
+  1.14      0.045     0.045     0.000     0.000   194909   BasicObject#!
+  1.01      0.040     0.040     0.000     0.000   171743   Integer#<
+  0.91      0.036     0.036     0.000     0.000    85684   Kernel#rand
+  0.78      0.031     0.031     0.000     0.000    85585   Float#<
+  0.02      0.001     0.001     0.000     0.000      119   String#%
+  0.00      0.000     0.000     0.000     0.000      154   IO#write
+  0.00      0.000     0.000     0.000     0.000      287   Integer#to_s
+  0.00      0.000     0.000     0.000     0.000        3   Array#inspect
+  0.00      0.000     0.000     0.000     0.000      111   Kernel#print
+  0.00      0.972     0.000     0.000     0.972    85871  *CompSci::Heap#heap?
+  0.00      0.001     0.000     0.000     0.001       61  *CompSci::Heap#sift_down
+  0.00      0.000     0.000     0.000     0.000        8   IO#set_encoding
+  0.00      0.000     0.000     0.000     0.000        3   Module#attr_reader
+  0.00      0.000     0.000     0.000     0.000       24   Kernel#puts
+  0.00      0.001     0.000     0.000     0.001       10   CompSci::Heap#pop
+  0.00      0.000     0.000     0.000     0.000        3   <Module::Gem>#find_unresolved_default_spec
+  0.00      0.000     0.000     0.000     0.000       24   IO#puts
+  0.00      0.000     0.000     0.000     0.000       34   Module#method_added
+  0.00      0.000     0.000     0.000     0.000       61   Integer#>=
+  0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_enter
+  0.00      0.000     0.000     0.000     0.000        9   <Class::Thread>#current
+  0.00      0.002     0.000     0.000     0.002        6  *Kernel#require
+  0.00      0.000     0.000     0.000     0.000       10   Array#shift
+  0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_exit
+  0.00      0.000     0.000     0.000     0.000        2   CompSci::Heap#initialize
+  0.00      0.000     0.000     0.000     0.000        2   CompSci::CompleteBinaryTree#initialize
+  0.00      0.000     0.000     0.000     0.000        1   Module#attr_accessor
+  0.00      0.000     0.000     0.000     0.000       10   Array#unshift
+  0.00      0.000     0.000     0.000     0.000       10   Array#pop
+  0.00      0.000     0.000     0.000     0.000        7   Kernel#<=>
+  0.00      0.000     0.000     0.000     0.000        2   Class#new
+  0.00      0.000     0.000     0.000     0.000        1   <Object::Object>#include
+  0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_check_owner
+  0.00      0.000     0.000     0.000     0.000        3   <Module::Gem>#suffixes
+  0.00      0.000     0.000     0.000     0.000        3   TrueClass#to_s
+  0.00      0.000     0.000     0.000     0.000        3   <Class::Gem::Specification>#unresolved_deps
+  0.00      0.000     0.000     0.000     0.000        3   Thread::Mutex#lock
+  0.00      0.000     0.000     0.000     0.000        1   CompSci::CompleteBinaryTree#size
+  0.00      0.000     0.000     0.000     0.000        5   Class#inherited
+  0.00      0.000     0.000     0.000     0.000        3   Thread::Mutex#unlock
+  0.00      0.000     0.000     0.000     0.000        3   Kernel#respond_to?
+  0.00      0.000     0.000     0.000     0.000        7   BasicObject#==
+  0.00      0.000     0.000     0.000     0.000        1   Module#append_features
+  0.00      0.000     0.000     0.000     0.000        8   BasicObject#singleton_method_added
+  0.00      0.000     0.000     0.000     0.000        1   Module#included
+
+* indicates recursively called methods
