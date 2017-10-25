@@ -16,6 +16,18 @@ describe CompSci do
     CompSci.fit_error([[1, 1], [2, 2], [3, 4]]) { |x| x }.must_be :<, 0.8
   end
 
+  it "must fit_constant" do
+    skip "error term for fit_constant needs work / verification"
+    a = 100
+    @xs += @xs
+    ys = @xs.map { |x| a + (rand - 0.5) }
+    ary = CompSci.fit_constant(@xs, ys)
+
+    ary[0].must_be_close_to a
+    ary[1].must_equal 0
+    ary[2].must_be_close_to 1.0
+  end
+
   # y = a + b*ln(x)
   it "must fit_logarithmic" do
     as = [-9999, -2000, -500, -0.01, 0.01, 500, 2000, 9999]
