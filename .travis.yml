@@ -6,4 +6,4 @@ rvm:
   - ruby
   - ruby-head
 install: gem install minitest
-script: rake test
+script: rake
