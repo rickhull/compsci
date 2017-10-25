@@ -61,6 +61,24 @@ describe CompSci do
     skip "investigate further"
     # this should be quite un-linear; expect r2 below 0.8
     #
+    # ACTUALLY
+    #
+    # the r2 for fit_linear is mostly about the relative fit of a sloped
+    # line compared to zero slope (i.e. y_bar)
+    #
+    # this is why a linear r2 close to 1.0 is the wrong test for fit_constant
+    # because the relative fit of the sloped line (slope near 0) doesn't
+    # "explain" much relative to y_bar
+    #
+    # in the case where y = x^3, a linear fit may still have a high r2, because
+    # the error for the y_bar predictor is astronomical.  A super steep slope
+    # fits (relative to the mean) pretty well.
+
+    # this calls into question how useful r2 is, as we need it to be a
+    # threshold value due to noise, yet even a terrible fit like trying to
+    # match x^3 is hard to distinguish from noise
+    #
+
     a = -50
     b = 1.3
     ys = @xs.map { |x| a + b * x**2 + x**3 }
