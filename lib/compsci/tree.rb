@@ -126,7 +126,7 @@ module CompSci
 
     def initialize(store: [])
       @store = store
-      yield self if block_given?
+      # yield self if block_given?
     end
 
     def size
