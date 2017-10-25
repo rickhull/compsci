@@ -72,8 +72,8 @@ describe CompSci do
 
   # y = ae^(bx)
   it "must fit_exponential" do
-    as = [0.001, 0.2, 3.3, 13.32, 19.1, 100, 1000]
-    bs = [-1.4, -1.1, -0.5, -0.1, 0.01, 0.1, 0.5, 0.75]
+    as = [0.001, 7.5, 500, 1000, 5000, 9999]
+    bs = [-1.4, -1.1, -0.1, 0.01, 0.5, 0.75]
     as.each { |a|
       bs.each { |b|
         ys = @xs.map { |x| a * Math::E**(b * x) }
@@ -89,7 +89,7 @@ describe CompSci do
 
   # y = ax^b
   it "must fit_power" do
-    as = [0.01, 0.2, 3.3, 13.32, 19.1, 100, 1000, 5000]
+    as = [0.01, 7.5, 500, 1000, 5000, 9999]
     bs = [-114, -100, -10, -0.5, -0.1, 0.1, 0.75, 10, 50, 60]
     # -114 causes CompSci.fit_error warning: Bignum out of Float range
     bs.shift
