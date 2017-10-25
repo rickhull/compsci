@@ -16,17 +16,38 @@ module CompSci
   end
 
   ##
-  # Takes an array of x/y pairs and calculates the general R^2 value.
+  # Takes an array of x/y pairs and calculates the general R^2 value to
+  # measure fit against a predictive function,  which is the block supplied
+  # to fit_error.
   #
+  # e.g. fit_error(xys) { |x| 5 + 2 * x }
+  #
+
+  def self.fit_error xys, &blk
+    ss_tot, ss_res = *sum_squared(xys, &blk)
+    1 - (ss_res / ss_tot)
+  end
+
   # See: http://en.wikipedia.org/wiki/Coefficient_of_determination
+  def self.sum_squared xys, ss_reg: false, &blk
+    y_bar  = sigma(xys) { |_, y| y                       } / xys.size.to_f
+    ret = [sigma(xys) { |_, y| (y - y_bar)        ** 2 },
+           sigma(xys) { |x, y| (yield(x) - y)     ** 2 }]
+    ret << sigma(xys) { |x, _| (yield(x) - y_bar) ** 2 } if ss_reg
+    ret # [ss_tot, ss_res, ss_reg]
+  end
 
-  def self.fit_error xys
-    # line below can throw warning: Bignum out of Float range
-    y_bar  = sigma(xys) { |_, y| y } / xys.size.to_f
-    ss_tot = sigma(xys) { |_, y| (y    - y_bar) ** 2 }
-    ss_err = sigma(xys) { |x, y| (yield(x) - y) ** 2 }
+  ##
+  # Fits the functional form: a + 0x
+  #
+  # Takes x and y values and returns [a, 0, r^2]
+  #
 
-    1 - (ss_err / ss_tot)
+  def self.fit_constant xs, ys
+    # written by Rick based on fit_linear
+    y_bar = sigma(ys).to_f / ys.size
+    variance = sigma(ys) { |y| (y - y_bar) ** 2 } / ys.size
+    [y_bar, 0, 1.0 - variance] # a, b, r2 -- is r2 correct?
   end
 
   ##
