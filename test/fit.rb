@@ -1,19 +1,21 @@
-require 'compsci'
+require 'compsci/fit'
 require 'minitest/autorun'
 
-describe CompSci do
+include CompSci
+
+describe Fit do
   before do
     @xs = [1, 2, 5, 10, 20, 50, 100, 200, 500]
   end
 
   it "must sigma" do
-    CompSci.sigma([1, 2, 3]).must_equal 6
-    CompSci.sigma([1, 2, 3]) { |n| n ** 2 }.must_equal 14
+    Fit.sigma([1, 2, 3]).must_equal 6
+    Fit.sigma([1, 2, 3]) { |n| n ** 2 }.must_equal 14
   end
 
   it "must fit_error" do
-    CompSci.fit_error([[1, 1], [2, 2], [3, 3]]) { |x| x }.must_equal 1.0
-    CompSci.fit_error([[1, 1], [2, 2], [3, 4]]) { |x| x }.must_be :<, 0.8
+    Fit.error([[1, 1], [2, 2], [3, 3]]) { |x| x }.must_equal 1.0
+    Fit.error([[1, 1], [2, 2], [3, 4]]) { |x| x }.must_be :<, 0.8
   end
 
   # y = a
@@ -22,7 +24,7 @@ describe CompSci do
     as.each { |a|
       # note, this test can possibly fail depending on what rand spits out
       ys = @xs.map { |x| a + (rand - 0.5) }
-      y_bar, variance = CompSci.fit_constant(@xs, ys)
+      y_bar, variance = Fit.constant(@xs, ys)
       var_val = variance / ys.size
       y_bar.must_be_close_to a, 0.3
       var_val.must_be_close_to 0.1, 0.09
@@ -35,7 +37,7 @@ describe CompSci do
     bs = [-9999, -2000, -500, -0.01, 0.01, 500, 2000, 9999]
     as.each { |a|
       bs.each { |b|
-        ary = CompSci.fit_logarithmic(@xs, @xs.map { |x| a + b * Math.log(x) })
+        ary = Fit.logarithmic(@xs, @xs.map { |x| a + b * Math.log(x) })
         ary[0].must_be_close_to a
         ary[1].must_be_close_to b
         ary[2].must_equal 1.0
@@ -49,7 +51,7 @@ describe CompSci do
     bs = [-9999, -2000, -500, -0.01, 0.01, 500, 2000, 9999]
     as.each { |a|
       bs.each { |b|
-        ary = CompSci.fit_linear(@xs, @xs.map { |x| a + b * x })
+        ary = Fit.linear(@xs, @xs.map { |x| a + b * x })
         ary[0].must_be_close_to a
         ary[1].must_be_close_to b
         ary[2].must_equal 1.0
@@ -82,7 +84,7 @@ describe CompSci do
     a = -50
     b = 1.3
     ys = @xs.map { |x| a + b * x**2 + x**3 }
-    ary = CompSci.fit_linear(@xs, ys)
+    ary = Fit.linear(@xs, ys)
     # ary[2].must_be :<, 0.8
     ary[2].must_be :<, 0.9
     if ary[2] > 0.85
@@ -106,7 +108,7 @@ describe CompSci do
     bs = [-1.4, -1.1, -0.1, 0.01, 0.5, 0.75]
     as.each { |a|
       bs.each { |b|
-        ary = CompSci.fit_exponential(@xs,
+        ary = Fit.exponential(@xs,
                                       @xs.map { |x| a * Math::E**(b * x) })
         ary[0].must_be_close_to a
         ary[1].must_be_close_to b
@@ -119,11 +121,11 @@ describe CompSci do
   it "must fit_power" do
     as = [0.01, 7.5, 500, 1000, 5000, 9999]
     bs = [-114, -100, -10, -0.5, -0.1, 0.1, 0.75, 10, 50, 60]
-    # -114 causes CompSci.fit_error warning: Bignum out of Float range
+    # -114 causes Fit.error warning: Bignum out of Float range
     bs.shift
     as.each { |a|
       bs.each { |b|
-        ary = CompSci.fit_power(@xs, @xs.map { |x| a * x**b })
+        ary = Fit.power(@xs, @xs.map { |x| a * x**b })
         ary[0].must_be_close_to a
         ary[1].must_be_close_to b
         ary[2].must_equal 1.0
