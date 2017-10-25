@@ -24,9 +24,10 @@ describe Fit do
 
   # y = a
   describe "constant" do
+    # note, this test can possibly fail depending on the uniformity of
+    # rand's output for our sample
     it "must accept constant data" do
       [0, 1, 10, 100, 1000, 9999].each { |a|
-        # note, this test can possibly fail depending on what rand spits out
         ys = @xs.map { |x| a + (rand - 0.5) }
         y_bar, variance = Fit.constant(@xs, ys)
         var_val = variance / ys.size
@@ -61,6 +62,29 @@ describe Fit do
           ary[2].must_equal 1.0
         }
       }
+    end
+
+    # test that b is near 0; (1 - b) is similar magnitude to r2 in terms of
+    # threshold
+    # here's the deal: r2 is usually pretty low, but sometimes it is up over
+    # 0.5, if rand() is being less than uniform in our sample
+    # so, accept a wide range for r2
+    # and let's check against 1 - b
+    #
+    # note, this test can possibly fail depending on the uniformity of
+    # rand's output for our sample
+    #
+    it "must accept constant data" do
+      r2s = []
+      [0, 1, 10, 100, 1000, 9999].each { |a|
+        ys = @xs.map { |x| a + (rand - 0.5) }
+        ary = Fit.linear(@xs, ys)
+        ary[0].must_be_close_to a, 0.4
+        ary[1].must_be_close_to 0, 0.05
+        r2s << ary[2]
+      }
+      mean_r2 = Fit.sigma(r2s) / r2s.size
+      mean_r2.must_be_close_to 0.15, 0.15
     end
 
     it "must reject nonlinear data" do
