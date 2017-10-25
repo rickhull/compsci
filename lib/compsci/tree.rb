@@ -63,6 +63,8 @@ module CompSci
       end
 
       def add_child(node)
+        node.parent ||= self
+        raise "node has a parent: #{node.parent}" if node.parent != self
         @children << node
       end
 
@@ -71,6 +73,7 @@ module CompSci
       end
 
       def add_parent(node)
+        @parent = node
         node.add_child(self)
       end
 
