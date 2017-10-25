@@ -39,7 +39,7 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
   # append to the array; sift_up
   def push(node)
     @store << node
-    self.sift_up(self.last_idx)
+    self.sift_up(@store.size - 1)
   end
 
   # remove from the front of the array; move last node to root; sift_down
@@ -69,7 +69,7 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
 
   # called recursively; idx represents the node suspected to violate the heap
   def sift_down(idx)
-    return self if idx > self.last_idx
+    return self if idx >= @store.size
     lidx, ridx = self.class.children_idx(idx)
     # take the child most likely to be a good parent
     cidx = self.heapish?(lidx, ridx) ? lidx : ridx
@@ -89,7 +89,7 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
   def heap?(idx: 0)
     check_children = []
     self.class.children_idx(idx).each { |cidx|
-      if cidx <= self.last_idx
+      if cidx < @store.size
         return false unless self.heapish?(idx, cidx)
         check_children << cidx
       end

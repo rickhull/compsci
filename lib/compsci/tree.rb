@@ -134,7 +134,7 @@ module CompSci
     end
 
     def last_idx
-      self.size - 1 unless @store.empty?
+      @store.size - 1 unless @store.empty?
     end
   end
 end
