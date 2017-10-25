@@ -5,6 +5,6 @@ rvm:
   - 2.4
   - ruby
   - ruby-head
-  - jruby
+  - jruby-9.1.9
 install: gem install minitest
 script: rake
