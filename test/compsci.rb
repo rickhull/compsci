@@ -36,8 +36,7 @@ describe CompSci do
     bs = [-9999, -2000, -500, -0.01, 0.01, 500, 2000, 9999]
     as.each { |a|
       bs.each { |b|
-        ys =  @xs.map { |x| a + b * x }
-        ary = CompSci.fit_linear(@xs, ys)
+        ary = CompSci.fit_linear(@xs, @xs.map { |x| a + b * x })
         ary[0].must_be_close_to a
         ary[1].must_be_close_to b
         ary[2].must_equal 1.0
@@ -76,10 +75,8 @@ describe CompSci do
     bs = [-1.4, -1.1, -0.1, 0.01, 0.5, 0.75]
     as.each { |a|
       bs.each { |b|
-        ys = @xs.map { |x| a * Math::E**(b * x) }
-        # p [a,b]
-        # p @xs.zip(ys)
-        ary = CompSci.fit_exponential(@xs, ys)
+        ary = CompSci.fit_exponential(@xs,
+                                      @xs.map { |x| a * Math::E**(b * x) })
         ary[0].must_be_close_to a
         ary[1].must_be_close_to b
         ary[2].must_equal 1.0
