@@ -21,6 +21,7 @@ module CompSci
   # See: http://en.wikipedia.org/wiki/Coefficient_of_determination
 
   def self.fit_error xys
+    # line below can throw warning: Bignum out of Float range
     y_bar  = sigma(xys) { |_, y| y } / xys.size.to_f
     ss_tot = sigma(xys) { |_, y| (y    - y_bar) ** 2 }
     ss_err = sigma(xys) { |x, y| (yield(x) - y) ** 2 }

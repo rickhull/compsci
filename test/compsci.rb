@@ -91,6 +91,8 @@ describe CompSci do
   it "must fit_power" do
     as = [0.01, 0.2, 3.3, 13.32, 19.1, 100, 1000, 5000]
     bs = [-114, -100, -10, -0.5, -0.1, 0.1, 0.75, 10, 50, 60]
+    # -114 causes CompSci.fit_error warning: Bignum out of Float range
+    bs.shift
     as.each { |a|
       bs.each { |b|
         ary = CompSci.fit_power(@xs, @xs.map { |x| a * x**b })
