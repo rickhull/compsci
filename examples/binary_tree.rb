@@ -16,3 +16,6 @@ tree.df_search { |n|
   puts "visited #{n}"
   false # or n.value > 90
 }
+puts
+
+p tree
