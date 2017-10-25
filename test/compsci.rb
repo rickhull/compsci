@@ -16,16 +16,17 @@ describe CompSci do
     CompSci.fit_error([[1, 1], [2, 2], [3, 4]]) { |x| x }.must_be :<, 0.8
   end
 
+  # y = a
   it "must fit_constant" do
-    skip "error term for fit_constant needs work / verification"
-    a = 100
-    @xs += @xs
-    ys = @xs.map { |x| a + (rand - 0.5) }
-    ary = CompSci.fit_constant(@xs, ys)
-
-    ary[0].must_be_close_to a
-    ary[1].must_equal 0
-    ary[2].must_be_close_to 1.0
+    as = [0, 1, 10, 100, 1000, 9999]
+    as.each { |a|
+      # note, this test can possibly fail depending on what rand spits out
+      ys = @xs.map { |x| a + (rand - 0.5) }
+      y_bar, variance = CompSci.fit_constant(@xs, ys)
+      var_val = variance / ys.size
+      y_bar.must_be_close_to a, 0.3
+      var_val.must_be_close_to 0.1, 0.09
+    }
   end
 
   # y = a + b*ln(x)
