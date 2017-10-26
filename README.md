@@ -17,11 +17,11 @@ Provided are some toy implementations for some basic computer science problems.
 
 Implemented with a `CompleteBinaryTree` for storage using simple arithmetic to
 determine array indices for parent and children.  See the
-[heap example](https://github.com/rickhull/compsci/blob/master/eamples/heap.rb)
-which can be executed (among other examples) via `rake examples`.
+[heap example](examples/heap.rb) which can be executed (among other examples)
+via `rake examples`.
 
 Both minheaps and maxheaps are supported.  The primary operations are
-`Heap#push` and `Heap#pop`.  My basic Vagrant VM gets over 350k pushes per
+`Heap#push` and `Heap#pop`.  My basic Vagrant VM gets around 500k pushes per
 second, constant up past 1M pushes.
 
 ## [`Fibonacci`](lib/compsci/fib.rb) functions
