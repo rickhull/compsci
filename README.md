@@ -38,4 +38,10 @@ Both minheaps and maxheaps are supported.  The primary operations are
 
 ## [`Fit`](lib/compsci/fit.rb) functions
 
-* asdf
+* `Fit.sigma` - sums the result of a block applied to array values
+* `Fit.error` - returns a generic r^2 value, the coefficient of determination
+* `Fit.constant` - fits `y = a + 0x`; returns the mean and variance
+* `Fit.logarithmic` - fits `y = a + b*ln(x)`; returns a, b, r^2
+* `Fit.linear` - fits `y = a + bx`; returns a, b, r^2
+* `Fit.exponential` fits `y = ae^(bx)`; returns a, b, r^2
+* `Fit.power` fits `y = ax^b`; returns a, b, r^2
