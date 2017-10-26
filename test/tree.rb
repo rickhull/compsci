@@ -67,8 +67,68 @@ describe ChildNode do
 end
 
 describe Tree do
-  it "has no tests yet" do
-    skip "not a test"
+  before do
+    @node = Node.new 42
+    @tree = Tree.new @node
+    @vals = Array.new(99) { rand 99 }
+  end
+
+  it "tracks the root node" do
+    @tree.root.must_equal @node
+  end
+
+  it "is populated via the root node" do
+    @vals.each { |v| @tree.root.new_child v }
+    @node.children.size.must_equal @tree.root.children.size
+    @node.children.size.must_equal @vals.size
+  end
+
+  it "does depth_first search" do
+    vals = (0..30).to_a
+    tree = Tree.new Node.new vals.shift
+    tree.root.new_child vals.shift
+    tree.root.new_child vals.shift
+    tree.root.children.each { |c|
+      c.new_child vals.shift
+      c.new_child vals.shift
+
+      c.children.each { |cc|
+        cc.new_child vals.shift
+        cc.new_child vals.shift
+      }
+    }
+
+    visited = []
+    tree.df_search { |n|
+      visited << n.value
+      false
+    }
+    visited.wont_be_empty
+    visited.must_equal [0, 1, 3, 5, 6, 4, 7, 8, 2, 9, 11, 12, 10, 13, 14]
+  end
+
+  it "does breadth_first search" do
+    vals = (0..30).to_a
+    tree = Tree.new Node.new vals.shift
+    tree.root.new_child vals.shift
+    tree.root.new_child vals.shift
+    tree.root.children.each { |c|
+      c.new_child vals.shift
+      c.new_child vals.shift
+
+      c.children.each { |cc|
+        cc.new_child vals.shift
+        cc.new_child vals.shift
+      }
+    }
+
+    visited = []
+    tree.bf_search { |n|
+      visited << n.value
+      false
+    }
+    visited.wont_be_empty
+    visited.must_equal [0, 1, 2, 3, 4, 9, 10, 5, 6, 7, 8, 11, 12, 13, 14]
   end
 end
 
