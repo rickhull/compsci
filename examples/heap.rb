@@ -5,7 +5,7 @@ include CompSci
 
 puts <<EOF
 #
-# 3 seconds worth of inserts
+# 3 seconds worth of pushes
 #
 
 EOF
@@ -17,21 +17,22 @@ h = Heap.new
 
 loop {
   count += 1
-  if count % 10000 == 0
-    _answer, push_elapsed = Timer.elapsed { h.push rand 99999 }
-    puts "%ith push: %0.8f s" % [count, push_elapsed]
-  else
-    h.push rand 99999
-  end
 
   if count % 100000 == 0
+    h.push rand 99999
     push_100k_elapsed = Timer.since start_100k
     puts "-------------"
     puts "    100k push: %0.8f s (%ik push / s)" %
          [push_100k_elapsed, 100.to_f / push_100k_elapsed]
     puts
     start_100k = Timer.now
+  elsif count % 10000 == 0
+    _answer, push_elapsed = Timer.elapsed { h.push rand 99999 }
+    puts "%ith push: %0.8f s" % [count, push_elapsed]
+  else
+    h.push rand 99999
   end
+
   break if Timer.since(start) > 3
 }
 
