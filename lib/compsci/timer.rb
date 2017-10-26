@@ -12,20 +12,25 @@ module CompSci::Timer
     end
   end
 
-  def self.elapsed &work
+  def self.since(t)
+    self.now - t
+  end
+
+  def self.elapsed(&work)
     t = self.now
-    return yield, self.now - t
+    return yield, self.since(t)
   end
 
   def self.loop_average(count: 999, seconds: 1, &work)
     i = 0
-    t = self.now
+    start = self.now
+    val = nil
     loop {
-      yield
+      val = yield
       i += 1
       break if i >= count
-      break if self.now - t > seconds
+      break if self.since(start) > seconds
     }
-    (self.now - t) / i.to_f
+    return val, self.since(start) / i.to_f
   end
 end
