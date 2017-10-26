@@ -94,7 +94,7 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
 
   # not used internally
   # checks that every node satisfies the heap property
-  # calls heapish? on idx's chi
+  # calls heapish? on idx's children and then heap? on them recursively
   def heap?(idx: 0)
     check_children = []
     self.class.children_idx(idx).each { |cidx|
