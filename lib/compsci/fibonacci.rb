@@ -23,6 +23,7 @@ module CompSci::Fibonacci
     b
   end
 
+  # https://gist.github.com/havenwood/02cf291b809327d96a3f
   def self.matrix(n)
     (Matrix[[0, 1], [1, 1]] ** n.pred)[1, 1].to_i
   end
