@@ -38,18 +38,16 @@ elapsed = Timer.elapsed { answer = h.heap? }
 puts "%s - %0.3f sec" % [answer ? 'YES' : 'NO', elapsed]
 puts
 
+puts <<EOF
 #
 # 99 inserts; display the internal array
 #
 
+EOF
+
 h = Heap.new
-print "push: ["
-99.times {
-  item = rand 99
-  h.push item
-  print "%i, " % item
-}
-puts "]"
+
+puts "push: %s" % Array.new(99) { rand(99).tap { |i| h.push i } }.join(' ')
 puts "heap store: #{h.store.inspect}"
 puts "heap: #{h.heap?}"
 puts
@@ -59,11 +57,7 @@ puts "heap store: #{h.store.inspect}"
 puts "heap: #{h.heap?}"
 puts
 
-print "pop: ["
-9.times {
-  print "%i, " % h.pop
-}
-puts "]"
+puts "pop: %s" % Array.new(9) { h.pop }.join(' ')
 puts "heap store: #{h.store.inspect}"
 puts "heap: #{h.heap?}"
 puts
