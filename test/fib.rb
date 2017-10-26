@@ -1,4 +1,4 @@
-require 'compsci/fib'
+require 'compsci/fibonacci'
 require 'minitest/autorun'
 
 include CompSci
