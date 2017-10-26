@@ -68,7 +68,7 @@ task code_metrics: metrics_tasks
 
 desc "Show current system load"
 task "loadavg" do
-  puts ["Load", File.read("/proc/loadavg")].join(': ')
+  puts "/proc/loadavg %s" % (File.read("/proc/loadavg") rescue "Unavailable")
 end
 
 def lib_sh(cmd)
