@@ -12,27 +12,30 @@ EOF
 
 count = 0
 start = Timer.now
+start_100k = Timer.now
 h = Heap.new
-elapsed = 0
 
-while elapsed < 3
-  _answer, push_elapsed = Timer.elapsed { h.push rand 99999 }
+loop {
   count += 1
-  puts "%ith push: %0.8f s" % [count, push_elapsed] if count % 10000 == 0
+  if count % 10000 == 0
+    _answer, push_elapsed = Timer.elapsed { h.push rand 99999 }
+    puts "%ith push: %0.8f s" % [count, push_elapsed]
+  else
+    h.push rand 99999
+  end
 
   if count % 100000 == 0
-    start_100k ||= start
-    push_100k_elapsed = Timer.now - start_100k
+    push_100k_elapsed = Timer.since start_100k
     puts "-------------"
     puts "    100k push: %0.8f s (%ik push / s)" %
          [push_100k_elapsed, 100.to_f / push_100k_elapsed]
     puts
     start_100k = Timer.now
   end
-  elapsed = Timer.now - start
-end
+  break if Timer.since(start) > 3
+}
 
-puts "pushed %i items in %0.1f s" % [count, elapsed]
+puts "pushed %i items in %0.1f s" % [count, Timer.since(start)]
 puts
 
 print "still a heap with #{h.size} items? "
