@@ -4,14 +4,16 @@
 
 Provided are some toy implementations for some basic computer science problems.
 
-## `[Heap](lib/compsci/heap.rb)` data structure
+## `Heap` data structure
+
+[`source`](lib/compsci/heap.rb)
 
 Implemented with an array for storage and simple arithmetic to determine the
 array index for parent and children.  See the
 [heap demo](https://github.com/rickhull/compsci/blob/master/test/demo/heap.rb)
 which can be executed (among other demos) via `rake demo`.
 
-## `[Fibonacci](lib/compsci/fib.rb)` functions
+## [`Fibonacci`](lib/compsci/fib.rb) functions
 
 * `Fibonacci.classic(n)` - naive, recursive
 * `Fibonacci.cache_recursive(n)` - as above, caching already computed results
