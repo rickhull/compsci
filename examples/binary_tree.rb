@@ -13,7 +13,7 @@ EOF
 count = 0
 start = Timer.now
 start_1k = Timer.now
-tree = BinaryTree.new(ChildNode.new rand 99)
+tree = BinaryTree.new(ChildNode, rand(99))
 
 loop {
   count += 1
@@ -50,8 +50,7 @@ vals = []
 30.times { vals << rand(99) }
 p vals
 
-root_node = ChildNode.new vals.shift
-tree = BinaryTree.new(root_node)
+tree = BinaryTree.new(ChildNode, vals.shift)
 tree.push vals.shift until vals.empty?
 
 puts tree
