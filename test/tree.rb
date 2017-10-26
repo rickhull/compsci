@@ -120,15 +120,13 @@ describe BinaryTree do
     @tree.child_slots.must_equal 2
   end
 
-  it "must bf_print" do
-    31.times { @tree.push rand 99 }
-    out, err = capture_io do
-      @tree.bf_print
-    end
-    line_count = out.split("\n").size
-    line_count.must_be :>, 4
-    line_count.must_be :<, 7
-    err.must_be_empty
+  it "must to_s" do
+    item_count = 31
+    # tree already has a root node
+    (item_count - 1).times { @tree.push rand 99 }
+    str = @tree.to_s
+    line_count = str.split("\n").size
+    line_count.must_equal Math.log(item_count + 1, 2).ceil
   end
 end
 

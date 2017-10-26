@@ -41,7 +41,7 @@ puts
 
 puts <<EOF
 #
-# 30 inserts, bf_print, df_search
+# 30 inserts, puts, df_search
 #
 
 EOF
@@ -54,7 +54,7 @@ root_node = Tree::Node.new vals.shift
 tree = BinaryTree.new(root_node)
 tree.push vals.shift until vals.empty?
 
-tree.bf_print
+puts tree
 
 tree.df_search { |n|
   puts "visited #{n}"

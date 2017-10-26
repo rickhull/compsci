@@ -105,16 +105,18 @@ module CompSci
       super(root_node, child_slots: 2)
     end
 
-    def bf_print(node: nil, width: 80)
+    def to_s(node: nil, width: 80)
       count = 0
+      str = ''
       self.bf_search(node: node) { |n|
         count += 1
         level = Math.log(count, 2).floor
         block_width = width / (2**level)
-        puts if 2**level == count and count > 1
-        print n.to_s.ljust(block_width / 2, ' ').rjust(block_width, ' ')
+        str += "\n" if 2**level == count and count > 1
+        str += n.to_s.ljust(block_width / 2, ' ').rjust(block_width, ' ')
+        false # keep searching to visit every node
       }
-      puts
+      str
     end
   end
 
