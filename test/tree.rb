@@ -10,13 +10,13 @@ describe Node do
     @emilio_estevez = Node.new 'emilio'
   end
 
-  it "must start with no relations" do
+  it "must start with no children" do
     [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
       n.children.must_be_empty
     }
   end
 
-  it "must allow relations" do
+  it "must track children" do
     @charlie_sheen.add_parent(@martin_sheen)
     @martin_sheen.children.must_include @charlie_sheen
 
@@ -40,14 +40,14 @@ describe ChildNode do
     @emilio_estevez = ChildNode.new 'emilio'
   end
 
-  it "must start with no relations" do
+  it "must start with neither parent nor children" do
     [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
       n.parent.nil?.must_equal true
       n.children.must_be_empty
     }
   end
 
-  it "must allow relations" do
+  it "must track parent and children" do
     @charlie_sheen.add_parent(@martin_sheen)
     @charlie_sheen.parent.must_equal @martin_sheen
     @martin_sheen.children.must_include @charlie_sheen
