@@ -34,7 +34,16 @@ describe Timer do
 
     it "must repeat short loops and stop on time" do
       # see above, Timer.since(start)
-      true.must_equal true
+      true
+    end
+
+    it "must cease looping after 5 loops" do
+      start = Timer.now
+      _answer, avg_et = Timer.loop_average(count: 5) {
+        sleep 0.01
+      }
+      avg_et.must_be_close_to 0.015, 0.005
+      Timer.since(start).must_be_close_to 0.1, 0.05
     end
 
     it "must not interrupt long loops" do
