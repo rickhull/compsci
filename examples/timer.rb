@@ -2,8 +2,8 @@ require 'compsci/timer'
 
 include CompSci
 
-start = Time.now
-t = Time.now
+start = Timer.now
+t = Timer.now
 puts
 print "running sleep 0.01 (50x): "
 block_time = Timer.loop_average(count: 50) {
@@ -12,10 +12,10 @@ block_time = Timer.loop_average(count: 50) {
 }
 puts
 puts "each: %0.3f" % block_time
-puts "elapsed: %0.3f" % (Time.now - t)
-puts "cumulative: %0.3f" % (Time.now - start)
+puts "elapsed: %0.3f" % (Timer.now - t)
+puts "cumulative: %0.3f" % (Timer.now - start)
 
-t = Time.now
+t = Timer.now
 puts
 print "running sleep 0.02 (0.5 s): "
 block_time = Timer.loop_average(seconds: 0.5) {
@@ -24,10 +24,10 @@ block_time = Timer.loop_average(seconds: 0.5) {
 }
 puts
 puts "each: %0.3f" % block_time
-puts "elapsed: %0.3f" % (Time.now - t)
-puts "cumulative: %0.3f" % (Time.now - start)
+puts "elapsed: %0.3f" % (Timer.now - t)
+puts "cumulative: %0.3f" % (Timer.now - start)
 
-t = Time.now
+t = Timer.now
 puts
 print "running sleep 2 (1 s): "
 block_time = Timer.loop_average(seconds: 1) {
@@ -36,5 +36,5 @@ block_time = Timer.loop_average(seconds: 1) {
 }
 puts
 puts "each: %0.3f" % block_time
-puts "elapsed: %0.3f" % (Time.now - t)
-puts "cumulative: %0.3f" % (Time.now - start)
+puts "elapsed: %0.3f" % (Timer.now - t)
+puts "cumulative: %0.3f" % (Timer.now - start)
