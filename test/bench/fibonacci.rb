@@ -101,6 +101,7 @@ end
 if BENCHMARK_IPS
   require 'benchmark/ips'
 
+  # recursive benchmarks with low N; iterative for comparison
   Benchmark.ips do |b|
     b.config time: 3, warmup: 0.5
     num = 25
@@ -112,6 +113,18 @@ if BENCHMARK_IPS
     b.report("Fibonacci.cache_recursive(#{num})") {
       Fibonacci.cache_recursive(num)
     }
+
+    b.report("Fibonacci.cache_iterative(#{num})") {
+      Fibonacci.cache_iterative(num)
+    }
+
+    b.compare!
+  end
+
+  # nonrecursive benchmarks with high N
+  Benchmark.ips do |b|
+    b.config time: 3, warmup: 0.5
+    num = 500
 
     b.report("Fibonacci.cache_iterative(#{num})") {
       Fibonacci.cache_iterative(num)
