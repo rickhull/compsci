@@ -75,9 +75,8 @@ if CLASS_BENCHMARK
   class BenchFib < Minitest::Benchmark
     def bench_fib
       times = CLASSIC_RANGE.map { |n|
-        Timer.elapsed {
-          Fibonacci.classic(n)
-        }
+        _answer, elapsed = Timer.elapsed { Fibonacci.classic(n) }
+        elapsed
       }
       _a, _b, r2 = self.fit_exponential(CLASSIC_RANGE, times)
       puts

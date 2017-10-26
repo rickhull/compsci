@@ -13,7 +13,7 @@ h = Heap.new
 elapsed = 0
 
 while elapsed < 3
-  push_elapsed = Timer.elapsed { h.push rand 99999 }
+  _answer, push_elapsed = Timer.elapsed { h.push rand 99999 }
   count += 1
   puts "%ith push: %0.8f s" % [count, push_elapsed] if count % 10000 == 0
 
@@ -33,8 +33,7 @@ puts "pushed %i items in %0.1f s" % [count, elapsed]
 puts
 
 print "still a heap with #{h.size} items? "
-answer = nil
-elapsed = Timer.elapsed { answer = h.heap? }
+answer, elapsed = Timer.elapsed { h.heap? }
 puts "%s - %0.3f sec" % [answer ? 'YES' : 'NO', elapsed]
 puts
 
