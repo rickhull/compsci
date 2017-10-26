@@ -18,21 +18,21 @@ tree = BinaryTree.new(Tree::Node.new rand 99)
 loop {
   count += 1
 
-  if count % 100 == 0
-    _ans, push_elapsed = Timer.elapsed { tree.push rand 99 }
-    puts "%ith push: %0.8f s" % [count, push_elapsed]
-  else
-    tree.push rand 99
-  end
-
   if count % 1000 == 0
+    tree.push rand 99
     push_1k_elapsed = Timer.since start_1k
     puts "-----------"
     puts "    1k push: %0.4f s (%i push / s)" %
          [push_1k_elapsed, 1000.to_f / push_1k_elapsed]
     puts
     start_1k = Timer.now
+  elsif count % 100 == 0
+    _ans, push_elapsed = Timer.elapsed { tree.push rand 99 }
+    puts "%ith push: %0.8f s" % [count, push_elapsed]
+  else
+    tree.push rand 99
   end
+
   break if Timer.since(start) > 3
 }
 
