@@ -20,6 +20,15 @@ module CompSci
 
     def open_parent
       return @open_parent if self.open_parent?(@open_parent)
+
+      # TODO: ugh, there must be a better way, this is O(n)
+
+      # try siblings first
+      if @open_parent.parent
+        @open_parent.parent.children.each { |c|
+          return @open_parent = c if self.open_parent?(c)
+        }
+      end
       @open_parent = self.bf_search { |n| self.open_parent?(n) }
     end
 
