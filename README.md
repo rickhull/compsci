@@ -30,6 +30,7 @@ second, constant up past 1M pushes.
 * `Fibonacci.cache_recursive(n)` - as above, caching already computed results
 * `Fibonacci.cache_iterative(n)` - as above but iterative
 * `Fibonacci.dynamic(n)`         - as above but without a cache structure
+* `Fibonacci.matrix(n)`          - matrix is magic; beats dynamic around n=500
 
 ## [`Timer`](/lib/compsci/timer.rb) functions
 
