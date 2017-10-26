@@ -6,9 +6,11 @@ Provided are some toy implementations for some basic computer science problems.
 
 ## [`Tree`](/lib/compsci/tree.rb) data structures
 
-* `Tree`       - enforces number of children per node
-* `Tree::Node` - references parent and children nodes
-* `BinaryTree` - subclass of `Tree`; child_slots == 2
+* `Node`       - references children nodes only
+* `ChildNode`  - references parent and children nodes
+* `Tree`       - tracks the `root` node; provides `df_search` and `bf_search`
+* `NaryTree`   - enforces number of children per node via `child_slots`
+* `BinaryTree` - `NaryTree` with `child_slots` == 2; provides `to_s`
 * `CompleteBinaryTree` - efficient Array implementation
 
 ## [`Heap`](lib/compsci/heap.rb) data structure
