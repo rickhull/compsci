@@ -4,11 +4,17 @@ require 'minitest/autorun'
 include CompSci
 
 describe Fibonacci do
-  it "must calculate fib(10) == 55" do
-    Fibonacci.classic(10).must_equal 55
-    Fibonacci.cache_recursive(10).must_equal 55
-    Fibonacci.cache_iterative(10).must_equal 55
-    Fibonacci.dynamic(10).must_equal 55
-    Fibonacci.matrix(10).must_equal 55
+  before do
+    @answers = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+  end
+
+  it "must calculate fib(0..10)" do
+    @answers.each_with_index { |ans, i|
+      Fibonacci.classic(i).must_equal ans
+      Fibonacci.cache_recursive(i).must_equal ans
+      Fibonacci.cache_iterative(i).must_equal ans
+      Fibonacci.dynamic(i).must_equal ans
+      Fibonacci.matrix(i).must_equal ans
+    }
   end
 end
