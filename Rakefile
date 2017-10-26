@@ -90,3 +90,19 @@ desc "Run ruby-prof on examples/ with --exclude-common-cycles"
 task "ruby-prof-exclude" => "loadavg" do
   scripts.each { |script| rprof_sh script, "", "--exclude-common-cycles" }
 end
+
+#
+# GEM BUILD / PUBLISH
+#
+
+begin
+  require 'buildar'
+
+  Buildar.new do |b|
+    b.gemspec_file = 'compsci.gemspec'
+    b.version_file = 'VERSION'
+    b.use_git = true
+  end
+rescue LoadError
+  warn "buildar tasks unavailable"
+end
