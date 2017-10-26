@@ -98,6 +98,7 @@ module CompSci
 
     def initialize(klass, val, child_slots:)
       super(klass, val)
+      raise "#{klass}#parent required" unless @root.respond_to? :parent
       @child_slots = child_slots
     end
 
