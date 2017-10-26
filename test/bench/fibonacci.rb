@@ -14,6 +14,7 @@ CACHE_RANGE = [100, 1000, 10000, 100000]
 # this causes churn at the process level and impacts other benchmarks
 # DYNAMIC_RANGE = [100, 1000, 10000, 100000, 200000, 500000]
 DYNAMIC_RANGE = [100, 1000, 10000, 100000]
+MATRIX_RANGE = [100, 1000, 10000, 100000]
 
 #SPEC_BENCHMARK = true
 #CLASS_BENCHMARK = false
@@ -67,6 +68,17 @@ if SPEC_BENCHMARK
       Fibonacci.dynamic(n)
     end
   end
+
+  describe "Fibonacci.matrix Benchmark" do
+    bench_range do
+      MATRIX_RANGE
+    end
+
+    fd = ["Fibonacci.matrix (linear, 0.99)", 0.99]
+    bench_performance_linear(*fd) do |n|
+      Fibonacci.matrix(n)
+    end
+  end
 end
 
 if CLASS_BENCHMARK
@@ -107,6 +119,10 @@ if BENCHMARK_IPS
 
     b.report("Fibonacci.dynamic(#{num})") {
       Fibonacci.dynamic(num)
+    }
+
+    b.report("Fibonacci.matrix(#{num})") {
+      Fibonacci.matrix(num)
     }
 
     b.compare!

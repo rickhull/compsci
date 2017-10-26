@@ -9,5 +9,6 @@ describe Fibonacci do
     Fibonacci.cache_recursive(10).must_equal 55
     Fibonacci.cache_iterative(10).must_equal 55
     Fibonacci.dynamic(10).must_equal 55
+    Fibonacci.matrix(10).must_equal 55
   end
 end

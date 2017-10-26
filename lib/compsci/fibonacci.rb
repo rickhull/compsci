@@ -1,4 +1,5 @@
 require 'compsci'
+autoload :Matrix, 'matrix'
 
 module CompSci::Fibonacci
   def self.classic(n)
@@ -20,5 +21,9 @@ module CompSci::Fibonacci
     a, b = 0, 1
     (n-1).times { a, b = b, a+b }
     b
+  end
+
+  def self.matrix(n)
+    (Matrix[[0, 1], [1, 1]] ** n.pred)[1, 1].to_i
   end
 end
