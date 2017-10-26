@@ -19,7 +19,8 @@ determine array indices for parent and children.  See the
 which can be executed (among other examples) via `rake examples`.
 
 Both minheaps and maxheaps are supported.  The primary operations are
-`Heap#push` and `Heap#pop`.
+`Heap#push` and `Heap#pop`.  My basic Vagrant VM gets over 350k pushes per
+second, constant up past 1M pushes.
 
 ## [`Fibonacci`](lib/compsci/fib.rb) functions
 
