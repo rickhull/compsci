@@ -31,13 +31,6 @@ module CompSci::Fibonacci
     b
   end
 
-  def self.dynamic_hack(n)
-    return 0 if n == 0
-    a, b = 0, 1
-    (n-1).times { a, b = b, a+b }
-    b
-  end
-
   # https://gist.github.com/havenwood/02cf291b809327d96a3f
   def self.matrix(n)
     (Matrix[[0, 1], [1, 1]] ** n.pred)[1, 1].to_i
