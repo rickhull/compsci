@@ -2,19 +2,16 @@ require 'compsci'
 
 module CompSci
   class Node
-    attr_accessor :value, :parent
+    attr_accessor :value
     attr_reader :children
 
     def initialize(value)
       @value = value
-      @parent = nil
       @children = []
       # @metadata = {}
     end
 
     def add_child(node)
-      node.parent ||= self
-      raise "node has a parent: #{node.parent}" if node.parent != self
       @children << node
     end
 
@@ -23,7 +20,6 @@ module CompSci
     end
 
     def add_parent(node)
-      @parent = node
       node.add_child(self)
     end
 
@@ -37,6 +33,27 @@ module CompSci
          self.object_id,
          self.to_s,
          @children.map(&:to_s).join(', ')]
+    end
+  end
+
+  # like Node but with a reference to its parent
+  class ChildNode < Node
+    attr_accessor :parent
+
+    def initialize(value)
+      @parent = nil
+      super(value)
+    end
+
+    def add_child(node)
+      node.parent ||= self
+      raise "node has a parent: #{node.parent}" if node.parent != self
+      super(node)
+    end
+
+    def add_parent(node)
+      @parent = node
+      super(node)
     end
   end
 

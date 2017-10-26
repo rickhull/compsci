@@ -12,6 +12,36 @@ describe Node do
 
   it "must start with no relations" do
     [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
+      n.children.must_be_empty
+    }
+  end
+
+  it "must allow relations" do
+    @charlie_sheen.add_parent(@martin_sheen)
+    @martin_sheen.children.must_include @charlie_sheen
+
+    @martin_sheen.children.wont_include @emilio_estevez
+    @martin_sheen.add_child @emilio_estevez
+    @martin_sheen.children.must_include @emilio_estevez
+  end
+
+  it "must create children from scalars" do
+    @martin_sheen.new_child 'fake_emilio'
+    @martin_sheen.children.size.must_equal 1
+    @martin_sheen.children.first.value.must_equal 'fake_emilio'
+    @martin_sheen.children.wont_include @emilio_estevez
+  end
+end
+
+describe ChildNode do
+  before do
+    @martin_sheen = ChildNode.new 'martin'
+    @charlie_sheen = ChildNode.new 'charlie'
+    @emilio_estevez = ChildNode.new 'emilio'
+  end
+
+  it "must start with no relations" do
+    [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
       n.parent.nil?.must_equal true
       n.children.must_be_empty
     }
@@ -44,7 +74,7 @@ end
 
 describe NaryTree do
   before do
-    @node = Node.new 42
+    @node = ChildNode.new 42
     @tree = NaryTree.new(@node, child_slots: 3)
   end
 
@@ -63,7 +93,7 @@ describe NaryTree do
 
   describe "searching" do
     before do
-      @tree = NaryTree.new(Node.new(42), child_slots: 2)
+      @tree = NaryTree.new(ChildNode.new(42), child_slots: 2)
       99.times { |i| @tree.push i }
     end
 
@@ -119,7 +149,7 @@ end
 
 describe BinaryTree do
   before do
-    @tree = BinaryTree.new(Node.new 42)
+    @tree = BinaryTree.new(ChildNode.new 42)
   end
 
   it "must have 2 child_slots" do
