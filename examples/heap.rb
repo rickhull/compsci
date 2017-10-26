@@ -3,9 +3,12 @@ require 'compsci/timer'
 
 include CompSci
 
+puts <<EOF
 #
 # 3 seconds worth of inserts
 #
+
+EOF
 
 count = 0
 start = Timer.now
