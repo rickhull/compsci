@@ -2,34 +2,10 @@ require 'compsci'
 
 module CompSci
   class Tree
-    attr_reader :root, :child_slots
+    attr_reader :root
 
-    def initialize(root_node, child_slots: 2)
+    def initialize(root_node)
       @root = root_node
-      @child_slots = child_slots
-      @open_parent = @root
-    end
-
-    def push(value)
-      self.open_parent.new_child value
-    end
-
-    def open_parent?(node)
-      node.children.size < @child_slots
-    end
-
-    def open_parent
-      return @open_parent if self.open_parent?(@open_parent)
-
-      # TODO: ugh, there must be a better way, this is O(n)
-
-      # try siblings first
-      if @open_parent.parent
-        @open_parent.parent.children.each { |c|
-          return @open_parent = c if self.open_parent?(c)
-        }
-      end
-      @open_parent = self.bf_search { |n| self.open_parent?(n) }
     end
 
     def df_search(node: nil, &blk)
@@ -42,13 +18,6 @@ module CompSci
       nil
     end
 
-    def df_search_generic(node: nil, &blk)
-      # Perform pre-order operation
-      # children.each { Perform in-order operation }
-      # Perform post-order operation
-      puts "not defined yet"
-    end
-
     def bf_search(node: nil, &blk)
       node ||= @root
       destinations = [node]
@@ -58,6 +27,13 @@ module CompSci
         destinations += node.children
       end
       nil
+    end
+
+    def df_search_generic(node: nil, &blk)
+      # Perform pre-order operation
+      # children.each { Perform in-order operation }
+      # Perform post-order operation
+      puts "not defined yet"
     end
 
     class Node
@@ -100,7 +76,39 @@ module CompSci
     end
   end
 
-  class BinaryTree < Tree
+  class NaryTree < Tree
+    attr_reader :child_slots
+
+    def initialize(root_node, child_slots:)
+      super(root_node)
+      @child_slots = child_slots
+    end
+
+    def open_parent?(node)
+      node.children.size < @child_slots
+    end
+
+    def open_parent
+      @open_parent ||= @root
+      return @open_parent if self.open_parent?(@open_parent)
+
+      # TODO: ugh, there must be a better way, this is O(n)
+
+      # try siblings first
+      if @open_parent.parent
+        @open_parent.parent.children.each { |c|
+          return @open_parent = c if self.open_parent?(c)
+        }
+      end
+      @open_parent = self.bf_search { |n| self.open_parent?(n) }
+    end
+
+    def push(value)
+      self.open_parent.new_child value
+    end
+  end
+
+  class BinaryTree < NaryTree
     def initialize(root_node)
       super(root_node, child_slots: 2)
     end

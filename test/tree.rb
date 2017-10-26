@@ -3,10 +3,10 @@ require 'minitest/autorun'
 
 include CompSci
 
-describe Tree do
+describe NaryTree do
   before do
     @node = Tree::Node.new 42
-    @tree = Tree.new(@node, child_slots: 3)
+    @tree = NaryTree.new(@node, child_slots: 3)
   end
 
   it "must have an open parent" do
@@ -24,7 +24,7 @@ describe Tree do
 
   describe "searching" do
     before do
-      @tree = Tree.new(Tree::Node.new 42)
+      @tree = NaryTree.new(Tree::Node.new(42), child_slots: 2)
       99.times { |i| @tree.push i }
     end
 
