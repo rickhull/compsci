@@ -36,7 +36,7 @@ module CompSci::Fit
   end
 
   ##
-  # Fits the functional form: a
+  # Fits the functional form: a (+ 0x)
   #
   # Takes x and y values and returns [a, variance]
   #
