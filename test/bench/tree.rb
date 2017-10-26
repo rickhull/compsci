@@ -13,7 +13,7 @@ describe "BinaryTree#push Benchmark" do
   end
 
   bench_performance_constant "BinaryTree#push (constant)" do |n|
-    tree = BinaryTree.new ChildNode.new 42
+    tree = BinaryTree.new(ChildNode, 42)
     n.times { tree.push rand 99 }
   end
 
