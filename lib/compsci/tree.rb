@@ -1,6 +1,45 @@
 require 'compsci'
 
 module CompSci
+  class Node
+    attr_accessor :value, :parent
+    attr_reader :children
+
+    def initialize(value)
+      @value = value
+      @parent = nil
+      @children = []
+      # @metadata = {}
+    end
+
+    def add_child(node)
+      node.parent ||= self
+      raise "node has a parent: #{node.parent}" if node.parent != self
+      @children << node
+    end
+
+    def new_child(value)
+      self.add_child self.class.new(value)
+    end
+
+    def add_parent(node)
+      @parent = node
+      node.add_child(self)
+    end
+
+    def to_s
+      @value.to_s
+    end
+
+    def inspect
+      "#<%s:0x%0xi @value=%s @children=[%s]>" %
+        [self.class,
+         self.object_id,
+         self.to_s,
+         @children.map(&:to_s).join(', ')]
+    end
+  end
+
   class Tree
     attr_reader :root
 
@@ -34,45 +73,6 @@ module CompSci
       # children.each { Perform in-order operation }
       # Perform post-order operation
       puts "not defined yet"
-    end
-
-    class Node
-      attr_accessor :value, :parent
-      attr_reader :children
-
-      def initialize(value)
-        @value = value
-        @parent = nil
-        @children = []
-        # @metadata = {}
-      end
-
-      def add_child(node)
-        node.parent ||= self
-        raise "node has a parent: #{node.parent}" if node.parent != self
-        @children << node
-      end
-
-      def new_child(value)
-        self.add_child self.class.new(value)
-      end
-
-      def add_parent(node)
-        @parent = node
-        node.add_child(self)
-      end
-
-      def to_s
-        @value.to_s
-      end
-
-      def inspect
-        "#<%s:0x%0xi @value=%s @children=[%s]>" %
-          [self.class,
-           self.object_id,
-           self.to_s,
-           @children.map(&:to_s).join(', ')]
-      end
     end
   end
 

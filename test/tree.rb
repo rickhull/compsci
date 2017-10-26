@@ -3,9 +3,48 @@ require 'minitest/autorun'
 
 include CompSci
 
+describe Node do
+  before do
+    @martin_sheen = Node.new 'martin'
+    @charlie_sheen = Node.new 'charlie'
+    @emilio_estevez = Node.new 'emilio'
+  end
+
+  it "must start with no relations" do
+    [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
+      n.parent.nil?.must_equal true
+      n.children.must_be_empty
+    }
+  end
+
+  it "must allow relations" do
+    @charlie_sheen.add_parent(@martin_sheen)
+    @charlie_sheen.parent.must_equal @martin_sheen
+    @martin_sheen.children.must_include @charlie_sheen
+
+    @martin_sheen.children.wont_include @emilio_estevez
+    @martin_sheen.add_child @emilio_estevez
+    @martin_sheen.children.must_include @emilio_estevez
+    @emilio_estevez.parent.must_equal @martin_sheen
+  end
+
+  it "must create children from scalars" do
+    @martin_sheen.new_child 'fake_emilio'
+    @martin_sheen.children.size.must_equal 1
+    @martin_sheen.children.first.value.must_equal 'fake_emilio'
+    @martin_sheen.children.wont_include @emilio_estevez
+  end
+end
+
+describe Tree do
+  it "has no tests yet" do
+    skip "not a test"
+  end
+end
+
 describe NaryTree do
   before do
-    @node = Tree::Node.new 42
+    @node = Node.new 42
     @tree = NaryTree.new(@node, child_slots: 3)
   end
 
@@ -24,7 +63,7 @@ describe NaryTree do
 
   describe "searching" do
     before do
-      @tree = NaryTree.new(Tree::Node.new(42), child_slots: 2)
+      @tree = NaryTree.new(Node.new(42), child_slots: 2)
       99.times { |i| @tree.push i }
     end
 
@@ -76,44 +115,11 @@ describe NaryTree do
       count.must_equal 83
     end
   end
-
-  describe Tree::Node do
-    before do
-      @martin_sheen = Tree::Node.new 'martin'
-      @charlie_sheen = Tree::Node.new 'charlie'
-      @emilio_estevez = Tree::Node.new 'emilio'
-    end
-
-    it "must start with no relations" do
-      [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
-        n.parent.nil?.must_equal true
-        n.children.must_be_empty
-      }
-    end
-
-    it "must allow relations" do
-      @charlie_sheen.add_parent(@martin_sheen)
-      @charlie_sheen.parent.must_equal @martin_sheen
-      @martin_sheen.children.must_include @charlie_sheen
-
-      @martin_sheen.children.wont_include @emilio_estevez
-      @martin_sheen.add_child @emilio_estevez
-      @martin_sheen.children.must_include @emilio_estevez
-      @emilio_estevez.parent.must_equal @martin_sheen
-    end
-
-    it "must create children from scalars" do
-      @martin_sheen.new_child 'fake_emilio'
-      @martin_sheen.children.size.must_equal 1
-      @martin_sheen.children.first.value.must_equal 'fake_emilio'
-      @martin_sheen.children.wont_include @emilio_estevez
-    end
-  end
 end
 
 describe BinaryTree do
   before do
-    @tree = BinaryTree.new(Tree::Node.new 42)
+    @tree = BinaryTree.new(Node.new 42)
   end
 
   it "must have 2 child_slots" do
