@@ -15,9 +15,12 @@ CACHE_RANGE = [100, 1000, 10000, 100000]
 # DYNAMIC_RANGE = [100, 1000, 10000, 100000, 200000, 500000]
 DYNAMIC_RANGE = [100, 1000, 10000, 100000]
 
-SPEC_BENCHMARK = true
-CLASS_BENCHMARK = false
-BENCHMARK_IPS = true
+#SPEC_BENCHMARK = true
+#CLASS_BENCHMARK = false
+#BENCHMARK_IPS = true
+SPEC_BENCHMARK = false
+CLASS_BENCHMARK = true
+BENCHMARK_IPS = false
 
 
 if SPEC_BENCHMARK
@@ -67,12 +70,14 @@ if SPEC_BENCHMARK
 end
 
 if CLASS_BENCHMARK
+  require 'compsci/timer'
+
   class BenchFib < Minitest::Benchmark
     def bench_fib
       times = CLASSIC_RANGE.map { |n|
-        t = Time.now
-        Fibonacci.classic(n)
-        Time.now - t
+        Timer.elapsed {
+          Fibonacci.classic(n)
+        }
       }
       _a, _b, r2 = self.fit_exponential(CLASSIC_RANGE, times)
       puts
