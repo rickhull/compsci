@@ -4,77 +4,35 @@
 
 Provided are some toy implementations for some basic computer science problems.
 
-* [Tree data structures](/lib/compsci/tree.rb)
-  - `Tree` (enforces number of children per node)
-  - `Tree::Node` (references parent and children nodes)
-  - `BinaryTree` (subclass of `Tree`; child_slots == 2)
-  - `CompleteBinaryTree` (efficient Array implementation)
-* [Heap data structure](/lib/compsci/heap.rb)
-  - `Heap` (min- or max-, implemented with `CompleteBinaryTree`)
-* [Fibonacci functions](/lib/compsci/fib.rb)
-  - `Fibonacci.classic(n)` - naive, recursive
-  - `Fibonacci.cache_recursive(n)` - as above, caching already computed results
-  - `Fibonacci.cache_iterative(n)` - as above but iterative
-  - `Fibonacci.dynamic(n)` - as above but without a cache structure
-* [Timer](/lib/compsci/timer.rb)
-  - `Timer.loop_average` - e.g. loop until one second elapses
-
-## Heap
+## `[Heap](lib/compsci/heap.rb)` data structure
 
 Implemented with an array for storage and simple arithmetic to determine the
 array index for parent and children.  See the
 [heap demo](https://github.com/rickhull/compsci/blob/master/test/demo/heap.rb)
 which can be executed (among other demos) via `rake demo`.
 
-## Fibonacci
+## `[Fibonacci](lib/compsci/fib.rb)` functions
 
-Simpler and easier to show than to tell:
+* `Fibonacci.classic(n)` - naive, recursive
+* `Fibonacci.cache_recursive(n)` - as above, caching already computed results
+* `Fibonacci.cache_iterative(n)` - as above but iterative
+* `Fibonacci.dynamic(n)` - as above but without a cache structure
 
-```ruby
-require 'compsci'
+## `[Timer](/lib/compsci/timer.rb)` functions
 
-module CompSci::Fibonacci
-  def self.classic(n)
-    n < 2 ? n : classic(n-1) + classic(n-2)
-  end
+* `Timer.now` uses `Process::CLOCK_MONOTONIC` if available
+* `Timer.elapsed` provides the elapsed time to run a block
+* `Timer.loop_average` runs a block repeatedly and provides the mean elapsed
+   time
+* `Timer.since` provides the elapsed time since a prior time
 
-  def self.cache_recursive(n, cache = {})
-    return n if n < 2
-    cache[n] ||= cache_recursive(n-1, cache) + cache_recursive(n-2, cache)
-  end
+## `[Tree](/lib/compsci/tree.rb)` data structures
 
-  def self.cache_iterative(n)
-    cache = [0, 1]
-    2.upto(n) { |i| cache[i] = cache[i-1] + cache[i-2] }
-    cache[n]
-  end
+* `Tree` (enforces number of children per node)
+* `Tree::Node` (references parent and children nodes)
+* `BinaryTree` (subclass of `Tree`; child_slots == 2)
+* `CompleteBinaryTree` (efficient Array implementation)
 
-  def self.dynamic(n)
-    a, b = 0, 1
-    (n-1).times { a, b = b, a+b }
-    b
-  end
-end
-```
+## `[Fit](lib/compsci/fit.rb)` functions
 
-## Timer
-
-As with Fibonacci:
-
-```ruby
-require 'compsci'
-
-module CompSci::Timer
-  def self.loop_average(count: 999, seconds: 1, &work)
-    i = 0
-    t = Time.now
-    loop {
-      yield
-      i += 1
-      break if i >= count
-      break if Time.now - t > seconds
-    }
-    (Time.now - t) / i.to_f
-  end
-end
-```
+* asdf
