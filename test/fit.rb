@@ -18,7 +18,7 @@ describe Fit do
   describe "error" do
     it "must calculate r^2" do
       Fit.error([[1, 1], [2, 2], [3, 3]]) { |x| x }.must_equal 1.0
-      Fit.error([[1, 1], [2, 2], [3, 4]]) { |x| x }.must_be :<, 0.8
+      Fit.error([[1, 1], [2, 2], [3, 4]]) { |x| x }.must_be_close_to 0.785
     end
   end
 
