@@ -36,13 +36,16 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
     end
   end
 
-  # append to the array; sift_up
+  # append to the array
+  # sift_up -- O(log n) on heap size
   def push(node)
     @store << node
     self.sift_up(@store.size - 1)
   end
 
-  # remove from the front of the array; move last node to root; sift_down
+  # remove from the front of the array
+  # move last node to root
+  # sift_down -- O(log n) on heap size
   def pop
     node = @store.shift
     replacement = @store.pop
@@ -56,25 +59,29 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
     @store.first
   end
 
-  # called recursively; idx represents the node suspected to violate the heap
+  # called recursively
+  # idx represents the node suspected to violate the heap
+  # intended to be O(log n) on heap size
   def sift_up(idx)
     return self if idx <= 0
     pidx = self.class.parent_idx(idx)
     if !self.heapish?(pidx, idx)
-      @store[idx], @store[pidx] = @store[pidx], @store[idx] # swap
+      @store[idx], @store[pidx] = @store[pidx], @store[idx]   # swap
       self.sift_up(pidx)
     end
     self
   end
 
-  # called recursively; idx represents the node suspected to violate the heap
+  # called recursively
+  # idx represents the node suspected to violate the heap
+  # intended to be O(log n) on heap size
   def sift_down(idx)
     return self if idx >= @store.size
     lidx, ridx = self.class.children_idx(idx)
-    # take the child most likely to be a good parent
+    # promote the heapiest child
     cidx = self.heapish?(lidx, ridx) ? lidx : ridx
     if !self.heapish?(idx, cidx)
-      @store[idx], @store[cidx] = @store[cidx], @store[idx] # swap
+      @store[idx], @store[cidx] = @store[cidx], @store[idx]   # swap
       self.sift_down(cidx)
     end
     self
@@ -85,10 +92,13 @@ class CompSci::Heap < CompSci::CompleteBinaryTree
     (@store[pidx] <=> @store[cidx]) != (@cmp_val * -1)
   end
 
-  # not used internally; checks that every node satisfies the heap property
+  # not used internally
+  # checks that every node satisfies the heap property
+  # calls heapish? on idx's chi
   def heap?(idx: 0)
     check_children = []
     self.class.children_idx(idx).each { |cidx|
+      # cidx is arithmetically produced; the corresponding child may not exist
       if cidx < @store.size
         return false unless self.heapish?(idx, cidx)
         check_children << cidx
