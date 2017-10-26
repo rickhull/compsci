@@ -23,13 +23,13 @@ describe Timer do
   describe "loop_average" do
     it "return the block value and a positive number" do
       start = Timer.now
-      answer, avg_et = Timer.loop_average(seconds: 0.25) {
+      answer, avg_et = Timer.loop_average(seconds: 0.1) {
         sleep 0.01
         :foo
       }
       answer.must_equal :foo
       avg_et.must_be_close_to 0.01, 0.005
-      Timer.since(start).must_be_close_to 0.3, 0.05
+      Timer.since(start).must_be_close_to 0.15, 0.05
     end
 
     it "must repeat short loops and stop on time" do
@@ -39,11 +39,11 @@ describe Timer do
 
     it "must not interrupt long loops" do
       start = Timer.now
-      _answer, avg_et = Timer.loop_average(seconds: 0.1) {
-        sleep 0.25
+      _answer, avg_et = Timer.loop_average(seconds: 0.01) {
+        sleep 0.1
       }
       Timer.since(start).must_be_close_to avg_et, 0.05
-      avg_et.must_be_close_to 0.3, 0.05
+      avg_et.must_be_close_to 0.15, 0.05
     end
   end
 end
