@@ -12,6 +12,12 @@ module CompSci::Timer
     end
   end
 
+  def self.elapsed &work
+    t = self.now
+    yield
+    self.now - t
+  end
+
   def self.loop_average(count: 999, seconds: 1, &work)
     i = 0
     t = self.now
