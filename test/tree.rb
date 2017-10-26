@@ -68,24 +68,18 @@ end
 
 describe Tree do
   before do
-    @node = Node.new 42
-    @tree = Tree.new @node
+    @tree = Tree.new(Node, 42)
     @vals = Array.new(99) { rand 99 }
-  end
-
-  it "tracks the root node" do
-    @tree.root.must_equal @node
   end
 
   it "is populated via the root node" do
     @vals.each { |v| @tree.root.new_child v }
-    @node.children.size.must_equal @tree.root.children.size
-    @node.children.size.must_equal @vals.size
+    @tree.root.children.size.must_equal @vals.size
   end
 
   it "does depth_first search" do
     vals = (0..30).to_a
-    tree = Tree.new Node.new vals.shift
+    tree = Tree.new(Node, vals.shift)
     tree.root.new_child vals.shift
     tree.root.new_child vals.shift
     tree.root.children.each { |c|
@@ -109,7 +103,7 @@ describe Tree do
 
   it "does breadth_first search" do
     vals = (0..30).to_a
-    tree = Tree.new Node.new vals.shift
+    tree = Tree.new(Node, vals.shift)
     tree.root.new_child vals.shift
     tree.root.new_child vals.shift
     tree.root.children.each { |c|
@@ -134,12 +128,10 @@ end
 
 describe NaryTree do
   before do
-    @node = ChildNode.new 42
-    @tree = NaryTree.new(@node, child_slots: 3)
+    @tree = NaryTree.new(ChildNode, 42, child_slots: 3)
   end
 
   it "must have an open parent" do
-    @tree.open_parent?(@node).must_equal true
     @tree.open_parent?(@tree.root).must_equal true
     @tree.open_parent?(@tree.open_parent).must_equal true
   end
@@ -153,7 +145,7 @@ describe NaryTree do
 
   describe "searching" do
     before do
-      @tree = NaryTree.new(ChildNode.new(42), child_slots: 2)
+      @tree = NaryTree.new(ChildNode, 42, child_slots: 2)
       99.times { |i| @tree.push i }
     end
 
@@ -209,7 +201,7 @@ end
 
 describe BinaryTree do
   before do
-    @tree = BinaryTree.new(ChildNode.new 42)
+    @tree = BinaryTree.new(ChildNode, 42)
   end
 
   it "must have 2 child_slots" do
