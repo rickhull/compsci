@@ -14,6 +14,7 @@ describe Fibonacci do
       Fibonacci.cache_recursive(i).must_equal ans
       Fibonacci.cache_iterative(i).must_equal ans
       Fibonacci.dynamic(i).must_equal ans
+      Fibonacci.dynamic_hack(i).must_equal ans
       Fibonacci.matrix(i).must_equal ans
     }
   end

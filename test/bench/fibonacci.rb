@@ -121,6 +121,14 @@ if BENCHMARK_IPS
       Fibonacci.dynamic(num)
     }
 
+    b.report("Fibonacci.dynamic_fast(#{num})") {
+      Fibonacci.dynamic_fast(num)
+    }
+
+    b.report("Fibonacci.dynamic_hack(#{num})") {
+      Fibonacci.dynamic_hack(num)
+    }
+
     b.report("Fibonacci.matrix(#{num})") {
       Fibonacci.matrix(num)
     }
