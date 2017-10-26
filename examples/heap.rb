@@ -1,4 +1,5 @@
 require 'compsci/heap'
+require 'compsci/timer'
 
 include CompSci
 
@@ -7,38 +8,34 @@ include CompSci
 #
 
 count = 0
-t = Time.now
-t2 = Time.now
+start = Timer.now
 h = Heap.new
 elapsed = 0
 
 while elapsed < 3
-  t1 = Time.now
-  h.push rand 99999
-  e1 = Time.now - t1
-  elapsed = Time.now - t
+  push_elapsed = Timer.elapsed { h.push rand 99999 }
   count += 1
-  puts "%ith push: %0.8f s" % [count, e1] if count % 10000 == 0
+  puts "%ith push: %0.8f s" % [count, push_elapsed] if count % 10000 == 0
 
   if count % 100000 == 0
-    e2 = Time.now - t2
-    t2 = Time.now
+    start_100k ||= start
+    push_100k_elapsed = Timer.now - start_100k
     puts "-------------"
-    puts "    100k push: %0.8f s (%ik push / s)" % [e2, 100.to_f / e2]
+    puts "    100k push: %0.8f s (%ik push / s)" %
+         [push_100k_elapsed, 100.to_f / push_100k_elapsed]
     puts
+    start_100k = Timer.now
   end
+  elapsed = Timer.now - start
 end
 
 puts "pushed %i items in %0.1f s" % [count, elapsed]
 puts
 
 print "still a heap with #{h.size} items? "
-t = Time.now
-if h.heap?
-  puts "YES - %0.2f sec" % (Time.now - t)
-else
-  puts "NO - %0.4f sec" % (Time.now - t)
-end
+answer = nil
+elapsed = Timer.elapsed { answer = h.heap? }
+puts "%s - %0.3f sec" % [answer ? 'YES' : 'NO', elapsed]
 puts
 
 #
