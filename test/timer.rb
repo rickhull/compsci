@@ -33,6 +33,7 @@ describe Timer do
     end
 
     it "must repeat short loops and stop on time" do
+      # see above, Timer.since(start)
       true.must_equal true
     end
 
