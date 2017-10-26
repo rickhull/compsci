@@ -24,7 +24,7 @@ Both minheaps and maxheaps are supported.  The primary operations are
 `Heap#push` and `Heap#pop`.  My basic Vagrant VM gets around 500k pushes per
 second, constant up past 1M pushes.
 
-## [`Fibonacci`](lib/compsci/fib.rb) functions
+## [`Fibonacci`](lib/compsci/fibonacci.rb) functions
 
 * `Fibonacci.classic(n)`         - naive, recursive
 * `Fibonacci.cache_recursive(n)` - as above, caching already computed results

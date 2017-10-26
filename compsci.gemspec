@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
     README.md
     Rakefile
     lib/compsci.rb
-    lib/compsci/fib.rb
+    lib/compsci/fibonacci.rb
     lib/compsci/fit.rb
     lib/compsci/heap.rb
     lib/compsci/timer.rb
@@ -24,12 +24,12 @@ Gem::Specification.new do |s|
     examples/binary_tree.rb
     examples/heap.rb
     examples/timer.rb
-    test/fib.rb
+    test/fibonacci.rb
     test/fit.rb
     test/heap.rb
     test/timer.rb
     test/tree.rb
-    test/bench/fib.rb
+    test/bench/fibonacci.rb
     test/bench/heap.rb
     test/bench/tree.rb
   ]
