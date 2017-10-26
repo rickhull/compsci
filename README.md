@@ -35,10 +35,10 @@ second, constant up past 1M pushes.
 ## [`Timer`](/lib/compsci/timer.rb) functions
 
 * `Timer.now`          - uses `Process::CLOCK_MONOTONIC` if available
+* `Timer.since`        - provides the elapsed time since a prior time
 * `Timer.elapsed`      - provides the elapsed time to run a block
 * `Timer.loop_average` - runs a block repeatedly and provides the mean elapsed
                          time
-* `Timer.since`        - provides the elapsed time since a prior time
 
 ## [`Fit`](lib/compsci/fit.rb) functions
 
