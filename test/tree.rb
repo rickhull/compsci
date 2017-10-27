@@ -293,3 +293,72 @@ describe CompleteBinaryTree do
     end
   end
 end
+
+describe CompleteNaryTree do
+  it "must calculate a parent index for N=3" do
+    valid = {
+      1 => 0,
+      2 => 0,
+      3 => 0,
+      4 => 1,
+      5 => 1,
+      6 => 1,
+      7 => 2,
+      8 => 2,
+      9 => 2,
+      10 => 3,
+    }
+
+    invalid = {
+      0 => -1,
+      -1 => -1,
+      -2 => -1,
+    }
+    valid.each { |idx, pidx|
+      CompleteNaryTree.parent_idx(idx, 3).must_equal pidx
+    }
+    invalid.each { |idx, pidx|
+      CompleteNaryTree.parent_idx(idx, 3).must_equal pidx
+    }
+  end
+
+  it "must calculate children indices for N=3" do
+    valid = {
+      0 => [1, 2, 3],
+      1 => [4, 5, 6],
+      2 => [7, 8, 9],
+      3 => [10, 11, 12],
+    }
+
+    invalid = {
+      -3 => [-8, -7, -6],
+      -2 => [-5, -4, -3],
+      -1 => [-2, -1,  0],
+    }
+
+    valid.each { |idx, cidx|
+      CompleteNaryTree.children_idx(idx, 3).must_equal cidx
+    }
+    invalid.each { |idx, cidx|
+      CompleteNaryTree.children_idx(idx, 3).must_equal cidx
+    }
+  end
+
+  describe "instance" do
+    before do
+      @array = (0..99).sort_by { rand }
+      @empty = CompleteNaryTree.new(child_slots: 5)
+      @nonempty = CompleteNaryTree.new(store: @array, child_slots: 3)
+    end
+
+    it "must have a size" do
+      @empty.size.must_equal 0
+      @nonempty.size.must_equal @array.size
+    end
+
+    it "must have a last_idx, nil when empty" do
+      @empty.last_idx.nil?.must_equal true
+      @nonempty.last_idx.must_equal 99
+    end
+  end
+end

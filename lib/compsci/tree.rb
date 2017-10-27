@@ -146,10 +146,37 @@ module CompSci
     end
   end
 
+  # Likewise, we should be able to use an array for N children
+  #
+  class CompleteNaryTree
+    def self.parent_idx(idx, n)
+      (idx-1) / n
+    end
+
+    def self.children_idx(idx, n)
+      Array.new(n) { |i| n*idx + i + 1 }
+    end
+
+    attr_reader :store
+
+    def initialize(store: [], child_slots: 2)
+      @store = store
+      @child_slots = child_slots
+    end
+
+    def size
+      @store.size
+    end
+
+    def last_idx
+      @store.size - 1 unless @store.empty?
+    end
+  end
+
   # A CompleteBinaryTree can very efficiently use an array for storage using
   # simple arithmetic to determine parent child relationships.
   #
-  class CompleteBinaryTree
+  class CompleteBinaryTree < CompleteNaryTree
     # integer math says idx 2 and idx 1 both have parent at idx 0
     def self.parent_idx(idx)
       (idx-1) / 2
@@ -162,16 +189,7 @@ module CompSci
     attr_reader :store
 
     def initialize(store: [])
-      @store = store
-      # yield self if block_given?
-    end
-
-    def size
-      @store.size
-    end
-
-    def last_idx
-      @store.size - 1 unless @store.empty?
+      super(store: store, child_slots: 2)
     end
   end
 end
