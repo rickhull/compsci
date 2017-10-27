@@ -4,8 +4,8 @@ module CompSci
   class Tree
     attr_reader :root
 
-    def initialize(klass, val)
-      @root = klass.new val
+    def initialize(node_class, val)
+      @root = node_class.new val
     end
 
     def df_search(node: nil, &blk)
@@ -40,8 +40,8 @@ module CompSci
   class NaryTree < Tree
     attr_reader :child_slots
 
-    def initialize(klass, val, child_slots:)
-      super(klass, val)
+    def initialize(node_class, val, child_slots:)
+      super(node_class, val)
       @child_slots = child_slots
     end
 
