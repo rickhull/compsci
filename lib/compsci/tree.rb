@@ -68,25 +68,26 @@ module CompSci
     def push(value)
       self.open_parent.new_child value
     end
-  end
-
-  class BinaryTree < NaryTree
-    def initialize(klass, val)
-      super(klass, val, child_slots: 2)
-    end
 
     def to_s(node: nil, width: 80)
       count = 0
       str = ''
       self.bf_search(node: node) { |n|
         count += 1
-        level = Math.log(count, 2).floor
-        block_width = width / (2**level)
-        str += "\n" if 2**level == count and count > 1
-        str += n.to_s.ljust(block_width / 2, ' ').rjust(block_width, ' ')
+        level = Math.log(count, @child_slots).floor
+        block_width = width / (@child_slots**level)
+        str += "\n" if @child_slots**level == count and count > 1
+        str +=
+          n.to_s.ljust(block_width / @child_slots, ' ').rjust(block_width, ' ')
         false # keep searching to visit every node
       }
       str
+    end
+  end
+
+  class BinaryTree < NaryTree
+    def initialize(klass, val)
+      super(klass, val, child_slots: 2)
     end
   end
 end
