@@ -1,0 +1,70 @@
+Run options: --seed 29521
+
+# Running:
+
+....S..S.....................................
+
+Finished in 0.318247s, 141.3998 runs/s, 2837.4229 assertions/s.
+
+45 runs, 903 assertions, 0 failures, 0 errors, 2 skips
+
+You have skipped tests. Run with --verbose for details.
+/proc/loadavg 0.13 0.08 0.03 1/82 8452
+Warming up --------------------------------------
+Fibonacci.classic(25)
+                         7.000  i/100ms
+Fibonacci.cache_recursive(25)
+                        11.093k i/100ms
+Fibonacci.cache_iterative(25)
+                        25.918k i/100ms
+Calculating -------------------------------------
+Fibonacci.classic(25)
+                         72.092  (± 1.4%) i/s -    217.000  in   3.010289s
+Fibonacci.cache_recursive(25)
+                        121.021k (± 0.9%) i/s -    366.069k in   3.025085s
+Fibonacci.cache_iterative(25)
+                        302.293k (± 1.0%) i/s -    907.130k in   3.001142s
+
+Comparison:
+Fibonacci.cache_iterative(25):   302292.8 i/s
+Fibonacci.cache_recursive(25):   121020.6 i/s - 2.50x  slower
+Fibonacci.classic(25):       72.1 i/s - 4193.18x  slower
+
+Warming up --------------------------------------
+Fibonacci.cache_iterative(500)
+                       662.000  i/100ms
+Fibonacci.dynamic(500)
+                       642.000  i/100ms
+Fibonacci.dynamic_fast(500)
+                       637.000  i/100ms
+Fibonacci.matrix(500)
+                       851.000  i/100ms
+Calculating -------------------------------------
+Fibonacci.cache_iterative(500)
+                          7.159k (± 1.4%) i/s -     21.846k in   3.052227s
+Fibonacci.dynamic(500)
+                          7.389k (± 1.1%) i/s -     22.470k in   3.041414s
+Fibonacci.dynamic_fast(500)
+                          7.303k (± 1.1%) i/s -     22.295k in   3.053235s
+Fibonacci.matrix(500)
+                          8.742k (± 1.0%) i/s -     26.381k in   3.018159s
+
+Comparison:
+Fibonacci.matrix(500):     8741.7 i/s
+Fibonacci.dynamic(500):     7388.9 i/s - 1.18x  slower
+Fibonacci.dynamic_fast(500):     7303.0 i/s - 1.20x  slower
+Fibonacci.cache_iterative(500):     7158.8 i/s - 1.22x  slower
+
+Run options: --seed 23448
+
+# Running:
+
+bench_Heap_push_constant_0_9999_	 0.000068	 0.000021	 0.000286	 0.001279	 0.012624
+.bench_BinaryTree_push_constant_	 0.000051	 0.000520	 0.051435	 0.255710
+.bench_BinaryTree_push_linear_S
+
+Finished in 0.354656s, 8.4589 runs/s, 5.6393 assertions/s.
+
+3 runs, 2 assertions, 0 failures, 0 errors, 1 skips
+
+You have skipped tests. Run with --verbose for details.
