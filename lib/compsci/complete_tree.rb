@@ -36,14 +36,16 @@ module CompSci
       @array.size - 1 unless @array.empty?
     end
 
-    def to_s(node: nil, width: 80)
+    def to_s(width: 80)
       str = ''
-      @array.each_with_index { |n, i|
+      @array.each_with_index { |val, i|
+        val = val.to_s
         level = Math.log(i+1, @child_slots).floor
-        block_width = width / (@child_slots**level)
-        str += "\n" if @child_slots**level == i+1 and i > 0
-        str +=
-          n.to_s.ljust(block_width / @child_slots, ' ').rjust(block_width, ' ')
+        slots = @child_slots**level
+        block_width = width / slots
+        lspace = [block_width / @child_slots, val.size + 1].max
+        str += "\n" if slots == i+1 and i > 0
+        str += val.ljust(lspace, ' ').rjust(block_width, ' ')
       }
       str
     end

@@ -73,11 +73,13 @@ module CompSci
       str = ''
       self.bf_search(node: node) { |n|
         count += 1
+        val = n.to_s
         level = Math.log(count, @child_slots).floor
-        block_width = width / (@child_slots**level)
-        str += "\n" if @child_slots**level == count and count > 1
-        str +=
-          n.to_s.ljust(block_width / @child_slots, ' ').rjust(block_width, ' ')
+        slots = @child_slots**level
+        block_width = width / slots
+        lspace = [block_width / @child_slots, val.size + 1].max
+        str += "\n" if slots == count and count > 1
+        str += val.ljust(lspace, ' ').rjust(block_width, ' ')
         false # keep searching to visit every node
       }
       str
