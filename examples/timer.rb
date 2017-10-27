@@ -6,7 +6,7 @@ overall_start = Timer.now
 
 start = Timer.now
 print "running sleep 0.01 (50x): "
-_answer, each_et = Timer.loop_average(count: 50) {
+_answer, each_et = Timer.loop_avg(count: 50) {
   print '.'
   sleep 0.01
 }
@@ -19,7 +19,7 @@ puts
 
 start = Timer.now
 print "running sleep 0.02 (0.3 s): "
-_answer, each_et = Timer.loop_average(seconds: 0.3) {
+_answer, each_et = Timer.loop_avg(seconds: 0.3) {
   print '.'
   sleep 0.02
 }

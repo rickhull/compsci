@@ -21,7 +21,7 @@ module CompSci::Timer
     return yield, self.since(t)
   end
 
-  def self.loop_average(count: 999, seconds: 1, &work)
+  def self.loop_avg(count: 999, seconds: 1, &work)
     i = 0
     start = self.now
     val = nil
