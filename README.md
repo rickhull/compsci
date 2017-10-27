@@ -12,8 +12,10 @@ Provided are some toy implementations for some basic computer science problems.
 ## [`Tree`](lib/compsci/tree.rb) data structures
 
 * `Tree`       - tracks the `root` node; provides `df_search` and `bf_search`
-* `NaryTree`   - enforces number of children per node via `child_slots`
-* provides binary tree via `child_slots: 2`
+* `NaryTree`
+  - requires `ChildNode` behavior, i.e. `node.parent`
+  - enforces number of children per node via `child_slots`
+  - provides binary tree via `child_slots: 2`
 
 ## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) data structure
 
