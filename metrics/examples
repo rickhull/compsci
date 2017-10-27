@@ -1,133 +1,133 @@
-Run options: --seed 53645
+Run options: --seed 20590
 
 # Running:
 
-...S..S....................................
+..................SS.......................
 
-Finished in 0.311698s, 137.9539 runs/s, 2884.1986 assertions/s.
+Finished in 0.317365s, 135.4905 runs/s, 2832.6976 assertions/s.
 
 43 runs, 899 assertions, 0 failures, 0 errors, 2 skips
 
 You have skipped tests. Run with --verbose for details.
 ruby -Ilib examples/binary_tree.rb
-/proc/loadavg 0.27 0.09 0.03 1/82 10509
+/proc/loadavg 0.00 0.01 0.00 1/80 11042
 
 #
 # 3 seconds worth of pushes
 #
 
-100th push: 0.00000265 s
-200th push: 0.00000237 s
-300th push: 0.00000237 s
+100th push: 0.00000287 s
+200th push: 0.00000220 s
+300th push: 0.00000230 s
 400th push: 0.00000242 s
-500th push: 0.00000289 s
-600th push: 0.00000335 s
-700th push: 0.00003505 s
-800th push: 0.00000315 s
-900th push: 0.00000282 s
-1000th push: 0.00000325 s
+500th push: 0.00000254 s
+600th push: 0.00000286 s
+700th push: 0.00000266 s
+800th push: 0.00000310 s
+900th push: 0.00000304 s
+1000th push: 0.00000301 s
 -----------
-    1k push: 0.0532 s (18810 push / s)
+    1k push: 0.0502 s (19930 push / s)
 
-1100th push: 0.00000286 s
-1200th push: 0.00000310 s
-1300th push: 0.00000327 s
-1400th push: 0.00000326 s
-1500th push: 0.00000294 s
-1600th push: 0.00000298 s
-1700th push: 0.00000341 s
-1800th push: 0.00000401 s
-1900th push: 0.00000338 s
-2000th push: 0.00000404 s
+1100th push: 0.00000298 s
+1200th push: 0.00000311 s
+1300th push: 0.00000317 s
+1400th push: 0.00000281 s
+1500th push: 0.00000322 s
+1600th push: 0.00000300 s
+1700th push: 0.00000329 s
+1800th push: 0.00000357 s
+1900th push: 0.00000385 s
+2000th push: 0.00000394 s
 -----------
-    1k push: 0.1978 s (5055 push / s)
+    1k push: 0.1936 s (5165 push / s)
 
-2100th push: 0.00000428 s
-2200th push: 0.00000437 s
-2300th push: 0.00000528 s
-2400th push: 0.00000416 s
-2500th push: 0.00000508 s
-2600th push: 0.00000517 s
-2700th push: 0.00000521 s
-2800th push: 0.00000545 s
-2900th push: 0.00000573 s
-3000th push: 0.00000590 s
+2100th push: 0.00000423 s
+2200th push: 0.00000419 s
+2300th push: 0.00000436 s
+2400th push: 0.00000486 s
+2500th push: 0.00000474 s
+2600th push: 0.00000488 s
+2700th push: 0.00000537 s
+2800th push: 0.00000512 s
+2900th push: 0.00000551 s
+3000th push: 0.00000537 s
 -----------
-    1k push: 0.4216 s (2372 push / s)
+    1k push: 0.4303 s (2323 push / s)
 
-3100th push: 0.00000532 s
-3200th push: 0.00000572 s
-3300th push: 0.00000551 s
-3400th push: 0.00000497 s
-3500th push: 0.00000559 s
-3600th push: 0.00000560 s
-3700th push: 0.00000543 s
-3800th push: 0.00000525 s
-3900th push: 0.00000670 s
-4000th push: 0.00000686 s
+3100th push: 0.00000564 s
+3200th push: 0.00000552 s
+3300th push: 0.00000586 s
+3400th push: 0.00000528 s
+3500th push: 0.00000574 s
+3600th push: 0.00000749 s
+3700th push: 0.00000566 s
+3800th push: 0.00000532 s
+3900th push: 0.00000550 s
+4000th push: 0.00003620 s
 -----------
-    1k push: 0.7048 s (1418 push / s)
+    1k push: 0.7382 s (1354 push / s)
 
-4100th push: 0.00000630 s
-4200th push: 0.00000635 s
-4300th push: 0.00000558 s
-4400th push: 0.00000551 s
-4500th push: 0.00000602 s
-4600th push: 0.00000587 s
-4700th push: 0.00000630 s
-4800th push: 0.00000582 s
-4900th push: 0.00000559 s
-5000th push: 0.00000559 s
+4100th push: 0.00000614 s
+4200th push: 0.00000756 s
+4300th push: 0.00000609 s
+4400th push: 0.00000576 s
+4500th push: 0.00000652 s
+4600th push: 0.00000572 s
+4700th push: 0.00000738 s
+4800th push: 0.00003714 s
+4900th push: 0.00000563 s
+5000th push: 0.00007281 s
 -----------
-    1k push: 1.0908 s (916 push / s)
+    1k push: 1.1049 s (905 push / s)
 
-5100th push: 0.00000571 s
-5200th push: 0.00000561 s
-5300th push: 0.00000692 s
-pushed 5363 items in 3.0 s
+5100th push: 0.00000596 s
+5200th push: 0.00000600 s
+5300th push: 0.00000570 s
+pushed 5335 items in 3.0 s
 
 #
 # 30 inserts, puts, df_search
 #
 
-[69, 98, 9, 79, 89, 67, 65, 7, 73, 44, 76, 15, 24, 93, 23, 97, 51, 9, 94, 57, 54, 18, 39, 14, 45, 61, 55, 76, 23, 16]
-                                        69                                      
-                    98                                      9                   
-          79                  89                  67                  65        
-     7         73        44        76        15        24        93        23   
-   97   51   9    94   57   54   18   39   14   45   61   55   76   23   16
-visited 69
-visited 98
-visited 79
-visited 7
-visited 97
-visited 51
-visited 73
-visited 9
-visited 94
-visited 89
-visited 44
-visited 57
-visited 54
-visited 76
-visited 18
-visited 39
-visited 9
-visited 67
-visited 15
-visited 14
-visited 45
-visited 24
-visited 61
+[55, 73, 3, 86, 42, 72, 9, 17, 91, 25, 14, 86, 70, 27, 0, 72, 24, 87, 97, 2, 88, 28, 40, 69, 68, 49, 98, 76, 63, 50]
+                                        55                                      
+                    73                                      3                   
+          86                  42                  72                  9         
+     17        91        25        14        86        70        27        0    
+   72   24   87   97   2    88   28   40   69   68   49   98   76   63   50
 visited 55
-visited 65
-visited 93
+visited 73
+visited 86
+visited 17
+visited 72
+visited 24
+visited 91
+visited 87
+visited 97
+visited 42
+visited 25
+visited 2
+visited 88
+visited 14
+visited 28
+visited 40
+visited 3
+visited 72
+visited 86
+visited 69
+visited 68
+visited 70
+visited 49
+visited 98
+visited 9
+visited 27
 visited 76
-visited 23
-visited 23
-visited 16
+visited 63
+visited 0
+visited 50
 
-#<CompSci::BinaryTree:0x00563e7a843b90 @root=#<CompSci::ChildNode:0x2b1f3d421db4i @value=69 @children=[98, 9]>, @child_slots=2, @open_parent=#<CompSci::ChildNode:0x2b1f3d421760i @value=23 @children=[16]>>
+#<CompSci::NaryTree:0x0055e479985630 @root=#<CompSci::ChildNode:0x2af23ccc2af0i @value=55 @children=[73, 3]>, @child_slots=2, @open_parent=#<CompSci::ChildNode:0x2af23ccc267ci @value=0 @children=[50]>>
 
 ruby -Ilib examples/heap.rb
 
@@ -136,268 +136,248 @@ ruby -Ilib examples/heap.rb
 # 3 seconds worth of pushes
 #
 
-10000th push: 0.00000298 s
-20000th push: 0.00000217 s
-30000th push: 0.00000188 s
-40000th push: 0.00000214 s
-50000th push: 0.00000176 s
-60000th push: 0.00000136 s
-70000th push: 0.00000166 s
-80000th push: 0.00000123 s
-90000th push: 0.00000160 s
-100000th push: 0.00000292 s
+10000th push: 0.00000304 s
+20000th push: 0.00000143 s
+30000th push: 0.00000285 s
+40000th push: 0.00000569 s
+50000th push: 0.00000322 s
+60000th push: 0.00000121 s
+70000th push: 0.00000120 s
+80000th push: 0.00000134 s
+90000th push: 0.00000134 s
+100000th push: 0.00000124 s
 -------------
-    100k push: 0.16511410 s (605k push / s)
+    100k push: 0.18537073 s (539k push / s)
 
-110000th push: 0.00000221 s
-120000th push: 0.00000159 s
-130000th push: 0.00000122 s
-140000th push: 0.00000165 s
-150000th push: 0.00000161 s
-160000th push: 0.00000129 s
-170000th push: 0.00000223 s
-180000th push: 0.00000340 s
-190000th push: 0.00000133 s
-200000th push: 0.00000253 s
+110000th push: 0.00000875 s
+120000th push: 0.00000332 s
+130000th push: 0.00000196 s
+140000th push: 0.00000255 s
+150000th push: 0.00000281 s
+160000th push: 0.00000531 s
+170000th push: 0.00000125 s
+180000th push: 0.00000274 s
+190000th push: 0.00000124 s
+200000th push: 0.00000187 s
 -------------
-    100k push: 0.16917952 s (591k push / s)
+    100k push: 0.18769273 s (532k push / s)
 
-210000th push: 0.00000128 s
-220000th push: 0.00000131 s
-230000th push: 0.00000205 s
-240000th push: 0.00000121 s
-250000th push: 0.00000208 s
-260000th push: 0.00000174 s
-270000th push: 0.00000214 s
-280000th push: 0.00000184 s
-290000th push: 0.00000446 s
-300000th push: 0.00000196 s
+210000th push: 0.00000120 s
+220000th push: 0.00000285 s
+230000th push: 0.00000215 s
+240000th push: 0.00000144 s
+250000th push: 0.00000195 s
+260000th push: 0.00000195 s
+270000th push: 0.00000178 s
+280000th push: 0.00000265 s
+290000th push: 0.00000224 s
+300000th push: 0.00000130 s
 -------------
-    100k push: 0.17103628 s (584k push / s)
+    100k push: 0.18726047 s (534k push / s)
 
-310000th push: 0.00000179 s
-320000th push: 0.00000148 s
-330000th push: 0.00000199 s
-340000th push: 0.00000163 s
-350000th push: 0.00000213 s
-360000th push: 0.00000300 s
-370000th push: 0.00000122 s
-380000th push: 0.00000116 s
-390000th push: 0.00000243 s
-400000th push: 0.00000115 s
+310000th push: 0.00000120 s
+320000th push: 0.00000289 s
+330000th push: 0.00000124 s
+340000th push: 0.00000130 s
+350000th push: 0.00000127 s
+360000th push: 0.00000140 s
+370000th push: 0.00000145 s
+380000th push: 0.00000126 s
+390000th push: 0.00000190 s
+400000th push: 0.00000124 s
 -------------
-    100k push: 0.16489189 s (606k push / s)
+    100k push: 0.18668510 s (535k push / s)
 
-410000th push: 0.00000168 s
-420000th push: 0.00000177 s
-430000th push: 0.00000170 s
-440000th push: 0.00000160 s
-450000th push: 0.00000242 s
-460000th push: 0.00000163 s
-470000th push: 0.00000163 s
-480000th push: 0.00000181 s
-490000th push: 0.00000208 s
-500000th push: 0.00000250 s
+410000th push: 0.00000225 s
+420000th push: 0.00000141 s
+430000th push: 0.00000181 s
+440000th push: 0.00000238 s
+450000th push: 0.00000178 s
+460000th push: 0.00000122 s
+470000th push: 0.00000130 s
+480000th push: 0.00000223 s
+490000th push: 0.00000191 s
+500000th push: 0.00000180 s
 -------------
-    100k push: 0.16305369 s (613k push / s)
+    100k push: 0.18547506 s (539k push / s)
 
-510000th push: 0.00000153 s
-520000th push: 0.00000219 s
-530000th push: 0.00000134 s
-540000th push: 0.00000128 s
-550000th push: 0.00000177 s
-560000th push: 0.00000132 s
-570000th push: 0.00000124 s
-580000th push: 0.00000123 s
-590000th push: 0.00000333 s
-600000th push: 0.00000125 s
+510000th push: 0.00000218 s
+520000th push: 0.00000178 s
+530000th push: 0.00000125 s
+540000th push: 0.00000121 s
+550000th push: 0.00000125 s
+560000th push: 0.00000126 s
+570000th push: 0.00000220 s
+580000th push: 0.00000353 s
+590000th push: 0.00000225 s
+600000th push: 0.00000311 s
 -------------
-    100k push: 0.18408856 s (543k push / s)
+    100k push: 0.18375793 s (544k push / s)
 
-610000th push: 0.00000139 s
-620000th push: 0.00000165 s
-630000th push: 0.00000117 s
-640000th push: 0.00000209 s
-650000th push: 0.00000179 s
-660000th push: 0.00000161 s
-670000th push: 0.00000205 s
-680000th push: 0.00000115 s
-690000th push: 0.00000164 s
-700000th push: 0.00000159 s
+610000th push: 0.00000284 s
+620000th push: 0.00000338 s
+630000th push: 0.00000123 s
+640000th push: 0.00000220 s
+650000th push: 0.00000257 s
+660000th push: 0.00000133 s
+670000th push: 0.00000184 s
+680000th push: 0.00000178 s
+690000th push: 0.00000220 s
+700000th push: 0.00000222 s
 -------------
-    100k push: 0.16528893 s (605k push / s)
+    100k push: 0.18708423 s (534k push / s)
 
-710000th push: 0.00000116 s
-720000th push: 0.00000161 s
-730000th push: 0.00000113 s
-740000th push: 0.00000161 s
-750000th push: 0.00000116 s
-760000th push: 0.00000250 s
-770000th push: 0.00000112 s
-780000th push: 0.00000216 s
-790000th push: 0.00000163 s
-800000th push: 0.00000119 s
+710000th push: 0.00000121 s
+720000th push: 0.00000364 s
+730000th push: 0.00000137 s
+740000th push: 0.00000153 s
+750000th push: 0.00000135 s
+760000th push: 0.00000127 s
+770000th push: 0.00000161 s
+780000th push: 0.00000169 s
+790000th push: 0.00000314 s
+800000th push: 0.00000181 s
 -------------
-    100k push: 0.16426806 s (608k push / s)
+    100k push: 0.18671854 s (535k push / s)
 
-810000th push: 0.00000232 s
-820000th push: 0.00000233 s
-830000th push: 0.00000191 s
-840000th push: 0.00000248 s
-850000th push: 0.00000291 s
-860000th push: 0.00000166 s
-870000th push: 0.00000201 s
-880000th push: 0.00000218 s
-890000th push: 0.00000222 s
-900000th push: 0.00000175 s
+810000th push: 0.00000327 s
+820000th push: 0.00000196 s
+830000th push: 0.00000189 s
+840000th push: 0.00000120 s
+850000th push: 0.00000183 s
+860000th push: 0.00000275 s
+870000th push: 0.00000124 s
+880000th push: 0.00000188 s
+890000th push: 0.00000230 s
+900000th push: 0.00000337 s
 -------------
-    100k push: 0.17265707 s (579k push / s)
+    100k push: 0.18411081 s (543k push / s)
 
-910000th push: 0.00000173 s
-920000th push: 0.00000257 s
-930000th push: 0.00000223 s
-940000th push: 0.00000174 s
-950000th push: 0.00000262 s
-960000th push: 0.00000134 s
-970000th push: 0.00000211 s
-980000th push: 0.00000132 s
-990000th push: 0.00000149 s
-1000000th push: 0.00000139 s
+910000th push: 0.00000285 s
+920000th push: 0.00000129 s
+930000th push: 0.00000123 s
+940000th push: 0.00000184 s
+950000th push: 0.00000140 s
+960000th push: 0.00000168 s
+970000th push: 0.00000140 s
+980000th push: 0.00000274 s
+990000th push: 0.00000232 s
+1000000th push: 0.00000120 s
 -------------
-    100k push: 0.17802503 s (561k push / s)
+    100k push: 0.18486872 s (540k push / s)
 
-1010000th push: 0.00000170 s
-1020000th push: 0.00000165 s
-1030000th push: 0.00000166 s
-1040000th push: 0.00000113 s
-1050000th push: 0.00000124 s
-1060000th push: 0.00000164 s
-1070000th push: 0.00000121 s
-1080000th push: 0.00000118 s
-1090000th push: 0.00000168 s
-1100000th push: 0.00000168 s
+1010000th push: 0.00000156 s
+1020000th push: 0.00000201 s
+1030000th push: 0.00000130 s
+1040000th push: 0.00000286 s
+1050000th push: 0.00000198 s
+1060000th push: 0.00000130 s
+1070000th push: 0.00000183 s
+1080000th push: 0.00000187 s
+1090000th push: 0.00000125 s
+1100000th push: 0.00000137 s
 -------------
-    100k push: 0.16450285 s (607k push / s)
+    100k push: 0.18555190 s (538k push / s)
 
-1110000th push: 0.00000186 s
-1120000th push: 0.00000330 s
-1130000th push: 0.00000146 s
-1140000th push: 0.00000131 s
-1150000th push: 0.00000174 s
-1160000th push: 0.00000127 s
-1170000th push: 0.00000249 s
-1180000th push: 0.00000121 s
-1190000th push: 0.00000123 s
-1200000th push: 0.00000214 s
+1110000th push: 0.00000124 s
+1120000th push: 0.00000360 s
+1130000th push: 0.00000124 s
+1140000th push: 0.00000125 s
+1150000th push: 0.00000123 s
+1160000th push: 0.00000397 s
+1170000th push: 0.00000123 s
+1180000th push: 0.00000226 s
+1190000th push: 0.00000221 s
+1200000th push: 0.00000132 s
 -------------
-    100k push: 0.17146757 s (583k push / s)
+    100k push: 0.18485572 s (540k push / s)
 
-1210000th push: 0.00000162 s
-1220000th push: 0.00000164 s
-1230000th push: 0.00000251 s
-1240000th push: 0.00000161 s
-1250000th push: 0.00000111 s
-1260000th push: 0.00000290 s
-1270000th push: 0.00000118 s
-1280000th push: 0.00000204 s
-1290000th push: 0.00000117 s
-1300000th push: 0.00000254 s
+1210000th push: 0.00000188 s
+1220000th push: 0.00000287 s
+1230000th push: 0.00000130 s
+1240000th push: 0.00000181 s
+1250000th push: 0.00000134 s
+1260000th push: 0.00000185 s
+1270000th push: 0.00000181 s
+1280000th push: 0.00000178 s
+1290000th push: 0.00000186 s
+1300000th push: 0.00000135 s
 -------------
-    100k push: 0.16413843 s (609k push / s)
+    100k push: 0.18453736 s (541k push / s)
 
-1310000th push: 0.00000110 s
-1320000th push: 0.00000352 s
-1330000th push: 0.00000136 s
-1340000th push: 0.00000117 s
-1350000th push: 0.00000294 s
-1360000th push: 0.00000113 s
-1370000th push: 0.00000207 s
-1380000th push: 0.00000172 s
-1390000th push: 0.00000173 s
-1400000th push: 0.00000111 s
+1310000th push: 0.00000193 s
+1320000th push: 0.00000274 s
+1330000th push: 0.00000245 s
+1340000th push: 0.00000279 s
+1350000th push: 0.00000338 s
+1360000th push: 0.00000179 s
+1370000th push: 0.00000125 s
+1380000th push: 0.00000122 s
+1390000th push: 0.00000182 s
+1400000th push: 0.00001103 s
 -------------
-    100k push: 0.16521604 s (605k push / s)
+    100k push: 0.18750182 s (533k push / s)
 
-1410000th push: 0.00000172 s
-1420000th push: 0.00000164 s
+1410000th push: 0.00000179 s
+1420000th push: 0.00000230 s
 1430000th push: 0.00000227 s
-1440000th push: 0.00000122 s
-1450000th push: 0.00000486 s
-1460000th push: 0.00001783 s
-1470000th push: 0.00000254 s
-1480000th push: 0.00000186 s
-1490000th push: 0.00000178 s
-1500000th push: 0.00000193 s
+1440000th push: 0.00000182 s
+1450000th push: 0.00000135 s
+1460000th push: 0.00000183 s
+1470000th push: 0.00000134 s
+1480000th push: 0.00000178 s
+1490000th push: 0.00000123 s
+1500000th push: 0.00000216 s
 -------------
-    100k push: 0.16954411 s (589k push / s)
+    100k push: 0.18456931 s (541k push / s)
 
-1510000th push: 0.00000128 s
-1520000th push: 0.00000115 s
-1530000th push: 0.00000116 s
-1540000th push: 0.00000204 s
-1550000th push: 0.00000161 s
-1560000th push: 0.00000164 s
-1570000th push: 0.00000118 s
-1580000th push: 0.00000283 s
-1590000th push: 0.00000137 s
-1600000th push: 0.00000167 s
+1510000th push: 0.00000136 s
+1520000th push: 0.00000127 s
+1530000th push: 0.00000143 s
+1540000th push: 0.00000137 s
+1550000th push: 0.00000124 s
+1560000th push: 0.00000196 s
+1570000th push: 0.00000228 s
+1580000th push: 0.00000224 s
+1590000th push: 0.00000167 s
+1600000th push: 0.00000221 s
 -------------
-    100k push: 0.16434256 s (608k push / s)
+    100k push: 0.18523589 s (539k push / s)
 
-1610000th push: 0.00000182 s
-1620000th push: 0.00000212 s
-1630000th push: 0.00000190 s
-1640000th push: 0.00000124 s
-1650000th push: 0.00000331 s
-1660000th push: 0.00000169 s
-1670000th push: 0.00000209 s
-1680000th push: 0.00000165 s
-1690000th push: 0.00000251 s
-1700000th push: 0.00000163 s
--------------
-    100k push: 0.16322147 s (612k push / s)
+1610000th push: 0.00000224 s
+pushed 1615489 items in 3.0 s
 
-1710000th push: 0.00000163 s
-1720000th push: 0.00000138 s
-1730000th push: 0.00000876 s
-1740000th push: 0.00000114 s
-1750000th push: 0.00000116 s
-1760000th push: 0.00000213 s
-1770000th push: 0.00000257 s
-1780000th push: 0.00000118 s
-pushed 1785408 items in 3.0 s
-
-still a heap with 1785425 items? YES - 1.794 sec
+still a heap with 1615505 items? YES - 1.594 sec
 
 #
 # 30 inserts; display the internal array
 #
 
-push: 61 68 6 82 48 45 14 36 10 23 23 11 81 46 86 31 85 24 82 22 92 69 41 54 25 70 95 44 23 94
-                                        95                                      
-                    86                                      94                  
-          82                  85                  82                  92        
-     61        68        48        69        45        70        44        81   
-   31   36   10   24   22   23   23   41   6    25   11   54   14   23   46
-heap array: [95, 86, 94, 82, 85, 82, 92, 61, 68, 48, 69, 45, 70, 44, 81, 31, 36, 10, 24, 22, 23, 23, 41, 6, 25, 11, 54, 14, 23, 46]
+push: 42 45 71 59 42 38 0 10 44 14 42 65 77 61 39 23 96 17 16 10 25 74 82 45 25 96 41 21 2 47
+                                        96                                      
+                    82                                      96                  
+          59                  77                  71                  61        
+     44        42        25        74        45        65        21        47   
+   10   23   17   16   10   14   42   42   38   25   45   41   0    2    39
+heap array: [96, 82, 96, 59, 77, 71, 61, 44, 42, 25, 74, 45, 65, 21, 47, 10, 23, 17, 16, 10, 14, 42, 42, 38, 25, 45, 41, 0, 2, 39]
 heap: true
 
-pop: 95
-                                        94                                      
-                    86                                      92                  
-          82                  85                  82                  81        
-     61        68        48        69        45        70        44        46   
-   31   36   10   24   22   23   23   41   6    25   11   54   14   23
-heap array: [94, 86, 92, 82, 85, 82, 81, 61, 68, 48, 69, 45, 70, 44, 46, 31, 36, 10, 24, 22, 23, 23, 41, 6, 25, 11, 54, 14, 23]
+pop: 96
+                                        96                                      
+                    82                                      71                  
+          59                  77                  65                  61        
+     44        42        25        74        45        45        21        47   
+   10   23   17   16   10   14   42   42   38   25   39   41   0    2 
+heap array: [96, 82, 71, 59, 77, 65, 61, 44, 42, 25, 74, 45, 45, 21, 47, 10, 23, 17, 16, 10, 14, 42, 42, 38, 25, 39, 41, 0, 2]
 heap: true
 
-pop: 94 92 86 85 82 82 81 70 69
-                                        68                                      
-                    61                                      54                  
-          36                  48                  45                  46        
-     31        24        25        41        14        6         44        11   
-   23   23   10   23   22
-heap array: [68, 61, 54, 36, 48, 45, 46, 31, 24, 25, 41, 14, 6, 44, 11, 23, 23, 10, 23, 22]
+pop: 96 82 77 74 71 65 61 59 47
+                                        45                                      
+                    44                                      45                  
+          42                  42                  39                  38        
+     41        17        25        42        0         14        21        25   
+   10   23   2    16   10
+heap array: [45, 44, 45, 42, 42, 39, 38, 41, 17, 25, 42, 0, 14, 21, 25, 10, 23, 2, 16, 10]
 heap: true
 
 

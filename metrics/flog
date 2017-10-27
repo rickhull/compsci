@@ -1,11 +1,11 @@
-   459.7: flog total
+   456.6: flog total
      7.7: flog/method average
 
     34.6: CompSci::Fit::power              lib/compsci/fit.rb:123-134
     31.8: CompSci::Fit::exponential        lib/compsci/fit.rb:101-113
     31.2: CompSci::Fit::logarithmic        lib/compsci/fit.rb:57-69
     27.4: CompSci::Fit::linear             lib/compsci/fit.rb:79-91
-    26.7: CompSci::BinaryTree#to_s         lib/compsci/tree.rb:78-89
+    25.0: CompSci::NaryTree#to_s           lib/compsci/tree.rb:72-84
     24.6: CompSci::CompleteNaryTree#to_s   lib/compsci/complete_tree.rb:37-46
     16.8: CompSci::Fit::error              lib/compsci/fit.rb:29-34
     14.0: CompSci::Timer::loop_avg         lib/compsci/timer.rb:24-34
