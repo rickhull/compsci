@@ -1,69 +1,69 @@
-Run options: --seed 62838
+Run options: --seed 25039
 
 # Running:
 
-.................S..S......................
+.........................S.S...............
 
-Finished in 0.312801s, 137.4674 runs/s, 2874.0287 assertions/s.
+Finished in 0.306770s, 140.1702 runs/s, 2930.5342 assertions/s.
 
 43 runs, 899 assertions, 0 failures, 0 errors, 2 skips
 
 You have skipped tests. Run with --verbose for details.
-/proc/loadavg 0.18 0.08 0.02 1/80 10184
+/proc/loadavg 0.00 0.01 0.00 1/82 10494
 Warming up --------------------------------------
 Fibonacci.classic(25)
                          7.000  i/100ms
 Fibonacci.cache_recursive(25)
-                        10.752k i/100ms
+                        10.885k i/100ms
 Fibonacci.cache_iterative(25)
-                        26.076k i/100ms
+                        26.325k i/100ms
 Calculating -------------------------------------
 Fibonacci.classic(25)
-                         74.697  (± 1.3%) i/s -    231.000  in   3.092680s
+                         72.737  (± 1.4%) i/s -    224.000  in   3.079799s
 Fibonacci.cache_recursive(25)
-                        116.511k (± 1.2%) i/s -    354.816k in   3.045762s
+                        117.667k (± 0.9%) i/s -    359.205k in   3.052975s
 Fibonacci.cache_iterative(25)
-                        300.767k (± 0.7%) i/s -    912.660k in   3.034588s
+                        300.304k (± 0.8%) i/s -    921.375k in   3.068344s
 
 Comparison:
-Fibonacci.cache_iterative(25):   300766.7 i/s
-Fibonacci.cache_recursive(25):   116511.4 i/s - 2.58x  slower
-Fibonacci.classic(25):       74.7 i/s - 4026.51x  slower
+Fibonacci.cache_iterative(25):   300304.2 i/s
+Fibonacci.cache_recursive(25):   117667.0 i/s - 2.55x  slower
+Fibonacci.classic(25):       72.7 i/s - 4128.63x  slower
 
 Warming up --------------------------------------
 Fibonacci.cache_iterative(500)
-                       665.000  i/100ms
+                       702.000  i/100ms
 Fibonacci.dynamic(500)
-                       650.000  i/100ms
+                       720.000  i/100ms
 Fibonacci.dynamic_fast(500)
-                       646.000  i/100ms
+                       720.000  i/100ms
 Fibonacci.matrix(500)
-                       850.000  i/100ms
+                       835.000  i/100ms
 Calculating -------------------------------------
 Fibonacci.cache_iterative(500)
-                          7.004k (± 1.3%) i/s -     21.280k in   3.038633s
+                          7.091k (± 1.0%) i/s -     21.762k in   3.069212s
 Fibonacci.dynamic(500)
-                          7.333k (± 1.0%) i/s -     22.100k in   3.014167s
+                          7.113k (± 0.9%) i/s -     21.600k in   3.037107s
 Fibonacci.dynamic_fast(500)
-                          7.348k (± 1.1%) i/s -     22.610k in   3.077506s
+                          7.057k (± 3.3%) i/s -     21.600k in   3.064370s
 Fibonacci.matrix(500)
-                          8.494k (± 4.9%) i/s -     25.500k in   3.009524s
+                          8.618k (± 1.0%) i/s -     25.885k in   3.004053s
 
 Comparison:
-Fibonacci.matrix(500):     8494.3 i/s
-Fibonacci.dynamic_fast(500):     7347.7 i/s - 1.16x  slower
-Fibonacci.dynamic(500):     7332.7 i/s - 1.16x  slower
-Fibonacci.cache_iterative(500):     7004.3 i/s - 1.21x  slower
+Fibonacci.matrix(500):     8617.6 i/s
+Fibonacci.dynamic(500):     7112.7 i/s - 1.21x  slower
+Fibonacci.cache_iterative(500):     7091.2 i/s - 1.22x  slower
+Fibonacci.dynamic_fast(500):     7057.2 i/s - 1.22x  slower
 
-Run options: --seed 1224
+Run options: --seed 37724
 
 # Running:
 
-bench_Heap_push_constant_0_9999_	 0.000069	 0.000027	 0.000292	 0.001199	 0.012882
-.bench_BinaryTree_push_constant_	 0.000051	 0.000482	 0.050871	 0.255821
+bench_Heap_push_constant_0_9999_	 0.000062	 0.000021	 0.000239	 0.001361	 0.013597
+.bench_BinaryTree_push_constant_	 0.000048	 0.000480	 0.048919	 0.260556
 .bench_BinaryTree_push_linear_S
 
-Finished in 0.352873s, 8.5016 runs/s, 5.6678 assertions/s.
+Finished in 0.353783s, 8.4798 runs/s, 5.6532 assertions/s.
 
 3 runs, 2 assertions, 0 failures, 0 errors, 1 skips
 
