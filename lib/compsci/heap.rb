@@ -1,4 +1,4 @@
-require 'compsci/tree'
+require 'compsci/complete_tree'
 
 include CompSci
 
