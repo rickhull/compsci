@@ -39,6 +39,51 @@ second, constant up past 1M pushes.
 * `Timer.elapsed`  - provides the elapsed time to run a block
 * `Timer.loop_avg` - loops a block; returns final value and mean elapsed time
 
+```ruby
+require 'compsci/timer'
+
+include CompSci
+
+overall_start = Timer.now
+
+start = Timer.now
+print "running sleep 0.01 (50x): "
+_answer, each_et = Timer.loop_avg(count: 50) {
+  print '.'
+  sleep 0.01
+}
+puts
+puts "each: %0.3f" % each_et
+puts "elapsed: %0.3f" % Timer.since(start)
+puts "cumulative: %0.3f" % Timer.since(overall_start)
+puts
+
+
+start = Timer.now
+print "running sleep 0.02 (0.3 s): "
+_answer, each_et = Timer.loop_avg(seconds: 0.3) {
+  print '.'
+  sleep 0.02
+}
+puts
+puts "each: %0.3f" % each_et
+puts "elapsed: %0.3f" % Timer.since(start)
+puts "cumulative: %0.3f" % Timer.since(overall_start)
+puts
+```
+
+```
+running sleep 0.01 (50x): ..................................................
+each: 0.010
+elapsed: 0.524
+cumulative: 0.524
+
+running sleep 0.02 (0.3 s): ...............
+each: 0.020
+elapsed: 0.304
+cumulative: 0.828
+```
+
 ## [`Fit`](lib/compsci/fit.rb) functions
 
 * `Fit.sigma` - sums the result of a block applied to array values
