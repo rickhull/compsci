@@ -42,7 +42,6 @@ module CompSci
 
     def initialize(klass, val, child_slots:)
       super(klass, val)
-      raise "#{klass}#parent required" unless @root.respond_to? :parent
       @child_slots = child_slots
     end
 
@@ -54,10 +53,10 @@ module CompSci
       @open_parent ||= @root
       return @open_parent if self.open_parent?(@open_parent)
 
-      # TODO: ugh, there must be a better way, this is O(n)
+      # TODO: ugh, there must be a better way, bf_search is O(n)
 
-      # try siblings first
-      if @open_parent.parent
+      # try siblings first, only possible with Node#parent
+      if @open_parent.respond_to?(:parent) and @open_parent.parent
         @open_parent.parent.children.each { |c|
           return @open_parent = c if self.open_parent?(c)
         }

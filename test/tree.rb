@@ -64,26 +64,46 @@ describe Tree do
 end
 
 describe NaryTree do
-  before do
-    @tree = NaryTree.new(ChildNode, 42, child_slots: 3)
+  describe "with Node" do
+    before do
+      @tree = NaryTree.new(Node, 42, child_slots: 3)
+    end
+
+    it "must have an open parent" do
+      @tree.open_parent?(@tree.root).must_equal true
+      @tree.open_parent?(@tree.open_parent).must_equal true
+    end
+
+    it "must push a value onto an open parent" do
+      op = @tree.open_parent
+      opc = op.children.size
+      @tree.push 5
+      @tree.open_parent.children.size.must_equal opc + 1
+    end
   end
 
-  it "must have an open parent" do
-    @tree.open_parent?(@tree.root).must_equal true
-    @tree.open_parent?(@tree.open_parent).must_equal true
-  end
+  describe "with ChildNode" do
+    before do
+      @tree = NaryTree.new(ChildNode, 42, child_slots: 4)
+    end
 
-  it "must push a value onto an open parent" do
-    op = @tree.open_parent
-    opc = op.children.size
-    @tree.push 5
-    @tree.open_parent.children.size.must_equal opc + 1
+    it "must have an open parent" do
+      @tree.open_parent?(@tree.root).must_equal true
+      @tree.open_parent?(@tree.open_parent).must_equal true
+    end
+
+    it "must push a value onto an open parent" do
+      op = @tree.open_parent
+      opc = op.children.size
+      @tree.push 5
+      @tree.open_parent.children.size.must_equal opc + 1
+    end
   end
 end
 
 describe "BinaryTree" do
   before do
-    @tree = NaryTree.new(ChildNode, 42, child_slots: 2)
+    @tree = NaryTree.new(Node, 42, child_slots: 2)
   end
 
   it "must have 2 child_slots" do
@@ -101,7 +121,7 @@ describe "BinaryTree" do
 
   describe "searching" do
     before do
-      @tree = NaryTree.new(ChildNode, 42, child_slots: 2)
+      @tree = NaryTree.new(Node, 42, child_slots: 2)
       99.times { |i| @tree.push i }
     end
 
