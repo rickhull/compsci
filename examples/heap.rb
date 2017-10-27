@@ -56,18 +56,18 @@ h = Heap.new
 
 puts "push: %s" % Array.new(30) { rand(99).tap { |i| h.push i } }.join(' ')
 puts h
-puts "heap store: #{h.store.inspect}"
+puts "heap array: #{h.array.inspect}"
 puts "heap: #{h.heap?}"
 puts
 
 puts "pop: %i" % h.pop
 puts h
-puts "heap store: #{h.store.inspect}"
+puts "heap array: #{h.array.inspect}"
 puts "heap: #{h.heap?}"
 puts
 
 puts "pop: %s" % Array.new(9) { h.pop }.join(' ')
 puts h
-puts "heap store: #{h.store.inspect}"
+puts "heap array: #{h.array.inspect}"
 puts "heap: #{h.heap?}"
 puts

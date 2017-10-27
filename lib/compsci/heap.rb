@@ -39,8 +39,8 @@ class Heap < CompleteNaryTree
   # * sift_up -- O(log n) on heap size
   #
   def push(node)
-    @store << node
-    self.sift_up(@store.size - 1)
+    @array << node
+    self.sift_up(@array.size - 1)
   end
 
   # * remove from the front of the array
@@ -48,9 +48,9 @@ class Heap < CompleteNaryTree
   # * sift_down -- O(log n) on heap size
   #
   def pop
-    node = @store.shift
-    replacement = @store.pop
-    @store.unshift replacement if replacement
+    node = @array.shift
+    replacement = @array.pop
+    @array.unshift replacement if replacement
     self.sift_down(0)
     node
   end
@@ -58,7 +58,7 @@ class Heap < CompleteNaryTree
   # * return what pop would return (avoid sifting)
   #
   def peek
-    @store.first
+    @array.first
   end
 
   # * called recursively
@@ -69,7 +69,7 @@ class Heap < CompleteNaryTree
     return self if idx <= 0
     pidx = self.class.parent_idx(idx, @child_slots)
     if !self.heapish?(pidx, idx)
-      @store[idx], @store[pidx] = @store[pidx], @store[idx]   # swap
+      @array[idx], @array[pidx] = @array[pidx], @array[idx]   # swap
       self.sift_up(pidx)
     end
     self
@@ -81,12 +81,12 @@ class Heap < CompleteNaryTree
   # * slower than sift_up because one parent vs multiple children
   #
   def sift_down(idx)
-    return self if idx >= @store.size
+    return self if idx >= @array.size
     cidxs = self.class.children_idx(idx, @child_slots)
     # promote the heapiest child
     cidx = self.heapiest(cidxs)
     if !self.heapish?(idx, cidx)
-      @store[idx], @store[cidx] = @store[cidx], @store[idx]   # swap
+      @array[idx], @array[cidx] = @array[cidx], @array[idx]   # swap
       self.sift_down(cidx)
     end
     self
@@ -95,7 +95,7 @@ class Heap < CompleteNaryTree
   # are values of parent and child (by index) in accordance with heap property?
   #
   def heapish?(pidx, cidx)
-    (@store[pidx] <=> @store[cidx]) != (@cmp_val * -1)
+    (@array[pidx] <=> @array[cidx]) != (@cmp_val * -1)
   end
 
   # return the heapiest idx in cidxs
@@ -103,7 +103,7 @@ class Heap < CompleteNaryTree
   def heapiest(cidxs)
     idx = cidxs.first
     cidxs.each { |cidx|
-      idx = cidx if cidx < @store.size and self.heapish?(cidx, idx)
+      idx = cidx if cidx < @array.size and self.heapish?(cidx, idx)
     }
     idx
   end
@@ -116,7 +116,7 @@ class Heap < CompleteNaryTree
     check_children = []
     self.class.children_idx(idx, @child_slots).each { |cidx|
       # cidx is arithmetically produced; the corresponding child may not exist
-      if cidx < @store.size
+      if cidx < @array.size
         return false unless self.heapish?(idx, cidx)
         check_children << cidx
       end

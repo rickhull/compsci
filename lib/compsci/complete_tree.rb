@@ -11,32 +11,32 @@ module CompSci
       Array.new(n) { |i| n*idx + i + 1 }
     end
 
-    attr_reader :store
+    attr_reader :array
 
-    def initialize(store: [], child_slots: 2)
-      @store = store
+    def initialize(array: [], child_slots: 2)
+      @array = array
       @child_slots = child_slots
     end
 
     def push node
-      @store.push node
+      @array.push node
     end
 
     def pop
-      @store.pop
+      @array.pop
     end
 
     def size
-      @store.size
+      @array.size
     end
 
     def last_idx
-      @store.size - 1 unless @store.empty?
+      @array.size - 1 unless @array.empty?
     end
 
     def to_s(node: nil, width: 80)
       str = ''
-      @store.each_with_index { |n, i|
+      @array.each_with_index { |n, i|
         level = Math.log(i+1, @child_slots).floor
         block_width = width / (@child_slots**level)
         str += "\n" if @child_slots**level == i+1 and i > 0

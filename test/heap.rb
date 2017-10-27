@@ -17,28 +17,28 @@ describe Heap do
   it "must satisfy the heap property" do
     @maxheap.heap?.must_equal true
     @minheap.heap?.must_equal true
-    @minheap.store.must_equal @inserts
-    @maxheap.store.wont_equal @inserts
-    @maxheap.store.wont_equal @inserts.reverse
+    @minheap.array.must_equal @inserts
+    @maxheap.array.wont_equal @inserts
+    @maxheap.array.wont_equal @inserts.reverse
   end
 
   it "must recognize heap violations" do
-    @minheap.store.push 0
+    @minheap.array.push 0
     @minheap.heap?.must_equal false
     @minheap.sift_up @minheap.last_idx
     @minheap.heap?.must_equal true
 
-    @minheap.store.unshift 10
+    @minheap.array.unshift 10
     @minheap.heap?.must_equal false
     @minheap.sift_down 0
     @minheap.heap?.must_equal true
 
-    @maxheap.store.push 10
+    @maxheap.array.push 10
     @maxheap.heap?.must_equal false
     @maxheap.sift_up @maxheap.last_idx
     @maxheap.heap?.must_equal true
 
-    @maxheap.store.unshift 0
+    @maxheap.array.unshift 0
     @maxheap.heap?.must_equal false
     @maxheap.sift_down 0
     @maxheap.heap?.must_equal true

@@ -113,7 +113,7 @@ describe CompleteNaryTree do
     before do
       @array = (0..99).sort_by { rand }
       @empty = CompleteNaryTree.new(child_slots: 5)
-      @nonempty = CompleteNaryTree.new(store: @array, child_slots: 3)
+      @nonempty = CompleteNaryTree.new(array: @array, child_slots: 3)
     end
 
     it "must have a size" do
