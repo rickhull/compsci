@@ -2,6 +2,8 @@ module CompSci
   # A CompleteNaryTree can very efficiently use an array for storage using
   # simple arithmetic to determine parent child relationships.
   #
+  # It is kept separate from compsci/tree as it does not require compsci/node
+  #
   class CompleteNaryTree
     def self.parent_idx(idx, n)
       (idx-1) / n
@@ -18,8 +20,8 @@ module CompSci
       @child_slots = child_slots
     end
 
-    def push node
-      @array.push node
+    def push val
+      @array.push val
     end
 
     def pop
