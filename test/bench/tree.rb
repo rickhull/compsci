@@ -13,14 +13,14 @@ describe "BinaryTree#push Benchmark" do
   end
 
   bench_performance_constant "BinaryTree#push (constant)" do |n|
-    tree = BinaryTree.new(ChildNode, 42)
+    tree = NaryTree.new(ChildNode, 42, child_slots: 2)
     n.times { tree.push rand 99 }
   end
 
   bench_performance_linear "BinaryTree#push (linear)" do |n|
     skip "this fails with r^2 around 0.91"
 
-    tree = BinaryTree.new ChildNode.new 42
+    tree = NaryTree.new(ChildNode, 42, child_slots: 2)
     n.times { tree.push rand 99 }
   end
 end

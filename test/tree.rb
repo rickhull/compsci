@@ -79,6 +79,25 @@ describe NaryTree do
     @tree.push 5
     @tree.open_parent.children.size.must_equal opc + 1
   end
+end
+
+describe "BinaryTree" do
+  before do
+    @tree = NaryTree.new(ChildNode, 42, child_slots: 2)
+  end
+
+  it "must have 2 child_slots" do
+    @tree.child_slots.must_equal 2
+  end
+
+  it "must to_s" do
+    item_count = 31
+    # tree already has a root node
+    (item_count - 1).times { @tree.push rand 99 }
+    str = @tree.to_s
+    line_count = str.split("\n").size
+    line_count.must_equal Math.log(item_count + 1, 2).ceil
+  end
 
   describe "searching" do
     before do
@@ -133,24 +152,5 @@ describe NaryTree do
       }
       count.must_equal 83
     end
-  end
-end
-
-describe BinaryTree do
-  before do
-    @tree = BinaryTree.new(ChildNode, 42)
-  end
-
-  it "must have 2 child_slots" do
-    @tree.child_slots.must_equal 2
-  end
-
-  it "must to_s" do
-    item_count = 31
-    # tree already has a root node
-    (item_count - 1).times { @tree.push rand 99 }
-    str = @tree.to_s
-    line_count = str.split("\n").size
-    line_count.must_equal Math.log(item_count + 1, 2).ceil
   end
 end

@@ -85,9 +85,9 @@ module CompSci
     end
   end
 
-  class BinaryTree < NaryTree
-    def initialize(klass, val)
-      super(klass, val, child_slots: 2)
-    end
-  end
+  #class BinaryTree < NaryTree
+  #  def initialize(klass, val)
+  #    super(klass, val, child_slots: 2)
+  #  end
+  #end
 end
