@@ -13,10 +13,12 @@ Provided are some toy implementations for some basic computer science problems.
 
 * `Tree`       - tracks the `root` node; provides `df_search` and `bf_search`
 * `NaryTree`   - enforces number of children per node via `child_slots`
+* provides binary tree via `child_slots: 2`
 
 ## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) data structure
 
 * `CompleteNaryTree` - efficient Array implementation
+* provides complete binary tree via `child_slots: 2`
 
 ## [`Heap`](lib/compsci/heap.rb) data structure
 
