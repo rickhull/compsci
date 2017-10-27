@@ -1,25 +1,22 @@
 require 'compsci/tree'
 
-# A Heap is a partially sorted, complete binary tree with the property:
-# * Every node has a value larger (or smaller) than that of its children.
+# A Heap is a partially sorted, complete N-ary tree with the property:
+# * Every node has a value larger (or smaller) than that of its children
+#   (the heap property is satisfied when a parent value equals a child value)
 #
-# This class implements a heap using a simple array for storage.
-# Array index math is used to find:
-# * The root node (idx 0)
-# * The "bottom-most" leaf node (last idx)
-# * Parent idx (idx-1 / 2)
-# * Child idx (2*idx + 1, 2*idx + 2)
 #
-# Any Comparable may be used for node values.
-# Initialize a heap with a cmp_val, either 1 for a MaxHeap or -1 for a MinHeap.
-# The heap property is satisfied when a parent value equals a child value.
-# Insertion (push) and removal (pop) are O(log n) where n is the heap size.
-# Nodes are inserted at the end of the array, and sift_up is called to
+# * Any Comparable may be used for node values.
+# * Initialize a heap with a cmp_val, either 1 for a MaxHeap or -1 for a
+#   MinHeap.
+# * Insertion (push) and removal (pop) are O(logb n) where n is the heap size
+#   and b is child_slots (the N in N-ary)
+# * Nodes are inserted at the end of the array, and sift_up is called to
 #   reestablish the heap property.
-# Nodes are removed from the start of the array, and sift_down is called to
+# * Nodes are removed from the start of the array, and sift_down is called to
 #   reestablish the heap property.
-# Sift_up and sift_down are O(log n) because they only have to check and swap
-#   nodes at each layer of the tree, and there are log n layers to the tree.
+# * Sift_up and sift_down are O(logb n) because they only have to check and
+#   swap nodes at each layer of the tree, and there are log(n, base b) layers
+#   to the tree.
 #
 
 include CompSci
@@ -120,6 +117,16 @@ class Heap < CompleteNaryTree
     true
   end
 end
+
+
+# This class implements a heap using a simple array for storage.
+# Array index math is used to find:
+# * The root node (idx 0)
+# * The "bottom-most" leaf node (last idx)
+# * Parent idx (idx-1 / 2)
+# * Child idx (2*idx + 1, 2*idx + 2)
+#
+
 
 class BinaryHeap < CompleteBinaryTree
   # defaults to a MaxHeap, with the largest node at the root
