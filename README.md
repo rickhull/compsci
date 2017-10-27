@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/rickhull/compsci.svg?branch=master)](https://travis-ci.org/rickhull/compsci)
 
-# Introduction
+# CompSci
 
 Provided are some toy implementations for some basic computer science problems.
 
