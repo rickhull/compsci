@@ -1,20 +1,17 @@
-   548.6: flog total
-     7.6: flog/method average
+   459.7: flog total
+     7.7: flog/method average
 
-    37.6: CompSci::Fit::power              lib/compsci/fit.rb:124-135
-    34.6: CompSci::Fit::exponential        lib/compsci/fit.rb:102-114
-    34.0: CompSci::Fit::logarithmic        lib/compsci/fit.rb:58-70
-    29.8: CompSci::Fit::linear             lib/compsci/fit.rb:80-92
+    34.6: CompSci::Fit::power              lib/compsci/fit.rb:123-134
+    31.8: CompSci::Fit::exponential        lib/compsci/fit.rb:101-113
+    31.2: CompSci::Fit::logarithmic        lib/compsci/fit.rb:57-69
+    27.4: CompSci::Fit::linear             lib/compsci/fit.rb:79-91
     26.7: CompSci::BinaryTree#to_s         lib/compsci/tree.rb:78-89
-    26.2: CompSci::CompleteBinaryTree#to_s lib/compsci/complete_tree.rb:59-67
-    18.3: CompSci::Fit::error              lib/compsci/fit.rb:30-35
-    15.2: CompSci::Timer::loop_avg         lib/compsci/timer.rb:24-34
-    15.1: BinaryHeap#sift_down             lib/compsci/heap.rb:187-196
+    24.6: CompSci::CompleteNaryTree#to_s   lib/compsci/complete_tree.rb:37-46
+    16.8: CompSci::Fit::error              lib/compsci/fit.rb:29-34
+    14.0: CompSci::Timer::loop_avg         lib/compsci/timer.rb:24-34
     13.8: Heap#sift_down                   lib/compsci/heap.rb:83-92
     13.1: Heap#heap?                       lib/compsci/heap.rb:115-125
-    13.1: BinaryHeap#heap?                 lib/compsci/heap.rb:207-217
     12.1: CompSci::NaryTree#open_parent    lib/compsci/tree.rb:53-65
     11.2: Heap#sift_up                     lib/compsci/heap.rb:68-75
-    11.2: BinaryHeap#sift_up               lib/compsci/heap.rb:174-181
     11.2: CompSci::Fibonacci::cache_iterative lib/compsci/fibonacci.rb:14-17
-    10.4: CompSci::Node#inspect            lib/compsci/node.rb:29-34
+    11.0: main#none
