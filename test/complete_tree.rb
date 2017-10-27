@@ -3,8 +3,8 @@ require 'minitest/autorun'
 
 include CompSci
 
-describe CompleteBinaryTree do
-  it "must calculate a parent index" do
+describe CompleteNaryTree do
+  it "must calculate a parent index for N=2" do
     valid = {
       1 => 0,
       2 => 0,
@@ -24,10 +24,10 @@ describe CompleteBinaryTree do
       -2 => -2,
     }
     valid.each { |idx, pidx|
-      CompleteBinaryTree.parent_idx(idx).must_equal pidx
+      CompleteNaryTree.parent_idx(idx, 2).must_equal pidx
     }
     invalid.each { |idx, pidx|
-      CompleteBinaryTree.parent_idx(idx).must_equal pidx
+      CompleteNaryTree.parent_idx(idx, 2).must_equal pidx
     }
   end
 
@@ -53,33 +53,13 @@ describe CompleteBinaryTree do
     }
 
     valid.each { |idx, cidx|
-      CompleteBinaryTree.children_idx(idx).must_equal cidx
+      CompleteNaryTree.children_idx(idx, 2).must_equal cidx
     }
     invalid.each { |idx, cidx|
-      CompleteBinaryTree.children_idx(idx).must_equal cidx
+      CompleteNaryTree.children_idx(idx, 2).must_equal cidx
     }
   end
 
-  describe "instance" do
-    before do
-      @array = (0..99).sort_by { rand }
-      @empty = CompleteBinaryTree.new
-      @nonempty = CompleteBinaryTree.new(store: @array)
-    end
-
-    it "must have a size" do
-      @empty.size.must_equal 0
-      @nonempty.size.must_equal @array.size
-    end
-
-    it "must have a last_idx, nil when empty" do
-      @empty.last_idx.nil?.must_equal true
-      @nonempty.last_idx.must_equal 99
-    end
-  end
-end
-
-describe CompleteNaryTree do
   it "must calculate a parent index for N=3" do
     valid = {
       1 => 0,

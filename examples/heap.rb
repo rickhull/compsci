@@ -47,14 +47,14 @@ puts
 
 puts <<EOF
 #
-# 99 inserts; display the internal array
+# 30 inserts; display the internal array
 #
 
 EOF
 
 h = Heap.new
 
-puts "push: %s" % Array.new(99) { rand(99).tap { |i| h.push i } }.join(' ')
+puts "push: %s" % Array.new(30) { rand(99).tap { |i| h.push i } }.join(' ')
 puts h
 puts "heap store: #{h.store.inspect}"
 puts "heap: #{h.heap?}"
