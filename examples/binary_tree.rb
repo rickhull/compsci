@@ -47,14 +47,15 @@ puts <<EOF
 
 EOF
 
-vals = []
-30.times { vals << rand(99) }
+vals = Array.new(30) { rand 99 }
 p vals
 
 tree = NaryTree.new(ChildNode, vals.shift, child_slots: 2)
 tree.push vals.shift until vals.empty?
-
 puts tree
+
+p tree
+puts
 
 tree.df_search { |n|
   puts "visited #{n}"
@@ -62,5 +63,9 @@ tree.df_search { |n|
 }
 puts
 
-p tree
+vals = Array.new(30) { rand 99 }
+puts "push: #{vals.inspect}"
+
+tree.push vals.shift until vals.empty?
+puts tree
 puts

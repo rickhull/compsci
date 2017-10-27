@@ -47,7 +47,7 @@ puts
 
 puts <<EOF
 #
-# 30 inserts; display the internal array
+# display the results of push and pop
 #
 
 EOF
@@ -55,19 +55,28 @@ EOF
 h = Heap.new
 
 puts "push: %s" % Array.new(30) { rand(99).tap { |i| h.push i } }.join(' ')
-puts h
-puts "heap array: #{h.array.inspect}"
+puts "array: #{h.array.inspect}"
 puts "heap: #{h.heap?}"
+puts h
+puts
 puts
 
 puts "pop: %i" % h.pop
-puts h
-puts "heap array: #{h.array.inspect}"
+puts "array: #{h.array.inspect}"
 puts "heap: #{h.heap?}"
+puts h
+puts
 puts
 
 puts "pop: %s" % Array.new(9) { h.pop }.join(' ')
-puts h
-puts "heap array: #{h.array.inspect}"
+puts "array: #{h.array.inspect}"
 puts "heap: #{h.heap?}"
+puts h
+puts
+puts
+
+puts "push: %s" % Array.new(30) { rand(99).tap { |i| h.push i } }.join(' ')
+puts "array: #{h.array.inspect}"
+puts "heap: #{h.heap?}"
+puts h
 puts
