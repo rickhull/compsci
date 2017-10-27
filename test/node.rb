@@ -25,6 +25,10 @@ describe Node do
     @martin_sheen.children.must_include @emilio_estevez
   end
 
+  it "must not respond to :parent" do
+    @martin_sheen.respond_to?(:parent).must_equal false
+  end
+
   it "must create children from scalars" do
     @martin_sheen.new_child 'fake_emilio'
     @martin_sheen.children.size.must_equal 1
