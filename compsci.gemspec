@@ -10,28 +10,11 @@ Gem::Specification.new do |s|
 
   s.version = File.read(File.join(__dir__, 'VERSION')).chomp
 
-  s.files = %w[
-    compsci.gemspec
-    VERSION
-    README.md
-    Rakefile
-    lib/compsci.rb
-    lib/compsci/fibonacci.rb
-    lib/compsci/fit.rb
-    lib/compsci/heap.rb
-    lib/compsci/timer.rb
-    lib/compsci/tree.rb
-    examples/binary_tree.rb
-    examples/heap.rb
-    test/fibonacci.rb
-    test/fit.rb
-    test/heap.rb
-    test/timer.rb
-    test/tree.rb
-    test/bench/fibonacci.rb
-    test/bench/heap.rb
-    test/bench/tree.rb
-  ]
+  s.files = %w[compsci.gemspec VERSION README.md Rakefile]
+  s.files += Dir['lib/**/*.rb']
+  s.files += Dir['test/**/*.rb']
+  s.files += Dir['examples/**/*.rb']
 
   s.add_development_dependency "minitest", "~> 5.0"
+  s.add_development_dependency "rake", "~> 0"
 end
