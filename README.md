@@ -4,18 +4,23 @@
 
 Provided are some toy implementations for some basic computer science problems.
 
-## [`Tree`](/lib/compsci/tree.rb) data structures
+## [`Node`](lib/compsci/node.rb) data structure
 
 * `Node`       - references children nodes only
 * `ChildNode`  - references parent and children nodes
+
+## [`Tree`](lib/compsci/tree.rb) data structures
+
 * `Tree`       - tracks the `root` node; provides `df_search` and `bf_search`
 * `NaryTree`   - enforces number of children per node via `child_slots`
-* `BinaryTree` - `NaryTree` with `child_slots` == 2; provides `to_s`
-* `CompleteBinaryTree` - efficient Array implementation
+
+## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) data structure
+
+* `CompleteNaryTree` - efficient Array implementation
 
 ## [`Heap`](lib/compsci/heap.rb) data structure
 
-Implemented with a `CompleteBinaryTree` for storage using simple arithmetic to
+Implemented with a `CompleteNaryTree` for storage using simple arithmetic to
 determine array indices for parent and children.  See the
 [heap example](examples/heap.rb) which can be executed (among other examples)
 via `rake examples`.
