@@ -146,6 +146,9 @@ module CompSci
     end
   end
 
+  # A CompleteBinaryTree can very efficiently use an array for storage using
+  # simple arithmetic to determine parent child relationships.
+  #
   # Likewise, we should be able to use an array for N children
   #
   class CompleteNaryTree
@@ -181,8 +184,7 @@ module CompSci
     end
   end
 
-  # A CompleteBinaryTree can very efficiently use an array for storage using
-  # simple arithmetic to determine parent child relationships.
+  # Heap still expects CompleteBinaryTree
   #
   class CompleteBinaryTree < CompleteNaryTree
     # integer math says idx 2 and idx 1 both have parent at idx 0
