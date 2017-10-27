@@ -201,5 +201,17 @@ module CompSci
     def initialize(store: [])
       super(store: store, child_slots: 2)
     end
+
+    # TODO: generalize for N != 2
+    def to_s(node: nil, width: 80)
+      str = ''
+      @store.each_with_index { |n, i|
+        level = Math.log(i+1, 2).floor
+        block_width = width / (2**level)
+        str += "\n" if 2**level == i+1 and i > 0
+        str += n.to_s.ljust(block_width / 2, ' ').rjust(block_width, ' ')
+      }
+      str
+    end
   end
 end
