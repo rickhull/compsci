@@ -50,4 +50,22 @@ module CompSci
       str
     end
   end
+
+  class CompleteBinaryTree < CompleteNaryTree
+    def initialize(array: [])
+      super(array: array, child_slots: 2)
+    end
+  end
+
+  class CompleteTernaryTree < CompleteNaryTree
+    def initialize(array: [])
+      super(array: array, child_slots: 3)
+    end
+  end
+
+  class CompleteQuaternaryTree < CompleteNaryTree
+    def initialize(array: [])
+      super(array: array, child_slots: 4)
+    end
+  end
 end
