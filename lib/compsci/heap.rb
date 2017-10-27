@@ -1,10 +1,12 @@
 require 'compsci/tree'
 
+include CompSci
+
 # A Heap is a partially sorted, complete N-ary tree with the property:
 # * Every node has a value larger (or smaller) than that of its children
 #   (the heap property is satisfied when a parent value equals a child value)
 #
-#
+# Implementation details:
 # * Any Comparable may be used for node values.
 # * Initialize a heap with a cmp_val, either 1 for a MaxHeap or -1 for a
 #   MinHeap.
@@ -18,12 +20,9 @@ require 'compsci/tree'
 #   swap nodes at each layer of the tree, and there are log(n, base b) layers
 #   to the tree.
 #
-
-include CompSci
-
 class Heap < CompleteNaryTree
-  # defaults to a MaxHeap, with the largest node at the root
-  # specify a minheap with minheap: true or cmp_val: -1
+  # * defaults to a MaxHeap, with the largest node at the root
+  # * specify a minheap with minheap: true or cmp_val: -1
   #
   def initialize(cmp_val: 1, minheap: false, child_slots: 2)
     super(child_slots: child_slots)
@@ -36,16 +35,18 @@ class Heap < CompleteNaryTree
     end
   end
 
-  # append to the array
-  # sift_up -- O(log n) on heap size
+  # * append to the array
+  # * sift_up -- O(log n) on heap size
+  #
   def push(node)
     @store << node
     self.sift_up(@store.size - 1)
   end
 
-  # remove from the front of the array
-  # move last node to root
-  # sift_down -- O(log n) on heap size
+  # * remove from the front of the array
+  # * move last node to root
+  # * sift_down -- O(log n) on heap size
+  #
   def pop
     node = @store.shift
     replacement = @store.pop
@@ -54,14 +55,16 @@ class Heap < CompleteNaryTree
     node
   end
 
-  # return what pop would return (avoid sifting)
+  # * return what pop would return (avoid sifting)
+  #
   def peek
     @store.first
   end
 
-  # called recursively
-  # idx represents the node suspected to violate the heap
-  # intended to be O(log n) on heap size
+  # * called recursively
+  # * idx represents the node suspected to violate the heap
+  # * intended to be O(log n) on heap size (log base child_slots)
+  #
   def sift_up(idx)
     return self if idx <= 0
     pidx = self.class.parent_idx(idx, @child_slots)
@@ -72,9 +75,11 @@ class Heap < CompleteNaryTree
     self
   end
 
-  # called recursively
-  # idx represents the node suspected to violate the heap
-  # intended to be O(log n) on heap size (log base child_slots)
+  # * called recursively
+  # * idx represents the node suspected to violate the heap
+  # * intended to be O(log n) on heap size (log base child_slots)
+  # * slower than sift_up because one parent vs multiple children
+  #
   def sift_down(idx)
     return self if idx >= @store.size
     cidxs = self.class.children_idx(idx, @child_slots)
@@ -88,11 +93,13 @@ class Heap < CompleteNaryTree
   end
 
   # are values of parent and child (by index) in accordance with heap property?
+  #
   def heapish?(pidx, cidx)
     (@store[pidx] <=> @store[cidx]) != (@cmp_val * -1)
   end
 
   # return the heapiest idx in cidxs
+  #
   def heapiest(cidxs)
     idx = cidxs.first
     cidxs.each { |cidx|
@@ -101,9 +108,10 @@ class Heap < CompleteNaryTree
     idx
   end
 
-  # not used internally
-  # checks that every node satisfies the heap property
-  # calls heapish? on idx's children and then heap? on them recursively
+  # * not used internally
+  # * checks that every node satisfies the heap property
+  # * calls heapish? on idx's children and then heap? on them recursively
+  #
   def heap?(idx: 0)
     check_children = []
     self.class.children_idx(idx, @child_slots).each { |cidx|
@@ -118,15 +126,9 @@ class Heap < CompleteNaryTree
   end
 end
 
-
-# This class implements a heap using a simple array for storage.
-# Array index math is used to find:
-# * The root node (idx 0)
-# * The "bottom-most" leaf node (last idx)
-# * Parent idx (idx-1 / 2)
-# * Child idx (2*idx + 1, 2*idx + 2)
 #
-
+# LEGACY BELOW untouched for now
+#
 
 class BinaryHeap < CompleteBinaryTree
   # defaults to a MaxHeap, with the largest node at the root
