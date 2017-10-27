@@ -37,7 +37,7 @@ module CompSci
     end
   end
 
-  # Heap still expects CompleteBinaryTree
+  # BinaryHeap still expects CompleteBinaryTree
   #
   class CompleteBinaryTree < CompleteNaryTree
     # integer math says idx 2 and idx 1 both have parent at idx 0
