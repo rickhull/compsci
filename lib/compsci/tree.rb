@@ -164,6 +164,14 @@ module CompSci
       @child_slots = child_slots
     end
 
+    def push node
+      @store.push node
+    end
+
+    def pop
+      @store.pop
+    end
+
     def size
       @store.size
     end
