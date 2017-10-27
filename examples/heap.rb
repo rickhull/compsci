@@ -13,7 +13,7 @@ EOF
 count = 0
 start = Timer.now
 start_100k = Timer.now
-h = BinaryHeap.new
+h = Heap.new
 
 loop {
   count += 1
