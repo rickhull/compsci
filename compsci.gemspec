@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
     lib/compsci/tree.rb
     examples/binary_tree.rb
     examples/heap.rb
-    examples/timer.rb
     test/fibonacci.rb
     test/fit.rb
     test/heap.rb
