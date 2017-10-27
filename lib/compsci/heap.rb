@@ -21,7 +21,107 @@ require 'compsci/tree'
 # Sift_up and sift_down are O(log n) because they only have to check and swap
 #   nodes at each layer of the tree, and there are log n layers to the tree.
 #
-class CompSci::Heap < CompSci::CompleteBinaryTree
+
+include CompSci
+
+class Heap < CompleteNaryTree
+  # defaults to a MaxHeap, with the largest node at the root
+  # specify a minheap with minheap: true or cmp_val: -1
+  #
+  def initialize(cmp_val: 1, minheap: false, child_slots: 2)
+    super(child_slots: child_slots)
+    cmp_val = -1 if minheap
+    case cmp_val
+    when -1, 1
+      @cmp_val = cmp_val
+    else
+      raise(ArgumentError, "unknown comparison value: #{cmp_val}")
+    end
+  end
+
+  # append to the array
+  # sift_up -- O(log n) on heap size
+  def push(node)
+    @store << node
+    self.sift_up(@store.size - 1)
+  end
+
+  # remove from the front of the array
+  # move last node to root
+  # sift_down -- O(log n) on heap size
+  def pop
+    node = @store.shift
+    replacement = @store.pop
+    @store.unshift replacement if replacement
+    self.sift_down(0)
+    node
+  end
+
+  # return what pop would return (avoid sifting)
+  def peek
+    @store.first
+  end
+
+  # called recursively
+  # idx represents the node suspected to violate the heap
+  # intended to be O(log n) on heap size
+  def sift_up(idx)
+    return self if idx <= 0
+    pidx = self.class.parent_idx(idx, @child_slots)
+    if !self.heapish?(pidx, idx)
+      @store[idx], @store[pidx] = @store[pidx], @store[idx]   # swap
+      self.sift_up(pidx)
+    end
+    self
+  end
+
+  # called recursively
+  # idx represents the node suspected to violate the heap
+  # intended to be O(log n) on heap size (log base child_slots)
+  def sift_down(idx)
+    return self if idx >= @store.size
+    cidxs = self.class.children_idx(idx, @child_slots)
+    # promote the heapiest child
+    cidx = self.heapiest(cidxs)
+    if !self.heapish?(idx, cidx)
+      @store[idx], @store[cidx] = @store[cidx], @store[idx]   # swap
+      self.sift_down(cidx)
+    end
+    self
+  end
+
+  # are values of parent and child (by index) in accordance with heap property?
+  def heapish?(pidx, cidx)
+    (@store[pidx] <=> @store[cidx]) != (@cmp_val * -1)
+  end
+
+  # return the heapiest idx in cidxs
+  def heapiest(cidxs)
+    idx = cidxs.first
+    cidxs.each { |cidx|
+      idx = cidx if cidx < @store.size and self.heapish?(cidx, idx)
+    }
+    idx
+  end
+
+  # not used internally
+  # checks that every node satisfies the heap property
+  # calls heapish? on idx's children and then heap? on them recursively
+  def heap?(idx: 0)
+    check_children = []
+    self.class.children_idx(idx, @child_slots).each { |cidx|
+      # cidx is arithmetically produced; the corresponding child may not exist
+      if cidx < @store.size
+        return false unless self.heapish?(idx, cidx)
+        check_children << cidx
+      end
+    }
+    check_children.each { |cidx| return false unless self.heap?(idx: cidx) }
+    true
+  end
+end
+
+class BinaryHeap < CompleteBinaryTree
   # defaults to a MaxHeap, with the largest node at the root
   # specify a minheap with minheap: true or cmp_val: -1
   #
