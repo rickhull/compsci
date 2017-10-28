@@ -47,6 +47,7 @@ module CompSci
       @array.size - 1 unless @array.empty?
     end
 
+    # or, ya know, just iterate @array
     def bf_search(&blk)
       destinations = [0]
       while !destinations.empty?
@@ -60,6 +61,10 @@ module CompSci
           destinations.push(cidx) if cidx < @array.size
         }
       end
+    end
+
+    def df_search(&blk)
+      puts "not yet"
     end
 
     def display(width: nil)
