@@ -68,28 +68,51 @@ module CompSci
       self.open_parent.new_child value
     end
 
-    def to_s(node: nil, width: 80)
+    def display(width: nil)
       count = 0
       str = ''
-      self.bf_search(node: node) { |n|
-        count += 1
-        val = n.to_s
-        level = Math.log(count, @child_slots).floor
+      old_level = 0
+      width ||= @child_slots * 40
+      self.bf_search { |node|
+        raise "#{node.class} not yet supported" unless node.respond_to? :gen
+        level = node.gen
+        if old_level != level
+          str += "\n"
+          old_level = level
+        end
+
+        # center in block_width
         slots = @child_slots**level
         block_width = width / slots
-        lspace = [block_width / @child_slots, val.size + 1].max
-        str += "\n" if slots == count and count > 1
-        str += val.ljust(lspace, ' ').rjust(block_width, ' ')
-        false # keep searching to visit every node
+        val = node.to_s
+        space = [(block_width + val.size) / 2, val.size + 1].max
+        str += val.ljust(space, ' ').rjust(block_width, ' ')
+        false
       }
       str
     end
+    alias_method :to_s, :display
   end
 
   class BinaryTree < NaryTree
     def initialize(node_class, val)
       super(node_class, val, child_slots: 2)
     end
+
+    def display(width: 80)
+      count = 0
+      str = ''
+      self.bf_search { |n|
+        count += 1
+        level = Math.log(count, 2).floor
+        block_width = width / (2**level)
+        str += "\n" if 2**level == count and count > 1
+        str += n.to_s.ljust(block_width / 2, ' ').rjust(block_width, ' ')
+        false # keep searching to visit every node
+      }
+      str
+    end
+    alias_method :to_s, :display
   end
 
   class TernaryTree < NaryTree

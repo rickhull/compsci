@@ -103,7 +103,7 @@ end
 
 describe "BinaryTree" do
   before do
-    @tree = NaryTree.new(Node, 42, child_slots: 2)
+    @tree = BinaryTree.new(Node, 42)
   end
 
   it "must have 2 child_slots" do
