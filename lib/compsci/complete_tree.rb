@@ -13,6 +13,17 @@ module CompSci
       Array.new(n) { |i| n*idx + i + 1 }
     end
 
+    def self.gen(idx, n)
+      count = 0
+      loop {
+        pidx = self.parent_idx(idx, n)
+        break if pidx < 0
+        count += 1
+        idx = pidx
+      }
+      count
+    end
+
     attr_reader :array
 
     def initialize(array: [], child_slots: 2)
@@ -36,19 +47,42 @@ module CompSci
       @array.size - 1 unless @array.empty?
     end
 
-    def to_s(width: 80)
+    def bf_search(&blk)
+      destinations = [0]
+      while !destinations.empty?
+        idx = destinations.shift
+        val = @array[idx]
+        return val if yield val
+
+        # idx has a val and the block is false
+        # add existent children to destinations
+        self.class.children_idx(idx, @child_slots).each { |cidx|
+          destinations.push(cidx) if cidx < @array.size
+        }
+      end
+    end
+
+    def display(width: nil)
       str = ''
+      old_level = 0
+      width ||= @child_slots * 40
       @array.each_with_index { |val, i|
         val = val.to_s
-        level = Math.log(i+1, @child_slots).floor
+        level = self.class.gen(i, @child_slots)
+        if old_level != level
+          str += "\n"
+          old_level = level
+        end
+
+        # center in block_width
         slots = @child_slots**level
         block_width = width / slots
-        lspace = [block_width / @child_slots, val.size + 1].max
-        str += "\n" if slots == i+1 and i > 0
-        str += val.ljust(lspace, ' ').rjust(block_width, ' ')
+        space = [(block_width + val.size) / 2, val.size + 1].max
+        str += val.ljust(space, ' ').rjust(block_width, ' ')
       }
       str
     end
+    alias_method :to_s, :display
   end
 
   class CompleteBinaryTree < CompleteNaryTree
