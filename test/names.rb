@@ -46,6 +46,17 @@ describe Names do
         Names::Greek::CHAR_MAP.size.must_equal 24
       end
     end
+
+    describe "SYMBOLS26" do
+      it "must work well with Names.assign" do
+        s26 = Names::Greek::SYMBOLS26
+        Names.assign('iota', s26).must_equal :iota
+        Names.assign('jota', s26).must_equal :xi
+        Names.assign('Query', s26).must_equal :xi
+        Names.assign('who', s26).must_equal :xi
+        Names.assign('zeta', s26).must_equal :omega
+      end
+    end
   end
 
   describe "Greek.sym" do
