@@ -62,6 +62,12 @@ describe ChildNode do
     @emilio_estevez.parent.must_equal @martin_sheen
   end
 
+  it "must determine a node's generation" do
+    @emilio_estevez.gen.must_equal 0
+    @martin_sheen.add_child @emilio_estevez
+    @emilio_estevez.gen.must_equal 1
+  end
+
   it "must create children from scalars" do
     @martin_sheen.new_child 'fake_emilio'
     @martin_sheen.children.size.must_equal 1
