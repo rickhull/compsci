@@ -31,7 +31,7 @@ describe CompleteNaryTree do
     }
   end
 
-  it "must calculate children indices" do
+  it "must calculate children indices for N=2" do
     valid = {
       0 => [1, 2],
       1 => [3, 4],
@@ -113,7 +113,7 @@ describe CompleteNaryTree do
     before do
       @array = (0..99).sort_by { rand }
       @empty = CompleteNaryTree.new(child_slots: 5)
-      @nonempty = CompleteNaryTree.new(array: @array, child_slots: 3)
+      @nonempty = CompleteQuaternaryTree.new(array: @array)
     end
 
     it "must have a size" do
@@ -125,5 +125,7 @@ describe CompleteNaryTree do
       @empty.last_idx.nil?.must_equal true
       @nonempty.last_idx.must_equal 99
     end
+
+    # TODO: push, pop, display
   end
 end
