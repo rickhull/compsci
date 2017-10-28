@@ -69,7 +69,6 @@ module CompSci
     end
 
     def display(width: nil)
-      count = 0
       str = ''
       old_level = 0
       width ||= @child_slots * 40
