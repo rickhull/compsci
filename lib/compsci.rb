@@ -1,5 +1,1 @@
-require 'compsci/heap'
-require 'compsci/fibonacci'
-require 'compsci/fit'
-require 'compsci/timer'
-require 'compsci/tree'
+module CompSci; end
