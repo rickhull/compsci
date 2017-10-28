@@ -52,8 +52,7 @@ module CompSci
       destinations = [0]
       while !destinations.empty?
         idx = destinations.shift
-        val = @array[idx]
-        return val if yield val
+        return idx if yield @array[idx]
 
         # idx has a val and the block is false
         # add existent children to destinations
