@@ -1,7 +1,5 @@
 require 'compsci/complete_tree'
 
-include CompSci
-
 # A Heap is a partially sorted, complete N-ary tree with the property:
 # * Every node has a value larger (or smaller) than that of its children
 #   (the heap property is satisfied when a parent value equals a child value)
@@ -20,7 +18,7 @@ include CompSci
 #   swap nodes at each layer of the tree, and there are log(n, base b) layers
 #   to the tree.
 #
-class Heap < CompleteNaryTree
+class CompSci::Heap < CompSci::CompleteNaryTree
   # * defaults to a MaxHeap, with the largest node at the root
   # * specify a minheap with minheap: true or cmp_val: -1
   #
