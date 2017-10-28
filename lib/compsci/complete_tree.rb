@@ -5,6 +5,7 @@ module CompSci
   # It is kept separate from compsci/tree as it does not require compsci/node
   #
   class CompleteNaryTree
+    # integer math maps several children to one parent
     def self.parent_idx(idx, n)
       (idx-1) / n
     end
