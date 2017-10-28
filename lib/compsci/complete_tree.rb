@@ -67,10 +67,9 @@ module CompSci
       puts "not yet"
     end
 
-    def display(width: nil)
+    def display(width: 80)
       str = ''
       old_level = 0
-      width ||= @child_slots * 40
       @array.each_with_index { |val, i|
         val = val.to_s
         level = self.class.gen(i, @child_slots)
