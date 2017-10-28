@@ -49,18 +49,18 @@ module CompSci
       node.children.size < @child_slots
     end
 
+    def open_sibling
+      # try siblings first, only possible with Node#parent
+      if @open_parent.respond_to?(:siblings)
+        @open_parent.siblings.find { |s| self.open_parent?(s) }
+      end
+    end
+
     def open_parent
       @open_parent ||= @root
       return @open_parent if self.open_parent?(@open_parent)
-
-      # TODO: ugh, there must be a better way, bf_search is O(n)
-
-      # try siblings first, only possible with Node#parent
-      if @open_parent.respond_to?(:parent) and @open_parent.parent
-        @open_parent.parent.children.each { |c|
-          return @open_parent = c if self.open_parent?(c)
-        }
-      end
+      open_sibling = self.open_sibling
+      return @open_parent = open_sibling if open_sibling
       @open_parent = self.bf_search { |n| self.open_parent?(n) }
     end
 
@@ -80,7 +80,6 @@ module CompSci
           str += "\n"
           old_level = level
         end
-
         # center in block_width
         slots = @child_slots**level
         block_width = width / slots
