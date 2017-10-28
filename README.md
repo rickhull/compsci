@@ -16,17 +16,22 @@ Provided are some toy implementations for some basic computer science problems.
 
 ## [`Tree`](lib/compsci/tree.rb) data structures
 
-* `Tree`       - has `@root` node; provides `#df_search` and `#bf_search`
+* `Tree`
+  - `@root`
+  - `#df_search`
+  - `#bf_search`
 * `NaryTree`
-  - enforces `@child_slots` (number of children per node)
-  - provides `#open_parent` O(n) to find a node with open child slots
-  - provides `#push` (calls `#open_parent)
-  - provides `#display` if initialized with `ChildNode`
+  - `@child_slots` (number of children per node)
+  - `#open_parent` O(n) to find a node with open child slots
+  - `#push` append `#open_parent.children`
+  - `#display` if initialized with `ChildNode`
 * `BinaryTree`
-  - `NaryTree` with `child_slots: 2`
-  - provides `#display` regardless of `Node` vs `ChildNode`
-* `TernaryTree` - `NaryTree` with `child_slots: 3`
-* `QuaternaryTree - `NaryTree` with `child_slots: 4`
+  - `NaryTree.new(child_slots: 2)`
+  - `#display` for `Node` and `ChildNode`
+* `TernaryTree`
+  - `NaryTree.new(child_slots: 3)`
+* `QuaternaryTree`
+  - `NaryTree.new(child_slots: 4)`
 
 ## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) data structure
 
