@@ -19,20 +19,23 @@ vals = Array.new(30) { rand 99 }
   tree = tree_class.new(ChildNode, my_vals.shift)
   tree.push my_vals.shift until my_vals.empty?
   p tree
-  puts tree
+  puts tree.display(width: 80)
   puts
-
+  visited = []
   tree.df_search { |n|
-    puts "visited #{n}"
+    visited << n
     false # or n.value > 90
   }
+  puts "df_search visited: %s" % visited.join(' ')
+  puts
   puts
 
   # push different vals for each class
   my_vals = Array.new(30) { rand 99 }
   puts "push: #{my_vals.inspect}"
-
   tree.push my_vals.shift until my_vals.empty?
-  puts tree
+  puts
+  puts tree.display(width: 80)
+  puts
   puts
 }
