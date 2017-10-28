@@ -4,43 +4,95 @@ require 'minitest/autorun'
 include CompSci
 
 describe Heap do
-  before do
-    @maxheap = Heap.new
-    @minheap = Heap.new(minheap: true)
-    @inserts = (1..10).to_a
-    @inserts.each { |i|
-      @maxheap.push i
-      @minheap.push i
-    }
+  describe "MaxHeap" do
+    before do
+      @maxheap = Heap.new
+      @inserts = Array.new(10) { |i| i + 1 }.each { |i| @maxheap.push i }
+    end
+
+    it "must satisfy the heap property" do
+      @maxheap.heap?.must_equal true
+      @maxheap.array.wont_equal @inserts
+      @maxheap.array.wont_equal @inserts.reverse
+    end
+
+    it "must recognize heap violations" do
+      @maxheap.array.unshift 0
+      @maxheap.heap?.must_equal false
+      @maxheap.array.shift
+      @maxheap.heap?.must_equal true
+
+      @maxheap.array.push 10
+      @maxheap.heap?.must_equal false
+      @maxheap.sift_up @maxheap.last_idx
+      @maxheap.heap?.must_equal true
+    end
+
+    it "must pop" do
+      @maxheap.pop.must_equal 10
+      @maxheap.peek.wont_equal 10
+      @maxheap.heap?.must_equal true
+    end
   end
 
-  it "must satisfy the heap property" do
-    @maxheap.heap?.must_equal true
-    @minheap.heap?.must_equal true
-    @minheap.array.must_equal @inserts
-    @maxheap.array.wont_equal @inserts
-    @maxheap.array.wont_equal @inserts.reverse
+  describe "MinHeap" do
+    before do
+      @minheap = Heap.new(minheap: true)
+      @inserts = Array.new(10) { |i| i + 1 }.each { |i| @minheap.push i }
+    end
+
+    it "must satisfy the heap property" do
+      @minheap.heap?.must_equal true
+      @minheap.array.must_equal @inserts
+    end
+
+    it "must recognize heap violations" do
+      @minheap.array.unshift 10
+      @minheap.heap?.must_equal false
+      @minheap.array.shift
+      @minheap.heap?.must_equal true
+
+      @minheap.array.push 0
+      @minheap.heap?.must_equal false
+      @minheap.sift_up @minheap.last_idx
+      @minheap.heap?.must_equal true
+    end
+
+    it "must pop" do
+      @minheap.pop.must_equal 1
+      @minheap.peek.wont_equal 1
+      @minheap.heap?.must_equal true
+    end
   end
 
-  it "must recognize heap violations" do
-    @minheap.array.push 0
-    @minheap.heap?.must_equal false
-    @minheap.sift_up @minheap.last_idx
-    @minheap.heap?.must_equal true
+  describe "TernaryHeap" do
+    before do
+      @heap3 = Heap.new(child_slots: 3)
+      @inserts = Array.new(10) { |i| i + 1 }.each { |i| @heap3.push i }
+    end
 
-    @minheap.array.unshift 10
-    @minheap.heap?.must_equal false
-    @minheap.sift_down 0
-    @minheap.heap?.must_equal true
+    it "must satisfy the heap property" do
+      @heap3.heap?.must_equal true
+      @heap3.array.wont_equal @inserts
+      @heap3.array.wont_equal @inserts.reverse
+    end
 
-    @maxheap.array.push 10
-    @maxheap.heap?.must_equal false
-    @maxheap.sift_up @maxheap.last_idx
-    @maxheap.heap?.must_equal true
+    it "must recognize heap violations" do
+      @heap3.array.unshift 0
+      @heap3.heap?.must_equal false
+      @heap3.array.shift
+      @heap3.heap?.must_equal true
 
-    @maxheap.array.unshift 0
-    @maxheap.heap?.must_equal false
-    @maxheap.sift_down 0
-    @maxheap.heap?.must_equal true
+      @heap3.array.push 10
+      @heap3.heap?.must_equal false
+      @heap3.sift_up @heap3.last_idx
+      @heap3.heap?.must_equal true
+    end
+
+    it "must pop" do
+      @heap3.pop.must_equal 10
+      @heap3.peek.wont_equal 10
+      @heap3.heap?.must_equal true
+    end
   end
 end
