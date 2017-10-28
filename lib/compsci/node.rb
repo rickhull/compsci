@@ -49,6 +49,10 @@ module CompSci
       @parent ? @parent.gen + 1 : 0
     end
 
+    def siblings
+      @parent ? @parent.children : []
+    end
+
     def add_child(node)
       node.parent ||= self
       raise "node has a parent: #{node.parent}" if node.parent != self
