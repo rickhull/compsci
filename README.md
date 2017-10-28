@@ -6,8 +6,13 @@ Provided are some toy implementations for some basic computer science problems.
 
 ## [`Node`](lib/compsci/node.rb) data structure
 
-* `Node`       - has `@value` and `@children`
-* `ChildNode`  - adds `@parent`, `#gen`, and `#siblings`
+* `Node`
+  - `@value`
+  - `@children`
+* `ChildNode` adds
+  - `@parent`
+  - `#gen`
+  - `#siblings`
 
 ## [`Tree`](lib/compsci/tree.rb) data structures
 
