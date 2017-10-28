@@ -57,14 +57,12 @@ Efficient Array implementation.
 
 ## [`Heap`](lib/compsci/heap.rb) data structure
 
-Implemented with a `CompleteNaryTree` for storage using simple arithmetic to
-determine array indices for parent and children.  See the
+`CompleteNaryTree` implementation.  Both minheaps and maxheaps are supported.  The primary operations are `Heap#push` and `Heap#pop`. See the
 [heap example](examples/heap.rb) which can be executed (among other examples)
 via `rake examples`.
 
-Both minheaps and maxheaps are supported.  The primary operations are
-`Heap#push` and `Heap#pop`.  My basic Vagrant VM gets around 500k pushes per
-second, constant up past 1M pushes.
+My basic Vagrant VM gets around 500k pushes per second, constant up past 1M
+pushes.
 
 ## [`Fibonacci`](lib/compsci/fibonacci.rb) functions
 
