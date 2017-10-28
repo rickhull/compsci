@@ -74,4 +74,16 @@ describe ChildNode do
     @martin_sheen.children.first.value.must_equal 'fake_emilio'
     @martin_sheen.children.wont_include @emilio_estevez
   end
+
+  it "must recognize siblings" do
+    @charlie_sheen.add_parent @martin_sheen
+    @emilio_estevez.add_parent @martin_sheen
+    @martin_sheen.new_child 'fake_emilio'
+
+    @charlie_sheen.siblings.must_include @emilio_estevez
+    @charlie_sheen.siblings.wont_include @martin_sheen
+    @emilio_estevez.siblings.must_include @charlie_sheen
+    @martin_sheen.siblings.must_be_empty
+    @emilio_estevez.siblings.find { |n| n.value == 'fake_emilio' }.wont_be_nil
+  end
 end
