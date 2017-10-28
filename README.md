@@ -35,10 +35,25 @@ Provided are some toy implementations for some basic computer science problems.
 
 ## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) data structure
 
-* `CompleteNaryTree` - efficient Array implementation
-* `CompleteBinaryTree` - `child_slots: 2`
-* `CompleteTernaryTree` - `child_slots: 3`
-* `CompleteQuaternaryTree` - `child_slots: 4`
+Efficient Array implementation.
+
+* `CompleteNaryTree`
+  - `CompleteNaryTree.parent_idx`
+  - `CompleteNaryTree.children_idx`
+  - `CompleteNaryTree.gen`
+  - `@array`
+  - `@child_slots`
+  - `#push`
+  - `#pop`
+  - `#size`
+  - `#last_idx`
+  - `#display` (alias `#to_s`)
+* `CompleteBinaryTree`
+  - `CompleteNaryTree.new(child_slots: 2)`
+* `CompleteTernaryTree`
+  - `CompleteNaryTree.new(child_slots: 3)`
+* `CompleteQuaternaryTree`
+  - `CompleteNaryTree.new(child_slots: 4)`
 
 ## [`Heap`](lib/compsci/heap.rb) data structure
 
