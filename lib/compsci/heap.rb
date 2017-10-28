@@ -37,7 +37,7 @@ class CompSci::Heap < CompSci::CompleteNaryTree
   # * sift_up -- O(log n) on heap size
   #
   def push(node)
-    @array << node
+    @array.push(node)
     self.sift_up(@array.size - 1)
   end
 
