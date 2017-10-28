@@ -33,6 +33,18 @@ describe Heap do
       @maxheap.peek.wont_equal 10
       @maxheap.heap?.must_equal true
     end
+
+    it "must heapish?" do
+      @maxheap.array[0].must_be :>, @maxheap.array[1]
+      @maxheap.heapish?(0, 1).must_equal true
+    end
+
+    it "must heapiest" do
+      @maxheap.heapiest([1, 2]).must_equal 1
+      @maxheap.heapiest([3, 4]).must_equal 4
+      @maxheap.heapiest([5, 6]).must_equal 6
+      @maxheap.heapiest([7, 8]).must_equal 8
+    end
   end
 
   describe "MinHeap" do
@@ -62,6 +74,18 @@ describe Heap do
       @minheap.pop.must_equal 1
       @minheap.peek.wont_equal 1
       @minheap.heap?.must_equal true
+    end
+
+    it "must heapish?" do
+      @minheap.array[0].must_be :<, @minheap.array[1]
+      @minheap.heapish?(0, 1).must_equal true
+    end
+
+    it "must heapiest" do
+      @minheap.heapiest([1, 2]).must_equal 1
+      @minheap.heapiest([3, 4]).must_equal 3
+      @minheap.heapiest([5, 6]).must_equal 5
+      @minheap.heapiest([7, 8]).must_equal 7
     end
   end
 
@@ -93,6 +117,17 @@ describe Heap do
       @heap3.pop.must_equal 10
       @heap3.peek.wont_equal 10
       @heap3.heap?.must_equal true
+    end
+
+    it "must heapish?" do
+      @heap3.array[0].must_be :>, @heap3.array[1]
+      @heap3.heapish?(0, 1).must_equal true
+    end
+
+    it "must heapiest" do
+      @heap3.heapiest([1, 2, 3]).must_equal 2
+      @heap3.heapiest([4, 5, 6]).must_equal 6
+      @heap3.heapiest([7, 8, 9]).must_equal 9
     end
   end
 end
