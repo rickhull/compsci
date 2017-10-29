@@ -56,6 +56,7 @@ module CompSci
         case val
         when String
           if val.match %r{\A\d+\z}
+            # treat positive integer strings as positive integers
             val = val.to_i
             if val >= 0 and val < SYMBOLS.size
               SYMBOLS[val]
@@ -63,10 +64,12 @@ module CompSci
               raise "val #{val} not in range (#{SYMBOLS.size})"
             end
           else
+            # map the first character to a greek symbol
             LATIN_SYMBOLS.fetch val[0].downcase.to_sym
           end
         when Integer
           if val >= 0 and val < SYMBOLS.size
+            # map the integer to a greek symbol
             SYMBOLS[val]
           else
             raise "val #{val} not in range (#{SYMBOLS.size})"
