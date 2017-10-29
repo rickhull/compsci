@@ -79,7 +79,12 @@ def rprof_sh(script, args = '', rprof_args = '')
   lib_sh ['ruby-prof', rprof_args, script, '--', args].join(' ')
 end
 
-scripts = ["examples/binary_tree.rb", "examples/heap.rb"]
+scripts = [
+  "examples/binary_tree.rb",
+  "examples/complete_tree.rb",
+  "examples/heap.rb",
+  "examples/tree.rb",
+]
 
 desc "Run ruby-prof on examples/"
 task "ruby-prof" => "loadavg" do
