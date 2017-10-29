@@ -1,5 +1,4 @@
 module CompSci
-
   module Timer
     # lifted from seattlerb/minitest
     if defined? Process::CLOCK_MONOTONIC
