@@ -1,69 +1,69 @@
-Run options: --seed 46332
+Run options: --seed 19943
 
 # Running:
 
-..............SS.....................................................
+.............................................S.S.....................
 
-Finished in 0.315994s, 218.3583 runs/s, 3139.2961 assertions/s.
+Finished in 0.329003s, 209.7243 runs/s, 3015.1667 assertions/s.
 
 69 runs, 992 assertions, 0 failures, 0 errors, 2 skips
 
 You have skipped tests. Run with --verbose for details.
-/proc/loadavg 0.12 0.06 0.01 1/80 2387
+/proc/loadavg 0.27 0.18 0.07 1/81 3509
 Warming up --------------------------------------
 Fibonacci.classic(25)
                          7.000  i/100ms
 Fibonacci.cache_recursive(25)
-                        10.907k i/100ms
+                        11.015k i/100ms
 Fibonacci.cache_iterative(25)
-                        25.685k i/100ms
+                        24.663k i/100ms
 Calculating -------------------------------------
 Fibonacci.classic(25)
-                         71.986  (± 2.8%) i/s -    217.000  in   3.015903s
+                         73.592  (± 2.7%) i/s -    224.000  in   3.046311s
 Fibonacci.cache_recursive(25)
-                        118.634k (± 1.4%) i/s -    359.931k in   3.034593s
+                        119.016k (± 1.0%) i/s -    363.495k in   3.054456s
 Fibonacci.cache_iterative(25)
-                        287.871k (± 5.0%) i/s -    873.290k in   3.041493s
+                        289.225k (± 0.8%) i/s -    887.868k in   3.070033s
 
 Comparison:
-Fibonacci.cache_iterative(25):   287871.0 i/s
-Fibonacci.cache_recursive(25):   118634.0 i/s - 2.43x  slower
-Fibonacci.classic(25):       72.0 i/s - 3998.99x  slower
+Fibonacci.cache_iterative(25):   289225.3 i/s
+Fibonacci.cache_recursive(25):   119016.0 i/s - 2.43x  slower
+Fibonacci.classic(25):       73.6 i/s - 3930.14x  slower
 
 Warming up --------------------------------------
 Fibonacci.cache_iterative(500)
-                       606.000  i/100ms
+                       664.000  i/100ms
 Fibonacci.dynamic(500)
-                       719.000  i/100ms
+                       642.000  i/100ms
 Fibonacci.dynamic_fast(500)
-                       717.000  i/100ms
+                       639.000  i/100ms
 Fibonacci.matrix(500)
-                       852.000  i/100ms
+                       902.000  i/100ms
 Calculating -------------------------------------
 Fibonacci.cache_iterative(500)
-                          6.242k (± 1.3%) i/s -     18.786k in   3.010014s
+                          7.156k (± 1.1%) i/s -     21.912k in   3.062349s
 Fibonacci.dynamic(500)
-                          7.073k (± 1.1%) i/s -     21.570k in   3.050035s
+                          7.240k (± 1.2%) i/s -     21.828k in   3.015243s
 Fibonacci.dynamic_fast(500)
-                          7.079k (± 1.1%) i/s -     21.510k in   3.038869s
+                          7.234k (± 1.1%) i/s -     21.726k in   3.003776s
 Fibonacci.matrix(500)
-                          8.770k (± 0.7%) i/s -     26.412k in   3.011673s
+                          9.269k (± 0.7%) i/s -     27.962k in   3.016849s
 
 Comparison:
-Fibonacci.matrix(500):     8770.4 i/s
-Fibonacci.dynamic_fast(500):     7079.1 i/s - 1.24x  slower
-Fibonacci.dynamic(500):     7072.9 i/s - 1.24x  slower
-Fibonacci.cache_iterative(500):     6242.3 i/s - 1.40x  slower
+Fibonacci.matrix(500):     9269.0 i/s
+Fibonacci.dynamic(500):     7240.3 i/s - 1.28x  slower
+Fibonacci.dynamic_fast(500):     7233.7 i/s - 1.28x  slower
+Fibonacci.cache_iterative(500):     7156.1 i/s - 1.30x  slower
 
-Run options: --seed 21065
+Run options: --seed 7481
 
 # Running:
 
-bench_Heap_push_constant_0_9999_	 0.000012	 0.000060	 0.000286	 0.001309	 0.013016
-.bench_BinaryTree_push_constant_	 0.000056	 0.000515	 0.049868	 0.262610
+bench_Heap_push_constant_0_9999_	 0.000045	 0.000026	 0.000256	 0.001403	 0.013377
+.bench_BinaryTree_push_constant_	 0.000055	 0.000515	 0.050623	 0.252825
 .bench_BinaryTree_push_linear_S
 
-Finished in 0.356642s, 8.4118 runs/s, 5.6079 assertions/s.
+Finished in 0.350711s, 8.5540 runs/s, 5.7027 assertions/s.
 
 3 runs, 2 assertions, 0 failures, 0 errors, 1 skips
 
