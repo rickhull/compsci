@@ -7,7 +7,7 @@
     33.2: CompSci::NaryTree#display        lib/compsci/tree.rb:71-90
     31.8: CompSci::Fit::exponential        lib/compsci/fit.rb:101-113
     31.2: CompSci::Fit::logarithmic        lib/compsci/fit.rb:57-69
-    30.6: CompSci::Names::Greek::sym       lib/compsci/names/greek.rb:55-75
+    30.6: CompSci::Names::Greek::sym       lib/compsci/names/greek.rb:55-78
     27.4: CompSci::Fit::linear             lib/compsci/fit.rb:79-91
     27.0: CompSci::CompleteNaryTree#display lib/compsci/complete_tree.rb:70-87
     16.8: CompSci::Fit::error              lib/compsci/fit.rb:29-34
