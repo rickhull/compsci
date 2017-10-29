@@ -57,6 +57,8 @@ describe Names do
         Names.assign('Query', s26).must_equal :xi
         Names.assign('who', s26).must_equal :xi
         Names.assign('zeta', s26).must_equal :omega
+        Names.assign(0, s26).must_equal :alpha
+        Names.assign('1', s26).must_equal :beta
       end
     end
   end
@@ -67,6 +69,7 @@ describe Names do
       Names::Greek.sym('Cat').must_equal :gamma
       Names::Greek.sym('zeta').must_equal :omega
       Names::Greek.sym(0).must_equal :alpha
+      Names::Greek.sym('1').must_equal :beta
       Names::Greek.sym(23).must_equal :omega
     end
   end
@@ -77,6 +80,7 @@ describe Names do
       Names::Greek.lower('cat').must_equal third
       Names::Greek.lower('Cat').must_equal third
       Names::Greek.lower(2).must_equal third
+      Names::Greek.lower('2').must_equal third
     end
   end
 
@@ -86,6 +90,7 @@ describe Names do
       Names::Greek.upper('dog').must_equal fourth
       Names::Greek.upper('Dog').must_equal fourth
       Names::Greek.upper(3).must_equal fourth
+      Names::Greek.upper('3').must_equal fourth
     end
   end
 end

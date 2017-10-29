@@ -107,7 +107,16 @@ module CompSci
       def self.sym(val)
         case val
         when String
-          LATIN_SYMBOLS.fetch val[0].downcase.to_sym
+          if val.match %r{\A\d+\z}
+            val = val.to_i
+            if val >= 0 and val < SYMBOLS.size
+              SYMBOLS[val]
+            else
+              raise "val #{val} not in range (#{SYMBOLS.size})"
+            end
+          else
+            LATIN_SYMBOLS.fetch val[0].downcase.to_sym
+          end
         when Integer
           if val >= 0 and val < SYMBOLS.size
             SYMBOLS[val]
