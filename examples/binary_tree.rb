@@ -13,7 +13,7 @@ EOF
 count = 0
 start = Timer.now
 start_1k = Timer.now
-tree = NaryTree.new(ChildNode, rand(99), child_slots: 2)
+tree = BinaryTree.new ChildNode, rand(99)
 
 loop {
   count += 1
@@ -50,7 +50,7 @@ EOF
 vals = Array.new(30) { rand 99 }
 p vals
 
-tree = NaryTree.new(ChildNode, vals.shift, child_slots: 2)
+tree = BinaryTree.new ChildNode, vals.shift
 tree.push vals.shift until vals.empty?
 puts tree
 
