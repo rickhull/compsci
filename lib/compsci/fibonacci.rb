@@ -17,18 +17,10 @@ module CompSci
       cache[n]
     end
 
-    # traditional
     def self.dynamic(n)
       a, b = 0, 1
       n.times { a, b = b, a+b }
       a
-    end
-
-    # fails for n == 0
-    def self.dynamic_fast(n)
-      a, b = 0, 1
-      (n-1).times { a, b = b, a+b }
-      b
     end
 
     # https://gist.github.com/havenwood/02cf291b809327d96a3f
