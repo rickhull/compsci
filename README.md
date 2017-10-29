@@ -35,7 +35,7 @@ Provided are some toy implementations for some basic computer science problems.
 
 ## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) data structure
 
-Efficient Array implementation.
+Efficient Array implementation of a complete tree.
 
 * `CompleteNaryTree`
   - `CompleteNaryTree.parent_idx`
@@ -57,7 +57,9 @@ Efficient Array implementation.
 
 ## [`Heap`](lib/compsci/heap.rb) data structure
 
-`CompleteNaryTree` implementation.  Both minheaps and maxheaps are supported.  The primary operations are `Heap#push` and `Heap#pop`. See the
+`CompleteNaryTree` implementation.  Both minheaps and maxheaps are supported.
+Any number of children may be provided via `child_slots`.  The primary
+operations are `Heap#push` and `Heap#pop`. See the
 [heap example](examples/heap.rb) which can be executed (among other examples)
 via `rake examples`.
 
@@ -134,7 +136,7 @@ cumulative: 0.828
 * `Fit.exponential` fits `y = ae^(bx)`; returns a, b, r^2
 * `Fit.power` fits `y = ax^b`; returns a, b, r^2
 
-## [`Names`](lib/compsci/name.rb) functions
+## [`Names`](lib/compsci/names.rb) functions
 
 * `Names.assign`
 * `Names::Greek.upper`
