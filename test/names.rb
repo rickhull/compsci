@@ -26,6 +26,7 @@ describe Names do
       Names.assign('cat', Names::NATO).must_equal :charlie
       Names.assign('Cat', Names::NATO).must_equal :charlie
       Names.assign('Dog', Names::CRYPTO).must_equal :david
+      Names.assign('2', Names::PLANETS).must_equal :earth
     end
 
     it "must handle integers" do
@@ -34,6 +35,7 @@ describe Names do
       Names.assign(0, upper_lower).must_equal 'A'
       Names.assign(0, Names::ENGLISH_UPPER).must_equal 'A'
       Names.assign(3, Names::ENGLISH_LOWER).must_equal 'd'
+      Names.assign(3, Names::PLANETS).must_equal :mars
     end
   end
 
