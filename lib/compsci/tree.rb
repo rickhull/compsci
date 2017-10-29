@@ -100,12 +100,14 @@ module CompSci
     def display(width: 80)
       count = 0
       str = ''
-      self.bf_search { |n|
+      self.bf_search { |node|
         count += 1
         level = Math.log(count, 2).floor
         block_width = width / (2**level)
+        val = node.to_s
         str += "\n" if 2**level == count and count > 1
-        str += n.to_s.ljust(block_width / 2, ' ').rjust(block_width, ' ')
+        space = [(block_width + val.size) / 2, val.size + 1].max
+        str += val.ljust(space, ' ').rjust(block_width, ' ')
         false # keep searching to visit every node
       }
       str
