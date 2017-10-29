@@ -1,4 +1,5 @@
 require 'compsci/names'
+require 'compsci/names/greek'
 require 'minitest/autorun'
 
 include CompSci
