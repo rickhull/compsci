@@ -31,7 +31,7 @@ metrics_tasks = []
 begin
   require 'flog_task'
   FlogTask.new do |t|
-    t.threshold = 600
+    t.threshold = 800
     t.dirs = ['lib']
     t.verbose = true
   end
