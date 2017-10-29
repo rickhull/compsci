@@ -1,5 +1,4 @@
 # coding: utf-8
-require 'compsci/names'
 
 module CompSci
   module Names
