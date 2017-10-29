@@ -1,7 +1,7 @@
    615.1: flog total
      7.9: flog/method average
 
-    38.4: CompSci::Names::assign           lib/compsci/names.rb:28-53
+    38.4: CompSci::Names::assign           lib/compsci/names.rb:27-52
     34.6: CompSci::Fit::power              lib/compsci/fit.rb:123-134
     34.5: CompSci::BinaryTree#display      lib/compsci/tree.rb:100-113
     33.2: CompSci::NaryTree#display        lib/compsci/tree.rb:71-90
