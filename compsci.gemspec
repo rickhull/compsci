@@ -15,6 +15,11 @@ Gem::Specification.new do |s|
   s.files += Dir['test/**/*.rb']
   s.files += Dir['examples/**/*.rb']
 
+  s.add_development_dependency "buildar" "~> 3.0"
   s.add_development_dependency "minitest", "~> 5.0"
   s.add_development_dependency "rake", "~> 0"
+  s.add_development_dependency "flog", "~> 0"
+  s.add_development_dependency "flay", "~> 0"
+  s.add_development_dependency "roodi", "~> 0"
+  s.add_development_dependency "ruby-prof", "~> 0"
 end
