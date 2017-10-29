@@ -1,5 +1,8 @@
 module CompSci
   module Names
+    ENGLISH_UPPER = [*'A'..'Z']
+    ENGLISH_LOWER = [*'a'..'z']
+
     WW1 = [:apples, :butter, :charlie, :duff, :edward, :freddy, :george,
            :harry, :ink, :johnnie, :king, :london, :monkey, :nuts, :orange,
            :pudding, :queenie, :robert, :sugar, :tommy, :uncle, :vinegar,
@@ -14,12 +17,8 @@ module CompSci
     CRYPTO = [:alice, :bob, :charlie, :david, :eve, :frank, :grace, :heidi,
               :judy, :mallory, :olivia, :peggy, :sybil, :trudy, :victor,
               :wendy]
-    ENGLISH_UPPER = [*'A'..'Z']
-    ENGLISH_LOWER = [*'a'..'z']
-
     PLANETS = [:mercury, :venus, :earth, :mars, :jupiter, :saturn, :uranus,
                :neptune, :pluto]
-
     SOLAR = [:mercury, :venus, :earth, :mars, :asteroid_belt, :jupiter,
              :saturn, :uranus, :neptune, :kuiper_belt, :scattered_disk,
              :heliosphere]
