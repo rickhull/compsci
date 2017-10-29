@@ -133,3 +133,10 @@ cumulative: 0.828
 * `Fit.linear` - fits `y = a + bx`; returns a, b, r^2
 * `Fit.exponential` fits `y = ae^(bx)`; returns a, b, r^2
 * `Fit.power` fits `y = ax^b`; returns a, b, r^2
+
+## [`Names`](lib/compsci/name.rb) functions
+
+* `Names.assign`
+* `Names::Greek.upper`
+* `Names::Greek.lower`
+* `Names::Greek.symbol`
