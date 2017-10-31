@@ -162,3 +162,15 @@ With `Simplex::Parse`, one can obtain solutions via:
                        number of constraints / inequalities; returns a solution
 * `Simplex.problem` - a more general form of `Simplex.maximize; returns a
                       Simplex object
+
+```ruby
+require 'compsci/simplex/parse'
+
+include CompSci
+
+Simplex.maximize('x + y',
+                 '2x + y <= 4',
+		 'x + 2y <= 3')
+
+# => [1.6666666666666667, 0.6666666666666666]
+```
