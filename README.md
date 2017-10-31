@@ -142,3 +142,23 @@ cumulative: 0.828
 * `Names::Greek.upper`
 * `Names::Greek.lower`
 * `Names::Greek.symbol`
+
+## [`Simplex`](lib/compsci/simplex.rb) class
+
+The Simplex algorithm is a technique for Linear Programming.  Typically the
+problem is to maximize some linear expression of variables given some
+constraints on those variables given in terms of linear inequalities.
+
+### [`Simplex::Parse`](lib/compsci/simplex/parse.rb) functions
+
+* `Parse.tokenize` - convert a string to an array of tokens
+* `Parse.term`     - parse certain tokens into [coefficient, varname]
+* `Parse.expression` - parse a string representing a sum of terms
+* `Parse.inequality` - parse a string like "#{expression} <= #{const}"
+
+With `Simplex::Parse`, one can obtain solutions via:
+
+* `Simplex.maximize` - takes an expression to maximize followed by a variable
+                       number of constraints / inequalities; returns a solution
+* `Simplex.problem` - a more general form of `Simplex.maximize; returns a
+                      Simplex object
