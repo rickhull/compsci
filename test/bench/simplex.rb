@@ -94,9 +94,7 @@ SIMPLEX_PARAMS = [
 ]
 
 def new_simplices
-  SIMPLEX_PARAMS.map { |c, a, b|
-    Simplex.new(c, a, b)
-  }
+  SIMPLEX_PARAMS.map { |c, a, b| Simplex.new(c, a, b) }
 end
 
 if BENCH_IPS
@@ -105,11 +103,11 @@ if BENCH_IPS
   Benchmark.ips do |b|
     b.config time: 3, warmup: 0.5
 
-    b.report("initialize") {
+    b.report("Simplex init") {
       new_simplices
     }
 
-    b.report("init and solve") {
+    b.report("Simplex init and solve") {
       new_simplices.each { |s| s.solution }
     }
 
