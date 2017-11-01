@@ -1,6 +1,8 @@
 require 'compsci/simplex'
 require 'benchmark/ips'
 
+include CompSci
+
 Benchmark.ips do |b|
   b.config time: 3, warmup: 0.5
 
