@@ -1,26 +1,30 @@
 require 'compsci/tree'
-require 'minitest/autorun'
-require 'minitest/benchmark'
+require 'benchmark/ips'
 
 include CompSci
 
-describe "BinaryTree#push Benchmark" do
-  bench_range do
-    # note, 5000 takes way too long and is definitely not constant time
-    # TODO: BUG?
-    # [10, 100, 1000, 2000, 5000]
-    [10, 100, 1000, 2000]
+Benchmark.ips do |b|
+  b.config time: 3, warmup: 0.5
+
+  b.report("99x BinaryTree(ChildNode)#push") do
+    tree = BinaryTree.new(ChildNode, 42)
+    99.times { tree.push rand 99 }
   end
 
-  bench_performance_constant "BinaryTree#push (constant)" do |n|
-    tree = NaryTree.new(ChildNode, 42, child_slots: 2)
-    n.times { tree.push rand 99 }
+  b.report("99x BinaryTree(Node)#push") do
+    tree = BinaryTree.new(Node, 42)
+    99.times { tree.push rand 99 }
   end
 
-  bench_performance_linear "BinaryTree#push (linear)" do |n|
-    skip "this fails with r^2 around 0.91"
-
-    tree = NaryTree.new(ChildNode, 42, child_slots: 2)
-    n.times { tree.push rand 99 }
+  b.report("99x TernaryTree(ChildNode)#push") do
+    tree = TernaryTree.new(ChildNode, 42)
+    99.times { tree.push rand 99 }
   end
+
+  b.report("99x TernaryTree(Node)#push") do
+    tree = TernaryTree.new(Node, 42)
+    99.times { tree.push rand 99 }
+  end
+
+  b.compare!
 end
