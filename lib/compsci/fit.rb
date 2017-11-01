@@ -8,7 +8,7 @@ module CompSci
     # Enumerates over +enum+ mapping +block+ if given, returning the
     # sum of the result. Eg:
     #
-    #   sigma([1, 2, 3])                # => 1 + 2 + 3 => 7
+    #   sigma([1, 2, 3])                # => 1 + 2 + 3 => 6
     #   sigma([1, 2, 3]) { |n| n ** 2 } # => 1 + 4 + 9 => 14
 
     def self.sigma enum, &block
