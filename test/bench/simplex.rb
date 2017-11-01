@@ -1,100 +1,143 @@
 require 'compsci/simplex'
-require 'benchmark/ips'
 
 include CompSci
 
-Benchmark.ips do |b|
-  b.config time: 3, warmup: 0.5
+BENCH_IPS = true
+BENCH_OBJECT_SPACE = true
 
-  b.report("Simplex Array") {
-    Simplex.new([1, 1],
-                [[2,  1],
-                 [1,  2]],
-                [4, 3]).solution
+SIMPLEX_PARAMS = [
+  # 1 (index 0)
+  [[1, 1],
+   [[2,  1],
+    [1,  2]],
+   [4, 3]],
 
-    Simplex.new([3, 4],
-                [[1, 1],
-                 [2, 1]],
-                [4, 5]).solution
+  [[3, 4],
+   [[1, 1],
+    [2, 1]],
+   [4, 5]],
 
-    Simplex.new([2, -1],
-                [[1, 2],
-                 [3, 2],],
-                [6, 12]).solution
+  [[2, -1],
+   [[1, 2],
+    [3, 2],],
+   [6, 12]],
 
-    Simplex.new([60, 90, 300],
-                [[1, 1, 1],
-                 [1, 3, 0],
-                 [2, 0, 1]],
-                [600, 600, 900]).solution
+  [[60, 90, 300],
+   [[1, 1, 1],
+    [1, 3, 0],
+    [2, 0, 1]],
+   [600, 600, 900]],
 
-    Simplex.new([70, 210, 140],
-                [[1, 1, 1],
-                 [5, 4, 4],
-                 [40, 20, 30]],
-                [100, 480, 3200]).solution
+  # 5
+  [[70, 210, 140],
+   [[1, 1, 1],
+    [5, 4, 4],
+    [40, 20, 30]],
+   [100, 480, 3200]],
 
-    Simplex.new([2, -1, 2],
-                [[2, 1, 0],
-                 [1, 2, -2],
-                 [0, 1, 2]],
-                [10, 20, 5]).solution
+  [[2, -1, 2],
+   [[2, 1, 0],
+    [1, 2, -2],
+    [0, 1, 2]],
+   [10, 20, 5]],
 
-    Simplex.new([11, 16, 15],
-                [[1, 2, Rational(3, 2)],
-                 [Rational(2, 3), Rational(2, 3), 1],
-                 [Rational(1, 2), Rational(1, 3), Rational(1, 2)]],
-                [12_000, 4_600, 2_400]).solution
+  [[11, 16, 15],
+   [[1, 2, Rational(3, 2)],
+    [Rational(2, 3), Rational(2, 3), 1],
+    [Rational(1, 2), Rational(1, 3), Rational(1, 2)]],
+   [12_000, 4_600, 2_400]],
 
-    Simplex.new([5, 4, 3],
-                [[2, 3, 1],
-                 [4, 1, 2],
-                 [3, 4, 2]],
-                [5, 11, 8]).solution
+  [[5, 4, 3],
+   [[2, 3, 1],
+    [4, 1, 2],
+    [3, 4, 2]],
+   [5, 11, 8]],
 
-    Simplex.new([3, 2, -4],
-                [[1, 4, 0],
-                 [2, 4,-2],
-                 [1, 1,-2]],
-                [5, 6, 2]).solution
+  [[3, 2, -4],
+   [[1, 4, 0],
+    [2, 4,-2],
+    [1, 1,-2]],
+   [5, 6, 2]],
 
-    Simplex.new([2, -1, 8],
-                [[2, -4, 6],
-                 [-1, 3, 4],
-                 [0, 0, 2]],
-                [3, 2, 1]).solution
+  # 10
+  [[2, -1, 8],
+   [[2, -4, 6],
+    [-1, 3, 4],
+    [0, 0, 2]],
+   [3, 2, 1]],
 
-    Simplex.new([100_000, 40_000, 18_000],
-                [[20, 6, 3],
-                 [0, 1, 0],
-                 [-1,-1, 1],
-                 [-9, 1, 1]],
-                [182, 10, 0, 0]).solution
+  [[100_000, 40_000, 18_000],
+   [[20, 6, 3],
+    [0, 1, 0],
+    [-1,-1, 1],
+    [-9, 1, 1]],
+   [182, 10, 0, 0]],
 
-    Simplex.new([1, 2, 1, 2],
-                [[1, 0, 1, 0],
-                 [0, 1, 0, 1],
-                 [1, 1, 0, 0],
-                 [0, 0, 1, 1]],
-                [1, 4, 2, 2]).solution
+  [[1, 2, 1, 2],
+   [[1, 0, 1, 0],
+    [0, 1, 0, 1],
+    [1, 1, 0, 0],
+    [0, 0, 1, 1]],
+   [1, 4, 2, 2]],
 
-    Simplex.new([10, -57, -9, -24],
-                [[0.5, -5.5, -2.5, 9],
-                 [0.5, -1.5, -0.5, 1],
-                 [ 1,    0,    0, 0]],
-                [0, 0, 1]).solution
+  [[10, -57, -9, -24],
+   [[0.5, -5.5, -2.5, 9],
+    [0.5, -1.5, -0.5, 1],
+    [ 1,    0,    0, 0]],
+   [0, 0, 1]],
 
-    Simplex.new([25, 20],
-                [[20, 12],
-                 [1, 1]],
-                [1800, 8*15]).solution
+  # 14 (index 13)
+  [[25, 20],
+   [[20, 12],
+    [1, 1]],
+   [1800, 8*15]],
+]
+
+def new_simplices
+  SIMPLEX_PARAMS.map { |c, a, b|
+    Simplex.new(c, a, b)
+  }
+end
+
+if BENCH_IPS
+  require 'benchmark/ips'
+
+  Benchmark.ips do |b|
+    b.config time: 3, warmup: 0.5
+
+    b.report("initialize") {
+      new_simplices
+    }
+
+    b.report("init and solve") {
+      new_simplices.each { |s| s.solution }
+    }
+
+    #b.report("Simplex Matrix") {
+    #}
+
+    b.compare!
+  end
+end
+
+if BENCH_OBJECT_SPACE
+  require 'compsci/timer'
+  require 'objspace'
+
+  def disp_memsize(var, label = '')
+    "memsize(%s): %i" % [label, ObjectSpace.memsize_of(var)]
+  end
+
+  simplices = SIMPLEX_PARAMS.map { |c, a, b|
+    Simplex.new(c, a, b)
   }
 
-#b.report("Simplex Array") {
-#}
+  puts "SIMPLEX_PARAMS.size = #{SIMPLEX_PARAMS.size}"
+  puts "simplices.size = #{simplices.size}"
 
-#b.report("Simplex Matrix") {
-#}
-
-#  b.compare!
+  puts disp_memsize SIMPLEX_PARAMS, 'SIMPLEX_PARAMS'
+  puts disp_memsize simplices, 'simplices'
+  results = simplices.map { |s| s.solution }
+  puts disp_memsize simplices, 'simplices after solving'
+  puts disp_memsize results, 'results'
 end
