@@ -27,22 +27,16 @@ describe Fit do
   end
 
   # y = a
+  # Note: Thinking about dropping this.
+  #       I don't know how to test the variance for constantness or any
+  #       alternate measure.  A low slope and r2 for linear fit, maybe.
+  #
   describe "Fit.constant" do
-    it "must accept constant data" do
+    it "must stuff" do
       [0, 1, 10, 100, 1000, 9999].each { |a|
         y_bar, variance = Fit.constant(@xs, @xs.map { |x| a })
         y_bar.must_equal a
         variance.must_equal 0
-      }
-    end
-
-    # note, this test can possibly fail depending on the uniformity of
-    # rand's output for our sample
-    it "must accept noisy constant data" do
-      [0, 1, 10, 100, 1000, 9999].each { |a|
-        y_bar, variance = Fit.constant(@xs, @xs.map { |x| a + noise() })
-        y_bar.must_be_close_to a, 0.3
-        (variance / @xs.size).must_be_close_to 0.1, 0.09
       }
     end
   end
