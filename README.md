@@ -60,8 +60,8 @@ Efficient Array implementation of a complete tree.
 `CompleteNaryTree` implementation.  Both minheaps and maxheaps are supported.
 Any number of children may be provided via `child_slots`.  The primary
 operations are `Heap#push` and `Heap#pop`. See the
-[heap example](examples/heap.rb) which can be executed (among other examples)
-via `rake examples`.
+[heap](examples/heap.rb) [examples](examples/heap_push.rb)
+which can be executed (among other examples) via `rake examples`.
 
 My basic Vagrant VM gets around 500k pushes per second, constant up past 1M
 pushes.
