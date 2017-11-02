@@ -1,7 +1,7 @@
 autoload :Matrix, 'matrix'
 
 module CompSci
-  class Fibonacci
+  module Fibonacci
     def self.classic(n)
       n < 2 ? n : classic(n-1) + classic(n-2)
     end
