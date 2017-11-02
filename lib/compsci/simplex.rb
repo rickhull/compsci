@@ -36,6 +36,7 @@ class CompSci::Simplex
       if ary.size != @num_non_slack_vars
         raise ArgumentError, "a is inconsistent"
       end
+      # set diagonal to 1 (identity matrix?)
       ary + Array.new(@num_constraints) { |ci| ci == i ? 1 : 0 }
     }
     @b = b

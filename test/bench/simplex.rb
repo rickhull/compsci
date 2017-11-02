@@ -107,7 +107,7 @@ if BENCH_IPS
       new_simplices
     }
 
-    b.report("Simplex init and solve") {
+    b.report("init, solve") {
       new_simplices.each { |s| s.solution }
     }
 
