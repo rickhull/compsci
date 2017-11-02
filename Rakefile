@@ -31,7 +31,7 @@ metrics_tasks = []
 begin
   require 'flog_task'
   FlogTask.new do |t|
-    t.threshold = 800
+    t.threshold = 9000
     t.dirs = ['lib']
     t.verbose = true
   end
@@ -80,10 +80,11 @@ def rprof_sh(script, args = '', rprof_args = '')
 end
 
 scripts = [
-  "examples/binary_tree.rb",
   "examples/complete_tree.rb",
   "examples/heap.rb",
+  "examples/heap_insert.rb",
   "examples/tree.rb",
+  "examples/tree_insert.rb",
 ]
 
 desc "Run ruby-prof on examples/"

@@ -1,18 +1,20 @@
-   606.9: flog total
-     7.9: flog/method average
+   931.4: flog total
+     9.9: flog/method average
 
+    64.4: CompSci::Simplex#formatted_tableau lib/compsci/simplex.rb:145-168
+    61.2: CompSci::Simplex#pivot           lib/compsci/simplex.rb:94-130
+    40.1: CompSci::Simplex::problem        lib/compsci/simplex/parse.rb:85-119
     38.4: CompSci::Names::assign           lib/compsci/names.rb:27-52
     34.6: CompSci::Fit::power              lib/compsci/fit.rb:123-134
     34.5: CompSci::BinaryTree#display      lib/compsci/tree.rb:100-113
+    33.9: CompSci::Simplex#initialize      lib/compsci/simplex.rb:20-45
     33.2: CompSci::NaryTree#display        lib/compsci/tree.rb:71-90
     31.8: CompSci::Fit::exponential        lib/compsci/fit.rb:101-113
     31.2: CompSci::Fit::logarithmic        lib/compsci/fit.rb:57-69
     30.6: CompSci::Names::Greek::sym       lib/compsci/names/greek.rb:55-78
     27.4: CompSci::Fit::linear             lib/compsci/fit.rb:79-91
     27.0: CompSci::CompleteNaryTree#display lib/compsci/complete_tree.rb:70-87
+    23.7: CompSci::Simplex::Parse::expression lib/compsci/simplex/parse.rb:54-73
+    21.4: CompSci::Simplex::Parse::inequality lib/compsci/simplex/parse.rb:28-37
+    20.2: CompSci::Simplex#pivot_row       lib/compsci/simplex.rb:133-142
     16.8: CompSci::Fit::error              lib/compsci/fit.rb:29-34
-    15.3: CompSci::CompleteNaryTree#bf_search lib/compsci/complete_tree.rb:52-61
-    14.0: CompSci::Timer::loop_avg         lib/compsci/timer.rb:23-33
-    13.8: CompSci::Heap#sift_down          lib/compsci/heap.rb:81-90
-    13.1: CompSci::Heap#heap?              lib/compsci/heap.rb:113-123
-    11.2: CompSci::Heap#sift_up            lib/compsci/heap.rb:66-73

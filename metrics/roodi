@@ -1,5 +1,11 @@
 
 Running Roodi checks
+[31mlib/compsci/simplex.rb:136 - Block cyclomatic complexity is 5.  It should be 3 or less.[0m
+[31mlib/compsci/simplex.rb:20 - Method name "initialize" cyclomatic complexity is 5.  It should be 4 or less.[0m
+[31mlib/compsci/simplex.rb:94 - Method name "pivot" cyclomatic complexity is 7.  It should be 4 or less.[0m
+[31mlib/compsci/simplex.rb:133 - Method name "pivot_row" cyclomatic complexity is 5.  It should be 4 or less.[0m
+[31mlib/compsci/simplex.rb:20 - Method "initialize" has 25 lines.  It should have 20 or less.[0m
+[31mlib/compsci/simplex.rb:94 - Method "pivot" has 36 lines.  It should have 20 or less.[0m
+[31mlib/compsci/simplex.rb:145 - Method "formatted_tableau" has 23 lines.  It should have 20 or less.[0m
 
-Checked 10 files
-[32mFound 0 errors.[0m
+Checked 12 files
