@@ -173,4 +173,25 @@ Simplex.maximize('x + y',
 		 'x + 2y <= 3')
 
 # => [1.6666666666666667, 0.6666666666666666]
+
+
+
+s = Simplex.problem(maximize: 'x + y',
+                    constraints: ['2x + y <= 4',
+                                  'x + 2y <= 3'])
+
+# => #<CompSci::Simplex:0x0055b2deadbeef
+#      @max_pivots=10000,
+#      @num_non_slack_vars=2,
+#      @num_constraints=2,
+#      @num_vars=4,
+#      @c=[-1.0, -1.0, 0, 0],
+#      @a=[[2.0, 1.0, 1, 0], [1.0, 2.0, 0, 1]],
+#      @b=[4.0, 3.0],
+#      @basic_vars=[2, 3],
+#      @x=[0, 0, 4.0, 3.0]>
+
+s.solution
+
+# => [1.6666666666666667, 0.6666666666666666]
 ```
