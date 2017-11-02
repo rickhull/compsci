@@ -160,7 +160,7 @@ With `Simplex::Parse`, one can obtain solutions via:
 
 * `Simplex.maximize` - takes an expression to maximize followed by a variable
                        number of constraints / inequalities; returns a solution
-* `Simplex.problem` - a more general form of `Simplex.maximize; returns a
+* `Simplex.problem` - a more general form of `Simplex.maximize`; returns a
                       Simplex object
 
 ```ruby
