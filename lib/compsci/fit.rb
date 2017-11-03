@@ -24,6 +24,7 @@ module CompSci
       max_r2 = 0
       [:logarithmic, :linear, :exponential, :power].each { |fn|
         a, b, r2 = Fit.send(fn, xs, ys)
+        # p [a, b, r2, fn]
         if r2 > max_r2
           vals = [a, b, r2, fn]
           max_r2 = r2
