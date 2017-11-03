@@ -82,9 +82,9 @@ end
 scripts = [
   "examples/complete_tree.rb",
   "examples/heap.rb",
-  "examples/heap_insert.rb",
+  "examples/heap_push.rb",
   "examples/tree.rb",
-  "examples/tree_insert.rb",
+  "examples/tree_push.rb",
 ]
 
 desc "Run ruby-prof on examples/"
