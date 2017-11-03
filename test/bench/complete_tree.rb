@@ -6,12 +6,17 @@ include CompSci
 
 timing = {}
 
+# Note, CompleteTree is a very thin wrapper around Array, so we are just
+# testing ruby's inherent Array performance here.
+# Append / push / insert is constant for ruby Arrays.
+
 [10, 100, 1000, 10_000, 100_000].each { |n|
   h = CompleteBinaryTree.new
+  n.times { h.push rand }
   _val, secs = Timer.loop_avg {
-    n.times { h.push rand }
+    h.push rand
   }
-  puts "%ix push: %0.6f" % [n, secs]
+  puts "CompleteTree(%i) push: %0.8f" % [n, secs]
   timing[n] = secs
   break if secs > 1
 }
