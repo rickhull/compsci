@@ -1,5 +1,37 @@
 module CompSci
   module Fit
+    ##
+    # Fits the functional form: a (+ 0x)
+    #
+    # Takes x and y values and returns [a, variance]
+    #
+
+    def self.constant xs, ys
+      y_bar = sigma(ys) / ys.size.to_f
+      variance = sigma(ys) { |y| (y - y_bar) ** 2 }
+      [y_bar, variance]
+    end
+
+    ##
+    # Run logarithmic, linear, exponential, and power fits
+    # Return the stats for the best fit (highest r^2)
+    #
+    # Takes x and y values and returns [a, b, r2, fn]
+    #
+
+    def self.best xs, ys
+      vals = []
+      max_r2 = 0
+      [:logarithmic, :linear, :exponential, :power].each { |fn|
+        a, b, r2 = Fit.send(fn, xs, ys)
+        if r2 > max_r2
+          vals = [a, b, r2, fn]
+          max_r2 = r2
+        end
+      }
+      vals
+    end
+
     #
     # functions below originally from https://github.com/seattlrb/minitest
     #
@@ -32,19 +64,6 @@ module CompSci
       ss_res = sigma(xys) { |x, y| (yield(x) - y) ** 2 }
 
       1 - (ss_res / ss_tot)
-    end
-
-    ##
-    # Fits the functional form: a (+ 0x)
-    #
-    # Takes x and y values and returns [a, variance]
-    #
-
-    def self.constant xs, ys
-      # written by Rick
-      y_bar = sigma(ys) / ys.size.to_f
-      variance = sigma(ys) { |y| (y - y_bar) ** 2 }
-      [y_bar, variance]
     end
 
     ##
