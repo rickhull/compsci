@@ -26,8 +26,6 @@ task default: :examples
 # METRICS
 #
 
-metrics_tasks = []
-
 begin
   require 'flog_task'
   FlogTask.new do |t|
@@ -35,7 +33,6 @@ begin
     t.dirs = ['lib']
     t.verbose = true
   end
-  metrics_tasks << :flog
 rescue LoadError
   warn 'flog_task unavailable'
 end
@@ -46,7 +43,6 @@ begin
     t.dirs = ['lib']
     t.verbose = true
   end
-  metrics_tasks << :flay
 rescue LoadError
   warn 'flay_task unavailable'
 end
@@ -54,13 +50,10 @@ end
 begin
   require 'roodi_task'
   RoodiTask.new config: '.roodi.yml', patterns: ['lib/**/*.rb']
-  metrics_tasks << :roodi
 rescue LoadError
   warn "roodi_task unavailable"
 end
 
-desc "Generate code metrics reports"
-task code_metrics: metrics_tasks
 
 #
 # PROFILING
@@ -95,6 +88,15 @@ end
 desc "Run ruby-prof on examples/ with --exclude-common-cycles"
 task "ruby-prof-exclude" => "loadavg" do
   scripts.each { |script| rprof_sh script, "", "--exclude-common-cycles" }
+end
+
+desc "Generate code metrics and reports"
+task report: :test do
+  %w{examples bench flog flay roodi ruby-prof ruby-prof-exclude}.each { |t|
+    sh "rake #{t} > metrics/#{t} 2>&1" do |ok, _status|
+      puts "rake #{t} failed" unless ok
+    end
+  }
 end
 
 #
