@@ -91,10 +91,16 @@ task "ruby-prof-exclude" => "loadavg" do
   scripts.each { |script| rprof_sh script, "", "--exclude-common-cycles" }
 end
 
+
+#
+# REPORTS
+#
+
+
 desc "Generate code metrics and reports"
 task report: :test do
   %w{examples bench flog flay roodi ruby-prof ruby-prof-exclude}.each { |t|
-    sh "rake #{t} > metrics/#{t} 2>&1" do |ok, _status|
+    sh "rake #{t} > reports/#{t} 2>&1" do |ok, _status|
       puts "rake #{t} failed" unless ok
     end
   }
