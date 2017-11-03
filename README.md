@@ -63,8 +63,8 @@ operations are `Heap#push` and `Heap#pop`. See the
 [heap](examples/heap.rb) [examples](examples/heap_push.rb)
 which can be executed (among other examples) via `rake examples`.
 
-My basic Vagrant VM gets around 500k pushes per second, constant up past 1M
-pushes.
+My basic Vagrant VM gets over [500k pushes per second, constant up past 1M
+pushes](reports/examples#L484).
 
 ## [`Fibonacci`](lib/compsci/fibonacci.rb) functions
 
