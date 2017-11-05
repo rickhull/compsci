@@ -6,11 +6,11 @@ module CompSci
       unless self.power_of?(nodes.size, 2)
         raise "unexpected node count: #{nodes.size}"
       end
-      block_width = width / nodes.size
+      block_width = [width / nodes.size, 1].max
       nodes.map { |node|
-        nw = node.to_s.size
-        space = [(block_width + nw) / 2, nw + 1].max
-        node.to_s.ljust(space, ' ').rjust(block_width, ' ')
+        str = node ? node.to_s : '_'
+        space = [(block_width + str.size) / 2, str.size + 1].max
+        str.ljust(space, ' ').rjust(block_width, ' ')
       }.join
     end
 
@@ -35,19 +35,16 @@ module CompSci
 
     def insert_recursive(val, node: @root)
       return nil if node.nil? or node.value == val
-      # puts "val #{val} - comparison node: #{node.value}"
       if val < node.value
         if node.children[0]
           insert_recursive(val, node: node.children[0])
         else
-          # puts "birthing node #{node.value} left child to #{val}"
           node.children[0] = Node.new(val, children: 2)
         end
       else
         if node.children[1]
           insert_recursive(val, node: node.children[1])
         else
-          # puts "birthing node #{node.value} right child to #{val}"
           node.children[1] = Node.new(val, children: 2)
         end
       end
