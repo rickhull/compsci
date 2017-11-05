@@ -4,9 +4,13 @@ module CompSci
     attr_accessor :value
     attr_reader :children
 
-    def initialize(value)
+    def initialize(value, children: [])
       @value = value
-      @children = []
+      if children.is_a?(Integer)
+        @children = Array.new(children)
+      else
+        @children = children
+      end
       # @metadata = {}
     end
 
@@ -39,9 +43,9 @@ module CompSci
   class ChildNode < Node
     attr_accessor :parent
 
-    def initialize(value)
+    def initialize(value, children: [])
       @parent = nil
-      super(value)
+      super(value, children: children)
     end
 
     # O(log n) recursive
