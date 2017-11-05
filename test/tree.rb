@@ -64,6 +64,29 @@ describe Tree do
 end
 
 describe NaryTree do
+  it "must power_of?" do
+    powers = {}
+    basemax = 12
+    expmax = 10
+    2.upto(basemax) { |base|
+      0.upto(expmax) { |exp|
+        powers[base] ||= []
+        powers[base] << base**exp
+      }
+    }
+
+    # 12k assertions below!
+    2.upto(basemax) { |base|
+      1.upto(2**expmax) { |num|
+        if powers[base].include?(num)
+          NaryTree.power_of?(num, base).must_equal true
+        else
+          NaryTree.power_of?(num, base).must_equal false
+        end
+      }
+    }
+  end
+
   describe "with Node" do
     before do
       @tree = NaryTree.new(Node, 42, child_slots: 3)
