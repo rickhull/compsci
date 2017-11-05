@@ -1,6 +1,8 @@
 require 'compsci/node'
 
 module CompSci
+  # for now at least, this assumes children simply stack up
+  # children like: [nil, child1, child2] are not supported
   class Tree
     attr_reader :root
 
@@ -8,6 +10,7 @@ module CompSci
       @root = node_class.new val
     end
 
+    # does not support children gaps
     def df_search(node: nil, &blk)
       node ||= @root
       return node if yield node
@@ -18,6 +21,7 @@ module CompSci
       nil
     end
 
+    # does not support children gaps
     def bf_search(node: nil, &blk)
       node ||= @root
       destinations = [node]
