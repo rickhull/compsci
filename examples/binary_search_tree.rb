@@ -2,6 +2,10 @@ require 'compsci/binary_search_tree'
 
 include CompSci
 
-b = BinarySearchTree.new rand 99
-15.times { b.insert rand 99 }
+RANDMAX = 99
+
+p vals = Array.new(15) { rand RANDMAX }
+
+b = BinarySearchTree.new vals.shift
+b.insert vals.shift until vals.empty?
 puts b
