@@ -54,7 +54,7 @@ module CompSci
     def display(node: @root, width: 80)
       levels = [self.class.display_level(nodes: [node], width: width)]
       nodes = node.children
-      while !nodes.all? { |n| n.nil? }
+      while nodes.any? { |n| !n.nil? }
         levels << self.class.display_level(nodes: nodes, width: width)
         children = []
         nodes.each { |n|
