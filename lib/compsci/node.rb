@@ -18,6 +18,12 @@ module CompSci
       @value.to_s
     end
 
+    # This could be done directly with self.children, but #set_child is part
+    # of the Node API.
+    def set_child(idx, node)
+      @children[idx] = node
+    end
+
     def inspect
       "#<%s:0x%0xi @value=%s @children=[%s]>" %
         [self.class,
