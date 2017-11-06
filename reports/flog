@@ -1,20 +1,23 @@
-   931.4: flog total
-     9.9: flog/method average
+  1068.9: flog total
+    10.0: flog/method average
 
     64.4: CompSci::Simplex#formatted_tableau lib/compsci/simplex.rb:146-169
     61.2: CompSci::Simplex#pivot           lib/compsci/simplex.rb:95-131
     40.1: CompSci::Simplex::problem        lib/compsci/simplex/parse.rb:85-119
     38.4: CompSci::Names::assign           lib/compsci/names.rb:27-52
-    34.6: CompSci::Fit::power              lib/compsci/fit.rb:123-134
-    34.5: CompSci::BinaryTree#display      lib/compsci/tree.rb:100-113
+    34.6: CompSci::Fit::power              lib/compsci/fit.rb:143-154
     33.9: CompSci::Simplex#initialize      lib/compsci/simplex.rb:20-46
-    33.2: CompSci::NaryTree#display        lib/compsci/tree.rb:71-90
-    31.8: CompSci::Fit::exponential        lib/compsci/fit.rb:101-113
-    31.2: CompSci::Fit::logarithmic        lib/compsci/fit.rb:57-69
+    32.2: CompSci::BinaryTree#display      lib/compsci/tree.rb:113-126
+    31.8: CompSci::Fit::exponential        lib/compsci/fit.rb:121-133
+    31.2: CompSci::Fit::logarithmic        lib/compsci/fit.rb:77-89
+    30.8: CompSci::NaryTree#display        lib/compsci/tree.rb:84-103
     30.6: CompSci::Names::Greek::sym       lib/compsci/names/greek.rb:55-78
-    27.4: CompSci::Fit::linear             lib/compsci/fit.rb:79-91
+    29.3: CompSci::BinarySearchTree::display_level lib/compsci/binary_search_tree.rb:5-13
+    28.2: CompSci::BinarySearchTree#insert_recursive lib/compsci/binary_search_tree.rb:36-48
+    27.4: CompSci::Fit::linear             lib/compsci/fit.rb:99-111
     27.0: CompSci::CompleteNaryTree#display lib/compsci/complete_tree.rb:70-87
     23.7: CompSci::Simplex::Parse::expression lib/compsci/simplex/parse.rb:54-73
     21.4: CompSci::Simplex::Parse::inequality lib/compsci/simplex/parse.rb:28-37
+    21.1: CompSci::BinarySearchTree#display lib/compsci/binary_search_tree.rb:54-65
     20.2: CompSci::Simplex#pivot_row       lib/compsci/simplex.rb:134-143
-    16.8: CompSci::Fit::error              lib/compsci/fit.rb:29-34
+    16.8: CompSci::Fit::error              lib/compsci/fit.rb:62-67
