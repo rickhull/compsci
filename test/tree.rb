@@ -5,7 +5,7 @@ include CompSci
 
 describe Tree do
   before do
-    @tree = Tree.new(Node, 42)
+    @tree = Tree.new(FlexNode, 42)
     @vals = Array.new(99) { rand 99 }
   end
 
@@ -16,7 +16,7 @@ describe Tree do
 
   it "does depth_first search" do
     vals = (0..30).to_a
-    tree = Tree.new(Node, vals.shift)
+    tree = Tree.new(FlexNode, vals.shift)
     tree.root.new_child vals.shift
     tree.root.new_child vals.shift
     tree.root.children.each { |c|
@@ -40,7 +40,7 @@ describe Tree do
 
   it "does breadth_first search" do
     vals = (0..30).to_a
-    tree = Tree.new(Node, vals.shift)
+    tree = Tree.new(FlexNode, vals.shift)
     tree.root.new_child vals.shift
     tree.root.new_child vals.shift
     tree.root.children.each { |c|
@@ -87,9 +87,9 @@ describe NaryTree do
     }
   end
 
-  describe "with Node" do
+  describe "with FlexNode" do
     before do
-      @tree = NaryTree.new(Node, 42, child_slots: 3)
+      @tree = NaryTree.new(FlexNode, 42, child_slots: 3)
     end
 
     it "must have an open parent" do
@@ -105,9 +105,9 @@ describe NaryTree do
     end
   end
 
-  describe "with ChildNode" do
+  describe "with ChildFlexNode" do
     before do
-      @tree = NaryTree.new(ChildNode, 42, child_slots: 4)
+      @tree = NaryTree.new(ChildFlexNode, 42, child_slots: 4)
     end
 
     it "must have an open parent" do
@@ -126,7 +126,7 @@ end
 
 describe "BinaryTree" do
   before do
-    @tree = BinaryTree.new(Node, 42)
+    @tree = BinaryTree.new(FlexNode, 42)
   end
 
   it "must have 2 child_slots" do
@@ -144,7 +144,7 @@ describe "BinaryTree" do
 
   describe "searching" do
     before do
-      @tree = NaryTree.new(Node, 42, child_slots: 2)
+      @tree = NaryTree.new(FlexNode, 42, child_slots: 2)
       99.times { |i| @tree.push i }
     end
 
