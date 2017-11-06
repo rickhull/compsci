@@ -1,4 +1,4 @@
-require 'compsci/node'
+# require 'compsci/node'
 
 module CompSci
   # for now at least, this assumes children simply stack up

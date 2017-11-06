@@ -1,3 +1,4 @@
+require 'compsci/node'
 require 'compsci/tree'
 require 'minitest/autorun'
 
