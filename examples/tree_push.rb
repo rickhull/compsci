@@ -1,3 +1,4 @@
+require 'compsci/node'
 require 'compsci/tree'
 require 'compsci/timer'
 
@@ -13,7 +14,7 @@ EOF
 count = 0
 start = Timer.now
 start_1k = Timer.now
-tree = BinaryTree.new ChildNode, rand(99)
+tree = BinaryTree.new ChildFlexNode, rand(99)
 
 loop {
   count += 1
@@ -50,7 +51,7 @@ EOF
 vals = Array.new(30) { rand 99 }
 p vals
 
-tree = BinaryTree.new ChildNode, vals.shift
+tree = BinaryTree.new ChildFlexNode, vals.shift
 tree.push vals.shift until vals.empty?
 puts tree
 

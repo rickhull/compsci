@@ -1,3 +1,4 @@
+require 'compsci/node'
 require 'compsci/tree'
 require 'compsci/timer'
 
@@ -16,7 +17,7 @@ vals = Array.new(30) { rand 99 }
   # start with the same vals for each class
   my_vals = vals.dup
   p my_vals
-  tree = tree_class.new(ChildNode, my_vals.shift)
+  tree = tree_class.new(ChildFlexNode, my_vals.shift)
   tree.push my_vals.shift until my_vals.empty?
   p tree
   puts tree.display(width: 80)

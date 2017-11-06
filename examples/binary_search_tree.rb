@@ -1,3 +1,4 @@
+require 'compsci/node'
 require 'compsci/binary_search_tree'
 
 include CompSci
