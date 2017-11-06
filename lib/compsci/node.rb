@@ -1,5 +1,5 @@
 module CompSci
-  # has a value and an array of children
+  # has a value and an array of children; allows child gaps
   class Node
     attr_accessor :value
     attr_reader :children
@@ -14,18 +14,6 @@ module CompSci
       # @metadata = {}
     end
 
-    def add_child(node)
-      @children << node
-    end
-
-    def new_child(value)
-      self.add_child self.class.new(value)
-    end
-
-    def add_parent(node)
-      node.add_child(self)
-    end
-
     def to_s
       @value.to_s
     end
@@ -36,6 +24,22 @@ module CompSci
          self.object_id,
          self.to_s,
          @children.map(&:to_s).join(', ')]
+    end
+  end
+
+  # accumulate children; no child gaps
+  class FlexNode < Node
+    def add_child(node)
+      @children << node
+    end
+
+    # TODO: are we passing everything needed to self.class.new ?
+    def new_child(value)
+      self.add_child self.class.new(value)
+    end
+
+    def add_parent(node)
+      node.add_child(self)
     end
   end
 
@@ -57,15 +61,32 @@ module CompSci
       @parent ? @parent.children : []
     end
 
+    def set_child(idx, node)
+      node.parent ||= self
+      raise "node has a parent: #{node.parent}" if node.parent != self
+      @children[idx] = node
+    end
+
+    def set_parent(idx, node)
+      @parent = node
+      @parent.set_child(idx, self)
+    end
+  end
+
+  class ChildFlexNode < ChildNode
     def add_child(node)
       node.parent ||= self
       raise "node has a parent: #{node.parent}" if node.parent != self
-      super(node)
+      @children << node
+    end
+
+    def new_child(value)
+      self.add_child self.class.new(value)
     end
 
     def add_parent(node)
       @parent = node
-      super(node)
+      @parent.add_child(self)
     end
   end
 end

@@ -16,6 +16,18 @@ describe Node do
     }
   end
 
+  it "must not respond to :parent" do
+    @martin_sheen.respond_to?(:parent).must_equal false
+  end
+end
+
+describe FlexNode do
+  before do
+    @martin_sheen = FlexNode.new 'martin'
+    @charlie_sheen = FlexNode.new 'charlie'
+    @emilio_estevez = FlexNode.new 'emilio'
+  end
+
   it "must track children" do
     @charlie_sheen.add_parent(@martin_sheen)
     @martin_sheen.children.must_include @charlie_sheen
@@ -23,10 +35,6 @@ describe Node do
     @martin_sheen.children.wont_include @emilio_estevez
     @martin_sheen.add_child @emilio_estevez
     @martin_sheen.children.must_include @emilio_estevez
-  end
-
-  it "must not respond to :parent" do
-    @martin_sheen.respond_to?(:parent).must_equal false
   end
 
   it "must create children from scalars" do
@@ -49,6 +57,25 @@ describe ChildNode do
       n.parent.nil?.must_equal true
       n.children.must_be_empty
     }
+  end
+
+  it "must track parent and children" do
+    @charlie_sheen.set_parent(0, @martin_sheen)
+    @charlie_sheen.parent.must_equal @martin_sheen
+    @martin_sheen.children.must_include @charlie_sheen
+
+    @martin_sheen.children.wont_include @emilio_estevez
+    @martin_sheen.set_child(0, @emilio_estevez)
+    @martin_sheen.children.must_include @emilio_estevez
+    @emilio_estevez.parent.must_equal @martin_sheen
+  end
+end
+
+describe ChildFlexNode do
+  before do
+    @martin_sheen = ChildFlexNode.new 'martin'
+    @charlie_sheen = ChildFlexNode.new 'charlie'
+    @emilio_estevez = ChildFlexNode.new 'emilio'
   end
 
   it "must track parent and children" do
