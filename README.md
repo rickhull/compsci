@@ -9,10 +9,21 @@ Provided are some toy implementations for some basic computer science problems.
 * `Node`
   - `@value`
   - `@children`
-* `ChildNode` adds
+  - `#set_child(idx, node)`
+* `KeyNode` inherits from `Node`; adds a key
+  - `@key`
+* `FlexNode` inherits from `Node`; accumulates children
+  - `#add_child(node)`
+  - `#new_child(value)`
+  - `#add_parent(node)`
+* `ChildNode` inherits from `Node`; adds a parent
   - `@parent`
   - `#gen`
   - `#siblings`
+* `ChildFlexNode` inherits from `ChildNode`; accumulates children
+  - `#add_child(node)`
+  - `#new_child(value)`
+  - `#add_parent(node)`
 
 ## [`Tree`](lib/compsci/tree.rb) data structures
 
@@ -54,6 +65,11 @@ Efficient Array implementation of a complete tree.
   - `CompleteNaryTree.new(child_slots: 3)`
 * `CompleteQuaternaryTree`
   - `CompleteNaryTree.new(child_slots: 4)`
+
+## [`BinarySearchTree`](lib/compsci/binary_search_tree.rb) data structure
+
+Based on `BinaryTree` with `KeyNode`s.  The position of a node depends on its
+key and how the key relates to the existing node keys.
 
 ## [`Heap`](lib/compsci/heap.rb) data structure
 
