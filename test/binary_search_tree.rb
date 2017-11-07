@@ -6,16 +6,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe BinarySearchTree do
-  def ww2_names(count)
-    Array.new(count) { |i| Names::WW2[i].to_s }
-  end
-
-  def nato_names(count)
-    Array.new(count) { |i| Names::NATO[i].to_s }
-  end
-
   before do
-    @keys = ww2_names(4)
+    @keys = Array.new(4) { |i| Names::WW2[i] }
     @values = Array.new(4) { Names::SOLAR.sample }
     @nodes = Array.new(4) { |i|
       KeyNode.new(@values[i], key: @keys[i], children: 2)
