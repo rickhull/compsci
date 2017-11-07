@@ -50,11 +50,12 @@ module CompSci
 
   # accumulate children; no child gaps
   class FlexNode < Node
+    # These methods look like convenience methods, but they provide the
+    # FlexNode interface also used by ChildFlexNode
     def add_child(node)
       @children << node
     end
 
-    # TODO: are we passing everything needed to self.class.new ?
     def new_child(value)
       self.add_child self.class.new(value)
     end
@@ -95,6 +96,8 @@ module CompSci
   end
 
   # ChildNode which accumulates children with no gaps
+  # It meets the FlexNode API but does not inherit from FlexNode since it
+  # needs to reimplement each method; instead get parent stuff from ChildNode
   class ChildFlexNode < ChildNode
     def add_child(node)
       node.parent ||= self
