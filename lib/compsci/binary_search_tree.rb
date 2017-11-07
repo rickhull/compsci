@@ -37,14 +37,14 @@ module CompSci
 
     def search_recursive(key, node: @root)
       return node if node.nil? or node.key == key
-      child = node.key < key ? node.children[0] : node.children[1]
+      child = key < node.key ? node.children[0] : node.children[1]
       search_recursive(key, node: child)
     end
 
     def search_iterative(key, node: @root)
       while !node.nil?
         return node if node.key == key
-        node = node.key < key ? node.children[0] : node.children[1]
+        node = key < node.key ? node.children[0] : node.children[1]
       end
       node
     end
