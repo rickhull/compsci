@@ -15,21 +15,23 @@ module CompSci
       }.join
     end
 
+    # helper method; any object which responds to key, value, and children
+    # may be used
     def self.new_node(key, val)
-      KeyNode.new(val, key: key, children: 2)
+      CompSci::KeyNode.new(val, key: key, children: 2)
     end
 
-    # ARGH, can't decide between passing klass, *args
-    # or passing in an instantiated Node as root
-    # We already started with the latter and shifted to the former
-    # I'm tempted to revert to the latter
+    def self.new_with_kv(key, val)
+      self.new(self.new_node(key, val))
+    end
+
     def initialize(root_node)
       @node_class = root_node.class
       @child_slots = 2
       if root_node.children.size == @child_slots
         @root = root_node
       else
-        raise "bad root: #{root_node}; expected 2 child slots"
+        raise "bad root: #{root_node}; expected #{@child_slots} child slots"
       end
     end
 
