@@ -2,19 +2,6 @@ require 'compsci/node'
 require 'compsci/tree'
 
 module CompSci
-  class KeyNode < Node
-    attr_accessor :key
-
-    def initialize(val, key: nil, children: [])
-      @key = key
-      super(val, children: children)
-    end
-
-    def to_s
-      [key, value].join(':')
-    end
-  end
-
   class BinarySearchTree < BinaryTree
     def self.display_level(nodes: [], width: 80)
       unless self.power_of?(nodes.size, 2)

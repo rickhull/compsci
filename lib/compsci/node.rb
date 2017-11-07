@@ -33,6 +33,21 @@ module CompSci
     end
   end
 
+  # adds a key to Node; often the key is used to place the node in the
+  # tree, independent of the value; e.g. key=priority, value=process_id
+  class KeyNode < Node
+    attr_accessor :key
+
+    def initialize(val, key: nil, children: [])
+      @key = key
+      super(val, children: children)
+    end
+
+    def to_s
+      [key, value].join(':')
+    end
+  end
+
   # accumulate children; no child gaps
   class FlexNode < Node
     def add_child(node)
@@ -79,6 +94,7 @@ module CompSci
     end
   end
 
+  # ChildNode which accumulates children with no gaps
   class ChildFlexNode < ChildNode
     def add_child(node)
       node.parent ||= self
