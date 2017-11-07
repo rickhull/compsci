@@ -21,6 +21,30 @@ describe Node do
   end
 end
 
+describe KeyNode do
+  before do
+    @martin_sheen =   KeyNode.new 'martin',  key: 'marty'
+    @charlie_sheen =  KeyNode.new 'charlie', key: 'charles'
+    @emilio_estevez = KeyNode.new 'emilio',  key: 'emile'
+  end
+
+  it "must start with no children" do
+    [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
+      n.children.must_be_empty
+    }
+  end
+
+  it "must not respond to :parent" do
+    @martin_sheen.respond_to?(:parent).must_equal false
+  end
+
+  it "must have a key" do
+    @martin_sheen.key.must_equal 'marty'
+    @charlie_sheen.key.must_equal 'charles'
+    @emilio_estevez.key.must_equal 'emile'
+  end
+end
+
 describe FlexNode do
   before do
     @martin_sheen = FlexNode.new 'martin'
