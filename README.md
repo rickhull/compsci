@@ -164,12 +164,10 @@ cumulative: 0.828
 This helps map a range of small integers to friendly names,
 typically in alphabetical order.
 
-* Constants: `ENGLISH_UPPER` `ENGLISH_LOWER` `WW1` `WW2` `NATO` `CRYPTO`
-             `PLANETS` `SOLAR`
+* `ENGLISH_UPPER` `ENGLISH_LOWER` `WW1` `WW2` `NATO` `CRYPTO` `PLANETS` `SOLAR`
 * `Names.assign`
 * [`Names::Greek`](lib/compsci/names/greek.rb)
-  - Constants: `UPPER` `LOWER` `SYMBOLS` `CHAR_MAP` `LATIN_SYMBOLS`
-               `SYMBOLS26`
+  - `UPPER` `LOWER` `SYMBOLS` `CHAR_MAP` `LATIN_SYMBOLS` `SYMBOLS26`
   - `Names::Greek.upper`
   - `Names::Greek.lower`
   - `Names::Greek.sym`
