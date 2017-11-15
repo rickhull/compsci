@@ -68,8 +68,15 @@ Efficient Array implementation of a complete tree.
 
 ## [`BinarySearchTree`](lib/compsci/binary_search_tree.rb) data structure
 
-Based on `BinaryTree` with `KeyNode`s.  The position of a node depends on its
+Based on `BinaryTree` of `KeyNode`.  The position of a node depends on its
 key and how the key relates to the existing node keys.
+
+* `BinarySearchTree`
+  - `BinarySearchTree.new_node` helper method to create a node
+  - `BinarySearchTree.new_with_kv` helper method to create a tree
+  - `#search_recursive`
+  - `#search_iterative`
+  - `#insert_recursive`
 
 ## [`Heap`](lib/compsci/heap.rb) data structure
 
