@@ -3,18 +3,6 @@ require 'compsci/tree'
 
 module CompSci
   class BinarySearchTree < BinaryTree
-    def self.display_level(nodes: [], width: 80)
-      unless self.power_of?(nodes.size, 2)
-        raise "unexpected node count: #{nodes.size}"
-      end
-      block_width = [width / nodes.size, 1].max
-      nodes.map { |node|
-        str = node ? node.to_s : '_'
-        space = [(block_width + str.size) / 2, str.size + 1].max
-        str.ljust(space, ' ').rjust(block_width, ' ')
-      }.join
-    end
-
     # helper method; any object which responds to key, value, and children
     # may be used
     def self.new_node(key, val)
@@ -67,20 +55,5 @@ module CompSci
     end
     alias_method :insert, :insert_recursive
     alias_method :[]=, :insert
-
-    def display(node: @root, width: 80)
-      levels = [self.class.display_level(nodes: [node], width: width)]
-      nodes = node.children
-      while nodes.any? { |n| !n.nil? }
-        levels << self.class.display_level(nodes: nodes, width: width)
-        children = []
-        nodes.each { |n|
-          children += n ? n.children : Array.new(@child_slots)
-        }
-        nodes = children
-      end
-      levels.join("\n")
-    end
-    alias_method :to_s, :display
   end
 end
