@@ -77,7 +77,6 @@ describe BinarySearchTree do
     }
 
     2.times {
-      i = new_order.sample
       key = Names::NATO[new_order.sample]
       node = tree.search_iterative key
       node.wont_be_nil
@@ -85,7 +84,6 @@ describe BinarySearchTree do
     }
 
     2.times {
-      i = new_order.sample
       key = Names::NATO[new_order.sample]
       node = tree.search_recursive key
       node.wont_be_nil
