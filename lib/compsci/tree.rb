@@ -42,6 +42,15 @@ module CompSci
   end
 
   class NaryTree < Tree
+    def self.display_level(nodes: [], width: 80)
+      block_width = [width / nodes.size, 1].max
+      nodes.map { |node|
+        str = node ? node.to_s : '_'
+        space = [(block_width + str.size) / 2, str.size + 1].max
+        str.ljust(space, ' ').rjust(block_width, ' ')
+      }.join
+    end
+
     # thanks apeiros
     # https://gist.github.com/rickhull/d0b579aa08c85430b0dc82a791ff12d6
     def self.power_of?(num, base)
@@ -81,26 +90,18 @@ module CompSci
       self.open_parent.new_child value
     end
 
-    def display(width: nil)
-      str = ''
-      old_level = 0
-      width ||= @child_slots * 40
-      self.bf_search { |node|
-        raise "#{node.class} not yet supported" unless node.respond_to? :gen
-        level = node.gen
-        if old_level != level
-          str += "\n"
-          old_level = level
-        end
-        # center in block_width
-        slots = @child_slots**level
-        block_width = width / slots
-        val = node.to_s
-        space = [(block_width + val.size) / 2, val.size + 1].max
-        str += val.ljust(space, ' ').rjust(block_width, ' ')
-        false
-      }
-      str
+    def display(node: @root, width: 80)
+      levels = [self.class.display_level(nodes: [node], width: width)]
+      nodes = node.children
+      while nodes.any? { |n| !n.nil? }
+        levels << self.class.display_level(nodes: nodes, width: width)
+        children = []
+        nodes.each { |n|
+          children += Array.new(@child_slots) { |i| n and n.children[i] }
+        }
+        nodes = children
+      end
+      levels.join("\n")
     end
     alias_method :to_s, :display
   end
@@ -109,23 +110,6 @@ module CompSci
     def initialize(node_class, val)
       super(node_class, val, child_slots: 2)
     end
-
-    def display(width: 80)
-      count = 0
-      str = ''
-      self.bf_search { |node|
-        count += 1
-        level = Math.log(count, 2).floor
-        block_width = width / (2**level)
-        val = node.to_s
-        str += "\n" if 2**level == count and count > 1
-        space = [(block_width + val.size) / 2, val.size + 1].max
-        str += val.ljust(space, ' ').rjust(block_width, ' ')
-        false # keep searching to visit every node
-      }
-      str
-    end
-    alias_method :to_s, :display
   end
 
   class TernaryTree < NaryTree
