@@ -171,6 +171,11 @@ typically in alphabetical order.
   - `Names::Greek.upper`
   - `Names::Greek.lower`
   - `Names::Greek.sym`
+* [`Names::Pokemon`](lib/compsci/names/pokemon.rb)
+  - `Names::Pokemon.array`
+  - `Names::Pokemon.hash`
+  - `Names::Pokemon.grep`
+  - `Names::Pokemon.sample`
 
 ## [`Simplex`](lib/compsci/simplex.rb) class
 
