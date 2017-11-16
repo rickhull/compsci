@@ -1,5 +1,6 @@
 require 'compsci/names'
 require 'compsci/names/greek'
+require 'compsci/names/pokemon'
 require 'minitest/autorun'
 
 include CompSci
@@ -62,36 +63,75 @@ describe Names do
         Names.assign('1', s26).must_equal :beta
       end
     end
-  end
 
-  describe "Greek.sym" do
-    it "must handle strings and integers" do
-      Names::Greek.sym('cat').must_equal :gamma
-      Names::Greek.sym('Cat').must_equal :gamma
-      Names::Greek.sym('zeta').must_equal :omega
-      Names::Greek.sym(0).must_equal :alpha
-      Names::Greek.sym('1').must_equal :beta
-      Names::Greek.sym(23).must_equal :omega
+    describe "Greek.sym" do
+      it "must handle strings and integers" do
+        Names::Greek.sym('cat').must_equal :gamma
+        Names::Greek.sym('Cat').must_equal :gamma
+        Names::Greek.sym('zeta').must_equal :omega
+        Names::Greek.sym(0).must_equal :alpha
+        Names::Greek.sym('1').must_equal :beta
+        Names::Greek.sym(23).must_equal :omega
+      end
+    end
+
+    describe "Greek.lower" do
+      it "must handle strings and integers" do
+        third = Names::Greek::LOWER[2]
+        Names::Greek.lower('cat').must_equal third
+        Names::Greek.lower('Cat').must_equal third
+        Names::Greek.lower(2).must_equal third
+        Names::Greek.lower('2').must_equal third
+      end
+    end
+
+    describe "Greek.upper" do
+      it "must handle strings and integers" do
+        fourth = Names::Greek::UPPER[3]
+        Names::Greek.upper('dog').must_equal fourth
+        Names::Greek.upper('Dog').must_equal fourth
+        Names::Greek.upper(3).must_equal fourth
+        Names::Greek.upper('3').must_equal fourth
+      end
     end
   end
 
-  describe "Greek.lower" do
-    it "must handle strings and integers" do
-      third = Names::Greek::LOWER[2]
-      Names::Greek.lower('cat').must_equal third
-      Names::Greek.lower('Cat').must_equal third
-      Names::Greek.lower(2).must_equal third
-      Names::Greek.lower('2').must_equal third
+  describe Names::Pokemon do
+    it "must have an array" do
+      ary = Names::Pokemon.array
+      ary.must_be_kind_of Array
+      ary.size.must_be :>, 99
     end
-  end
 
-  describe "Greek.upper" do
-    it "must handle strings and integers" do
-      fourth = Names::Greek::UPPER[3]
-      Names::Greek.upper('dog').must_equal fourth
-      Names::Greek.upper('Dog').must_equal fourth
-      Names::Greek.upper(3).must_equal fourth
-      Names::Greek.upper('3').must_equal fourth
+    it "must have a hash keyed by first letter" do
+      hsh = Names::Pokemon.hash
+      hsh.must_be_kind_of Hash
+      hsh.size.must_equal 26
+      hsh['n'].must_be_kind_of Array
+      hsh['n'].first.must_be_kind_of String
+      hsh['n'].first.must_match(/^n/)
+    end
+
+    it "must grep for charizard" do
+      ary = Names::Pokemon.grep(/^char/, all: true)
+      ary.must_include 'charizard'
+      char = Names::Pokemon.grep(/^char/, all: false)
+      char.wont_equal 'charizard'
+      char.must_equal 'charmander'
+    end
+
+    it "must convert vals to key letters" do
+      [5, '5', 'food', 'Food'].each { |valid|
+        Names::Pokemon.key(valid).must_equal 'f'
+      }
+
+      ['---', Names::Pokemon].each { |invalid_raise|
+        proc { Names::Pokemon.key(invalid_raise) }.must_raise Exception
+      }
+
+      [4359873548].each { |invalid_nil|
+        Names::Pokemon.key(invalid_nil).nil?.must_equal true
+      }
     end
   end
 end
