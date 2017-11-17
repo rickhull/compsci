@@ -56,6 +56,7 @@ module CompSci::Names::Pokemon
 
   # return a pokemon sampled from those keyed by val
   def self.sample(val)
-    self.hash[self.key(val)]&.sample
+    ary = self.hash[self.key(val)]
+    ary.sample if ary
   end
 end
