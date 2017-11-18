@@ -19,14 +19,6 @@ Provided are some toy implementations for some basic computer science problems.
   - `@parent`
   - `#gen`
   - `#siblings`
-* `FlexNode < Node`
-  - `#add_child(node)`
-  - `#new_child(value)`
-  - `#add_parent(node)`
-* `ChildFlexNode < ChildNode`
-  - `#add_child(node)`
-  - `#new_child(value)`
-  - `#add_parent(node)`
 
 ## [`Tree`](lib/compsci/tree.rb) classes
 
@@ -36,8 +28,6 @@ Provided are some toy implementations for some basic computer science problems.
   - `#bf_search`
 * `NaryTree < Tree`
   - `@child_slots` (number of children per node)
-  - `#open_parent` O(n) to find a node with open child slots
-  - `#push` append `#open_parent.children`
 * `BinaryTree < NaryTree`
   - `@child_slots = 2`
 * `TernaryTree < NaryTree`
