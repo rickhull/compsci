@@ -1,87 +1,87 @@
-Run options: --seed 58755
+Run options: --seed 11230
 
 # Running:
 
-..SS..............................................................................................
+............................................................................................................S..S
 
-Finished in 0.362497s, 270.3469 runs/s, 33934.0502 assertions/s.
+Finished in 0.372100s, 300.9945 runs/s, 33257.2081 assertions/s.
 
-98 runs, 12301 assertions, 0 failures, 0 errors, 2 skips
+112 runs, 12375 assertions, 0 failures, 0 errors, 2 skips
 
 You have skipped tests. Run with --verbose for details.
-/proc/loadavg 0.16 0.09 0.04 1/84 3016
+/proc/loadavg 0.15 0.03 0.01 1/97 17947
 
 #
 # timing CompleteTree(N)#push where N is the size of the tree
 #
 
-CompleteTree(10) push: 0.00000067
-CompleteTree(100) push: 0.00000068
-CompleteTree(1000) push: 0.00000065
-CompleteTree(10000) push: 0.00000065
-CompleteTree(100000) push: 0.00000066
-best fit: power (0.346); a = 0.000001, b = -0.002851
+CompleteTree(10) push: 0.00000062
+CompleteTree(100) push: 0.00000053
+CompleteTree(1000) push: 0.00000058
+CompleteTree(10000) push: 0.00000059
+CompleteTree(100000) push: 0.00000057
+best fit: logarithmic (0.034); a = 0.000001, b = -0.000000
 
 #
 # timing CompleteTree#push where N is the count of pushes
 #
 
-10x CompleteTree#push: 0.00000235
-100x CompleteTree#push: 0.00001850
-1000x CompleteTree#push: 0.00017574
-10000x CompleteTree#push: 0.00174216
-100000x CompleteTree#push: 0.01748368
-best fit: linear (1.000); a = -0.000001, b = 0.000000
+10x CompleteTree#push: 0.00000217
+100x CompleteTree#push: 0.00001922
+1000x CompleteTree#push: 0.00017450
+10000x CompleteTree#push: 0.00183778
+100000x CompleteTree#push: 0.01882214
+best fit: linear (1.000); a = -0.000014, b = 0.000000
 Warming up --------------------------------------
 Fibonacci.classic(25)
-                         6.000  i/100ms
+                         7.000  i/100ms
 Fibonacci.cache_recursive(25)
-                        10.928k i/100ms
+                        10.524k i/100ms
 Fibonacci.cache_iterative(25)
-                        26.706k i/100ms
+                        25.030k i/100ms
 Calculating -------------------------------------
 Fibonacci.classic(25)
-                         74.760  (± 1.3%) i/s -    228.000  in   3.049983s
+                         74.143  (± 1.3%) i/s -    224.000  in   3.021444s
 Fibonacci.cache_recursive(25)
-                        116.161k (± 4.6%) i/s -    349.696k in   3.017193s
+                        112.711k (± 4.9%) i/s -    347.292k in   3.088990s
 Fibonacci.cache_iterative(25)
-                        304.172k (± 1.0%) i/s -    934.710k in   3.073262s
+                        288.142k (± 0.9%) i/s -    876.050k in   3.040583s
 
 Comparison:
-Fibonacci.cache_iterative(25):   304172.5 i/s
-Fibonacci.cache_recursive(25):   116160.9 i/s - 2.62x  slower
-Fibonacci.classic(25):       74.8 i/s - 4068.66x  slower
+Fibonacci.cache_iterative(25):   288141.5 i/s
+Fibonacci.cache_recursive(25):   112710.6 i/s - 2.56x  slower
+Fibonacci.classic(25):       74.1 i/s - 3886.27x  slower
 
 Warming up --------------------------------------
 Fibonacci.cache_iterative(500)
-                       711.000  i/100ms
+                       697.000  i/100ms
 Fibonacci.dynamic(500)
-                       729.000  i/100ms
+                       714.000  i/100ms
 Fibonacci.matrix(500)
-                       865.000  i/100ms
+                       868.000  i/100ms
 Calculating -------------------------------------
 Fibonacci.cache_iterative(500)
-                          7.220k (± 1.1%) i/s -     22.041k in   3.052933s
+                          6.734k (± 5.4%) i/s -     20.213k in   3.010885s
 Fibonacci.dynamic(500)
-                          7.293k (± 0.6%) i/s -     22.599k in   3.098787s
+                          7.123k (± 0.8%) i/s -     21.420k in   3.007128s
 Fibonacci.matrix(500)
-                          8.862k (± 0.7%) i/s -     26.815k in   3.025844s
+                          8.858k (± 1.2%) i/s -     26.908k in   3.038113s
 
 Comparison:
-Fibonacci.matrix(500):     8862.4 i/s
-Fibonacci.dynamic(500):     7293.2 i/s - 1.22x  slower
-Fibonacci.cache_iterative(500):     7220.4 i/s - 1.23x  slower
+Fibonacci.matrix(500):     8858.0 i/s
+Fibonacci.dynamic(500):     7123.5 i/s - 1.24x  slower
+Fibonacci.cache_iterative(500):     6734.2 i/s - 1.32x  slower
 
 Warming up --------------------------------------
-        Simplex init   894.000  i/100ms
-         init, solve    77.000  i/100ms
+        Simplex init   873.000  i/100ms
+         init, solve    65.000  i/100ms
 Calculating -------------------------------------
-        Simplex init      9.008k (± 0.6%) i/s -     27.714k in   3.076572s
-         init, solve    502.429  (±18.9%) i/s -      1.463k in   3.016966s
+        Simplex init      8.869k (± 1.7%) i/s -     27.063k in   3.052138s
+         init, solve    494.801  (±20.2%) i/s -      1.495k in   3.145544s
 
 Comparison:
-        Simplex init:     9008.4 i/s
-         init, solve:      502.4 i/s - 17.93x  slower
+        Simplex init:     8869.5 i/s
+         init, solve:      494.8 i/s - 17.93x  slower
 
 SIMPLEX_PARAMS.size = 14
 simplices.size = 14
@@ -90,37 +90,26 @@ memsize(simplices): 152
 memsize(simplices after solving): 152
 memsize(results): 152
 Warming up --------------------------------------
-99x BinaryTree(ChildNode)#push
-                       174.000  i/100ms
-99x BinaryTree(FlexNode)#push
-                       124.000  i/100ms
-99x TernaryTree(ChildFlexNode)#push
-                       331.000  i/100ms
-99x TernaryTree(FlexNode)#push
-                       228.000  i/100ms
-Calculating -------------------------------------
-99x BinaryTree(ChildNode)#push
-                          1.761k (± 1.2%) i/s -      5.394k in   3.063623s
-99x BinaryTree(FlexNode)#push
-                          1.247k (± 1.0%) i/s -      3.844k in   3.083638s
-99x TernaryTree(ChildFlexNode)#push
-                          3.371k (± 0.9%) i/s -     10.261k in   3.044276s
-99x TernaryTree(FlexNode)#push
-                          2.290k (± 1.0%) i/s -      7.068k in   3.086427s
+99x BinaryTree(ChildFlexNode)#push
+                    /home/vagrant/git/compsci/lib/compsci/tree.rb:106:in `initialize': wrong number of arguments (given 2, expected 1) (ArgumentError)
+	from /home/vagrant/git/compsci/test/bench/tree.rb:11:in `new'
+	from /home/vagrant/git/compsci/test/bench/tree.rb:11:in `block (2 levels) in <top (required)>'
+	from /home/vagrant/.gem/ruby/2.4.0/gems/benchmark-ips-2.7.2/lib/benchmark/ips/job/entry.rb:53:in `call_times'
+	from /home/vagrant/.gem/ruby/2.4.0/gems/benchmark-ips-2.7.2/lib/benchmark/ips/job.rb:220:in `block in run_warmup'
+	from /home/vagrant/.gem/ruby/2.4.0/gems/benchmark-ips-2.7.2/lib/benchmark/ips/job.rb:206:in `each'
+	from /home/vagrant/.gem/ruby/2.4.0/gems/benchmark-ips-2.7.2/lib/benchmark/ips/job.rb:206:in `run_warmup'
+	from /home/vagrant/.gem/ruby/2.4.0/gems/benchmark-ips-2.7.2/lib/benchmark/ips/job.rb:185:in `block in run'
+	from /home/vagrant/.gem/ruby/2.4.0/gems/benchmark-ips-2.7.2/lib/benchmark/ips/job.rb:184:in `times'
+	from /home/vagrant/.gem/ruby/2.4.0/gems/benchmark-ips-2.7.2/lib/benchmark/ips/job.rb:184:in `run'
+	from /home/vagrant/.gem/ruby/2.4.0/gems/benchmark-ips-2.7.2/lib/benchmark/ips.rb:59:in `ips'
+	from /home/vagrant/git/compsci/test/bench/tree.rb:7:in `<top (required)>'
+	from /home/vagrant/.rubies/ruby-2.4.0/lib/ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+	from /home/vagrant/.rubies/ruby-2.4.0/lib/ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require'
+	from /home/vagrant/.rubies/ruby-2.4.0/lib/ruby/gems/2.4.0/gems/rake-12.0.0/lib/rake/rake_test_loader.rb:15:in `block in <main>'
+	from /home/vagrant/.rubies/ruby-2.4.0/lib/ruby/gems/2.4.0/gems/rake-12.0.0/lib/rake/rake_test_loader.rb:4:in `select'
+	from /home/vagrant/.rubies/ruby-2.4.0/lib/ruby/gems/2.4.0/gems/rake-12.0.0/lib/rake/rake_test_loader.rb:4:in `<main>'
+rake aborted!
+Command failed with status (1)
 
-Comparison:
-99x TernaryTree(ChildFlexNode)#push:     3370.9 i/s
-99x TernaryTree(FlexNode)#push:     2290.2 i/s - 1.47x  slower
-99x BinaryTree(ChildNode)#push:     1760.9 i/s - 1.91x  slower
-99x BinaryTree(FlexNode)#push:     1246.7 i/s - 2.70x  slower
-
-Run options: --seed 57833
-
-# Running:
-
-bench_Heap_push_constant_0_9999_	 0.000082	 0.000026	 0.000383	 0.001384	 0.012775
-.
-
-Finished in 0.028621s, 34.9389 runs/s, 34.9389 assertions/s.
-
-1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
+Tasks: TOP => bench
+(See full trace by running task with --trace)
