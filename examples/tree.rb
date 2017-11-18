@@ -22,7 +22,7 @@ vals = Array.new(30) { rand 99 }
   tree = PushTree.new(root, child_slots: slots)
   tree.push my_vals.shift until my_vals.empty?
   p tree
-  puts tree.display(width: 80)
+  puts root.display(width: 80)
   puts
   visited = []
   tree.df_search { |n|
@@ -38,20 +38,7 @@ vals = Array.new(30) { rand 99 }
   puts "push: #{my_vals.inspect}"
   tree.push my_vals.shift until my_vals.empty?
   puts
-  puts tree.display(width: 80)
+  puts root.display(width: 80)
   puts
   puts
-
-
-
-
-  puts <<EOF
-
-#
-# Now trying Node#display
-#
-
-EOF
-
-  puts tree.root.display(width: 80)
 }

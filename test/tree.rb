@@ -104,11 +104,12 @@ describe PushTree do
       @tree.child_slots.must_equal 2
     end
 
+    # TODO: move to test/node.rb
     it "must to_s" do
       item_count = 31
       # tree already has a root node
       (item_count - 1).times { @tree.push rand 99 }
-      str = @tree.to_s
+      str = @tree.root.display
       line_count = str.split("\n").size
       line_count.must_equal Math.log(item_count + 1, 2).ceil
     end

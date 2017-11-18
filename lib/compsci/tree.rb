@@ -2,40 +2,12 @@
 
 module CompSci
   class NaryTree
-    def self.xdisplay_level(nodes: [], width: 80)
-      block_width = [width / nodes.size, 1].max
-      nodes.map { |node|
-        str = node ? node.to_s : '_'
-        space = [(block_width + str.size) / 2, str.size + 1].max
-        str.ljust(space, ' ').rjust(block_width, ' ')
-      }.join
-    end
-
     attr_reader :root, :child_slots
 
     def initialize(root_node, child_slots:)
       @root = root_node
       @child_slots = child_slots
     end
-
-    def xdisplay(node: @root, width: 80)
-      levels = [self.class.display_level(nodes: [node], width: width)]
-      nodes = node.children
-      while nodes.any? { |n| !n.nil? }
-        levels << self.class.display_level(nodes: nodes, width: width)
-        children = []
-        nodes.each { |n|
-          children += Array.new(@child_slots) { |i| n and n.children[i] }
-        }
-        nodes = children
-      end
-      levels.join("\n")
-    end
-
-    def display(width: 80)
-      @root.display(width: width)
-    end
-    alias_method :to_s, :display
   end
 
   class BinaryTree < NaryTree

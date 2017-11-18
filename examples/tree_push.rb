@@ -17,7 +17,7 @@ p vals
 root = ChildFlexNode.new vals.shift
 tree = PushTree.new root, child_slots: 2
 tree.push vals.shift until vals.empty?
-puts tree
+puts root.display
 
 p tree
 puts
@@ -32,7 +32,7 @@ vals = Array.new(30) { rand 99 }
 puts "push: #{vals.inspect}"
 
 tree.push vals.shift until vals.empty?
-puts tree
+puts root.display
 puts
 
 
