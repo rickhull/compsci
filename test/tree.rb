@@ -4,70 +4,6 @@ require 'minitest/autorun'
 
 include CompSci
 
-describe Tree do
-  before do
-    @root = FlexNode.new 42
-    @tree = Tree.new(@root)
-    @vals = Array.new(99) { rand 99 }
-  end
-
-  it "is populated via the root node" do
-    @vals.each { |v| @tree.root.new_child v }
-    @tree.root.children.size.must_equal @vals.size
-    @root.children.size.must_equal @vals.size
-  end
-
-  it "does depth_first search" do
-    vals = (0..30).to_a
-    root = FlexNode.new(vals.shift)
-    tree = Tree.new(root)
-    tree.root.new_child vals.shift
-    tree.root.new_child vals.shift
-    tree.root.children.each { |c|
-      c.new_child vals.shift
-      c.new_child vals.shift
-
-      c.children.each { |cc|
-        cc.new_child vals.shift
-        cc.new_child vals.shift
-      }
-    }
-
-    visited = []
-    tree.df_search { |n|
-      visited << n.value
-      false
-    }
-    visited.wont_be_empty
-    visited.must_equal [0, 1, 3, 5, 6, 4, 7, 8, 2, 9, 11, 12, 10, 13, 14]
-  end
-
-  it "does breadth_first search" do
-    vals = (0..30).to_a
-    root = FlexNode.new(vals.shift)
-    tree = Tree.new(root)
-    tree.root.new_child vals.shift
-    tree.root.new_child vals.shift
-    tree.root.children.each { |c|
-      c.new_child vals.shift
-      c.new_child vals.shift
-
-      c.children.each { |cc|
-        cc.new_child vals.shift
-        cc.new_child vals.shift
-      }
-    }
-
-    visited = []
-    tree.bf_search { |n|
-      visited << n.value
-      false
-    }
-    visited.wont_be_empty
-    visited.must_equal [0, 1, 2, 3, 4, 9, 10, 5, 6, 7, 8, 11, 12, 13, 14]
-  end
-end
-
 describe NaryTree do
   describe "NaryTree.power_of?" do
     it "must determine if num is a power of base" do
@@ -96,10 +32,11 @@ describe NaryTree do
 end
 
 describe PushTree do
-  describe "with FlexNode" do
+  describe "Binary PushTree with FlexNode" do
     before do
-      @root = FlexNode.new 42
-      @tree = PushTree.new(@root, child_slots: 3)
+      @vals = (0..30).to_a
+      @root = FlexNode.new @vals.shift
+      @tree = PushTree.new(@root, child_slots: 2)
     end
 
     it "must have an open parent" do
@@ -110,8 +47,52 @@ describe PushTree do
     it "must push a value onto an open parent" do
       op = @tree.open_parent
       opc = op.children.size
-      @tree.push 5
+      @tree.push @vals.shift
       @tree.open_parent.children.size.must_equal opc + 1
+    end
+
+    it "does depth-first search" do
+      @tree.root.new_child @vals.shift
+      @tree.root.new_child @vals.shift
+      @tree.root.children.each { |c|
+        c.new_child @vals.shift
+        c.new_child @vals.shift
+
+        c.children.each { |cc|
+          cc.new_child @vals.shift
+          cc.new_child @vals.shift
+        }
+      }
+
+      visited = []
+      @tree.df_search { |n|
+        visited << n.value
+        false
+      }
+      visited.wont_be_empty
+      visited.must_equal [0, 1, 3, 5, 6, 4, 7, 8, 2, 9, 11, 12, 10, 13, 14]
+    end
+
+    it "does breadth-first search" do
+      @tree.root.new_child @vals.shift
+      @tree.root.new_child @vals.shift
+      @tree.root.children.each { |c|
+        c.new_child @vals.shift
+        c.new_child @vals.shift
+
+        c.children.each { |cc|
+          cc.new_child @vals.shift
+          cc.new_child @vals.shift
+        }
+      }
+
+      visited = []
+      @tree.bf_search { |n|
+        visited << n.value
+        false
+      }
+      visited.wont_be_empty
+      visited.must_equal [0, 1, 2, 3, 4, 9, 10, 5, 6, 7, 8, 11, 12, 13, 14]
     end
   end
 

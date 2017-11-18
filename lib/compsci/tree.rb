@@ -1,47 +1,7 @@
 # require 'compsci/node'
 
 module CompSci
-  # for now at least, this assumes children simply stack up
-  # children like: [nil, child1, child2] are not supported
-  class Tree
-    attr_reader :root
-
-    def initialize(root_node)
-      @root = root_node
-    end
-
-    # does not support children gaps
-    def df_search(node: nil, &blk)
-      node ||= @root
-      return node if yield node
-      node.children.each { |c|
-        stop_node = self.df_search(node: c, &blk)
-        return stop_node if stop_node
-      }
-      nil
-    end
-
-    # does not support children gaps
-    def bf_search(node: nil, &blk)
-      node ||= @root
-      destinations = [node]
-      while !destinations.empty?
-        node = destinations.shift
-        return node if yield node
-        destinations += node.children
-      end
-      nil
-    end
-
-    def df_search_generic(node: nil, &blk)
-      # Perform pre-order operation
-      # children.each { Perform in-order operation }
-      # Perform post-order operation
-      puts "not defined yet"
-    end
-  end
-
-  class NaryTree < Tree
+  class NaryTree
     def self.display_level(nodes: [], width: 80)
       block_width = [width / nodes.size, 1].max
       nodes.map { |node|
@@ -60,7 +20,7 @@ module CompSci
       mod == 0
     end
 
-    attr_reader :child_slots
+    attr_reader :root, :child_slots
 
     def initialize(root_node, child_slots:)
       @root = root_node
@@ -111,6 +71,29 @@ module CompSci
     # this only works if @root.respond_to? :new_child
     def push(value)
       self.open_parent.new_child value
+    end
+
+    # does not support children gaps
+    def bf_search(node: nil, &blk)
+      node ||= @root
+      destinations = [node]
+      while !destinations.empty?
+        node = destinations.shift
+        return node if yield node
+        destinations += node.children
+      end
+      nil
+    end
+
+    # does not support children gaps
+    def df_search(node: nil, &blk)
+      node ||= @root
+      return node if yield node
+      node.children.each { |c|
+        stop_node = self.df_search(node: c, &blk)
+        return stop_node if stop_node
+      }
+      nil
     end
 
     def open_parent?(node)
