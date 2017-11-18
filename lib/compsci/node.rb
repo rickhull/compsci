@@ -18,10 +18,9 @@ module CompSci
       @children[idx]
     end
 
-    def set_child(idx, node)
+    def []=(idx, node)
       @children[idx] = node
     end
-    alias_method :[]=, :set_child
 
     def to_s
       @value.to_s
@@ -69,16 +68,11 @@ module CompSci
       @parent ? @parent.children : []
     end
 
-    def set_child(idx, node)
+    # update both sides of the relationship
+    def []=(idx, node)
       node.parent ||= self
       raise "node has a parent: #{node.parent}" if node.parent != self
       @children[idx] = node
-    end
-    alias_method :[]=, :set_child
-
-    def set_parent(idx, node)
-      @parent = node
-      @parent.set_child(idx, self)
     end
   end
 

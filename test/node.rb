@@ -84,14 +84,15 @@ describe ChildNode do
   end
 
   it "must track parent and children" do
-    @charlie_sheen.set_parent(0, @martin_sheen)
+    @martin_sheen[0] = @charlie_sheen
     @charlie_sheen.parent.must_equal @martin_sheen
     @martin_sheen.children.must_include @charlie_sheen
 
     @martin_sheen.children.wont_include @emilio_estevez
-    @martin_sheen.set_child(0, @emilio_estevez)
-    @martin_sheen.children.must_include @emilio_estevez
+    @martin_sheen[1] = @emilio_estevez
     @emilio_estevez.parent.must_equal @martin_sheen
+    @martin_sheen.children.must_include @emilio_estevez
+    @martin_sheen.children.must_include @charlie_sheen
   end
 end
 
