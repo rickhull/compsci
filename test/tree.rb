@@ -5,29 +5,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe NaryTree do
-  describe "NaryTree.power_of?" do
-    it "must determine if num is a power of base" do
-      powers = {}
-      basemax = 12
-      expmax = 10
-      2.upto(basemax) { |base|
-        0.upto(expmax) { |exp|
-          powers[base] ||= []
-          powers[base] << base**exp
-        }
-      }
-
-      # 12k assertions below!
-      2.upto(basemax) { |base|
-        1.upto(2**expmax) { |num|
-          if powers[base].include?(num)
-            NaryTree.power_of?(num, base).must_equal true
-          else
-            NaryTree.power_of?(num, base).must_equal false
-          end
-        }
-      }
-    end
+  it "needs tests" do
+    true.must_equal true
   end
 end
 
