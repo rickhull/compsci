@@ -6,7 +6,39 @@ include CompSci
 
 puts <<EOF
 #
-# 3 seconds worth of pushes
+# 30 inserts, puts, df_search
+#
+
+EOF
+
+vals = Array.new(30) { rand 99 }
+p vals
+
+tree = PushTree.new ChildFlexNode, vals.shift, child_slots: 2
+tree.push vals.shift until vals.empty?
+puts tree
+
+p tree
+puts
+
+tree.df_search { |n|
+  puts "visited #{n}"
+  false # or n.value > 90
+}
+puts
+
+vals = Array.new(30) { rand 99 }
+puts "push: #{vals.inspect}"
+
+tree.push vals.shift until vals.empty?
+puts tree
+puts
+
+
+secs = 16
+puts <<EOF
+#
+# #{secs} seconds worth of pushes
 #
 
 EOF
@@ -14,7 +46,7 @@ EOF
 count = 0
 start = Timer.now
 start_1k = Timer.now
-tree = BinaryTree.new ChildFlexNode, rand(99)
+tree = PushTree.new ChildFlexNode, rand(99), child_slots: 2
 
 loop {
   count += 1
@@ -35,38 +67,8 @@ loop {
     tree.push rand 99
   end
 
-  break if Timer.since(start) > 3
+  break if Timer.since(start) > secs
 }
 
 puts "pushed %i items in %0.1f s" % [count, Timer.since(start)]
-puts
-
-puts <<EOF
-#
-# 30 inserts, puts, df_search
-#
-
-EOF
-
-vals = Array.new(30) { rand 99 }
-p vals
-
-tree = BinaryTree.new ChildFlexNode, vals.shift
-tree.push vals.shift until vals.empty?
-puts tree
-
-p tree
-puts
-
-tree.df_search { |n|
-  puts "visited #{n}"
-  false # or n.value > 90
-}
-puts
-
-vals = Array.new(30) { rand 99 }
-puts "push: #{vals.inspect}"
-
-tree.push vals.shift until vals.empty?
-puts tree
 puts

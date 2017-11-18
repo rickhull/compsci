@@ -13,11 +13,12 @@ EOF
 
 vals = Array.new(30) { rand 99 }
 
-[BinaryTree, TernaryTree, QuaternaryTree].each { |tree_class|
+# [BinaryTree, TernaryTree, QuaternaryTree].each { |tree_class|
+[2, 3, 4].each { |slots|
   # start with the same vals for each class
   my_vals = vals.dup
   p my_vals
-  tree = tree_class.new(ChildFlexNode, my_vals.shift)
+  tree = PushTree.new(ChildFlexNode, my_vals.shift, child_slots: slots)
   tree.push my_vals.shift until my_vals.empty?
   p tree
   puts tree.display(width: 80)

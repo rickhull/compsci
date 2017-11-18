@@ -67,29 +67,6 @@ module CompSci
       @child_slots = child_slots
     end
 
-    def open_parent?(node)
-      node.children.size < @child_slots
-    end
-
-    def open_sibling
-      # try siblings first, only possible with Node#parent
-      if @open_parent.respond_to?(:siblings)
-        @open_parent.siblings.find { |s| self.open_parent?(s) }
-      end
-    end
-
-    def open_parent
-      @open_parent ||= @root
-      return @open_parent if self.open_parent?(@open_parent)
-      open_sibling = self.open_sibling
-      return @open_parent = open_sibling if open_sibling
-      @open_parent = self.bf_search { |n| self.open_parent?(n) }
-    end
-
-    def push(value)
-      self.open_parent.new_child value
-    end
-
     def display(node: @root, width: 80)
       levels = [self.class.display_level(nodes: [node], width: width)]
       nodes = node.children
@@ -121,6 +98,38 @@ module CompSci
   class QuaternaryTree < NaryTree
     def initialize(node_class, val)
       super(node_class, val, child_slots: 4)
+    end
+  end
+
+  # FlexNode based trees allow Tree#push
+  class PushTree < NaryTree
+    def initialize(node_class, val, child_slots:)
+      super(node_class, val, child_slots: child_slots)
+      raise "@root#new_child required" unless @root.respond_to? :new_child
+    end
+
+    # this only works if @root.respond_to? :new_child
+    def push(value)
+      self.open_parent.new_child value
+    end
+
+    def open_parent?(node)
+      node.children.size < @child_slots
+    end
+
+    def open_sibling
+      # try siblings first, only possible with Node#parent
+      if @open_parent.respond_to?(:siblings)
+        @open_parent.siblings.find { |s| self.open_parent?(s) }
+      end
+    end
+
+    def open_parent
+      @open_parent ||= @root
+      return @open_parent if self.open_parent?(@open_parent)
+      open_sibling = self.open_sibling
+      return @open_parent = open_sibling if open_sibling
+      @open_parent = self.bf_search { |n| self.open_parent?(n) }
     end
   end
 end

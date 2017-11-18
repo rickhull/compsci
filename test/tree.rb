@@ -87,10 +87,12 @@ describe NaryTree do
       }
     }
   end
+end
 
+describe PushTree do
   describe "with FlexNode" do
     before do
-      @tree = NaryTree.new(FlexNode, 42, child_slots: 3)
+      @tree = PushTree.new(FlexNode, 42, child_slots: 3)
     end
 
     it "must have an open parent" do
@@ -108,7 +110,7 @@ describe NaryTree do
 
   describe "with ChildFlexNode" do
     before do
-      @tree = NaryTree.new(ChildFlexNode, 42, child_slots: 4)
+      @tree = PushTree.new(ChildFlexNode, 42, child_slots: 4)
     end
 
     it "must have an open parent" do
@@ -123,78 +125,78 @@ describe NaryTree do
       @tree.open_parent.children.size.must_equal opc + 1
     end
   end
-end
 
-describe "BinaryTree" do
-  before do
-    @tree = BinaryTree.new(FlexNode, 42)
-  end
-
-  it "must have 2 child_slots" do
-    @tree.child_slots.must_equal 2
-  end
-
-  it "must to_s" do
-    item_count = 31
-    # tree already has a root node
-    (item_count - 1).times { @tree.push rand 99 }
-    str = @tree.to_s
-    line_count = str.split("\n").size
-    line_count.must_equal Math.log(item_count + 1, 2).ceil
-  end
-
-  describe "searching" do
+  describe "Binary PushTree" do
     before do
-      @tree = NaryTree.new(FlexNode, 42, child_slots: 2)
-      99.times { |i| @tree.push i }
+      @tree = PushTree.new(FlexNode, 42, child_slots: 2)
     end
 
-    it "must find 42 quickly" do
-      count = 0
-      @tree.df_search { |n|
-        count += 1
-        n.value == 42
-      }.must_equal @tree.root
-      count.must_equal 1
-
-      count = 0
-      @tree.bf_search { |n|
-        count += 1
-        n.value == 42
-      }.must_equal @tree.root
-      count.must_equal 1
+    it "must have 2 child_slots" do
+      @tree.child_slots.must_equal 2
     end
 
-    it "must find 99 slowly" do
-      count = 0
-      @tree.df_search { |n|
-        count += 1
-        n.value == 99
-      }
-      count.must_equal 100
-
-      count = 0
-      @tree.bf_search { |n|
-        count += 1
-        n.value == 99
-      }
-      count.must_equal 100
+    it "must to_s" do
+      item_count = 31
+      # tree already has a root node
+      (item_count - 1).times { @tree.push rand 99 }
+      str = @tree.to_s
+      line_count = str.split("\n").size
+      line_count.must_equal Math.log(item_count + 1, 2).ceil
     end
 
-    it "must find 81 accordingly" do
-      count = 0
-      @tree.df_search { |n|
-        count += 1
-        n.value == 81
-      }
-      count.must_equal 42
+    describe "searching" do
+      before do
+        @tree = PushTree.new(FlexNode, 42, child_slots: 2)
+        99.times { |i| @tree.push i }
+      end
 
-      count = 0
-      @tree.bf_search { |n|
-        count += 1
-        n.value == 81
-      }
-      count.must_equal 83
+      it "must find 42 quickly" do
+        count = 0
+        @tree.df_search { |n|
+          count += 1
+          n.value == 42
+        }.must_equal @tree.root
+        count.must_equal 1
+
+        count = 0
+        @tree.bf_search { |n|
+          count += 1
+          n.value == 42
+        }.must_equal @tree.root
+        count.must_equal 1
+      end
+
+      it "must find 99 slowly" do
+        count = 0
+        @tree.df_search { |n|
+          count += 1
+          n.value == 99
+        }
+        count.must_equal 100
+
+        count = 0
+        @tree.bf_search { |n|
+          count += 1
+          n.value == 99
+        }
+        count.must_equal 100
+      end
+
+      it "must find 81 accordingly" do
+        count = 0
+        @tree.df_search { |n|
+          count += 1
+          n.value == 81
+        }
+        count.must_equal 42
+
+        count = 0
+        @tree.bf_search { |n|
+          count += 1
+          n.value == 81
+        }
+        count.must_equal 83
+      end
     end
   end
 end
