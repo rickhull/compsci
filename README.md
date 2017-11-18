@@ -160,23 +160,27 @@ cumulative: 0.828
 * `Fit.exponential` fits `y = ae^(bx)`; returns a, b, r^2
 * `Fit.power` fits `y = ax^b`; returns a, b, r^2
 
-## [`Names`](lib/compsci/names.rb) modules
+## [`Names`](lib/compsci/names.rb) module
 
 This helps map a range of small integers to friendly names,
 typically in alphabetical order.
 
 * `ENGLISH_UPPER` `ENGLISH_LOWER` `WW1` `WW2` `NATO` `CRYPTO` `PLANETS` `SOLAR`
 * `Names.assign`
-* [`Names::Greek`](lib/compsci/names/greek.rb)
-  - `UPPER` `LOWER` `SYMBOLS` `CHAR_MAP` `LATIN_SYMBOLS` `SYMBOLS26`
-  - `Names::Greek.upper`
-  - `Names::Greek.lower`
-  - `Names::Greek.sym`
-* [`Names::Pokemon`](lib/compsci/names/pokemon.rb)
-  - `Names::Pokemon.array`
-  - `Names::Pokemon.hash`
-  - `Names::Pokemon.grep`
-  - `Names::Pokemon.sample`
+
+### [`Names::Greek`](lib/compsci/names/greek.rb) module
+
+- `UPPER` `LOWER` `SYMBOLS` `CHAR_MAP` `LATIN_SYMBOLS` `SYMBOLS26`
+- `Names::Greek.upper`
+- `Names::Greek.lower`
+- `Names::Greek.sym`
+
+### [`Names::Pokemon`](lib/compsci/names/pokemon.rb) module
+
+- `Names::Pokemon.array`
+- `Names::Pokemon.hash`
+- `Names::Pokemon.grep`
+- `Names::Pokemon.sample`
 
 ## [`Simplex`](lib/compsci/simplex.rb) class
 
@@ -184,7 +188,7 @@ The Simplex algorithm is a technique for Linear Programming.  Typically the
 problem is to maximize some linear expression of variables given some
 constraints on those variables given in terms of linear inequalities.
 
-### [`Simplex::Parse`](lib/compsci/simplex/parse.rb) functions
+### [`Simplex::Parse`](lib/compsci/simplex/parse.rb) module
 
 * `Parse.tokenize` - convert a string to an array of tokens
 * `Parse.term`     - parse certain tokens into [coefficient, varname]
