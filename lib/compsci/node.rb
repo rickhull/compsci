@@ -14,14 +14,17 @@ module CompSci
       # @metadata = {}
     end
 
-    def to_s
-      @value.to_s
+    def [](idx)
+      @children[idx]
     end
 
-    # This could be done directly with self.children, but #set_child is part
-    # of the Node API.
     def set_child(idx, node)
       @children[idx] = node
+    end
+    alias_method :[]=, :set_child
+
+    def to_s
+      @value.to_s
     end
 
     def inspect
@@ -48,23 +51,6 @@ module CompSci
     end
   end
 
-  # accumulate children; no child gaps
-  class FlexNode < Node
-    # These methods look like convenience methods, but they provide the
-    # FlexNode interface also used by ChildFlexNode
-    def add_child(node)
-      @children << node
-    end
-
-    def new_child(value)
-      self.add_child self.class.new(value)
-    end
-
-    def add_parent(node)
-      node.add_child(self)
-    end
-  end
-
   # like Node but with a reference to its parent
   class ChildNode < Node
     attr_accessor :parent
@@ -88,6 +74,7 @@ module CompSci
       raise "node has a parent: #{node.parent}" if node.parent != self
       @children[idx] = node
     end
+    alias_method :[]=, :set_child
 
     def set_parent(idx, node)
       @parent = node
@@ -95,9 +82,27 @@ module CompSci
     end
   end
 
-  # ChildNode which accumulates children with no gaps
-  # It meets the FlexNode API but does not inherit from FlexNode since it
-  # needs to reimplement each method; instead get parent stuff from ChildNode
+
+  #
+  # FlexNodes - they accumulate children; no child gaps
+  #
+
+  # FlexNode API is #add_child, #add_parent, #new_child
+
+  class FlexNode < Node
+    def add_child(node)
+      @children << node
+    end
+
+    def new_child(value)
+      self.add_child self.class.new(value)
+    end
+
+    def add_parent(node)
+      node.add_child(self)
+    end
+  end
+
   class ChildFlexNode < ChildNode
     def add_child(node)
       node.parent ||= self
