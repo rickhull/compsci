@@ -41,4 +41,17 @@ vals = Array.new(30) { rand 99 }
   puts tree.display(width: 80)
   puts
   puts
+
+
+
+
+  puts <<EOF
+
+#
+# Now trying Node#display
+#
+
+EOF
+
+  puts tree.root.display(width: 80)
 }

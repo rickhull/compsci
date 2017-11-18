@@ -1,6 +1,15 @@
 module CompSci
   # has a value and an array of children; allows child gaps
   class Node
+    def self.display_level(nodes: [], width: 80)
+      block_width = [width / nodes.size, 1].max
+      nodes.map { |node|
+        str = node ? node.to_s : '_'
+        space = [(block_width + str.size) / 2, str.size + 1].max
+        str.ljust(space, ' ').rjust(block_width, ' ')
+      }.join
+    end
+
     attr_accessor :value
     attr_reader :children
 
@@ -29,6 +38,20 @@ module CompSci
     def inspect
       "#<%s:0x%0xi @value=%s @children=[%s]>" %
         [self.class, self.object_id, self, @children.join(', ')]
+    end
+
+    def display(width: 80)
+      levels = [self.class.display_level(nodes: [self], width: width)]
+      nodes = @children
+      while nodes.any? { |n| !n.nil? }
+        levels << self.class.display_level(nodes: nodes, width: width)
+        children = []
+        nodes.each { |n|
+          children += Array.new(@children.size) { |i| n and n.children[i] }
+        }
+        nodes = children
+      end
+      levels.join("\n")
     end
   end
 

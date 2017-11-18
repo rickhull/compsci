@@ -2,7 +2,7 @@
 
 module CompSci
   class NaryTree
-    def self.display_level(nodes: [], width: 80)
+    def self.xdisplay_level(nodes: [], width: 80)
       block_width = [width / nodes.size, 1].max
       nodes.map { |node|
         str = node ? node.to_s : '_'
@@ -18,7 +18,7 @@ module CompSci
       @child_slots = child_slots
     end
 
-    def display(node: @root, width: 80)
+    def xdisplay(node: @root, width: 80)
       levels = [self.class.display_level(nodes: [node], width: width)]
       nodes = node.children
       while nodes.any? { |n| !n.nil? }
@@ -30,6 +30,10 @@ module CompSci
         nodes = children
       end
       levels.join("\n")
+    end
+
+    def display(width: 80)
+      @root.display(width: width)
     end
     alias_method :to_s, :display
   end
