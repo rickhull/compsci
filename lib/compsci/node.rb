@@ -28,10 +28,7 @@ module CompSci
 
     def inspect
       "#<%s:0x%0xi @value=%s @children=[%s]>" %
-        [self.class,
-         self.object_id,
-         self.to_s,
-         @children.map(&:to_s).join(', ')]
+        [self.class, self.object_id, self, @children.join(', ')]
     end
   end
 
@@ -46,7 +43,7 @@ module CompSci
     end
 
     def to_s
-      [key, value].join(':')
+      [@key, @value].join(':')
     end
   end
 
