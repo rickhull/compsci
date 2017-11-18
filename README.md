@@ -7,47 +7,45 @@
 
 Provided are some toy implementations for some basic computer science problems.
 
-## [`Node`](lib/compsci/node.rb) data structure
+## [`Node`](lib/compsci/node.rb) classes
 
 * `Node`
   - `@value`
   - `@children`
   - `#set_child(idx, node)`
-* `KeyNode` inherits from `Node`; adds a key
+* `KeyNode < Node`
   - `@key`
-* `FlexNode` inherits from `Node`; accumulates children
-  - `#add_child(node)`
-  - `#new_child(value)`
-  - `#add_parent(node)`
-* `ChildNode` inherits from `Node`; adds a parent
+* `ChildNode < Node`
   - `@parent`
   - `#gen`
   - `#siblings`
-* `ChildFlexNode` inherits from `ChildNode`; accumulates children
+* `FlexNode < Node`
+  - `#add_child(node)`
+  - `#new_child(value)`
+  - `#add_parent(node)`
+* `ChildFlexNode < ChildNode`
   - `#add_child(node)`
   - `#new_child(value)`
   - `#add_parent(node)`
 
-## [`Tree`](lib/compsci/tree.rb) data structures
+## [`Tree`](lib/compsci/tree.rb) classes
 
 * `Tree`
   - `@root`
   - `#df_search`
   - `#bf_search`
-* `NaryTree`
+* `NaryTree < Tree`
   - `@child_slots` (number of children per node)
   - `#open_parent` O(n) to find a node with open child slots
   - `#push` append `#open_parent.children`
-  - `#display` if initialized with `ChildNode`
-* `BinaryTree`
-  - `NaryTree.new(child_slots: 2)`
-  - `#display` for `Node` and `ChildNode`
-* `TernaryTree`
-  - `NaryTree.new(child_slots: 3)`
-* `QuaternaryTree`
-  - `NaryTree.new(child_slots: 4)`
+* `BinaryTree < NaryTree`
+  - `@child_slots = 2`
+* `TernaryTree < NaryTree`
+  - `@child_slots = 3`
+* `QuaternaryTree < NaryTree`
+  - `@child_slots = 4`
 
-## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) data structure
+## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) classes
 
 Efficient Array implementation of a complete tree.
 
@@ -62,37 +60,37 @@ Efficient Array implementation of a complete tree.
   - `#size`
   - `#last_idx`
   - `#display` (alias `#to_s`)
-* `CompleteBinaryTree`
-  - `CompleteNaryTree.new(child_slots: 2)`
-* `CompleteTernaryTree`
-  - `CompleteNaryTree.new(child_slots: 3)`
-* `CompleteQuaternaryTree`
-  - `CompleteNaryTree.new(child_slots: 4)`
+* `CompleteBinaryTree < CompleteNaryTree`
+  - `@child_slots = 2`
+* `CompleteTernaryTree < CompleteNaryTree`
+  - `@child_slots = 3`
+* `CompleteQuaternaryTree < CompleteNaryTree`
+  - `@child_slots = 4`
 
-## [`BinarySearchTree`](lib/compsci/binary_search_tree.rb) data structure
+## [`BinarySearchTree`](lib/compsci/binary_search_tree.rb) class
 
-Based on `BinaryTree` of `KeyNode`.  The position of a node depends on its
-key and how the key relates to the existing node keys.
+Composed of KeyNodes.  The position of a node depends on its key and how the
+key relates to the existing node keys.
 
-* `BinarySearchTree`
-  - `BinarySearchTree.new_node` helper method to create a node
-  - `BinarySearchTree.new_with_kv` helper method to create a tree
+* `BinarySearchTree < BinaryTree`
+  - `BinarySearchTree.new_node` (helper method to create a *node*)
+  - `BinarySearchTree.new_with_kv` (helper method to create a *tree*)
   - `#search_recursive`
   - `#search_iterative`
   - `#insert_recursive`
 
-## [`Heap`](lib/compsci/heap.rb) data structure
+## [`Heap`](lib/compsci/heap.rb) class
 
-`CompleteNaryTree` implementation.  Both minheaps and maxheaps are supported.
-Any number of children may be provided via `child_slots`.  The primary
-operations are `Heap#push` and `Heap#pop`. See the
+*CompleteNaryTree* implementation.  Both *minheaps* and *maxheaps* are
+supported.  Any number of children may be provided via `child_slots`.
+The primary operations are `Heap#push` and `Heap#pop`. See the
 [heap](examples/heap.rb) [examples](examples/heap_push.rb)
 which can be executed (among other examples) via `rake examples`.
 
 My basic Vagrant VM gets over [500k pushes per second, constant up past 1M
 pushes](reports/examples#L484).
 
-## [`Fibonacci`](lib/compsci/fibonacci.rb) functions
+## [`Fibonacci`](lib/compsci/fibonacci.rb) module
 
 * `Fibonacci.classic(n)`         - naive, recursive
 * `Fibonacci.cache_recursive(n)` - as above, caching already computed results
@@ -100,7 +98,7 @@ pushes](reports/examples#L484).
 * `Fibonacci.dynamic(n)`         - as above but without a cache structure
 * `Fibonacci.matrix(n)`          - matrix is magic; beats dynamic around n=500
 
-## [`Timer`](/lib/compsci/timer.rb) functions
+## [`Timer`](/lib/compsci/timer.rb) module
 
 * `Timer.now`      - uses `Process::CLOCK_MONOTONIC` if available
 * `Timer.since`    - provides the elapsed time since a prior time
@@ -152,7 +150,7 @@ elapsed: 0.304
 cumulative: 0.828
 ```
 
-## [`Fit`](lib/compsci/fit.rb) functions
+## [`Fit`](lib/compsci/fit.rb) module
 
 * `Fit.sigma` - sums the result of a block applied to array values
 * `Fit.error` - returns a generic r^2 value, the coefficient of determination
@@ -162,7 +160,7 @@ cumulative: 0.828
 * `Fit.exponential` fits `y = ae^(bx)`; returns a, b, r^2
 * `Fit.power` fits `y = ax^b`; returns a, b, r^2
 
-## [`Names`](lib/compsci/names.rb) functions
+## [`Names`](lib/compsci/names.rb) modules
 
 This helps map a range of small integers to friendly names,
 typically in alphabetical order.
