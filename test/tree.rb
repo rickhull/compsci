@@ -6,18 +6,21 @@ include CompSci
 
 describe Tree do
   before do
-    @tree = Tree.new(FlexNode, 42)
+    @root = FlexNode.new 42
+    @tree = Tree.new(@root)
     @vals = Array.new(99) { rand 99 }
   end
 
   it "is populated via the root node" do
     @vals.each { |v| @tree.root.new_child v }
     @tree.root.children.size.must_equal @vals.size
+    @root.children.size.must_equal @vals.size
   end
 
   it "does depth_first search" do
     vals = (0..30).to_a
-    tree = Tree.new(FlexNode, vals.shift)
+    root = FlexNode.new(vals.shift)
+    tree = Tree.new(root)
     tree.root.new_child vals.shift
     tree.root.new_child vals.shift
     tree.root.children.each { |c|
@@ -41,7 +44,8 @@ describe Tree do
 
   it "does breadth_first search" do
     vals = (0..30).to_a
-    tree = Tree.new(FlexNode, vals.shift)
+    root = FlexNode.new(vals.shift)
+    tree = Tree.new(root)
     tree.root.new_child vals.shift
     tree.root.new_child vals.shift
     tree.root.children.each { |c|
@@ -65,34 +69,37 @@ describe Tree do
 end
 
 describe NaryTree do
-  it "must power_of?" do
-    powers = {}
-    basemax = 12
-    expmax = 10
-    2.upto(basemax) { |base|
-      0.upto(expmax) { |exp|
-        powers[base] ||= []
-        powers[base] << base**exp
+  describe "NaryTree.power_of?" do
+    it "must determine if num is a power of base" do
+      powers = {}
+      basemax = 12
+      expmax = 10
+      2.upto(basemax) { |base|
+        0.upto(expmax) { |exp|
+          powers[base] ||= []
+          powers[base] << base**exp
+        }
       }
-    }
 
-    # 12k assertions below!
-    2.upto(basemax) { |base|
-      1.upto(2**expmax) { |num|
-        if powers[base].include?(num)
-          NaryTree.power_of?(num, base).must_equal true
-        else
-          NaryTree.power_of?(num, base).must_equal false
-        end
+      # 12k assertions below!
+      2.upto(basemax) { |base|
+        1.upto(2**expmax) { |num|
+          if powers[base].include?(num)
+            NaryTree.power_of?(num, base).must_equal true
+          else
+            NaryTree.power_of?(num, base).must_equal false
+          end
+        }
       }
-    }
+    end
   end
 end
 
 describe PushTree do
   describe "with FlexNode" do
     before do
-      @tree = PushTree.new(FlexNode, 42, child_slots: 3)
+      @root = FlexNode.new 42
+      @tree = PushTree.new(@root, child_slots: 3)
     end
 
     it "must have an open parent" do
@@ -110,7 +117,8 @@ describe PushTree do
 
   describe "with ChildFlexNode" do
     before do
-      @tree = PushTree.new(ChildFlexNode, 42, child_slots: 4)
+      @root = ChildFlexNode.new 42
+      @tree = PushTree.new(@root, child_slots: 4)
     end
 
     it "must have an open parent" do
@@ -128,7 +136,8 @@ describe PushTree do
 
   describe "Binary PushTree" do
     before do
-      @tree = PushTree.new(FlexNode, 42, child_slots: 2)
+      @root = FlexNode.new 42
+      @tree = PushTree.new(@root, child_slots: 2)
     end
 
     it "must have 2 child_slots" do
@@ -146,7 +155,8 @@ describe PushTree do
 
     describe "searching" do
       before do
-        @tree = PushTree.new(FlexNode, 42, child_slots: 2)
+        @root = FlexNode.new 42
+        @tree = PushTree.new(@root, child_slots: 2)
         99.times { |i| @tree.push i }
       end
 

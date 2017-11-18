@@ -5,16 +5,16 @@ module CompSci
   class BinarySearchTree < BinaryTree
     # helper method; any object which responds to key, value, and children
     # may be used
-    def self.new_node(key, val)
+    def self.node(key, val)
       CompSci::KeyNode.new(val, key: key, children: 2)
     end
 
-    def self.new_with_kv(key, val)
-      self.new(self.new_node(key, val))
+
+    def self.create(key, val)
+      self.new(self.node(key, val))
     end
 
     def initialize(root_node)
-      @node_class = root_node.class
       @child_slots = 2
       if root_node.children.size == @child_slots
         @root = root_node
@@ -43,13 +43,13 @@ module CompSci
         if node.children[0]
           insert_recursive(key, val, node: node.children[0])
         else
-          node.children[0] = @node_class.new(val, key: key, children: 2)
+          node.children[0] = @root.class.new(val, key: key, children: 2)
         end
       else
         if node.children[1]
           insert_recursive(key, val, node: node.children[1])
         else
-          node.children[1] = @node_class.new(val, key: key, children: 2)
+          node.children[1] = @root.class.new(val, key: key, children: 2)
         end
       end
     end

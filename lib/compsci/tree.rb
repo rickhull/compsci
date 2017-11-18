@@ -6,8 +6,8 @@ module CompSci
   class Tree
     attr_reader :root
 
-    def initialize(node_class, val)
-      @root = node_class.new val
+    def initialize(root_node)
+      @root = root_node
     end
 
     # does not support children gaps
@@ -62,8 +62,8 @@ module CompSci
 
     attr_reader :child_slots
 
-    def initialize(node_class, val, child_slots:)
-      super(node_class, val)
+    def initialize(root_node, child_slots:)
+      @root = root_node
       @child_slots = child_slots
     end
 
@@ -84,27 +84,27 @@ module CompSci
   end
 
   class BinaryTree < NaryTree
-    def initialize(node_class, val)
-      super(node_class, val, child_slots: 2)
+    def initialize(root_node)
+      super(root_node, child_slots: 2)
     end
   end
 
   class TernaryTree < NaryTree
-    def initialize(node_class, val)
-      super(node_class, val, child_slots: 3)
+    def initialize(root_node)
+      super(root_node, child_slots: 3)
     end
   end
 
   class QuaternaryTree < NaryTree
-    def initialize(node_class, val)
-      super(node_class, val, child_slots: 4)
+    def initialize(root_node)
+      super(root_node, child_slots: 4)
     end
   end
 
   # FlexNode based trees allow Tree#push
   class PushTree < NaryTree
-    def initialize(node_class, val, child_slots:)
-      super(node_class, val, child_slots: child_slots)
+    def initialize(root_node, child_slots:)
+      super(root_node, child_slots: child_slots)
       raise "@root#new_child required" unless @root.respond_to? :new_child
     end
 

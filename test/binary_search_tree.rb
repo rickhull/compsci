@@ -32,8 +32,8 @@ describe BinarySearchTree do
     @values.each { |v| str.must_include v.to_s }
   end
 
-  it "must provide a new_node" do
-    node = BinarySearchTree.new_node('the key', 'the value')
+  it "must provide a new node" do
+    node = BinarySearchTree.node('the key', 'the value')
     node.must_be_kind_of Node
     node.must_be_kind_of KeyNode
     node.key.must_equal 'the key'
@@ -41,7 +41,7 @@ describe BinarySearchTree do
   end
 
   it "must instantiate with key and value" do
-    tree = BinarySearchTree.new_with_kv('the key', 'the value')
+    tree = BinarySearchTree.create('the key', 'the value')
     node = tree.root
     node.must_be_kind_of Node
     node.must_be_kind_of KeyNode
@@ -70,7 +70,7 @@ describe BinarySearchTree do
     new_order.each { |i|
       k, v = Names::NATO[i], Names::SOLAR.sample
       if tree.nil?
-        tree = BinarySearchTree.new_with_kv(k, v)
+        tree = BinarySearchTree.create(k, v)
       else
         tree[k] = v
       end

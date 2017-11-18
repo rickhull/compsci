@@ -14,7 +14,8 @@ EOF
 vals = Array.new(30) { rand 99 }
 p vals
 
-tree = PushTree.new ChildFlexNode, vals.shift, child_slots: 2
+root = ChildFlexNode.new vals.shift
+tree = PushTree.new root, child_slots: 2
 tree.push vals.shift until vals.empty?
 puts tree
 
@@ -35,7 +36,7 @@ puts tree
 puts
 
 
-secs = 16
+secs = 5
 puts <<EOF
 #
 # #{secs} seconds worth of pushes
@@ -46,7 +47,7 @@ EOF
 count = 0
 start = Timer.now
 start_1k = Timer.now
-tree = PushTree.new ChildFlexNode, rand(99), child_slots: 2
+tree = PushTree.new ChildFlexNode.new(rand(99)), child_slots: 2
 
 loop {
   count += 1

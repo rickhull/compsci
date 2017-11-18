@@ -18,7 +18,8 @@ vals = Array.new(30) { rand 99 }
   # start with the same vals for each class
   my_vals = vals.dup
   p my_vals
-  tree = PushTree.new(ChildFlexNode, my_vals.shift, child_slots: slots)
+  root = ChildFlexNode.new my_vals.shift
+  tree = PushTree.new(root, child_slots: slots)
   tree.push my_vals.shift until my_vals.empty?
   p tree
   puts tree.display(width: 80)
