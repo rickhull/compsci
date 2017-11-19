@@ -1,5 +1,4 @@
 require 'compsci/node'
-require 'compsci/tree'
 
 module CompSci
   class BinarySearchTree

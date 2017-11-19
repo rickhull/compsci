@@ -1,37 +1,11 @@
-# require 'compsci/node'
-
 module CompSci
-  class NaryTree
+  # FlexNode based trees allow Tree#push
+  class PushTree
     attr_reader :root, :child_slots
 
     def initialize(root_node, child_slots:)
       @root = root_node
       @child_slots = child_slots
-    end
-  end
-
-  class BinaryTree < NaryTree
-    def initialize(root_node)
-      super(root_node, child_slots: 2)
-    end
-  end
-
-  class TernaryTree < NaryTree
-    def initialize(root_node)
-      super(root_node, child_slots: 3)
-    end
-  end
-
-  class QuaternaryTree < NaryTree
-    def initialize(root_node)
-      super(root_node, child_slots: 4)
-    end
-  end
-
-  # FlexNode based trees allow Tree#push
-  class PushTree < NaryTree
-    def initialize(root_node, child_slots:)
-      super(root_node, child_slots: child_slots)
       raise "@root#new_child required" unless @root.respond_to? :new_child
     end
 
