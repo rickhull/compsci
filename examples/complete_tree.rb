@@ -11,12 +11,11 @@ vals = Array.new(30) { rand 99 }
   puts <<EOF
 
 #
-# Print #{tree_class}
+# Print #{tree_class} filled with static vals
 #
 
 EOF
 
-  # start with the same vals for each class
   my_vals = vals.dup
   puts "initial vals: #{my_vals.inspect}"
   tree = tree_class.new
@@ -26,10 +25,16 @@ EOF
   puts
   puts tree.display(width: 80)
   puts
-  puts
 
 
-  # push different vals for each class
+  puts <<EOF
+
+#
+# Push random vals and print again
+#
+
+EOF
+
   my_vals = Array.new(30) { rand 99 }
   puts "new vals: #{my_vals.inspect}"
 

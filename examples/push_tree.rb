@@ -5,6 +5,7 @@ require 'compsci/timer'
 include CompSci
 
 puts <<EOF
+
 #
 # Try out Binary, Ternary, and Quaternary PushTrees
 # Push the same vals to each
@@ -44,8 +45,9 @@ vals = Array.new(30) { rand 99 }
 }
 
 puts <<EOF
+
 #
-# 30 inserts, puts, df_search
+# 30 PushTree pushes and df_search
 #
 
 EOF
@@ -77,8 +79,9 @@ puts
 
 runtime = (ARGV.shift || "3").to_i
 puts <<EOF
+
 #
-# #{runtime} seconds worth of pushes
+# #{runtime} seconds worth of PushTree pushes
 #
 
 EOF

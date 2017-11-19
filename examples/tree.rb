@@ -3,6 +3,7 @@ require 'compsci/node'
 include CompSci
 
 puts <<EOF
+
 #
 # Fill up and display some trees
 #
@@ -10,10 +11,19 @@ puts <<EOF
 EOF
 
 vals = Array.new(30) { rand 99 }
-p vals
+puts "vals: #{vals.inspect}"
 
 [2, 3, 4].each { |children|
   my_vals = vals.dup
+
+  puts <<EOF
+
+#
+# Children: #{children}
+#
+
+EOF
+
 
   root = Node.new my_vals.shift, children: children
   nodes = [root]
@@ -27,9 +37,8 @@ p vals
     }
     nodes = new_nodes
   end
-  puts
   p root
-  puts root.display(width: 80)
   puts
+  puts root.display(width: 80)
   puts
 }

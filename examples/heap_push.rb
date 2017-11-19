@@ -6,12 +6,18 @@ include CompSci
 runtime = (ARGV.shift || "3").to_i
 
 puts <<EOF
+
 #
-# #{runtime} seconds worth of pushes
+# #{runtime} seconds worth of Heap pushes
 #
 
 EOF
 
+
+# pregenerate a sequence of random numbers
+# every NUMBERWANGth request, shift the sequence and push a new random
+# this should mitigate random number generation from interfering with timing
+# while also mitigating any chance of cyclic behavior
 RANDMAX = 1_000
 NUMBERWANG = 1_000
 NUMS = (0..(RANDMAX - 1)).to_a.shuffle

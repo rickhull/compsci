@@ -3,12 +3,12 @@ require 'compsci/names'
 
 include CompSci
 
-randmax = 50
+randmax = (ARGV.shift || 50).to_i
 
 puts <<EOF
 
 #
-# TERNARY SEARCH TREE: INSERT #{randmax} NODES (RANDOM KEYS)
+# Insert #{randmax} nodes into a ternary search tree (random keys)
 #
 
 EOF
@@ -20,7 +20,7 @@ puts root.display
 puts <<EOF
 
 #
-# SEARCH FOR #{randmax} RANDOM KEYS
+# Search for #{randmax} keys in order
 #
 
 EOF

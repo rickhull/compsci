@@ -6,7 +6,7 @@ include CompSci
 puts <<EOF
 
 #
-# INSERT NODES INTO A BST (RANDOM KEYS)
+# Insert nodes into a BST (random keys, duplicates: true)
 #
 
 EOF
@@ -25,7 +25,7 @@ puts
 puts <<EOF
 
 #
-# INSERT 30 NODES INTO A BST (UNIQUE KEYS)
+# Insert 30 nodes into a BST (unique keys, duplicates: false)
 #
 
 EOF
@@ -40,7 +40,7 @@ puts root.display
 puts <<EOF
 
 #
-# SEARCH FOR 30 DIFFERENT KEYS
+# Search for 30 different keys
 #
 
 EOF
