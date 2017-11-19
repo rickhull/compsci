@@ -63,13 +63,13 @@ module CompSci
     class DuplicateKey < RuntimeError; end
     class SearchError < RuntimeError; end
 
-    attr_accessor :key
+    attr_reader :key, :duplicates
 
-    def self.key_cmp_idx(new_key, key, child_slots: 2)
+    def self.key_cmp_idx(new_key, key, child_slots: 2, duplicates: false)
       if child_slots < 2
         raise(ArgumentError, "child_slots: #{child_slots} too small")
       elsif child_slots == 2
-        raise(DuplicateKey, "#{new_key}") if new_key == key
+        raise(DuplicateKey, "#{new_key}") if new_key == key and !duplicates
         new_key < key ? 0 : 1
       elsif child_slots == 3
         (new_key <=> key) + 1
@@ -78,9 +78,9 @@ module CompSci
       end
     end
 
-    def initialize(val, key: nil, children: [])
-      @key = key
+    def initialize(val, key: nil, children: [], duplicates: false)
       super(val, children: children)
+      @key, @duplicates = key, duplicates
     end
 
     def to_s
@@ -89,7 +89,9 @@ module CompSci
 
     # which child idx should handle key?
     def cidx(key)
-      self.class.key_cmp_idx(key, @key, child_slots: @children.size)
+      self.class.key_cmp_idx(key, @key,
+                             child_slots: @children.size,
+                             duplicates: @duplicates)
     end
 
     # works for 2 or 3 children
@@ -98,8 +100,9 @@ module CompSci
       if @children[idx]
         @children[idx].insert(key, val)
       else
-        @children[idx] =
-          self.class.new(val, key: key, children: @children.size)
+        @children[idx] = self.class.new(val, key: key,
+                                        children: @children.size,
+                                        duplicates: @duplicates)
       end
     end
 
