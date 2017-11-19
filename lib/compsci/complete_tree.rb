@@ -65,6 +65,7 @@ module CompSci
       puts "not yet"
     end
 
+    # TODO: fixme
     def display(width: 80)
       str = ''
       old_level = 0
