@@ -15,7 +15,7 @@ Running Roodi checks
 [31mlib/compsci/simplex.rb:20 - Method name "initialize" cyclomatic complexity is 5.  It should be 4 or less.[0m
 [31mlib/compsci/simplex.rb:95 - Method name "pivot" cyclomatic complexity is 7.  It should be 4 or less.[0m
 [31mlib/compsci/simplex.rb:134 - Method name "pivot_row" cyclomatic complexity is 5.  It should be 4 or less.[0m
-[31mlib/compsci/binary_search_tree.rb:40 - Method name "insert_recursive" cyclomatic complexity is 6.  It should be 4 or less.[0m
+[31mlib/compsci/binary_search_tree.rb:41 - Method name "insert_recursive" cyclomatic complexity is 6.  It should be 4 or less.[0m
 [31mlib/compsci/simplex.rb:20 - Method "initialize" has 26 lines.  It should have 20 or less.[0m
 [31mlib/compsci/simplex.rb:95 - Method "pivot" has 36 lines.  It should have 20 or less.[0m
 [31mlib/compsci/simplex.rb:146 - Method "formatted_tableau" has 23 lines.  It should have 20 or less.[0m

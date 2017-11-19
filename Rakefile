@@ -78,7 +78,7 @@ scripts = [
   "examples/heap.rb",
   "examples/heap_push.rb",
   "examples/tree.rb",
-  "examples/tree_push.rb",
+  "examples/push_tree.rb",
 ]
 
 desc "Run ruby-prof on examples/"

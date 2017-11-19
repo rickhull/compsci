@@ -1,130 +1,130 @@
 RUBYLIB=lib ruby-prof --exclude-common-cycles examples/complete_tree.rb -- 
-/proc/loadavg 0.60 0.17 0.06 1/97 18851
+/proc/loadavg 0.34 0.34 0.17 1/96 31874
 #
 # Print CompleteBinary-, Ternary-, and QuaternaryTree
 #
 
-[49, 61, 3, 18, 33, 64, 80, 31, 58, 10, 61, 83, 5, 11, 89, 83, 33, 51, 61, 32, 97, 51, 38, 68, 94, 17, 83, 23, 82, 97]
-#<CompSci::CompleteBinaryTree:0x00559c3b32fcf8 @array=[49, 61, 3, 18, 33, 64, 80, 31, 58, 10, 61, 83, 5, 11, 89, 83, 33, 51, 61, 32, 97, 51, 38, 68, 94, 17, 83, 23, 82, 97], @child_slots=2>
-                                       49                                       
-                   61                                       3                   
-         18                  33                  64                  80         
-    31        58        10        61        83         5        11        89    
-  83   33   51   61   32   97   51   38   68   94   17   83   23   82   97 
+[93, 86, 42, 0, 30, 23, 24, 78, 26, 2, 5, 13, 13, 94, 4, 98, 89, 66, 7, 62, 97, 73, 60, 60, 73, 19, 90, 27, 55, 45]
+#<CompSci::CompleteBinaryTree:0x00561f053f7f58 @array=[93, 86, 42, 0, 30, 23, 24, 78, 26, 2, 5, 13, 13, 94, 4, 98, 89, 66, 7, 62, 97, 73, 60, 60, 73, 19, 90, 27, 55, 45], @child_slots=2>
+                                       93                                       
+                   86                                      42                   
+          0                  30                  23                  24         
+    78        26         2         5        13        13        94         4    
+  98   89   66   7    62   97   73   60   60   73   19   90   27   55   45 
 
 
 
-push: [38, 90, 65, 12, 85, 5, 45, 47, 73, 92, 23, 16, 62, 94, 51, 78, 50, 66, 18, 41, 74, 50, 1, 6, 25, 79, 0, 1, 81, 84]
-                                       49                                       
-                   61                                       3                   
-         18                  33                  64                  80         
-    31        58        10        61        83         5        11        89    
-  83   33   51   61   32   97   51   38   68   94   17   83   23   82   97   38 
-90 65 12 85 5 45 47 73 92 23 16 62 94 51 78 50 66 18 41 74 50 1 6 25 79 0 1 81 84 
+push: [31, 33, 59, 98, 24, 83, 13, 91, 8, 42, 63, 82, 91, 23, 52, 76, 31, 33, 6, 77, 63, 53, 26, 8, 40, 22, 79, 77, 78, 24]
+                                       93                                       
+                   86                                      42                   
+          0                  30                  23                  24         
+    78        26         2         5        13        13        94         4    
+  98   89   66   7    62   97   73   60   60   73   19   90   27   55   45   31 
+33 59 98 24 83 13 91 8 42 63 82 91 23 52 76 31 33 6 77 63 53 26 8 40 22 79 77 78 24 
 
 
 
-[49, 61, 3, 18, 33, 64, 80, 31, 58, 10, 61, 83, 5, 11, 89, 83, 33, 51, 61, 32, 97, 51, 38, 68, 94, 17, 83, 23, 82, 97]
-#<CompSci::CompleteTernaryTree:0x00559c3b2e4118 @array=[49, 61, 3, 18, 33, 64, 80, 31, 58, 10, 61, 83, 5, 11, 89, 83, 33, 51, 61, 32, 97, 51, 38, 68, 94, 17, 83, 23, 82, 97], @child_slots=3>
-                                       49                                       
-            61                         3                        18            
-   33      64      80      31      58      10      61      83       5   
-11 89 83 33 51 61 32 97 51 38 68 94 17 83 23 82 97 
+[93, 86, 42, 0, 30, 23, 24, 78, 26, 2, 5, 13, 13, 94, 4, 98, 89, 66, 7, 62, 97, 73, 60, 60, 73, 19, 90, 27, 55, 45]
+#<CompSci::CompleteTernaryTree:0x00561f053ac7b0 @array=[93, 86, 42, 0, 30, 23, 24, 78, 26, 2, 5, 13, 13, 94, 4, 98, 89, 66, 7, 62, 97, 73, 60, 60, 73, 19, 90, 27, 55, 45], @child_slots=3>
+                                       93                                       
+            86                        42                         0            
+   30      23      24      78      26       2       5      13      13   
+94 4 98 89 66 7 62 97 73 60 60 73 19 90 27 55 45 
 
 
 
-push: [26, 3, 52, 5, 27, 34, 4, 84, 19, 22, 51, 51, 26, 94, 50, 93, 91, 34, 24, 52, 85, 21, 55, 64, 30, 77, 39, 75, 0, 75]
-                                       49                                       
-            61                         3                        18            
-   33      64      80      31      58      10      61      83       5   
-11 89 83 33 51 61 32 97 51 38 68 94 17 83 23 82 97 26 3 52 5 27 34 4 84 19 22 
-51 51 26 94 50 93 91 34 24 52 85 21 55 64 30 77 39 75 0 75 
+push: [65, 77, 15, 56, 53, 46, 6, 22, 22, 57, 10, 67, 26, 63, 16, 83, 53, 39, 43, 67, 94, 90, 29, 30, 92, 7, 51, 27, 46, 67]
+                                       93                                       
+            86                        42                         0            
+   30      23      24      78      26       2       5      13      13   
+94 4 98 89 66 7 62 97 73 60 60 73 19 90 27 55 45 65 77 15 56 53 46 6 22 22 57 
+10 67 26 63 16 83 53 39 43 67 94 90 29 30 92 7 51 27 46 67 
 
 
 
-[49, 61, 3, 18, 33, 64, 80, 31, 58, 10, 61, 83, 5, 11, 89, 83, 33, 51, 61, 32, 97, 51, 38, 68, 94, 17, 83, 23, 82, 97]
-#<CompSci::CompleteQuaternaryTree:0x00559c3b26e058 @array=[49, 61, 3, 18, 33, 64, 80, 31, 58, 10, 61, 83, 5, 11, 89, 83, 33, 51, 61, 32, 97, 51, 38, 68, 94, 17, 83, 23, 82, 97], @child_slots=4>
-                                       49                                       
-         61                   3                  18                  33         
-  64   80   31   58   10   61   83   5    11   89   83   33   51   61   32   97 
-51 38 68 94 17 83 23 82 97 
+[93, 86, 42, 0, 30, 23, 24, 78, 26, 2, 5, 13, 13, 94, 4, 98, 89, 66, 7, 62, 97, 73, 60, 60, 73, 19, 90, 27, 55, 45]
+#<CompSci::CompleteQuaternaryTree:0x00561f053367e0 @array=[93, 86, 42, 0, 30, 23, 24, 78, 26, 2, 5, 13, 13, 94, 4, 98, 89, 66, 7, 62, 97, 73, 60, 60, 73, 19, 90, 27, 55, 45], @child_slots=4>
+                                       93                                       
+         86                  42                   0                  30         
+  23   24   78   26   2    5    13   13   94   4    98   89   66   7    62   97 
+73 60 60 73 19 90 27 55 45 
 
 
 
-push: [80, 57, 88, 83, 14, 36, 9, 19, 1, 86, 89, 41, 51, 75, 10, 35, 77, 11, 14, 89, 64, 66, 49, 72, 31, 47, 14, 21, 37, 4]
-                                       49                                       
-         61                   3                  18                  33         
-  64   80   31   58   10   61   83   5    11   89   83   33   51   61   32   97 
-51 38 68 94 17 83 23 82 97 80 57 88 83 14 36 9 19 1 86 89 41 51 75 10 35 77 11 14 89 64 66 49 72 31 47 14 21 37 4 
+push: [16, 87, 19, 40, 71, 8, 14, 44, 68, 77, 24, 80, 88, 94, 15, 49, 52, 58, 51, 46, 10, 37, 36, 39, 88, 71, 55, 2, 87, 27]
+                                       93                                       
+         86                  42                   0                  30         
+  23   24   78   26   2    5    13   13   94   4    98   89   66   7    62   97 
+73 60 60 73 19 90 27 55 45 16 87 19 40 71 8 14 44 68 77 24 80 88 94 15 49 52 58 51 46 10 37 36 39 88 71 55 2 87 27 
 
 
 
 Measure Mode: wall_time
-Thread ID: 47064746810380
-Fiber ID: 47064746744780
-Total: 0.008933
+Thread ID: 47345614593020
+Fiber ID: 47345614528880
+Total: 0.009297
 Sort by: self_time
 
  %self      total      self      wait     child     calls  name
- 19.03      0.003     0.002     0.000     0.002      270   Kernel#loop
- 14.87      0.007     0.001     0.000     0.005        6   CompSci::CompleteNaryTree#display
-  8.73      0.001     0.001     0.000     0.001     1077   <Class::CompSci::CompleteNaryTree>#parent_idx
-  4.12      0.000     0.000     0.000     0.000     1617   Integer#/
-  3.57      0.000     0.000     0.000     0.000     1347   Integer#+
-  3.46      0.000     0.000     0.000     0.000     1077   Integer#<
-  3.12      0.000     0.000     0.000     0.000     1077   Integer#-
-  2.76      0.000     0.000     0.000     0.000      543   Integer#to_s
-  2.70      0.004     0.000     0.000     0.003      270   <Class::CompSci::CompleteNaryTree>#gen
-  2.49      0.000     0.000     0.000     0.000      292   String#+
-  2.04      0.000     0.000     0.000     0.000      270   String#ljust
-  1.98      0.000     0.000     0.000     0.000      270   BasicObject#!=
-  1.86      0.009     0.000     0.000     0.009        2   Global#[No method]
-  1.72      0.000     0.000     0.000     0.000      270   String#rjust
-  1.63      0.000     0.000     0.000     0.000      180   Array#shift
-  1.62      0.000     0.000     0.000     0.000      540   String#size
-  1.27      0.000     0.000     0.000     0.000        9   Array#inspect
-  1.16      0.000     0.000     0.000     0.000      180   CompSci::CompleteNaryTree#push
-  1.08      0.000     0.000     0.000     0.000      270   Integer#**
-  0.94      0.000     0.000     0.000     0.000      270   Array#max
-  0.87      0.000     0.000     0.000     0.000        6   Kernel#p
+ 16.53      0.007     0.002     0.000     0.006        6   CompSci::CompleteNaryTree#display
+ 16.26      0.004     0.002     0.000     0.002      270   Kernel#loop
+ 10.60      0.002     0.001     0.000     0.001     1077   <Class::CompSci::CompleteNaryTree>#parent_idx
+  4.64      0.000     0.000     0.000     0.000     1617   Integer#/
+  3.71      0.000     0.000     0.000     0.000     1347   Integer#+
+  3.41      0.004     0.000     0.000     0.004      270   <Class::CompSci::CompleteNaryTree>#gen
+  3.15      0.000     0.000     0.000     0.000     1077   Integer#<
+  2.89      0.000     0.000     0.000     0.000     1077   Integer#-
+  2.74      0.000     0.000     0.000     0.000      292   String#+
+  2.60      0.000     0.000     0.000     0.000      543   Integer#to_s
+  2.41      0.000     0.000     0.000     0.000      270   String#ljust
+  1.84      0.000     0.000     0.000     0.000      270   BasicObject#!=
+  1.74      0.009     0.000     0.000     0.009        2   Global#[No method]
+  1.73      0.000     0.000     0.000     0.000      540   String#size
+  1.12      0.000     0.000     0.000     0.000      270   String#rjust
+  1.10      0.000     0.000     0.000     0.000      180   CompSci::CompleteNaryTree#push
+  1.03      0.000     0.000     0.000     0.000        6   Kernel#p
+  0.97      0.000     0.000     0.000     0.000        9   Array#inspect
+  0.96      0.000     0.000     0.000     0.000      270   Array#max
+  0.96      0.000     0.000     0.000     0.000      270   Integer#**
   0.81      0.000     0.000     0.000     0.000      270   Kernel#class
-  0.57      0.000     0.000     0.000     0.000        4   Array#initialize
-  0.54      0.000     0.000     0.000     0.000      180   Array#push
-  0.53      0.000     0.000     0.000     0.000      270   Integer#==
-  0.47      0.000     0.000     0.000     0.000      120   Kernel#rand
-  0.41      0.000     0.000     0.000     0.000      186   Array#empty?
-  0.32      0.000     0.000     0.000     0.000        6   IO#set_encoding
-  0.30      0.000     0.000     0.000     0.000        6   <Class::Thread>#current
+  0.75      0.000     0.000     0.000     0.000      270   Integer#==
+  0.66      0.000     0.000     0.000     0.000        4   Array#initialize
+  0.59      0.000     0.000     0.000     0.000      180   Array#push
+  0.53      0.000     0.000     0.000     0.000      180   Array#shift
+  0.42      0.000     0.000     0.000     0.000      186   Array#empty?
+  0.37      0.000     0.000     0.000     0.000      120   Kernel#rand
+  0.34      0.000     0.000     0.000     0.000       37   IO#write
+  0.33      0.000     0.000     0.000     0.000        6   IO#set_encoding
   0.30      0.000     0.000     0.000     0.000        3   Kernel#inspect
-  0.29      0.000     0.000     0.000     0.000       37   IO#write
-  0.20      0.000     0.000     0.000     0.000       28   IO#puts
-  0.18      0.000     0.000     0.000     0.000       28   Kernel#puts
+  0.17      0.001     0.000     0.000     0.001        4  *Kernel#require
+  0.15      0.000     0.000     0.000     0.000       28   IO#puts
   0.15      0.000     0.000     0.000     0.000        2   <Module::Gem>#find_unresolved_default_spec
-  0.14      0.001     0.000     0.000     0.001        4  *Kernel#require
-  0.10      0.000     0.000     0.000     0.000        7   Class#new
-  0.09      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_enter
-  0.07      0.000     0.000     0.000     0.000        1   Module#attr_reader
-  0.07      0.000     0.000     0.000     0.000        7   BasicObject#singleton_method_added
-  0.07      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_exit
-  0.06      0.000     0.000     0.000     0.000       13   Module#method_added
+  0.15      0.000     0.000     0.000     0.000       28   Kernel#puts
+  0.14      0.000     0.000     0.000     0.000        7   Class#new
+  0.08      0.000     0.000     0.000     0.000       13   Module#method_added
+  0.08      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_enter
   0.06      0.000     0.000     0.000     0.000        3   CompSci::CompleteNaryTree#initialize
-  0.05      0.000     0.000     0.000     0.000        2   <Module::Gem>#suffixes
-  0.05      0.000     0.000     0.000     0.000        1   CompSci::CompleteTernaryTree#initialize
-  0.05      0.000     0.000     0.000     0.000        1   CompSci::CompleteBinaryTree#initialize
-  0.03      0.000     0.000     0.000     0.000        4   Class#inherited
-  0.03      0.000     0.000     0.000     0.000        3   Kernel#initialize_dup
-  0.03      0.000     0.000     0.000     0.000        3   Kernel#dup
+  0.05      0.000     0.000     0.000     0.000        1   Module#attr_reader
+  0.04      0.000     0.000     0.000     0.000        1   CompSci::CompleteTernaryTree#initialize
+  0.04      0.000     0.000     0.000     0.000        3   Kernel#dup
+  0.04      0.000     0.000     0.000     0.000        7   BasicObject#singleton_method_added
+  0.04      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_exit
+  0.04      0.000     0.000     0.000     0.000        6   <Class::Thread>#current
+  0.04      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_check_owner
+  0.03      0.000     0.000     0.000     0.000        1   CompSci::CompleteQuaternaryTree#initialize
+  0.03      0.000     0.000     0.000     0.000        1   CompSci::CompleteBinaryTree#initialize
+  0.03      0.000     0.000     0.000     0.000        1   <Object::Object>#include
+  0.03      0.000     0.000     0.000     0.000        2   <Module::Gem>#suffixes
   0.03      0.000     0.000     0.000     0.000        3   Array#initialize_copy
-  0.02      0.000     0.000     0.000     0.000        1   <Object::Object>#include
-  0.02      0.000     0.000     0.000     0.000        2   Thread::Mutex#unlock
-  0.02      0.000     0.000     0.000     0.000        2   Kernel#respond_to?
-  0.02      0.000     0.000     0.000     0.000        1   CompSci::CompleteQuaternaryTree#initialize
+  0.02      0.000     0.000     0.000     0.000        2   Thread::Mutex#lock
+  0.02      0.000     0.000     0.000     0.000        3   Kernel#initialize_dup
   0.02      0.000     0.000     0.000     0.000        1   Module#append_features
-  0.02      0.000     0.000     0.000     0.000        2   MonitorMixin#mon_check_owner
+  0.02      0.000     0.000     0.000     0.000        4   Class#inherited
   0.02      0.000     0.000     0.000     0.000        2   <Class::Gem::Specification>#unresolved_deps
+  0.02      0.000     0.000     0.000     0.000        2   Kernel#respond_to?
   0.01      0.000     0.000     0.000     0.000        1   Module#included
   0.01      0.000     0.000     0.000     0.000        1   Module#alias_method
-  0.01      0.000     0.000     0.000     0.000        2   Thread::Mutex#lock
+  0.01      0.000     0.000     0.000     0.000        2   Thread::Mutex#unlock
 
 * indicates recursively called methods
 RUBYLIB=lib ruby-prof --exclude-common-cycles examples/heap.rb -- 
@@ -133,449 +133,375 @@ RUBYLIB=lib ruby-prof --exclude-common-cycles examples/heap_push.rb --
 # 3 seconds worth of pushes
 #
 
-10000th push: 0.00005398 s
-20000th push: 0.00003194 s
-30000th push: 0.00001722 s
-40000th push: 0.00007907 s
-50000th push: 0.00005334 s
-60000th push: 0.00002110 s
-70000th push: 0.00002813 s
-80000th push: 0.00001835 s
-90000th push: 0.00002794 s
-100000th push: 0.00002661 s
+10000th push: 0.00004044 s
+20000th push: 0.00002643 s
+30000th push: 0.00002786 s
+40000th push: 0.00004340 s
+50000th push: 0.00003667 s
+60000th push: 0.00002303 s
+70000th push: 0.00002658 s
+80000th push: 0.00002726 s
+90000th push: 0.00001847 s
+100000th push: 0.00004979 s
 -------------
-    100k push: 2.95768746 s (33k push / s)
+    100k push: 2.87516452 s (34k push / s)
 
-pushed 101466 items in 3.0 s
+pushed 104350 items in 3.0 s
 
-still a heap with 101467 items? YES - 1.486 sec
+still a heap with 104351 items? YES - 1.427 sec
 
 Measure Mode: wall_time
-Thread ID: 47016571304980
-Fiber ID: 47016571240620
-Total: 4.487587
+Thread ID: 47081168829440
+Fiber ID: 47081168765220
+Total: 4.428957
 Sort by: self_time
 
  %self      total      self      wait     child     calls  name
- 10.46      1.004     0.469     0.000     0.534   332942   CompSci::Heap#heapish?
-  6.81      1.944     0.306     0.000     1.638   231486  *CompSci::Heap#sift_up
-  5.44      3.000     0.244     0.000     2.756        1   Kernel#loop
-  5.29      0.237     0.237     0.000     0.000  1027389   Array#[]
-  4.48      0.348     0.201     0.000     0.147   101467   Array#initialize
-  4.01      0.288     0.180     0.000     0.108   231476   <Class::CompSci::CompleteNaryTree>#parent_idx
-  3.35      0.224     0.150     0.000     0.073   332942   BasicObject#!=
-  3.27      2.175     0.147     0.000     2.028   101467   CompSci::Heap#push
-  3.17      0.243     0.142     0.000     0.101   101467   Object#number
-  3.12      0.140     0.140     0.000     0.000   535876   Integer#*
-  2.73      0.123     0.123     0.000     0.000   535885   Integer#==
-  2.53      0.113     0.113     0.000     0.000   507334   Integer#+
-  1.97      0.225     0.088     0.000     0.137   101479   <Module::CompSci::Timer>#since
-  1.94      0.087     0.087     0.000     0.000   332943   Kernel#class
-  1.80      0.081     0.081     0.000     0.000   332944   Integer#-
-  1.74      0.078     0.078     0.000     0.000   304410   Integer#%
-  1.72      0.077     0.077     0.000     0.000   332942   Integer#<=>
-  1.71      0.077     0.077     0.000     0.000   304402   Array#length
-  1.46      0.109     0.066     0.000     0.044   101493   <Module::CompSci::Timer>#now
-  1.46      0.473     0.065     0.000     0.407   101467   <Class::CompSci::CompleteNaryTree>#children_idx
-  1.42      0.064     0.064     0.000     0.000   260038   Array#[]=
-  1.33      0.407     0.059     0.000     0.348   101468   Class#new
-  1.29      0.058     0.058     0.000     0.000   231476   BasicObject#!
-  1.21      0.054     0.054     0.000     0.000   231486   Integer#<=
-  1.21      0.054     0.054     0.000     0.000   231476   Integer#/
-  1.17      0.053     0.053     0.000     0.000   202934   Integer#<
-  0.98      0.044     0.044     0.000     0.000   101493   <Module::Process>#clock_gettime
-  0.79      0.036     0.036     0.000     0.000   101466   Float#>
-  0.67      0.030     0.030     0.000     0.000   101569   Array#push
-  0.63      0.028     0.028     0.000     0.000   101466   Array#<<
-  0.61      0.027     0.027     0.000     0.000   101479   Float#-
-  0.01      0.000     0.000     0.000     0.000      102   Kernel#rand
+ 10.47      0.996     0.464     0.000     0.533   342140   CompSci::Heap#heapish?
+  6.79      1.937     0.301     0.000     1.636   237801  *CompSci::Heap#sift_up
+  5.61      3.000     0.248     0.000     2.752        1   Kernel#loop
+  5.22      0.231     0.231     0.000     0.000  1055531   Array#[]
+  4.47      0.336     0.198     0.000     0.138   104351   Array#initialize
+  4.05      0.290     0.180     0.000     0.111   237790   <Class::CompSci::CompleteNaryTree>#parent_idx
+  3.42      0.229     0.152     0.000     0.077   342140   BasicObject#!=
+  3.33      2.168     0.148     0.000     2.020   104351   CompSci::Heap#push
+  3.19      0.246     0.141     0.000     0.104   104351   Object#number
+  2.90      0.128     0.128     0.000     0.000   550842   Integer#*
+  2.82      0.125     0.125     0.000     0.000   550851   Integer#==
+  2.63      0.117     0.117     0.000     0.000   521754   Integer#+
+  1.99      0.223     0.088     0.000     0.135   104363   <Module::CompSci::Timer>#since
+  1.90      0.084     0.084     0.000     0.000   342142   Integer#-
+  1.82      0.081     0.081     0.000     0.000   342140   Integer#<=>
+  1.80      0.080     0.080     0.000     0.000   342141   Kernel#class
+  1.80      0.080     0.080     0.000     0.000   313062   Integer#%
+  1.61      0.071     0.071     0.000     0.000   313054   Array#length
+  1.48      0.066     0.066     0.000     0.000   266900   Array#[]=
+  1.47      0.108     0.065     0.000     0.042   104377   <Module::CompSci::Timer>#now
+  1.40      0.452     0.062     0.000     0.390   104351   <Class::CompSci::CompleteNaryTree>#children_idx
+  1.35      0.060     0.060     0.000     0.000   237790   BasicObject#!
+  1.31      0.058     0.058     0.000     0.000   237801   Integer#<=
+  1.23      0.390     0.055     0.000     0.336   104352   Class#new
+  1.22      0.054     0.054     0.000     0.000   237790   Integer#/
+  1.14      0.051     0.051     0.000     0.000   208702   Integer#<
+  0.95      0.042     0.042     0.000     0.000   104377   <Module::Process>#clock_gettime
+  0.84      0.037     0.037     0.000     0.000   104350   Float#>
+  0.68      0.030     0.030     0.000     0.000   104456   Array#push
+  0.62      0.027     0.027     0.000     0.000   104363   Float#-
+  0.61      0.027     0.027     0.000     0.000   104350   Array#<<
   0.00      0.000     0.000     0.000     0.000       13   String#%
-  0.00      0.000     0.000     0.000     0.000        3   <Module::Gem>#suffixes
-  0.00      0.000     0.000     0.000     0.000      103   Array#shift
+  0.00      0.000     0.000     0.000     0.000      105   Kernel#rand
+  0.00      4.429     0.000     0.000     4.429        2   Global#[No method]
+  0.00      0.000     0.000     0.000     0.000      106   Array#shift
   0.00      0.000     0.000     0.000     0.000       33   IO#write
-  0.00      0.000     0.000     0.000     0.000       18   IO#puts
-  0.00      4.488     0.000     0.000     4.488        2   Global#[No method]
-  0.00      1.486     0.000     0.000     1.486       11   <Module::CompSci::Timer>#elapsed
-  0.00      0.000     0.000     0.000     0.000        1   Enumerable#to_a
+  0.00      1.428     0.000     0.000     1.428       11   <Module::CompSci::Timer>#elapsed
   0.00      0.000     0.000     0.000     0.000        8   IO#set_encoding
+  0.00      0.000     0.000     0.000     0.000        1   Enumerable#to_a
   0.00      0.000     0.000     0.000     0.000        1   Array#shuffle
-  0.00      0.000     0.000     0.000     0.000        3   <Module::Gem>#find_unresolved_default_spec
   0.00      0.000     0.000     0.000     0.000       18   Kernel#puts
-  0.00      1.486     0.000     0.000     1.486   101467  *CompSci::Heap#heap?
+  0.00      0.000     0.000     0.000     0.000       18   IO#puts
+  0.00      0.000     0.000     0.000     0.000        3   <Module::Gem>#find_unresolved_default_spec
+  0.00      1.427     0.000     0.000     1.427   104351  *CompSci::Heap#heap?
   0.00      0.001     0.000     0.000     0.001        6  *Kernel#require
   0.00      0.000     0.000     0.000     0.000        1   CompSci::CompleteNaryTree#size
-  0.00      0.000     0.000     0.000     0.000       23   Module#method_added
   0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_enter
+  0.00      0.000     0.000     0.000     0.000       23   Module#method_added
   0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_exit
-  0.00      0.000     0.000     0.000     0.000        9   <Class::Thread>#current
-  0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_check_owner
   0.00      0.000     0.000     0.000     0.000        1   Module#attr_reader
+  0.00      0.000     0.000     0.000     0.000        9   <Class::Thread>#current
   0.00      0.000     0.000     0.000     0.000        1   CompSci::Heap#initialize
+  0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_check_owner
+  0.00      0.000     0.000     0.000     0.000        3   <Module::Gem>#suffixes
   0.00      0.000     0.000     0.000     0.000        3   <Class::Gem::Specification>#unresolved_deps
+  0.00      0.000     0.000     0.000     0.000        1   Module#alias_method
+  0.00      0.000     0.000     0.000     0.000        3   Kernel#respond_to?
   0.00      0.000     0.000     0.000     0.000        3   Thread::Mutex#lock
-  0.00      0.000     0.000     0.000     0.000        1   Kernel#print
-  0.00      0.000     0.000     0.000     0.000        7   BasicObject#singleton_method_added
+  0.00      0.000     0.000     0.000     0.000        1   CompSci::CompleteNaryTree#initialize
   0.00      0.000     0.000     0.000     0.000        1   Module#append_features
-  0.00      0.000     0.000     0.000     0.000        5   Class#inherited
   0.00      0.000     0.000     0.000     0.000        3   Thread::Mutex#unlock
+  0.00      0.000     0.000     0.000     0.000        1   Kernel#print
   0.00      0.000     0.000     0.000     0.000        1   Integer#to_s
   0.00      0.000     0.000     0.000     0.000        1   Float#/
-  0.00      0.000     0.000     0.000     0.000        1   CompSci::CompleteNaryTree#initialize
   0.00      0.000     0.000     0.000     0.000        1   Integer#to_f
-  0.00      0.000     0.000     0.000     0.000        3   Kernel#respond_to?
-  0.00      0.000     0.000     0.000     0.000        1   Module#included
-  0.00      0.000     0.000     0.000     0.000        1   Module#alias_method
-  0.00      0.000     0.000     0.000     0.000        1   String#to_i
+  0.00      0.000     0.000     0.000     0.000        7   BasicObject#singleton_method_added
+  0.00      0.000     0.000     0.000     0.000        5   Class#inherited
   0.00      0.000     0.000     0.000     0.000        1   <Object::Object>#include
+  0.00      0.000     0.000     0.000     0.000        1   String#to_i
+  0.00      0.000     0.000     0.000     0.000        1   Module#included
 
 * indicates recursively called methods
 RUBYLIB=lib ruby-prof --exclude-common-cycles examples/tree.rb -- 
 #
-# Try out Binary-, Ternary-, and QuaternaryTree
+# Fill up and display some trees
 #
 
-[49, 58, 26, 60, 86, 51, 33, 94, 52, 24, 84, 84, 6, 0, 88, 70, 87, 11, 60, 56, 9, 87, 55, 59, 93, 9, 56, 71, 23, 70]
-#<CompSci::PushTree:0x005561541dbba8 @root=#<CompSci::ChildFlexNode:0x2ab0aa0ede38i @value=49 @children=[58, 26]>, @child_slots=2, @open_parent=#<CompSci::ChildFlexNode:0x2ab0aa0ed794i @value=88 @children=[70]>>
+[49, 6, 5, 76, 69, 6, 83, 67, 18, 12, 3, 32, 75, 59, 42, 79, 56, 16, 41, 24, 96, 92, 71, 10, 71, 49, 33, 19, 0, 75]
+
+#<CompSci::Node:0x2b02c476a790i @value=49 @children=[6, 5]>
                                        49                                       
-                   58                                      26                   
-         60                  86                  51                  33         
-    94        52        24        84        84         6         0        88    
-  70   87   11   60   56   9    87   55   59   93   9    56   71   23   70   _  
-
-df_search visited: 49 58 60 94 70 87 52 11 60 86 24 56 9 84 87 55 26 51 84 59 93 6 9 56 33 0 71 23 88 70
+                    6                                       5                   
+         76                  69                   6                  83         
+    67        18        12         3        32        75        59        42    
+  79   56   16   41   24   96   92   71   10   71   49   33   19   0    75      
 
 
-push: [96, 55, 37, 51, 88, 64, 2, 15, 27, 29, 21, 25, 33, 98, 65, 70, 54, 24, 70, 54, 24, 1, 75, 56, 10, 20, 2, 91, 22, 24]
 
+#<CompSci::Node:0x2b02c475af20i @value=49 @children=[6, 5, 76]>
                                        49                                       
-                   58                                      26                   
-         60                  86                  51                  33         
-    94        52        24        84        84         6         0        88    
-  70   87   11   60   56   9    87   55   59   93   9    56   71   23   70   96 
-55 37 51 88 64 2 15 27 29 21 25 33 98 65 70 54 24 70 54 24 1 75 56 10 20 2 91 22 24 _ _ _ 
+             6                         5                        76            
+   69       6      83      67      18      12       3      32      75   
+59 42 79 56 16 41 24 96 92 71 10 71 49 33 19 0 75                     
 
 
-[49, 58, 26, 60, 86, 51, 33, 94, 52, 24, 84, 84, 6, 0, 88, 70, 87, 11, 60, 56, 9, 87, 55, 59, 93, 9, 56, 71, 23, 70]
-#<CompSci::PushTree:0x0055615419df60 @root=#<CompSci::ChildFlexNode:0x2ab0aa0cf050i @value=49 @children=[58, 26, 60]>, @child_slots=3, @open_parent=#<CompSci::ChildFlexNode:0x2ab0aa0ce830i @value=24 @children=[23, 70]>>
-                                       49                                       
-            58                        26                        60            
-   86      51      33      94      52      24      84      84       6   
-0 88 70 87 11 60 56 9 87 55 59 93 9 56 71 23 70 _ _ _ _ _ _ _ _ _ _ 
 
-df_search visited: 49 58 86 0 88 70 51 87 11 60 33 56 9 87 26 94 55 59 93 52 9 56 71 24 23 70 60 84 84 6
+#<CompSci::Node:0x2b02c475334ci @value=49 @children=[6, 5, 76, 69]>
+RUBYLIB=lib ruby-prof --exclude-common-cycles examples/push_tree.rb -- 
+#
+# Try out Binary, Ternary, and Quaternary PushTrees
+# Push the same vals to each
+#
 
+[76, 9, 44, 96, 71, 98, 96, 38, 62, 69, 32, 59, 92, 0, 92, 55, 83, 70, 34, 8, 29, 76, 78, 22, 47, 44, 54, 96, 27, 43]
+#<CompSci::PushTree:0x0055e4ed74bd78 @root=#<CompSci::ChildFlexNode:0x2af276ba5f0ci @value=76 @children=[9, 44]>, @child_slots=2, @open_parent=#<CompSci::ChildFlexNode:0x2af276ba4c74i @value=92 @children=[43]>>
+                                       76                                       
+                    9                                      44                   
+         96                  71                  98                  96         
+    38        62        69        32        59        92         0        92    
+  55   83   70   34   8    29   76   78   22   47   44   54   96   27   43   _  
 
-push: [23, 40, 91, 22, 49, 87, 14, 12, 65, 66, 51, 75, 42, 60, 48, 52, 23, 7, 15, 23, 21, 58, 14, 34, 3, 93, 71, 64, 25, 91]
-
-                                       49                                       
-            58                        26                        60            
-   86      51      33      94      52      24      84      84       6   
-0 88 70 87 11 60 56 9 87 55 59 93 9 56 71 23 70 23 40 91 22 49 87 14 12 65 66 
-51 75 42 60 48 52 23 7 15 23 21 58 14 34 3 93 71 64 25 91 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-
-[49, 58, 26, 60, 86, 51, 33, 94, 52, 24, 84, 84, 6, 0, 88, 70, 87, 11, 60, 56, 9, 87, 55, 59, 93, 9, 56, 71, 23, 70]
-#<CompSci::PushTree:0x00556153fcdf50 @root=#<CompSci::ChildFlexNode:0x2ab0a9fe7020i @value=49 @children=[58, 26, 60, 86]>, @child_slots=4, @open_parent=#<CompSci::ChildFlexNode:0x2ab0a9fe69b8i @value=94 @children=[70]>>
-                                       49                                       
-         58                  26                  60                  86         
-  51   33   94   52   24   84   84   6    0    88   70   87   11   60   56   9  
-87 55 59 93 9 56 71 23 70 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-df_search visited: 49 58 51 87 55 59 93 33 9 56 71 23 94 70 52 26 24 84 84 6 60 0 88 70 87 86 11 60 56 9
+df_search visited: 76 9 96 38 55 83 62 70 34 71 69 8 29 32 76 78 44 98 59 22 47 92 44 54 96 0 96 27 92 43
 
 
-push: [57, 28, 73, 66, 8, 39, 25, 77, 41, 69, 9, 31, 92, 16, 56, 82, 93, 47, 82, 10, 50, 65, 56, 89, 22, 29, 70, 42, 96, 87]
+push: [1, 11, 50, 45, 35, 93, 9, 32, 80, 39, 88, 53, 46, 74, 51, 62, 31, 19, 65, 28, 62, 87, 87, 64, 20, 21, 98, 4, 81, 3]
 
-                                       49                                       
-         58                  26                  60                  86         
-  51   33   94   52   24   84   84   6    0    88   70   87   11   60   56   9  
-87 55 59 93 9 56 71 23 70 57 28 73 66 8 39 25 77 41 69 9 31 92 16 56 82 93 47 82 10 50 65 56 89 22 29 70 42 96 87 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+                                       76                                       
+                    9                                      44                   
+         96                  71                  98                  96         
+    38        62        69        32        59        92         0        92    
+  55   83   70   34   8    29   76   78   22   47   44   54   96   27   43   1  
+11 50 45 35 93 9 32 80 39 88 53 46 74 51 62 31 19 65 28 62 87 87 64 20 21 98 4 81 3 _ _ _ 
 
 
-Measure Mode: wall_time
-Thread ID: 46938254646300
-Fiber ID: 46938254580340
-Total: 0.013533
-Sort by: self_time
+[76, 9, 44, 96, 71, 98, 96, 38, 62, 69, 32, 59, 92, 0, 92, 55, 83, 70, 34, 8, 29, 76, 78, 22, 47, 44, 54, 96, 27, 43]
+#<CompSci::PushTree:0x0055e4ed6e6e50 @root=#<CompSci::ChildFlexNode:0x2af276b73778i @value=76 @children=[9, 44, 96]>, @child_slots=3, @open_parent=#<CompSci::ChildFlexNode:0x2af276b731d8i @value=69 @children=[27, 43]>>
+                                       76                                       
+             9                        44                        96            
+   71      98      96      38      62      69      32      59      92   
+0 92 55 83 70 34 8 29 76 78 22 47 44 54 96 27 43 _ _ _ _ _ _ _ _ _ _ 
 
- %self      total      self      wait     child     calls  name
-  9.43      0.003     0.001     0.000     0.002       28   <Class::CompSci::NaryTree>#display_level
-  5.28      0.001     0.001     0.000     0.000      423   Array#initialize
-  5.05      0.002     0.001     0.000     0.001       26   CompSci::Tree#bf_search
-  4.62      0.001     0.001     0.000     0.001       28   Array#any?
-  4.42      0.002     0.001     0.000     0.001      606   Class#new
-  4.24      0.001     0.001     0.000     0.000      671   CompSci::PushTree#open_parent?
-  3.56      0.000     0.000     0.000     0.000      742   Array#+
-  3.13      0.006     0.000     0.000     0.006        6   CompSci::NaryTree#display
-  2.36      0.000     0.000     0.000     0.000     1303   BasicObject#!
-  2.06      0.000     0.000     0.000     0.000      850   String#size
-  1.98      0.000     0.000     0.000     0.000      379   CompSci::Node#to_s
-  1.96      0.003     0.000     0.000     0.002      177   CompSci::PushTree#open_parent
-  1.89      0.000     0.000     0.000     0.000      177   CompSci::ChildFlexNode#add_child
-  1.88      0.000     0.000     0.000     0.000      932   NilClass#nil?
-  1.84      0.000     0.000     0.000     0.000      562   Integer#to_s
-  1.75      0.000     0.000     0.000     0.000      532   Array#empty?
-  1.72      0.000     0.000     0.000     0.000      425   String#ljust
-  1.64      0.001     0.000     0.000     0.001      177   CompSci::ChildFlexNode#new_child
-  1.59      0.014     0.000     0.000     0.013        2   Global#[No method]
-  1.51      0.000     0.000     0.000     0.000      850   Integer#+
-  1.50      0.000     0.000     0.000     0.000      180   CompSci::ChildNode#initialize
-  1.46      0.000     0.000     0.000     0.000      453   Array#max
-  1.39      0.004     0.000     0.000     0.004      177   CompSci::PushTree#push
-  1.38      0.000     0.000     0.000     0.000      180   CompSci::Node#initialize
-  1.37      0.000     0.000     0.000     0.000      792   Array#[]
-  1.35      0.000     0.000     0.000     0.000      425   String#rjust
-  1.25      0.000     0.000     0.000     0.000      699   Array#length
-  1.21      0.000     0.000     0.000     0.000      671   Integer#<
-  1.11      0.000     0.000     0.000     0.000      529   Array#shift
-  1.08      0.000     0.000     0.000     0.000      453   Integer#/
-  1.04      0.000     0.000     0.000     0.000       62   Enumerable#find
-  0.97      0.000     0.000     0.000     0.000       43   Array#join
-  0.76      0.000     0.000     0.000     0.000      289   Array#<<
-  0.70      0.000     0.000     0.000     0.000        6   Kernel#p
-  0.65      0.000     0.000     0.000     0.000      177   BasicObject#!=
-  0.63      0.000     0.000     0.000     0.000       62   CompSci::PushTree#open_sibling
-  0.48      0.000     0.000     0.000     0.000        6   Array#inspect
-  0.40      0.000     0.000     0.000     0.000      180   Kernel#is_a?
-  0.37      0.000     0.000     0.000     0.000      211   Kernel#class
-  0.29      0.000     0.000     0.000     0.000      120   Kernel#rand
-  0.28      0.000     0.000     0.000     0.000        3   Kernel#inspect
-  0.26      0.000     0.000     0.000     0.000        9   String#%
-  0.25      0.000     0.000     0.000     0.000       43   IO#write
-  0.24      0.000     0.000     0.000     0.000        8   IO#set_encoding
-  0.24      0.000     0.000     0.000     0.000      177   BasicObject#==
-  0.23      0.000     0.000     0.000     0.000       62   CompSci::ChildNode#siblings
-  0.20      0.000     0.000     0.000     0.000       31   Kernel#puts
-  0.18      0.000     0.000     0.000     0.000       68   Kernel#respond_to?
-  0.16      0.002     0.000     0.000     0.002        6  *Kernel#require
-  0.16      0.000     0.000     0.000     0.000        3   <Module::Gem>#find_unresolved_default_spec
-  0.14      0.000     0.000     0.000     0.000       31   IO#puts
-  0.12      0.000     0.000     0.000     0.000       90  *CompSci::Tree#df_search
-  0.12      0.000     0.000     0.000     0.000       41   Module#method_added
-  0.11      0.000     0.000     0.000     0.000        6   CompSci::Node#inspect
-  0.10      0.000     0.000     0.000     0.000        3   Module#attr_accessor
-  0.10      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_enter
-  0.07      0.000     0.000     0.000     0.000       22   Kernel#nil?
-  0.07      0.000     0.000     0.000     0.000        3   Module#attr_reader
-  0.06      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_exit
-  0.05      0.000     0.000     0.000     0.000        3   CompSci::PushTree#initialize
-  0.04      0.000     0.000     0.000     0.000        6   Module#to_s
-  0.04      0.000     0.000     0.000     0.000        6   BasicObject#singleton_method_added
-  0.04      0.000     0.000     0.000     0.000        3   Kernel#dup
-  0.04      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_check_owner
-  0.03      0.000     0.000     0.000     0.000        3   CompSci::NaryTree#initialize
-  0.03      0.000     0.000     0.000     0.000       11   Class#inherited
-  0.02      0.000     0.000     0.000     0.000        1   <Object::Object>#include
-  0.02      0.000     0.000     0.000     0.000        3   <Class::Gem::Specification>#unresolved_deps
-  0.02      0.000     0.000     0.000     0.000        6   Kernel#object_id
-  0.02      0.000     0.000     0.000     0.000        3   Kernel#initialize_dup
-  0.02      0.000     0.000     0.000     0.000        3   <Module::Gem>#suffixes
-  0.01      0.000     0.000     0.000     0.000        3   Array#initialize_copy
-  0.01      0.000     0.000     0.000     0.000        1   Module#append_features
-  0.01      0.000     0.000     0.000     0.000        9   <Class::Thread>#current
-  0.01      0.000     0.000     0.000     0.000        3   Thread::Mutex#lock
-  0.01      0.000     0.000     0.000     0.000        1   Module#included
-  0.01      0.000     0.000     0.000     0.000        1   Module#alias_method
-  0.01      0.000     0.000     0.000     0.000        3   Thread::Mutex#unlock
+df_search visited: 76 9 71 0 92 55 98 83 70 34 96 8 29 76 44 38 78 22 47 62 44 54 96 69 27 43 96 32 59 92
 
-* indicates recursively called methods
-RUBYLIB=lib ruby-prof --exclude-common-cycles examples/tree_push.rb -- 
+
+push: [57, 32, 47, 40, 90, 59, 74, 68, 8, 47, 12, 69, 24, 82, 28, 3, 91, 72, 71, 60, 4, 56, 10, 22, 98, 30, 65, 93, 36, 68]
+
+                                       76                                       
+             9                        44                        96            
+   71      98      96      38      62      69      32      59      92   
+0 92 55 83 70 34 8 29 76 78 22 47 44 54 96 27 43 57 32 47 40 90 59 74 68 8 47 
+12 69 24 82 28 3 91 72 71 60 4 56 10 22 98 30 65 93 36 68 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+
+[76, 9, 44, 96, 71, 98, 96, 38, 62, 69, 32, 59, 92, 0, 92, 55, 83, 70, 34, 8, 29, 76, 78, 22, 47, 44, 54, 96, 27, 43]
+#<CompSci::PushTree:0x0055e4ed60ca70 @root=#<CompSci::ChildFlexNode:0x2af276b065c4i @value=76 @children=[9, 44, 96, 71]>, @child_slots=4, @open_parent=#<CompSci::ChildFlexNode:0x2af276b06178i @value=38 @children=[43]>>
+                                       76                                       
+          9                  44                  96                  71         
+  98   96   38   62   69   32   59   92   0    92   55   83   70   34   8    29 
+76 78 22 47 44 54 96 27 43 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+df_search visited: 76 9 98 76 78 22 47 96 44 54 96 27 38 43 62 44 69 32 59 92 96 0 92 55 83 71 70 34 8 29
+
+
+push: [7, 59, 10, 70, 52, 31, 86, 15, 74, 10, 81, 98, 78, 17, 67, 42, 7, 89, 94, 21, 39, 0, 82, 3, 69, 51, 70, 39, 22, 82]
+
+                                       76                                       
+          9                  44                  96                  71         
+  98   96   38   62   69   32   59   92   0    92   55   83   70   34   8    29 
+76 78 22 47 44 54 96 27 43 7 59 10 70 52 31 86 15 74 10 81 98 78 17 67 42 7 89 94 21 39 0 82 3 69 51 70 39 22 82 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+
 #
 # 30 inserts, puts, df_search
 #
 
-[35, 86, 35, 16, 14, 59, 10, 25, 82, 86, 74, 94, 55, 97, 3, 14, 60, 48, 70, 87, 72, 47, 6, 93, 97, 19, 46, 8, 28, 64]
-                                       35                                       
-                   86                                      35                   
-         16                  14                  59                  10         
-    25        82        86        74        94        55        97         3    
-  14   60   48   70   87   72   47   6    93   97   19   46   8    28   64   _  
-#<CompSci::PushTree:0x00557968c188b0 @root=#<CompSci::ChildFlexNode:0x2abcb460c7a0i @value=35 @children=[86, 35]>, @child_slots=2, @open_parent=#<CompSci::ChildFlexNode:0x2abcb45f3d40i @value=3 @children=[64]>>
+[22, 89, 50, 93, 39, 19, 68, 72, 46, 23, 54, 72, 83, 63, 92, 93, 62, 74, 0, 43, 36, 87, 70, 64, 74, 78, 16, 60, 29, 55]
+                                       22                                       
+                   89                                      50                   
+         93                  39                  19                  68         
+    72        46        23        54        72        83        63        92    
+  93   62   74   0    43   36   87   70   64   74   78   16   60   29   55   _  
+#<CompSci::PushTree:0x0055e4ed7f3230 @root=#<CompSci::ChildFlexNode:0x2af276bf997ci @value=22 @children=[89, 50]>, @child_slots=2, @open_parent=#<CompSci::ChildFlexNode:0x2af276bf8e8ci @value=92 @children=[55]>>
 
-visited 35
-visited 86
-visited 16
-visited 25
-visited 14
-visited 60
-visited 82
-visited 48
-visited 70
-visited 14
-visited 86
-visited 87
-visited 72
-visited 74
-visited 47
-visited 6
-visited 35
-visited 59
-visited 94
+visited 22
+visited 89
 visited 93
-visited 97
-visited 55
-visited 19
+visited 72
+visited 93
+visited 62
 visited 46
-visited 10
-visited 97
-visited 8
-visited 28
-visited 3
+visited 74
+visited 0
+visited 39
+visited 23
+visited 43
+visited 36
+visited 54
+visited 87
+visited 70
+visited 50
+visited 19
+visited 72
 visited 64
+visited 74
+visited 83
+visited 78
+visited 16
+visited 68
+visited 63
+visited 60
+visited 29
+visited 92
+visited 55
 
-push: [34, 96, 66, 2, 7, 46, 5, 14, 40, 91, 92, 83, 77, 19, 4, 72, 98, 9, 24, 49, 65, 8, 52, 1, 25, 89, 3, 26, 67, 53]
-                                       35                                       
-                   86                                      35                   
-         16                  14                  59                  10         
-    25        82        86        74        94        55        97         3    
-  14   60   48   70   87   72   47   6    93   97   19   46   8    28   64   34 
-96 66 2 7 46 5 14 40 91 92 83 77 19 4 72 98 9 24 49 65 8 52 1 25 89 3 26 67 53 _ _ _ 
+push: [5, 51, 19, 41, 82, 86, 85, 90, 6, 24, 44, 55, 37, 47, 68, 63, 45, 28, 40, 16, 98, 95, 39, 49, 96, 19, 2, 16, 79, 95]
+                                       22                                       
+                   89                                      50                   
+         93                  39                  19                  68         
+    72        46        23        54        72        83        63        92    
+  93   62   74   0    43   36   87   70   64   74   78   16   60   29   55   5  
+51 19 41 82 86 85 90 6 24 44 55 37 47 68 63 45 28 40 16 98 95 39 49 96 19 2 16 79 95 _ _ _ 
 
 #
 # 5 seconds worth of pushes
 #
 
-100th push: 0.00004208 s
-200th push: 0.00001436 s
-300th push: 0.00003000 s
-400th push: 0.00001496 s
-500th push: 0.00001526 s
-600th push: 0.00001567 s
-700th push: 0.00001477 s
-800th push: 0.00001502 s
-900th push: 0.00001535 s
-1000th push: 0.00001523 s
+100th push: 0.00002291 s
+200th push: 0.00001353 s
+300th push: 0.00001527 s
+400th push: 0.00001250 s
+500th push: 0.00001493 s
+600th push: 0.00001542 s
+700th push: 0.00001511 s
+800th push: 0.00001510 s
+900th push: 0.00001494 s
+1000th push: 0.00001475 s
 -----------
-    1k push: 0.3135 s (3189 push / s)
+    1k push: 0.3114 s (3211 push / s)
 
-1100th push: 0.00001517 s
-1200th push: 0.00001674 s
-1300th push: 0.00001611 s
-1400th push: 0.00001607 s
-1500th push: 0.00001634 s
-1600th push: 0.00001689 s
-1700th push: 0.00001651 s
-1800th push: 0.00001684 s
-1900th push: 0.00001769 s
-2000th push: 0.00001765 s
+1100th push: 0.00001532 s
+1200th push: 0.00001530 s
+1300th push: 0.00001614 s
+1400th push: 0.00001543 s
+1500th push: 0.00001523 s
+1600th push: 0.00001569 s
+1700th push: 0.00001630 s
+1800th push: 0.00001685 s
+1900th push: 0.00001674 s
+2000th push: 0.00001466 s
 -----------
-    1k push: 0.9516 s (1050 push / s)
+    1k push: 0.9470 s (1055 push / s)
 
-2100th push: 0.00002449 s
-2200th push: 0.00001810 s
-2300th push: 0.00001807 s
-2400th push: 0.00002129 s
-2500th push: 0.00003762 s
-2600th push: 0.00001923 s
-2700th push: 0.00001899 s
-2800th push: 0.00001974 s
-2900th push: 0.00003915 s
-3000th push: 0.00001910 s
+2100th push: 0.00001742 s
+2200th push: 0.00004419 s
+2300th push: 0.00001792 s
+2400th push: 0.00001731 s
+2500th push: 0.00001854 s
+2600th push: 0.00001814 s
+2700th push: 0.00001932 s
+2800th push: 0.00001874 s
+2900th push: 0.00001859 s
+3000th push: 0.00001897 s
 -----------
-    1k push: 1.7217 s (580 push / s)
+    1k push: 1.7139 s (583 push / s)
 
-3100th push: 0.00002057 s
-3200th push: 0.00001918 s
-3300th push: 0.00002077 s
-3400th push: 0.00001945 s
-3500th push: 0.00001931 s
+3100th push: 0.00001973 s
+3200th push: 0.00001871 s
+3300th push: 0.00001842 s
+3400th push: 0.00002054 s
+3500th push: 0.00001849 s
 3600th push: 0.00002003 s
-3700th push: 0.00002240 s
-3800th push: 0.00001794 s
-pushed 3823 items in 5.0 s
+3700th push: 0.00001950 s
+3800th push: 0.00002013 s
+pushed 3843 items in 5.0 s
 
 Measure Mode: wall_time
-Thread ID: 46989967268880
-Fiber ID: 46989968862420
-Total: 5.012684
+Thread ID: 47220861180940
+Fiber ID: 47220862774760
+Total: 5.025021
 Sort by: self_time
 
  %self      total      self      wait     child     calls  name
- 32.89      4.901     1.649     0.000     3.252      971   CompSci::Tree#bf_search
- 23.26      1.166     1.166     0.000     0.000   914253   Array#+
- 16.34      1.252     0.819     0.000     0.433   922890   CompSci::PushTree#open_parent?
-  7.93      0.397     0.397     0.000     0.000   915192   Array#shift
-  4.48      0.224     0.224     0.000     0.000   915193   Array#empty?
-  4.46      0.223     0.223     0.000     0.000   915237   BasicObject#!
-  4.45      0.223     0.223     0.000     0.000   922901   Array#length
-  4.19      0.210     0.210     0.000     0.000   922890   Integer#<
-  0.24      5.007     0.012     0.000     4.995        1   Kernel#loop
-  0.17      4.931     0.008     0.000     4.923     3882   CompSci::PushTree#open_parent
-  0.17      0.021     0.008     0.000     0.012     3980   Class#new
-  0.13      0.012     0.006     0.000     0.006     3884   CompSci::ChildNode#initialize
-  0.12      0.011     0.006     0.000     0.005     1940   Enumerable#find
-  0.12      0.011     0.006     0.000     0.005     3882   CompSci::ChildFlexNode#add_child
-  0.10      0.038     0.005     0.000     0.033     3882   CompSci::ChildFlexNode#new_child
-  0.09      0.006     0.004     0.000     0.001     3884   CompSci::Node#initialize
-  0.09      0.012     0.004     0.000     0.008     3865   <Module::CompSci::Timer>#since
-  0.09      4.974     0.004     0.000     4.970     3882   CompSci::PushTree#push
-  0.07      0.006     0.003     0.000     0.003     3908   <Module::CompSci::Timer>#now
-  0.07      0.003     0.003     0.000     0.000     3884   Kernel#rand
-  0.06      0.017     0.003     0.000     0.014     1940   CompSci::PushTree#open_sibling
-  0.06      0.003     0.003     0.000     0.000     3908   <Module::Process>#clock_gettime
-  0.05      0.002     0.002     0.000     0.000     3823   Float#>
-  0.05      0.003     0.002     0.000     0.001     3882   BasicObject#!=
-  0.04      0.002     0.002     0.000     0.000     3891   Array#<<
-  0.03      0.002     0.002     0.000     0.000     3865   Float#-
-  0.03      0.001     0.001     0.000     0.000     1940   CompSci::ChildNode#siblings
-  0.03      0.001     0.001     0.000     0.000     3895   Kernel#class
-  0.03      0.001     0.001     0.000     0.000     4011   Integer#+
-  0.03      0.001     0.001     0.000     0.000     3861   Integer#%
-  0.02      0.001     0.001     0.000     0.000     3884   Kernel#is_a?
-  0.02      0.001     0.001     0.000     0.000     3861   Integer#==
-  0.02      0.001     0.001     0.000     0.000     1945   Kernel#respond_to?
-  0.02      0.001     0.001     0.000     0.000     3882   BasicObject#==
-  0.01      0.001     0.001     0.000     0.000       44   String#%
-  0.01      0.001     0.000     0.000     0.000       11   <Class::CompSci::NaryTree>#display_level
-  0.00      0.000     0.000     0.000     0.000      165   IO#write
-  0.00      0.001     0.000     0.000     0.001        2   CompSci::NaryTree#display
-  0.00      0.000     0.000     0.000     0.000       94   Array#initialize
+ 33.08      4.905     1.662     0.000     3.242     1002   CompSci::PushTree#bf_search
+ 23.67      1.190     1.190     0.000     0.000   924580   Array#+
+ 16.11      1.252     0.810     0.000     0.442   933191   CompSci::PushTree#open_parent?
+  7.50      0.377     0.377     0.000     0.000   925311   Array#shift
+  4.56      0.229     0.229     0.000     0.000   925315   Array#empty?
+  4.53      0.228     0.228     0.000     0.000   933741   Array#length
+  4.27      0.215     0.215     0.000     0.000   933191   Integer#<
+  4.12      0.207     0.207     0.000     0.000   926130   BasicObject#!
+  0.24      5.009     0.012     0.000     4.997        1   Kernel#loop
+  0.18      4.938     0.009     0.000     4.929     4079   CompSci::PushTree#open_parent
+  0.16      0.022     0.008     0.000     0.014     4606   Class#new
+  0.14      0.013     0.007     0.000     0.006     2012   Enumerable#find
+  0.13      0.013     0.006     0.000     0.006     4084   CompSci::ChildNode#initialize
+  0.12      0.012     0.006     0.000     0.006     4079   CompSci::ChildFlexNode#add_child
+  0.10      0.039     0.005     0.000     0.033     4079   CompSci::ChildFlexNode#new_child
+  0.10      0.006     0.005     0.000     0.001     4084   CompSci::Node#initialize
+  0.09      4.981     0.004     0.000     4.977     4079   CompSci::PushTree#push
+  0.08      0.011     0.004     0.000     0.007     3885   <Module::CompSci::Timer>#since
+  0.07      0.003     0.003     0.000     0.000     4024   Kernel#rand
+  0.07      0.018     0.003     0.000     0.015     2012   CompSci::PushTree#open_sibling
+  0.06      0.006     0.003     0.000     0.003     3928   <Module::CompSci::Timer>#now
+  0.06      0.003     0.003     0.000     0.000     3928   <Module::Process>#clock_gettime
+  0.05      0.004     0.002     0.000     0.001     4079   BasicObject#!=
+  0.05      0.002     0.002     0.000     0.000     3843   Float#>
+  0.04      0.002     0.002     0.000     0.000     4200   Array#<<
+  0.03      0.004     0.002     0.000     0.002       39   <Class::CompSci::Node>#display_level
+  0.03      0.001     0.001     0.000     0.000     3885   Float#-
+  0.03      0.001     0.001     0.000     0.000     4881   Integer#+
+  0.03      0.001     0.001     0.000     0.000     4084   Kernel#is_a?
+  0.02      0.001     0.001     0.000     0.000     4126   Kernel#class
+  0.02      0.001     0.001     0.000     0.000     4079   BasicObject#==
+  0.02      0.001     0.001     0.000     0.000     2020   Kernel#respond_to?
+  0.02      0.001     0.001     0.000     0.000     3881   Integer#%
+  0.02      0.001     0.001     0.000     0.000     2012   CompSci::ChildNode#siblings
+  0.02      0.001     0.001     0.000     0.000     3881   Integer#==
+  0.02      0.001     0.001     0.000     0.000      517   Array#initialize
+  0.01      0.001     0.001     0.000     0.000       53   String#%
+  0.01      0.001     0.001     0.000     0.000       39   Array#any?
+  0.01      0.007     0.001     0.000     0.007        8   CompSci::Node#display
+  0.01      0.000     0.000     0.000     0.000      519   String#ljust
+  0.01      0.000     0.000     0.000     0.000      749   Integer#to_s
+  0.01      0.001     0.000     0.000     0.000      504   CompSci::Node#to_s
+  0.01      0.000     0.000     0.000     0.000     1028   NilClass#nil?
+  0.01      5.025     0.000     0.000     5.025        2   Global#[No method]
+  0.00      0.000     0.000     0.000     0.000     1038   String#size
+  0.00      0.000     0.000     0.000     0.000      519   String#rjust
+  0.00      0.000     0.000     0.000     0.000      208   IO#write
+  0.00      0.000     0.000     0.000     0.000      968   Array#[]
+  0.00      0.000     0.000     0.000     0.000       58   Array#join
+  0.00      0.000     0.000     0.000     0.000      558   Array#max
+  0.00      0.000     0.000     0.000     0.000        8   Kernel#p
   0.00      0.001     0.000     0.000     0.001       38   <Module::CompSci::Timer>#elapsed
-  0.00      0.001     0.000     0.000     0.001       87   IO#puts
-  0.00      5.013     0.000     0.000     5.013        2   Global#[No method]
-  0.00      0.000     0.000     0.000     0.000      125   CompSci::Node#to_s
-  0.00      0.002     0.000     0.000     0.001       87   Kernel#puts
-  0.00      0.000     0.000     0.000     0.000       94   String#ljust
-  0.00      0.000     0.000     0.000     0.000       11   Array#any?
+  0.00      0.000     0.000     0.000     0.000      558   Integer#/
+  0.00      0.000     0.000     0.000     0.000      118   IO#puts
+  0.00      0.000     0.000     0.000     0.000      118   Kernel#puts
+  0.00      0.000     0.000     0.000     0.000        8   Array#inspect
+  0.00      0.001     0.000     0.000     0.001        6  *Kernel#require
+  0.00      0.000     0.000     0.000     0.000        4   Kernel#inspect
   0.00      0.000     0.000     0.000     0.000        8   IO#set_encoding
-  0.00      0.000     0.000     0.000     0.000      187   Integer#to_s
-  0.00      0.000     0.000     0.000     0.000      188   String#size
-  0.00      0.000     0.000     0.000     0.000       94   String#rjust
-  0.00      0.000     0.000     0.000     0.000        2   Kernel#p
-  0.00      0.000     0.000     0.000     0.000      176   Array#[]
-  0.00      0.000     0.000     0.000     0.000      105   Array#max
-  0.00      0.000     0.000     0.000     0.000       15   Array#join
-  0.00      0.000     0.000     0.000     0.000      105   Integer#/
-  0.00      0.000     0.000     0.000     0.000        2   Array#inspect
-  0.00      0.000     0.000     0.000     0.000       96   NilClass#nil?
+  0.00      0.000     0.000     0.000     0.000      120  *CompSci::PushTree#df_search
   0.00      0.000     0.000     0.000     0.000        3   <Module::Gem>#find_unresolved_default_spec
-  0.00      0.000     0.000     0.000     0.000       41   Module#method_added
-  0.00      0.002     0.000     0.000     0.002        6  *Kernel#require
-  0.00      0.000     0.000     0.000     0.000        1   Kernel#inspect
+  0.00      0.000     0.000     0.000     0.000        8   CompSci::Node#inspect
   0.00      0.000     0.000     0.000     0.000        3   Module#attr_accessor
+  0.00      0.000     0.000     0.000     0.000        5   CompSci::PushTree#initialize
+  0.00      0.000     0.000     0.000     0.000       34   Module#method_added
+  0.00      0.000     0.000     0.000     0.000        2   Module#attr_reader
   0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_enter
-  0.00      0.000     0.000     0.000     0.000        3   Module#attr_reader
-  0.00      0.000     0.000     0.000     0.000       30  *CompSci::Tree#df_search
   0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_exit
-  0.00      0.000     0.000     0.000     0.000        9   <Class::Thread>#current
-  0.00      0.000     0.000     0.000     0.000        6   BasicObject#singleton_method_added
-  0.00      0.000     0.000     0.000     0.000        1   <Object::Object>#include
-  0.00      0.000     0.000     0.000     0.000       11   Class#inherited
+  0.00      0.000     0.000     0.000     0.000        8   Module#to_s
+  0.00      0.000     0.000     0.000     0.000       31   Kernel#nil?
   0.00      0.000     0.000     0.000     0.000        3   Float#/
-  0.00      0.000     0.000     0.000     0.000        2   CompSci::PushTree#initialize
+  0.00      0.000     0.000     0.000     0.000        3   Kernel#dup
+  0.00      0.000     0.000     0.000     0.000        5   BasicObject#singleton_method_added
   0.00      0.000     0.000     0.000     0.000        3   <Class::Gem::Specification>#unresolved_deps
   0.00      0.000     0.000     0.000     0.000        3   <Module::Gem>#suffixes
-  0.00      0.000     0.000     0.000     0.000        3   Thread::Mutex#lock
-  0.00      0.000     0.000     0.000     0.000        3   Integer#to_f
-  0.00      0.000     0.000     0.000     0.000        2   Module#to_s
-  0.00      0.000     0.000     0.000     0.000        2   CompSci::Node#inspect
-  0.00      0.000     0.000     0.000     0.000        2   CompSci::NaryTree#initialize
-  0.00      0.000     0.000     0.000     0.000        3   Thread::Mutex#unlock
-  0.00      0.000     0.000     0.000     0.000        9   Kernel#nil?
-  0.00      0.000     0.000     0.000     0.000        1   Module#alias_method
-  0.00      0.000     0.000     0.000     0.000        1   Module#append_features
   0.00      0.000     0.000     0.000     0.000        3   MonitorMixin#mon_check_owner
-  0.00      0.000     0.000     0.000     0.000        2   Kernel#object_id
-  0.00      0.000     0.000     0.000     0.000        1   Module#included
-
-* indicates recursively called methods
