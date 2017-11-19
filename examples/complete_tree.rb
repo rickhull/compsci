@@ -14,8 +14,7 @@ vals = Array.new(30) { rand 99 }
 
 [CompleteBinaryTree,
  CompleteTernaryTree,
- CompleteQuaternaryTree,
-].each { |tree_class|
+ CompleteQuaternaryTree].each { |tree_class|
   # start with the same vals for each class
   my_vals = vals.dup
   p my_vals
