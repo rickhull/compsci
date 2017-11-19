@@ -205,6 +205,22 @@ describe ChildNode do
     @martin_sheen.children.must_include @emilio_estevez
     @martin_sheen.children.must_include @charlie_sheen
   end
+
+  it "must track siblings" do
+    @martin_sheen[0] = @charlie_sheen
+    @martin_sheen[1] = @emilio_estevez
+    @charlie_sheen.siblings.must_include @emilio_estevez
+    # TODO: should siblings not include self?
+    # @charlie_sheen.siblings.wont_include @charlie_sheen
+    @charlie_sheen.siblings.must_include @charlie_sheen
+  end
+
+  it "must track generation" do
+    @martin_sheen[0] = @charlie_sheen
+    @charlie_sheen.gen.must_equal 1
+    @charlie_sheen[0] = @emilio_estevez # kinky!
+    @emilio_estevez.gen.must_equal 2
+  end
 end
 
 describe FlexNode do
