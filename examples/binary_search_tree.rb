@@ -49,31 +49,3 @@ EOF
   node = root.search(key)
   puts "found #{node}"
 }
-
-
-
-puts <<EOF
-
-#
-# INSERT 30 NODES INTO A TST (NON-UNIQUE KEYS)
-#
-
-EOF
-
-randmax = 50
-
-root = KeyNode.new(rand(randmax), key: rand(randmax), children: 3)
-29.times { puts root.insert(rand(randmax), rand(randmax)) }
-puts root.display
-
-puts <<EOF
-
-#
-# SEARCH FOR #{randmax} RANDOM KEYS
-#
-
-EOF
-
-randmax.times { |key|
-  puts "search #{key}: #{root.search(key).map { |n| n.value }.join(' ')}"
-}
