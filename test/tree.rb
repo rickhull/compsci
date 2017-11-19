@@ -4,12 +4,6 @@ require 'minitest/autorun'
 
 include CompSci
 
-describe NaryTree do
-  it "needs tests" do
-    true.must_equal true
-  end
-end
-
 describe PushTree do
   describe "Binary PushTree with FlexNode" do
     before do

@@ -2,7 +2,7 @@ require 'compsci/node'
 require 'compsci/tree'
 
 module CompSci
-  class BinarySearchTree < BinaryTree
+  class BinarySearchTree
     # helper method; any object which responds to key, value, and children
     # may be used
     def self.node(key, val)
@@ -13,6 +13,8 @@ module CompSci
     def self.create(key, val)
       self.new(self.node(key, val))
     end
+
+    attr_reader :root
 
     def initialize(root_node)
       @child_slots = 2
