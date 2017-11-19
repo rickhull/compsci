@@ -9,31 +9,20 @@ Provided are some toy implementations for some basic computer science problems.
 
 ## [`Node`](lib/compsci/node.rb) classes
 
+A Node provides a tree structure by assigning other Nodes to @children.
+
 * `Node`
   - `@value`
   - `@children`
-  - `#set_child(idx, node)`
+  - `#[](idx)`        (child node at idx)
+  - `#[]=(idx, node)` (set child node at idx)
+  - `display`         (display full tree with all descendents)
 * `KeyNode < Node`
   - `@key`
 * `ChildNode < Node`
   - `@parent`
   - `#gen`
   - `#siblings`
-
-## [`Tree`](lib/compsci/tree.rb) classes
-
-* `Tree`
-  - `@root`
-  - `#df_search`
-  - `#bf_search`
-* `NaryTree < Tree`
-  - `@child_slots` (number of children per node)
-* `BinaryTree < NaryTree`
-  - `@child_slots = 2`
-* `TernaryTree < NaryTree`
-  - `@child_slots = 3`
-* `QuaternaryTree < NaryTree`
-  - `@child_slots = 4`
 
 ## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) classes
 
@@ -62,9 +51,9 @@ Efficient Array implementation of a complete tree.
 Composed of KeyNodes.  The position of a node depends on its key and how the
 key relates to the existing node keys.
 
-* `BinarySearchTree < BinaryTree`
-  - `BinarySearchTree.new_node` (helper method to create a *node*)
-  - `BinarySearchTree.new_with_kv` (helper method to create a *tree*)
+* `BinarySearchTree`
+  - `BinarySearchTree.node`   (helper method to create a new *node*)
+  - `BinarySearchTree.create` (helper method to create a *tree*)
   - `#search_recursive`
   - `#search_iterative`
   - `#insert_recursive`
