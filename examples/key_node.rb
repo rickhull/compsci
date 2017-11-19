@@ -1,6 +1,26 @@
 require 'compsci/node'
+require 'compsci/names'
 
 include CompSci
+
+puts <<EOF
+
+#
+# INSERT NODES INTO A BST (RANDOM KEYS)
+#
+
+EOF
+
+randmax = 99
+
+p vals = Names::WW1.shuffle
+p keys = Array.new(vals.size) { rand randmax }
+
+root = KeyNode.new(vals.shift, key: keys.shift, children: 2, duplicates: true)
+root.insert(keys.shift, vals.shift) until keys.empty?
+
+puts root.display
+puts
 
 puts <<EOF
 
@@ -49,12 +69,11 @@ puts root.display
 puts <<EOF
 
 #
-# SEARCH FOR 30 RANDOM KEYS
+# SEARCH FOR #{randmax} RANDOM KEYS
 #
 
 EOF
 
-30.times {
-  key = rand(randmax)
+randmax.times { |key|
   puts "search #{key}: #{root.search(key).map { |n| n.value }.join(' ')}"
 }
