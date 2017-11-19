@@ -24,6 +24,18 @@ A *Node* provides a tree structure by assigning other *Nodes* to `@children`.
   - `#gen`
   - `#siblings`
 
+## [`BinarySearchTree`](lib/compsci/binary_search_tree.rb) class
+
+Composed of *KeyNodes*.  The position of a node depends on its key and how the
+key relates to the existing node keys.
+
+* `BinarySearchTree`
+  - `BinarySearchTree.node`   (helper method to create a new *node*)
+  - `BinarySearchTree.create` (helper method to create a *tree*)
+  - `#search_recursive`
+  - `#search_iterative`
+  - `#insert_recursive`
+
 ## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) classes
 
 Efficient *Array* implementation of a complete tree uses arithmetic to
@@ -46,18 +58,6 @@ determine parent/child relationships.
   - `@child_slots = 3`
 * `CompleteQuaternaryTree < CompleteNaryTree`
   - `@child_slots = 4`
-
-## [`BinarySearchTree`](lib/compsci/binary_search_tree.rb) class
-
-Composed of *KeyNodes*.  The position of a node depends on its key and how the
-key relates to the existing node keys.
-
-* `BinarySearchTree`
-  - `BinarySearchTree.node`   (helper method to create a new *node*)
-  - `BinarySearchTree.create` (helper method to create a *tree*)
-  - `#search_recursive`
-  - `#search_iterative`
-  - `#insert_recursive`
 
 ## [`Heap`](lib/compsci/heap.rb) class
 
