@@ -22,11 +22,11 @@ describe BinarySearchTree do
   end
 
   # TODO: move to test/node.rb
-  it "must display_level" do
-    str = Node.display_level nodes: @nodes, width: 80
+  it "must display_line" do
+    str = Node.display_line nodes: @nodes, width: 80
     str.size.must_be :>=, 80  # it can overflow
 
-    str = Node.display_level nodes: @nodes, width: 200
+    str = Node.display_line nodes: @nodes, width: 200
     str.size.must_equal 200   # it won't overflow
 
     @keys.each { |k| str.must_include k.to_s }

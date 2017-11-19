@@ -1,7 +1,7 @@
 module CompSci
   # has a value and an array of children; allows child gaps
   class Node
-    def self.display_level(nodes: [], width: 80)
+    def self.display_line(nodes: [], width: 80)
       block_width = [width / nodes.size, 1].max
       nodes.map { |node|
         str = node ? node.to_s : '_'
@@ -41,17 +41,19 @@ module CompSci
     end
 
     def display(width: 80)
-      levels = [self.class.display_level(nodes: [self], width: width)]
+      lines = [self.class.display_line(nodes: [self], width: width)]
       nodes = @children
       while nodes.any? { |n| !n.nil? }
-        levels << self.class.display_level(nodes: nodes, width: width)
-        children = []
-        nodes.each { |n|
-          children += Array.new(@children.size) { |i| n and n.children[i] }
+        lines << self.class.display_line(nodes: nodes, width: width)
+        if nodes.size > 3**7
+          lines << "nodes.size = #{nodes.size}; abort render"
+          break
+        end
+        nodes = nodes.reduce([]) { |memo, n|
+          memo + Array.new(@children.size) { |i| n and n.children[i] }
         }
-        nodes = children
       end
-      levels.join("\n")
+      lines.join("\n")
     end
   end
 
