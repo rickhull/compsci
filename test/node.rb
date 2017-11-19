@@ -43,6 +43,39 @@ describe KeyNode do
     @charlie_sheen.key.must_equal 'charles'
     @emilio_estevez.key.must_equal 'emile'
   end
+
+  describe "KeyNode.key_cmp_idx" do
+    it "must handle 2 or 3 child_slots" do
+      c2 = {
+        [1,2]  => 0,
+        [1,10] => 0,
+        [2,2]  => :raise,
+        [3,2]  => 1,
+        [10,2] => 1,
+      }
+      c3 = {
+        [1,2] => 0,
+        [1,10] => 0,
+        [2,2] => 1,
+        [3,2] => 2,
+        [10,2] => 2,
+      }
+
+      c2.each { |(new_key, key), expected|
+        if expected == :raise
+          proc {
+            KeyNode.key_cmp_idx(new_key, key)
+          }.must_raise KeyNode::DuplicateKey
+        else
+          KeyNode.key_cmp_idx(new_key, key).must_equal expected
+        end
+      }
+
+      c3.each { |(new_key, key), expected|
+        KeyNode.key_cmp_idx(new_key, key, child_slots: 3).must_equal expected
+      }
+    end
+  end
 end
 
 describe FlexNode do

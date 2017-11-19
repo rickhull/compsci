@@ -60,7 +60,23 @@ module CompSci
   # adds a key to Node; often the key is used to place the node in the
   # tree, independent of the value; e.g. key=priority, value=process_id
   class KeyNode < Node
+    class DuplicateKey < RuntimeError; end
+    class SearchError < RuntimeError; end
+
     attr_accessor :key
+
+    def self.key_cmp_idx(new_key, key, child_slots: 2)
+      if child_slots < 2
+        raise(ArgumentError, "child_slots: #{child_slots} too small")
+      elsif child_slots == 2
+        raise(DuplicateKey, "#{new_key}") if new_key == key
+        new_key < key ? 0 : 1
+      elsif child_slots == 3
+        (new_key <=> key) + 1
+      else
+        raise(ArgumentError: "child_slots: #{child_slots} too big")
+      end
+    end
 
     def initialize(val, key: nil, children: [])
       @key = key
@@ -69,6 +85,56 @@ module CompSci
 
     def to_s
       [@key, @value].join(':')
+    end
+
+    # which child idx should handle key?
+    def cidx(key)
+      self.class.key_cmp_idx(key, @key, child_slots: @children.size)
+    end
+
+    # works for 2 or 3 children
+    def insert(key, val)
+      idx = self.cidx(key)
+      if @children[idx]
+        @children[idx].insert(key, val)
+      else
+        @children[idx] =
+          self.class.new(val, key: key, children: @children.size)
+      end
+    end
+
+    # returns a single node for binary search
+    # returns multiple nodes for ternary search
+    def search(key)
+      if @children.size == 2
+        self.search2(key)
+      elsif @children.size == 3
+        self.search3(key)
+      else
+        raise(SearchError, "can't search for @children.size children")
+      end
+    end
+
+    # returns a single node or nil
+    def search2(key)
+      return self if key == @key
+      child = @children[self.cidx(key)]
+      child.search(key) if child
+    end
+
+    # returns an array of nodes, possibly empty
+    def search3(key)
+      if key == @key
+        nodes = [self]
+        node = @children[1]
+        while node
+          nodes << node
+          node = node.children[1]
+        end
+        return nodes
+      end
+      child = @children[self.cidx(key)]
+      child ? child.search(key) : []
     end
   end
 
