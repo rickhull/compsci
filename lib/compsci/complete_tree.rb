@@ -1,10 +1,8 @@
 module CompSci
-  # A CompleteNaryTree can very efficiently use an array for storage using
+  # A CompleteTree can very efficiently use an array for storage using
   # simple arithmetic to determine parent child relationships.
   #
-  # It is kept separate from compsci/tree as it does not require compsci/node
-  #
-  class CompleteNaryTree
+  class CompleteTree
     # integer math maps several children to one parent
     def self.parent_idx(idx, n)
       (idx-1) / n
@@ -89,19 +87,19 @@ module CompSci
     alias_method :to_s, :display
   end
 
-  class CompleteBinaryTree < CompleteNaryTree
+  class CompleteBinaryTree < CompleteTree
     def initialize(array: [])
       super(array: array, child_slots: 2)
     end
   end
 
-  class CompleteTernaryTree < CompleteNaryTree
+  class CompleteTernaryTree < CompleteTree
     def initialize(array: [])
       super(array: array, child_slots: 3)
     end
   end
 
-  class CompleteQuaternaryTree < CompleteNaryTree
+  class CompleteQuaternaryTree < CompleteTree
     def initialize(array: [])
       super(array: array, child_slots: 4)
     end

@@ -18,7 +18,7 @@ require 'compsci/complete_tree'
 #   swap nodes at each layer of the tree, and there are log(n, base b) layers
 #   to the tree.
 #
-class CompSci::Heap < CompSci::CompleteNaryTree
+class CompSci::Heap < CompSci::CompleteTree
   # * defaults to a MaxHeap, with the largest node at the root
   # * specify a minheap with minheap: true or cmp_val: -1
   #

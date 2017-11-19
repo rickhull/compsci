@@ -3,7 +3,7 @@ require 'minitest/autorun'
 
 include CompSci
 
-describe CompleteNaryTree do
+describe CompleteTree do
   it "must calculate a parent index for N=2" do
     valid = {
       1 => 0,
@@ -24,10 +24,10 @@ describe CompleteNaryTree do
       -2 => -2,
     }
     valid.each { |idx, pidx|
-      CompleteNaryTree.parent_idx(idx, 2).must_equal pidx
+      CompleteTree.parent_idx(idx, 2).must_equal pidx
     }
     invalid.each { |idx, pidx|
-      CompleteNaryTree.parent_idx(idx, 2).must_equal pidx
+      CompleteTree.parent_idx(idx, 2).must_equal pidx
     }
   end
 
@@ -53,10 +53,10 @@ describe CompleteNaryTree do
     }
 
     valid.each { |idx, cidx|
-      CompleteNaryTree.children_idx(idx, 2).must_equal cidx
+      CompleteTree.children_idx(idx, 2).must_equal cidx
     }
     invalid.each { |idx, cidx|
-      CompleteNaryTree.children_idx(idx, 2).must_equal cidx
+      CompleteTree.children_idx(idx, 2).must_equal cidx
     }
   end
 
@@ -80,10 +80,10 @@ describe CompleteNaryTree do
       -2 => -1,
     }
     valid.each { |idx, pidx|
-      CompleteNaryTree.parent_idx(idx, 3).must_equal pidx
+      CompleteTree.parent_idx(idx, 3).must_equal pidx
     }
     invalid.each { |idx, pidx|
-      CompleteNaryTree.parent_idx(idx, 3).must_equal pidx
+      CompleteTree.parent_idx(idx, 3).must_equal pidx
     }
   end
 
@@ -102,17 +102,17 @@ describe CompleteNaryTree do
     }
 
     valid.each { |idx, cidx|
-      CompleteNaryTree.children_idx(idx, 3).must_equal cidx
+      CompleteTree.children_idx(idx, 3).must_equal cidx
     }
     invalid.each { |idx, cidx|
-      CompleteNaryTree.children_idx(idx, 3).must_equal cidx
+      CompleteTree.children_idx(idx, 3).must_equal cidx
     }
   end
 
   describe "instance" do
     before do
       @array = (0..99).sort_by { rand }
-      @empty = CompleteNaryTree.new(child_slots: 5)
+      @empty = CompleteTree.new(child_slots: 5)
       @nonempty = CompleteQuaternaryTree.new(array: @array)
     end
 
