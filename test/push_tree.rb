@@ -1,5 +1,5 @@
 require 'compsci/node'
-require 'compsci/tree'
+require 'compsci/push_tree'
 require 'minitest/autorun'
 
 include CompSci
