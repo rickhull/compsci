@@ -17,34 +17,38 @@ A *Node* provides a tree structure by assigning other *Nodes* to `@children`.
   - `#[](idx)`        (child node at idx)
   - `#[]=(idx, node)` (set child node at idx)
   - `display`         (display full tree with all descendents)
+
+A *KeyNode* adds `@key` and allows a comparison based search on the key.
+Binary Search Trees are supported, and the `@duplicated` flag determines
+whether duplicate keys are allowed to be inserted.  Any duplicates will
+not be returned from `#search`.  A Ternary Search Tree is also supported,
+and it inherently allows duplicates.  `#search` returns an array of `KeyNode`,
+possibly empty.
+
 * `KeyNode < Node`
-  - `@key`
+  - `KeyNode.key_cmp_idx` (compare 2 keys to decide on a child slot)
+  - `@key` (any *Comparable*)
+  - `@duplicates` (boolean flag relevant for @children.size == 2)
+  - `#cidx` (calls `KeyNode.key_cmp_idx`)
+  - `#insert`
+  - `#search`
+
+A *ChildNode* adds reference to its `@parent`.
+
 * `ChildNode < Node`
   - `@parent`
   - `#gen`
   - `#siblings`
 
-## [`BinarySearchTree`](lib/compsci/binary_search_tree.rb) class
-
-Composed of *KeyNodes*.  The position of a node depends on its key and how the
-key relates to the existing node keys.
-
-* `BinarySearchTree`
-  - `BinarySearchTree.node`   (helper method to create a new *node*)
-  - `BinarySearchTree.create` (helper method to create a *tree*)
-  - `#search_recursive`
-  - `#search_iterative`
-  - `#insert_recursive`
-
-## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) classes
+## [`CompleteTree`](lib/compsci/complete_tree.rb) classes
 
 Efficient *Array* implementation of a complete tree uses arithmetic to
 determine parent/child relationships.
 
-* `CompleteNaryTree`
-  - `CompleteNaryTree.parent_idx`
-  - `CompleteNaryTree.children_idx`
-  - `CompleteNaryTree.gen`
+* `CompleteTree`
+  - `CompleteTree.parent_idx`
+  - `CompleteTree.children_idx`
+  - `CompleteTree.gen`
   - `@array`
   - `@child_slots`
   - `#push`
@@ -52,16 +56,16 @@ determine parent/child relationships.
   - `#size`
   - `#last_idx`
   - `#display` (alias `#to_s`)
-* `CompleteBinaryTree < CompleteNaryTree`
+* `CompleteBinaryTree < CompleteTree`
   - `@child_slots = 2`
-* `CompleteTernaryTree < CompleteNaryTree`
+* `CompleteTernaryTree < CompleteTree`
   - `@child_slots = 3`
-* `CompleteQuaternaryTree < CompleteNaryTree`
+* `CompleteQuaternaryTree < CompleteTree`
   - `@child_slots = 4`
 
 ## [`Heap`](lib/compsci/heap.rb) class
 
-*CompleteNaryTree* implementation.  Both *minheaps* and *maxheaps* are
+*CompleteTree* implementation.  Both *minheaps* and *maxheaps* are
 supported.  Any number of children may be provided via `child_slots`.
 The primary operations are `Heap#push` and `Heap#pop`. See the
 [heap](examples/heap.rb) [examples](examples/heap_push.rb)
