@@ -1,6 +1,5 @@
 require 'compsci/fibonacci'
 require 'minitest/autorun'
-require 'minitest/benchmark'
 
 include CompSci
 
@@ -16,70 +15,10 @@ CACHE_RANGE = [100, 1000, 10000, 100000]
 DYNAMIC_RANGE = [100, 1000, 10000, 100000]
 MATRIX_RANGE = [100, 1000, 10000, 100000]
 
-#SPEC_BENCHMARK = true
 #CLASS_BENCHMARK = true
 BENCHMARK_IPS = true
-SPEC_BENCHMARK = false
 CLASS_BENCHMARK = false
 #BENCHMARK_IPS = false
-
-
-if SPEC_BENCHMARK
-  describe "Fibonacci.classic Benchmark" do
-    bench_range do
-      CLASSIC_RANGE
-    end
-
-    fc = ["Fibonacci.classic (exponential, 0.95)", 0.95]
-    bench_performance_exponential(*fc) do |n|
-      Fibonacci.classic(n)
-    end
-  end
-
-  describe "Fibonacci.cache_recursive Benchmark" do
-    bench_range do
-      RECURSIVE_RANGE
-    end
-
-    fcr = ["Fibonacci.cache_recursive (linear, 0.95)", 0.95]
-    bench_performance_linear(*fcr) do |n|
-      Fibonacci.cache_recursive(n)
-    end
-  end
-
-  describe "Fibonacci.cache_iterative Benchmark" do
-    bench_range do
-      CACHE_RANGE
-    end
-
-    fci = ["Fibonacci.cache_iterative (linear, 0.99)", 0.99]
-    bench_performance_linear(*fci) do |n|
-      Fibonacci.cache_iterative(n)
-    end
-  end
-
-  describe "Fibonacci.dynamic Benchmark" do
-    bench_range do
-      DYNAMIC_RANGE
-    end
-
-    fd = ["Fibonacci.dynamic (linear, 0.99)", 0.99]
-    bench_performance_linear(*fd) do |n|
-      Fibonacci.dynamic(n)
-    end
-  end
-
-  describe "Fibonacci.matrix Benchmark" do
-    bench_range do
-      MATRIX_RANGE
-    end
-
-    fd = ["Fibonacci.matrix (linear, 0.99)", 0.99]
-    bench_performance_linear(*fd) do |n|
-      Fibonacci.matrix(n)
-    end
-  end
-end
 
 if CLASS_BENCHMARK
   require 'compsci/timer'
