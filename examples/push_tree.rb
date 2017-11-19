@@ -75,10 +75,10 @@ puts root.display
 puts
 
 
-secs = 5
+runtime = (ARGV.shift || "3").to_i
 puts <<EOF
 #
-# #{secs} seconds worth of pushes
+# #{runtime} seconds worth of pushes
 #
 
 EOF
@@ -107,7 +107,7 @@ loop {
     tree.push rand 99
   end
 
-  break if Timer.since(start) > secs
+  break if Timer.since(start) > runtime
 }
 
 puts "pushed %i items in %0.1f s" % [count, Timer.since(start)]

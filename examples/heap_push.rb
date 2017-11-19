@@ -7,7 +7,7 @@ runtime = (ARGV.shift || "3").to_i
 
 puts <<EOF
 #
-# 3 seconds worth of pushes
+# #{runtime} seconds worth of pushes
 #
 
 EOF
