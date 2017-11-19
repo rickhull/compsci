@@ -23,11 +23,11 @@ A *Node* provides a tree structure by assigning other *Nodes* to `@children`.
 ### `KeyNode`
 
 A *KeyNode* adds `@key` and allows a comparison based search on the key.
-Binary Search Trees are supported, and the `@duplicated` flag determines
-whether duplicate keys are allowed to be inserted.  Any duplicates will
-not be returned from `#search`.  A Ternary Search Tree is also supported,
-and it inherently allows duplicates.  `#search` returns an array of `KeyNode`,
-possibly empty.
+[Binary search trees](https://en.wikipedia.org/wiki/Binary_search_tree)
+are supported, and the `@duplicated` flag determines whether duplicate keys
+are allowed to be inserted.  Any duplicates will not be returned from
+`#search`.  A Ternary search tree is also supported, and it inherently allows
+duplicates keys.  `#search` returns an array of `KeyNode`, possibly empty.
 
 * `KeyNode < Node`
   - `KeyNode.key_cmp_idx` (compare 2 keys to decide on a child slot)
