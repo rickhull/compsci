@@ -1,4 +1,5 @@
 require 'compsci/node'
+require 'compsci/names'
 require 'minitest/autorun'
 
 include CompSci
@@ -10,9 +11,20 @@ describe Node do
     @emilio_estevez = Node.new 'emilio'
   end
 
+  it "must display_line" do
+    nodes = [@martin_sheen, @charlie_sheen, @emilio_estevez]
+    str = Node.display_line nodes: nodes, width: 80
+    # TODO: it was 78 once.  Why < 80?
+    str.size.must_be :>=, 78  # it might overflow
+
+    str = Node.display_line nodes: nodes, width: 200
+    str.size.must_be :>=, 198   # it won't overflow
+  end
+
+
   it "must start with no children" do
     [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
-      n.children.must_be_empty
+      n.children.compact.must_be_empty
     }
   end
 
@@ -30,7 +42,7 @@ describe KeyNode do
 
   it "must start with no children" do
     [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
-      n.children.must_be_empty
+      n.children.compact.must_be_empty
     }
   end
 
@@ -76,6 +88,123 @@ describe KeyNode do
       }
     end
   end
+
+  describe "Binary Search Tree" do
+    before do
+      @keys = Array.new(4) { |i| Names::WW2[i] }
+      @values = Array.new(4) { Names::SOLAR.sample }
+      @root = KeyNode.new(@values[0], key: @keys[0], children: 2)
+      1.upto(@keys.size - 1) { |i| @root.insert(@keys[i], @values[i]) }
+
+      # tree looks like:
+      # A:val1
+      #  B:val2
+      #   C:val3
+      #    D:val4
+    end
+
+    it "must link to inserted nodes" do
+      @root.children.wont_be_empty
+      @root.children[0].must_be_nil
+      c1 = @root.children[1]
+      c1.wont_be_nil
+      c1.key.must_equal @keys[1]
+      c1.children[0].must_be_nil
+      cc1 = c1.children[1]
+      cc1.wont_be_nil
+      cc1.value.must_equal @values[2]
+      cc1.children[0].must_be_nil
+      ccc1 = cc1.children[1]
+      ccc1.wont_be_nil
+      ccc1.key.must_equal @keys[3]
+      ccc1.value.must_equal @values[3]
+    end
+
+    it "must search nodes" do
+      node = nil
+      new_order = (0..9).to_a.shuffle
+      new_order.each { |i|
+        k, v = Names::NATO[i], Names::SOLAR.sample
+        if node.nil?
+          node = KeyNode.new(v, key: k, children: 2)
+        else
+          node.insert(k, v)
+        end
+      }
+
+      3.times {
+        key = Names::NATO[new_order.sample]
+        found = node.search key
+        found.wont_be_nil
+        found.key.must_equal key
+      }
+
+      node.search(Names::SOLAR.sample).must_be_nil
+    end
+
+    it "must accept or reject duplicates" do
+      proc {
+        @root.insert(@keys[0], @values.sample)
+      }.must_raise KeyNode::DuplicateKey
+
+      node = KeyNode.new(@values[0], key: @keys[0], duplicates: true)
+      child = node.insert(@keys[0], @values[0])
+      child.must_be_kind_of KeyNode
+      node.children[1].must_equal child
+      node.children[0].must_be_nil
+    end
+  end
+
+  describe "Ternary Search Tree" do
+    before do
+      @keys = Array.new(4) { |i| Names::NATO[i] }
+      @values = Array.new(4) { Names::SOLAR.sample }
+      @root = KeyNode.new(@values[0], key: @keys[0], children: 3)
+      1.upto(@keys.size - 1) { |i| @root.insert(@keys[i], @values[i]) }
+
+      # tree looks like:
+      # A:val1
+      #  B:val2
+      #   C:val3
+      #    D:val4
+    end
+
+    it "must insert a duplicate as the middle child" do
+      node3 = KeyNode.new(@values[0], key: @keys[0], children: 3)
+      child = node3.insert(@keys[0], @values[0])
+      child.must_be_kind_of KeyNode
+      node3.children[1].must_equal child
+      node3.children[0].must_be_nil
+      node3.children[2].must_be_nil
+    end
+  end
+end
+
+describe ChildNode do
+  before do
+    @martin_sheen = ChildNode.new 'martin'
+    @charlie_sheen = ChildNode.new 'charlie'
+    @emilio_estevez = ChildNode.new 'emilio'
+  end
+
+  it "must start with neither parent nor children" do
+    [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
+      n.parent.must_be_nil
+      n.children.compact.must_be_empty
+    }
+  end
+
+  it "must track parent and children" do
+    @martin_sheen[0] = @charlie_sheen
+    @charlie_sheen.parent.must_equal @martin_sheen
+    @martin_sheen.children.must_include @charlie_sheen
+
+    @martin_sheen.children.wont_include @emilio_estevez
+    @martin_sheen[1] = @emilio_estevez
+    @emilio_estevez.parent.must_equal @martin_sheen
+    @martin_sheen.children.must_include @emilio_estevez
+    @martin_sheen.children.must_include @charlie_sheen
+  end
 end
 
 describe FlexNode do
@@ -99,33 +228,6 @@ describe FlexNode do
     @martin_sheen.children.size.must_equal 1
     @martin_sheen.children.first.value.must_equal 'fake_emilio'
     @martin_sheen.children.wont_include @emilio_estevez
-  end
-end
-
-describe ChildNode do
-  before do
-    @martin_sheen = ChildNode.new 'martin'
-    @charlie_sheen = ChildNode.new 'charlie'
-    @emilio_estevez = ChildNode.new 'emilio'
-  end
-
-  it "must start with neither parent nor children" do
-    [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
-      n.parent.nil?.must_equal true
-      n.children.must_be_empty
-    }
-  end
-
-  it "must track parent and children" do
-    @martin_sheen[0] = @charlie_sheen
-    @charlie_sheen.parent.must_equal @martin_sheen
-    @martin_sheen.children.must_include @charlie_sheen
-
-    @martin_sheen.children.wont_include @emilio_estevez
-    @martin_sheen[1] = @emilio_estevez
-    @emilio_estevez.parent.must_equal @martin_sheen
-    @martin_sheen.children.must_include @emilio_estevez
-    @martin_sheen.children.must_include @charlie_sheen
   end
 end
 

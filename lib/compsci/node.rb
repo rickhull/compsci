@@ -10,17 +10,13 @@ module CompSci
       }.join
     end
 
-    attr_accessor :value
+    attr_accessor :value, :metadata
     attr_reader :children
 
-    def initialize(value, children: [])
+    def initialize(value, children: 2, metadata: {})
       @value = value
-      if children.is_a?(Integer)
-        @children = Array.new(children)
-      else
-        @children = children
-      end
-      # @metadata = {}
+      @children = Array.new(children)
+      @metadata = metadata
     end
 
     def [](idx)
@@ -57,6 +53,8 @@ module CompSci
     end
   end
 
+  # TODO: implement key with @metadata !?!?!?!?
+
   # adds a key to Node; often the key is used to place the node in the
   # tree, independent of the value; e.g. key=priority, value=process_id
   class KeyNode < Node
@@ -78,7 +76,7 @@ module CompSci
       end
     end
 
-    def initialize(val, key: nil, children: [], duplicates: false)
+    def initialize(val, key: nil, children: 2, duplicates: false)
       super(val, children: children)
       @key, @duplicates = key, duplicates
     end
@@ -145,7 +143,7 @@ module CompSci
   class ChildNode < Node
     attr_accessor :parent
 
-    def initialize(value, children: [])
+    def initialize(value, children: 2)
       @parent = nil
       super(value, children: children)
     end
@@ -175,6 +173,12 @@ module CompSci
   # FlexNode API is #add_child, #add_parent, #new_child
 
   class FlexNode < Node
+    def initialize(value, children: [], metadata: {})
+      @value = value
+      @children = children
+      @metadata = metadata
+    end
+
     def add_child(node)
       @children << node
     end
@@ -189,6 +193,13 @@ module CompSci
   end
 
   class ChildFlexNode < ChildNode
+    def initialize(value, children: [], metadata: {})
+      @value = value
+      @children = children
+      @metadata = metadata
+      @parent = nil
+    end
+
     def add_child(node)
       node.parent ||= self
       raise "node has a parent: #{node.parent}" if node.parent != self
