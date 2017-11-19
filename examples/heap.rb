@@ -1,5 +1,4 @@
 require 'compsci/heap'
-require 'compsci/timer'
 
 include CompSci
 
