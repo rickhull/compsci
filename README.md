@@ -16,9 +16,9 @@ A *Node* provides a tree structure by assigning other *Nodes* to `@children`.
 * `Node`
   - `@value`
   - `@children`
-  - `#[](idx)`        (child node at idx)
-  - `#[]=(idx, node)` (set child node at idx)
-  - `display`         (display full tree with all descendents)
+  - `#[]`     - child node at index
+  - `#[]=`    - set child node at index
+  - `display` - display full tree with all descendents
 
 ### `KeyNode`
 
@@ -30,10 +30,10 @@ are allowed to be inserted.  Any duplicates will not be returned from
 duplicates keys.  `#search` returns an array of `KeyNode`, possibly empty.
 
 * `KeyNode < Node`
-  - `KeyNode.key_cmp_idx` (compare 2 keys to decide on a child slot)
-  - `@key` (any *Comparable*)
-  - `@duplicates` (boolean flag relevant for @children.size == 2)
-  - `#cidx` (calls `KeyNode.key_cmp_idx`)
+  - `KeyNode.key_cmp_idx` - compare 2 keys to decide on a child slot
+  - `@key`        - any *Comparable*
+  - `@duplicates` - boolean flag relevant for @children.size == 2
+  - `#cidx`       - calls `KeyNode.key_cmp_idx`
   - `#insert`
   - `#search`
 
@@ -61,7 +61,7 @@ determine parent/child relationships.
   - `#pop`
   - `#size`
   - `#last_idx`
-  - `#display` (alias `#to_s`)
+  - `#display` - alias `#to_s`
 * `CompleteBinaryTree < CompleteTree`
   - `@child_slots = 2`
 * `CompleteTernaryTree < CompleteTree`
