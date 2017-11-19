@@ -20,6 +20,9 @@ A *Node* provides a tree structure by assigning other *Nodes* to `@children`.
   - `#[]=`    - set child node at index
   - `display` - display full tree with all descendents
 
+* [examples/tree.rb](examples/tree.rb)
+* [test/node.rb](test/node.rb#L7)
+
 ### `KeyNode`
 
 A *KeyNode* adds `@key` and allows a comparison based search on the key.
@@ -37,6 +40,10 @@ duplicates keys.  `#search` returns an array of `KeyNode`, possibly empty.
   - `#insert`
   - `#search`
 
+* [examples/binary_search_tree.rb](examples/binary_search_tree.rb)
+* [examples/ternary_search_tree.rb](examples/ternary_search_tree.rb)
+* [test/node.rb](test/node.rb#L43)
+
 ### `ChildNode`
 
 A *ChildNode* adds reference to its `@parent`.
@@ -45,6 +52,8 @@ A *ChildNode* adds reference to its `@parent`.
   - `@parent`
   - `#gen`
   - `#siblings`
+
+* [test/node.rb](test/node.rb#L190)
 
 ## [`CompleteTree`](lib/compsci/complete_tree.rb) classes
 
