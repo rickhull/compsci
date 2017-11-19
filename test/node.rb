@@ -31,6 +31,13 @@ describe Node do
   it "must not respond to :parent" do
     @martin_sheen.respond_to?(:parent).must_equal false
   end
+
+  it "must create a tree by adding children" do
+    @martin_sheen[0] = @charlie_sheen
+    @martin_sheen[1] = @emilio_estevez
+    @martin_sheen.children.must_include @charlie_sheen
+    @martin_sheen.children.must_include @emilio_estevez
+  end
 end
 
 describe KeyNode do
