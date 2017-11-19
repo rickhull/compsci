@@ -98,8 +98,7 @@ describe PushTree do
       @tree.child_slots.must_equal 2
     end
 
-    # TODO: move to test/node.rb
-    it "must to_s" do
+    it "must disply properly via @root" do
       item_count = 31
       # tree already has a root node
       (item_count - 1).times { @tree.push rand 99 }
