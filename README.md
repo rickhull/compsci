@@ -87,7 +87,7 @@ determine parent/child relationships.
 *CompleteTree* implementation.  Both *minheaps* and *maxheaps* are
 supported.  Any number of children may be provided via `child_slots`.
 The primary operations are `Heap#push` and `Heap#pop`. My basic Vagrant VM
-gets over [500k pushes per second](reports/examples#L511), constant up past
+gets over [500k pushes per second](reports/examples#L533), constant up past
 1M pushes.
 
 * `Heap < CompleteTree`
