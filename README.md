@@ -174,19 +174,20 @@ cumulative: 0.828
 
 * `Fit.sigma` - sums the result of a block applied to array values
 * `Fit.error` - returns a generic r^2 value, the coefficient of determination
-* `Fit.constant` - fits `y = a + 0x`; returns the mean and variance
+* `Fit.constant`    - fits `y = a + 0x`; returns the mean and variance
 * `Fit.logarithmic` - fits `y = a + b*ln(x)`; returns a, b, r^2
-* `Fit.linear` - fits `y = a + bx`; returns a, b, r^2
-* `Fit.exponential` fits `y = ae^(bx)`; returns a, b, r^2
-* `Fit.power` fits `y = ax^b`; returns a, b, r^2
+* `Fit.linear`      - fits `y = a + bx`; returns a, b, r^2
+* `Fit.exponential` - fits `y = ae^(bx)`; returns a, b, r^2
+* `Fit.power`       - fits `y = ax^b`; returns a, b, r^2
+* `Fit.best`        - applies known fits; returns the fit with highest r^2
 
 * [test/bench/complete_tree.rb](test/bench/complete_tree.rb)
 * [test/fit.rb](test/fit.rb)
 
 ## [`Names`](lib/compsci/names.rb) module
 
-This helps map a range of small integers to friendly names,
-typically in alphabetical order.
+This helps map a range of small integers to friendly names, typically in
+alphabetical order.
 
 * `ENGLISH_UPPER` `ENGLISH_LOWER` `WW1` `WW2` `NATO` `CRYPTO` `PLANETS` `SOLAR`
 * `Names.assign`
