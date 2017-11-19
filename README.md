@@ -78,16 +78,28 @@ determine parent/child relationships.
 * `CompleteQuaternaryTree < CompleteTree`
   - `@child_slots = 4`
 
+* [examples/complete_tree.rb](examples/complete_tree.rb)
+* [test/complete_tree.rb](test/complete_tree.rb)
+* [test/bench/complete_tree.rb](test/bench/complete_tree.rb)
+
 ## [`Heap`](lib/compsci/heap.rb) class
 
 *CompleteTree* implementation.  Both *minheaps* and *maxheaps* are
 supported.  Any number of children may be provided via `child_slots`.
-The primary operations are `Heap#push` and `Heap#pop`. See the
-[heap](examples/heap.rb) [examples](examples/heap_push.rb)
-which can be executed (among other examples) via `rake examples`.
+The primary operations are `Heap#push` and `Heap#pop`. My basic Vagrant VM
+gets over [500k pushes per second](reports/examples#L484), constant up past
+1M pushes.
 
-My basic Vagrant VM gets over [500k pushes per second, constant up past 1M
-pushes](reports/examples#L484).
+* `Heap < CompleteTree`
+  - `#push`
+  - `#pop`
+  - `#sift_up`
+  - `#sift_down`
+
+* [examples/heap.rb](examples/heap.rb)
+* [examples/heap_push.rb](examples/heap_push.rb)
+* [test/heap.rb](test/heap.rb)
+* [test/bench/heap.rb](test/bench/heap.rb)
 
 ## [`Fibonacci`](lib/compsci/fibonacci.rb) module
 
@@ -97,12 +109,21 @@ pushes](reports/examples#L484).
 * `Fibonacci.dynamic(n)`         - as above but without a cache structure
 * `Fibonacci.matrix(n)`          - matrix is magic; beats dynamic around n=500
 
+* [test/fibonacci.rb](test/fibonacci.rb)
+* [test/bench/fibonacci.rb](test/bench/fibonacci.rb)
+
 ## [`Timer`](/lib/compsci/timer.rb) module
 
 * `Timer.now`      - uses `Process::CLOCK_MONOTONIC` if available
 * `Timer.since`    - provides the elapsed time since a prior time
 * `Timer.elapsed`  - provides the elapsed time to run a block
 * `Timer.loop_avg` - loops a block; returns final value and mean elapsed time
+
+* [examples/heap_push.rb](examples/heap_push.rb)
+* [test/timer.rb](test/timer.rb)
+* [test/bench/complete_tree.rb](test/bench/complete_tree.rb)
+* [test/bench/simplex.rb](test/bench/simplex.rb)
+* [test/timer.rb](test/timer.rb)
 
 ```ruby
 require 'compsci/timer'
