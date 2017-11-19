@@ -9,6 +9,8 @@ Provided are some toy implementations for some basic computer science problems.
 
 ## [`Node`](lib/compsci/node.rb) classes
 
+### `Node`
+
 A *Node* provides a tree structure by assigning other *Nodes* to `@children`.
 
 * `Node`
@@ -17,6 +19,8 @@ A *Node* provides a tree structure by assigning other *Nodes* to `@children`.
   - `#[](idx)`        (child node at idx)
   - `#[]=(idx, node)` (set child node at idx)
   - `display`         (display full tree with all descendents)
+
+### `KeyNode`
 
 A *KeyNode* adds `@key` and allows a comparison based search on the key.
 Binary Search Trees are supported, and the `@duplicated` flag determines
@@ -32,6 +36,8 @@ possibly empty.
   - `#cidx` (calls `KeyNode.key_cmp_idx`)
   - `#insert`
   - `#search`
+
+### `ChildNode`
 
 A *ChildNode* adds reference to its `@parent`.
 
