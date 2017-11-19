@@ -9,7 +9,7 @@ Provided are some toy implementations for some basic computer science problems.
 
 ## [`Node`](lib/compsci/node.rb) classes
 
-A Node provides a tree structure by assigning other Nodes to @children.
+A *Node* provides a tree structure by assigning other *Nodes* to `@children`.
 
 * `Node`
   - `@value`
@@ -26,7 +26,8 @@ A Node provides a tree structure by assigning other Nodes to @children.
 
 ## [`CompleteNaryTree`](lib/compsci/complete_tree.rb) classes
 
-Efficient Array implementation of a complete tree.
+Efficient *Array* implementation of a complete tree uses arithmetic to
+determine parent/child relationships.
 
 * `CompleteNaryTree`
   - `CompleteNaryTree.parent_idx`
@@ -48,7 +49,7 @@ Efficient Array implementation of a complete tree.
 
 ## [`BinarySearchTree`](lib/compsci/binary_search_tree.rb) class
 
-Composed of KeyNodes.  The position of a node depends on its key and how the
+Composed of *KeyNodes*.  The position of a node depends on its key and how the
 key relates to the existing node keys.
 
 * `BinarySearchTree`
@@ -163,9 +164,11 @@ typically in alphabetical order.
 
 ## [`Simplex`](lib/compsci/simplex.rb) class
 
-The Simplex algorithm is a technique for Linear Programming.  Typically the
-problem is to maximize some linear expression of variables given some
-constraints on those variables given in terms of linear inequalities.
+The [Simplex algorithm](https://en.wikipedia.org/wiki/Simplex_algorithm)
+is a technique for
+[Linear programming](https://en.wikipedia.org/wiki/Linear_programming).
+Typically the problem is to maximize some linear expression of variables
+given some constraints on those variables in terms of linear inequalities.
 
 ### [`Simplex::Parse`](lib/compsci/simplex/parse.rb) module
 
