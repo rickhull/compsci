@@ -180,6 +180,9 @@ cumulative: 0.828
 * `Fit.exponential` fits `y = ae^(bx)`; returns a, b, r^2
 * `Fit.power` fits `y = ax^b`; returns a, b, r^2
 
+* [test/bench/complete_tree.rb](test/bench/complete_tree.rb)
+* [test/fit.rb](test/fit.rb)
+
 ## [`Names`](lib/compsci/names.rb) module
 
 This helps map a range of small integers to friendly names,
@@ -187,6 +190,11 @@ typically in alphabetical order.
 
 * `ENGLISH_UPPER` `ENGLISH_LOWER` `WW1` `WW2` `NATO` `CRYPTO` `PLANETS` `SOLAR`
 * `Names.assign`
+
+* [examples/binary_search_tree.rb](examples/binary_search_tree.rb)
+* [examples/ternary_search_tree.rb](examples/ternary_search_tree.rb)
+* [test/names.rb](test/names.rb)
+* [test/node.rb](test/node.rb)
 
 ### [`Names::Greek`](lib/compsci/names/greek.rb) module
 
@@ -210,12 +218,17 @@ is a technique for
 Typically the problem is to maximize some linear expression of variables
 given some constraints on those variables in terms of linear inequalities.
 
+* [test/bench/simplex.rb](test/bench/simplex.rb)
+* [test/simplex.rb](test/simplex.rb)
+
 ### [`Simplex::Parse`](lib/compsci/simplex/parse.rb) module
 
 * `Parse.tokenize` - convert a string to an array of tokens
 * `Parse.term`     - parse certain tokens into [coefficient, varname]
 * `Parse.expression` - parse a string representing a sum of terms
 * `Parse.inequality` - parse a string like "#{expression} <= #{const}"
+
+* [test/simplex_parse.rb](test/simplex_parse.rb)
 
 With `Simplex::Parse`, one can obtain solutions via:
 
