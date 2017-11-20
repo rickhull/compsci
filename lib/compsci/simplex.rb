@@ -1,5 +1,3 @@
-require 'compsci'
-
 # note, this work is based on https://github.com/rickhull/simplex
 # which was forked in 2017 from https://github.com/danlucraft/simplex
 # which had its last commit in 2013
@@ -168,6 +166,4 @@ class CompSci::Simplex
     lines.insert(1, "-"*max_line_length)
     lines.join("\n")
   end
-
-
 end
