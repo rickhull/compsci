@@ -1,5 +1,4 @@
-require 'compsci/node'
-require 'compsci/push_tree'
+require 'compsci/flex_node'
 require 'compsci/timer'
 
 include CompSci
@@ -7,7 +6,7 @@ include CompSci
 puts <<EOF
 
 #
-# Try out Binary, Ternary, and Quaternary PushTrees
+# Try out Binary, Ternary, and Quaternary FlexNodes
 # Push the same vals to each
 #
 
@@ -15,18 +14,17 @@ EOF
 
 vals = Array.new(30) { rand 99 }
 
-[2, 3, 4].each { |children|
+[2, 3, 4].each { |child_slots|
   my_vals = vals.dup
   p my_vals
 
   root = ChildFlexNode.new my_vals.shift
-  tree = PushTree.new(root, child_slots: children)
-  tree.push my_vals.shift until my_vals.empty?
-  p tree
+  root.push(my_vals.shift, child_slots) until my_vals.empty?
+  p root
   puts root.display(width: 80)
   puts
   visited = []
-  tree.df_search { |n|
+  root.df_search { |n|
     visited << n
     false # or n.value > 90
   }
@@ -37,7 +35,7 @@ vals = Array.new(30) { rand 99 }
   # push different vals for each class
   my_vals = Array.new(30) { rand 99 }
   puts "push: #{my_vals.inspect}"
-  tree.push my_vals.shift until my_vals.empty?
+  root.push(my_vals.shift, child_slots) until my_vals.empty?
   puts
   puts root.display(width: 80)
   puts
@@ -47,7 +45,7 @@ vals = Array.new(30) { rand 99 }
 puts <<EOF
 
 #
-# 30 PushTree pushes and df_search
+# 30 ChildFlexNode pushes and df_search
 #
 
 EOF
@@ -56,14 +54,13 @@ vals = Array.new(30) { rand 99 }
 p vals
 
 root = ChildFlexNode.new vals.shift
-tree = PushTree.new root, child_slots: 2
-tree.push vals.shift until vals.empty?
+child_slots = 2
+root.push(vals.shift, child_slots) until vals.empty?
+p root
 puts root.display
-
-p tree
 puts
 
-tree.df_search { |n|
+root.df_search { |n|
   puts "visited #{n}"
   false # or n.value > 90
 }
@@ -72,7 +69,7 @@ puts
 vals = Array.new(30) { rand 99 }
 puts "push: #{vals.inspect}"
 
-tree.push vals.shift until vals.empty?
+root.push(vals.shift, child_slots) until vals.empty?
 puts root.display
 puts
 
@@ -81,7 +78,7 @@ runtime = (ARGV.shift || "3").to_i
 puts <<EOF
 
 #
-# #{runtime} seconds worth of PushTree pushes
+# #{runtime} seconds worth of Binary ChildFlexNode pushes
 #
 
 EOF
@@ -89,13 +86,16 @@ EOF
 count = 0
 start = Timer.now
 start_1k = Timer.now
-tree = PushTree.new ChildFlexNode.new(rand(99)), child_slots: 2
+root = ChildFlexNode.new(rand 99)
+child_slots = 2
 
 loop {
   count += 1
 
   if count % 100 == 0
-    _ans, push_elapsed = Timer.elapsed { tree.push rand 99 }
+    _ans, push_elapsed = Timer.elapsed {
+      root.push(rand(99), child_slots)
+    }
     puts "%ith push: %0.8f s" % [count, push_elapsed]
 
     if count % 1000 == 0
@@ -107,7 +107,7 @@ loop {
       start_1k = Timer.now
     end
   else
-    tree.push rand 99
+    root.push(rand(99), child_slots)
   end
 
   break if Timer.since(start) > runtime
