@@ -78,7 +78,7 @@ scripts = [
   "examples/heap.rb",
   "examples/heap_push.rb",
   "examples/tree.rb",
-  "examples/push_tree.rb",
+  "examples/flex_node.rb",
   "examples/binary_search_tree.rb",
   "examples/ternary_search_tree.rb",
 ]
