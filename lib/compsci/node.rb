@@ -190,6 +190,26 @@ module CompSci
     def add_parent(node)
       node.add_child(self)
     end
+
+    def bf_search(&blk)
+      destinations = [self]
+      while !destinations.empty?
+        node = destinations.shift
+        return node if yield node
+        destinations += node.children
+      end
+      nil
+    end
+
+    def df_search(&blk)
+      return self if yield self
+      stop_node = nil
+      @children.each { |child|
+        stop_node = child.df_search(&blk)
+        break if stop_node
+      }
+      stop_node
+    end
   end
 
   class ChildFlexNode < ChildNode
