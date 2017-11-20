@@ -23,50 +23,6 @@ describe PushTree do
       @tree.push @vals.shift
       @tree.open_parent.children.size.must_equal opc + 1
     end
-
-    it "does depth-first search" do
-      @tree.root.new_child @vals.shift
-      @tree.root.new_child @vals.shift
-      @tree.root.children.each { |c|
-        c.new_child @vals.shift
-        c.new_child @vals.shift
-
-        c.children.each { |cc|
-          cc.new_child @vals.shift
-          cc.new_child @vals.shift
-        }
-      }
-
-      visited = []
-      @tree.df_search { |n|
-        visited << n.value
-        false
-      }
-      visited.wont_be_empty
-      visited.must_equal [0, 1, 3, 5, 6, 4, 7, 8, 2, 9, 11, 12, 10, 13, 14]
-    end
-
-    it "does breadth-first search" do
-      @tree.root.new_child @vals.shift
-      @tree.root.new_child @vals.shift
-      @tree.root.children.each { |c|
-        c.new_child @vals.shift
-        c.new_child @vals.shift
-
-        c.children.each { |cc|
-          cc.new_child @vals.shift
-          cc.new_child @vals.shift
-        }
-      }
-
-      visited = []
-      @tree.bf_search { |n|
-        visited << n.value
-        false
-      }
-      visited.wont_be_empty
-      visited.must_equal [0, 1, 2, 3, 4, 9, 10, 5, 6, 7, 8, 11, 12, 13, 14]
-    end
   end
 
   describe "with ChildFlexNode" do

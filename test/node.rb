@@ -252,6 +252,54 @@ describe FlexNode do
     @martin_sheen.children.first.value.must_equal 'fake_emilio'
     @martin_sheen.children.wont_include @emilio_estevez
   end
+
+  it "does depth-first search" do
+    vals = (0..30).to_a
+    root = FlexNode.new vals.shift
+    root.new_child vals.shift
+    root.new_child vals.shift
+    root.children.each { |c|
+      c.new_child vals.shift
+      c.new_child vals.shift
+
+        c.children.each { |cc|
+          cc.new_child vals.shift
+          cc.new_child vals.shift
+        }
+    }
+
+    visited = []
+    root.df_search { |n|
+      visited << n.value
+      false
+    }
+    visited.wont_be_empty
+    visited.must_equal [0, 1, 3, 5, 6, 4, 7, 8, 2, 9, 11, 12, 10, 13, 14]
+  end
+
+  it "does breadth-first search" do
+    vals = (0..30).to_a
+    root = FlexNode.new vals.shift
+    root.new_child vals.shift
+    root.new_child vals.shift
+    root.children.each { |c|
+      c.new_child vals.shift
+      c.new_child vals.shift
+
+      c.children.each { |cc|
+        cc.new_child vals.shift
+        cc.new_child vals.shift
+      }
+    }
+
+    visited = []
+    root.bf_search { |n|
+      visited << n.value
+      false
+    }
+    visited.wont_be_empty
+    visited.must_equal [0, 1, 2, 3, 4, 9, 10, 5, 6, 7, 8, 11, 12, 13, 14]
+  end
 end
 
 describe ChildFlexNode do
