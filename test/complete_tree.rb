@@ -1,6 +1,8 @@
 require 'compsci/complete_tree'
 require 'minitest/autorun'
 
+Minitest::Test.parallelize_me!
+
 include CompSci
 
 describe CompleteTree do
@@ -24,10 +26,10 @@ describe CompleteTree do
       -2 => -2,
     }
     valid.each { |idx, pidx|
-      CompleteTree.parent_idx(idx, 2).must_equal pidx
+      expect(CompleteTree.parent_idx(idx, 2)).must_equal pidx
     }
     invalid.each { |idx, pidx|
-      CompleteTree.parent_idx(idx, 2).must_equal pidx
+      expect(CompleteTree.parent_idx(idx, 2)).must_equal pidx
     }
   end
 
@@ -53,10 +55,10 @@ describe CompleteTree do
     }
 
     valid.each { |idx, cidx|
-      CompleteTree.children_idx(idx, 2).must_equal cidx
+      expect(CompleteTree.children_idx(idx, 2)).must_equal cidx
     }
     invalid.each { |idx, cidx|
-      CompleteTree.children_idx(idx, 2).must_equal cidx
+      expect(CompleteTree.children_idx(idx, 2)).must_equal cidx
     }
   end
 
@@ -80,10 +82,10 @@ describe CompleteTree do
       -2 => -1,
     }
     valid.each { |idx, pidx|
-      CompleteTree.parent_idx(idx, 3).must_equal pidx
+      expect(CompleteTree.parent_idx(idx, 3)).must_equal pidx
     }
     invalid.each { |idx, pidx|
-      CompleteTree.parent_idx(idx, 3).must_equal pidx
+      expect(CompleteTree.parent_idx(idx, 3)).must_equal pidx
     }
   end
 
@@ -102,10 +104,10 @@ describe CompleteTree do
     }
 
     valid.each { |idx, cidx|
-      CompleteTree.children_idx(idx, 3).must_equal cidx
+      expect(CompleteTree.children_idx(idx, 3)).must_equal cidx
     }
     invalid.each { |idx, cidx|
-      CompleteTree.children_idx(idx, 3).must_equal cidx
+      expect(CompleteTree.children_idx(idx, 3)).must_equal cidx
     }
   end
 
@@ -117,13 +119,13 @@ describe CompleteTree do
     end
 
     it "must have a size" do
-      @empty.size.must_equal 0
-      @nonempty.size.must_equal @array.size
+      expect(@empty.size).must_equal 0
+      expect(@nonempty.size).must_equal @array.size
     end
 
     it "must have a last_idx, nil when empty" do
-      @empty.last_idx.nil?.must_equal true
-      @nonempty.last_idx.must_equal 99
+      expect(@empty.last_idx.nil?).must_equal true
+      expect(@nonempty.last_idx).must_equal 99
     end
 
     # TODO: push, pop, display

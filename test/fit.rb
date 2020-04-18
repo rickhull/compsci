@@ -1,6 +1,8 @@
 require 'compsci/fit'
 require 'minitest/autorun'
 
+Minitest::Test.parallelize_me!
+
 include CompSci
 
 def noise # range: -0.5 to 0.5

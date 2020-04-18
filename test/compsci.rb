@@ -1,6 +1,8 @@
 require 'compsci'
 require 'minitest/autorun'
 
+Minitest::Test.parallelize_me!
+
 describe CompSci do
   it "must determine if num is a power of base" do
     powers = {}
@@ -16,11 +18,7 @@ describe CompSci do
     # 12k assertions below!
     2.upto(basemax) { |base|
       1.upto(2**expmax) { |num|
-        if powers[base].include?(num)
-          CompSci.power_of?(num, base).must_equal true
-        else
-          CompSci.power_of?(num, base).must_equal false
-        end
+        expect(CompSci.power_of?(num, base)).must_equal powers[base].include?(num)
       }
     }
   end

@@ -1,6 +1,8 @@
 require 'compsci/fibonacci'
 require 'minitest/autorun'
 
+Minitest::Test.parallelize_me!
+
 include CompSci
 
 describe Fibonacci do
@@ -10,11 +12,10 @@ describe Fibonacci do
 
   it "must calculate fib(0..10)" do
     @answers.each_with_index { |ans, i|
-      Fibonacci.classic(i).must_equal ans
-      Fibonacci.cache_recursive(i).must_equal ans
-      Fibonacci.cache_iterative(i).must_equal ans
-      Fibonacci.dynamic(i).must_equal ans
-      Fibonacci.matrix(i).must_equal ans
+      [:classic, :cache_recursive, :cache_iterative,
+       :dynamic, :matrix].each { |m|
+        expect(Fibonacci.send(m, i)).must_equal ans
+      }
     }
   end
 end
