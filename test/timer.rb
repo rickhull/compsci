@@ -7,8 +7,8 @@ describe Timer do
   describe "elapsed" do
     it "must return the block value and positive number" do
       answer, elapsed = Timer.elapsed { sleep 0.01; :foo }
-      answer.must_equal :foo
-      elapsed.must_be_close_to 0.015, 0.005
+      expect(answer).must_equal :foo
+      expect(elapsed).must_be_close_to 0.015, 0.01
     end
   end
 
@@ -16,7 +16,7 @@ describe Timer do
     it "must be positive" do
       start = Timer.now
       sleep 0.01
-      Timer.since(start).must_be_close_to 0.015, 0.005
+      expect(Timer.since(start)).must_be_close_to 0.015, 0.01
     end
   end
 
@@ -27,9 +27,9 @@ describe Timer do
         sleep 0.01
         :foo
       }
-      answer.must_equal :foo
-      avg_et.must_be_close_to 0.01, 0.005
-      Timer.since(start).must_be_close_to 0.15, 0.05
+      expect(answer).must_equal :foo
+      expect(avg_et).must_be_close_to 0.01, 0.005
+      expect(Timer.since(start)).must_be_close_to 0.15, 0.05
     end
 
     it "must repeat short loops and stop on time" do
@@ -42,8 +42,8 @@ describe Timer do
       _answer, avg_et = Timer.loop_avg(count: 5) {
         sleep 0.01
       }
-      avg_et.must_be_close_to 0.015, 0.005
-      Timer.since(start).must_be_close_to 0.1, 0.05
+      expect(avg_et).must_be_close_to 0.015, 0.005
+      expect(Timer.since(start)).must_be_close_to 0.1, 0.05
     end
 
     it "must not interrupt long loops" do
@@ -51,8 +51,8 @@ describe Timer do
       _answer, avg_et = Timer.loop_avg(seconds: 0.01) {
         sleep 0.1
       }
-      Timer.since(start).must_be_close_to avg_et, 0.05
-      avg_et.must_be_close_to 0.15, 0.05
+      expect(Timer.since(start)).must_be_close_to avg_et, 0.05
+      expect(avg_et).must_be_close_to 0.15, 0.05
     end
   end
 end
