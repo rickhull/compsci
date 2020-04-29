@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files += Dir['examples/**/*.rb']
 
   s.add_development_dependency "buildar", "~> 3.0"
-  s.add_development_dependency "minitest", "~> 5.0"
+  s.add_development_dependency "minitest", ">= 5.0"
   s.add_development_dependency "rake", ">= 12.3.3" # CVE-2020-8130
   s.add_development_dependency "flog", "~> 0"
   s.add_development_dependency "flay", "~> 0"
