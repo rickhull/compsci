@@ -91,4 +91,10 @@ describe "Simplex.maximize" do
                      'x + 2y <= 3').must_equal [Rational(5, 3),
                                                 Rational(2, 3)]
   end
+
+  it "must reject bad expressions" do
+    proc { Simplex.maximize(5) }.must_raise ArgumentError
+    proc { Simplex.maximize('5') }.must_raise Simplex::Parse::InvalidTerm
+#    proc { Simplex.maximize('5x') }.must_raise Simplex::Parse::InvalidTerm
+  end
 end
