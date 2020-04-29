@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/rickhull/compsci.svg?branch=master)](https://travis-ci.org/rickhull/compsci)
 [![Gem Version](https://badge.fury.io/rb/compsci.svg)](https://badge.fury.io/rb/compsci)
-[![Dependency Status](https://gemnasium.com/rickhull/compsci.svg)](https://gemnasium.com/rickhull/compsci)
 [![Security Status](https://hakiri.io/github/rickhull/compsci/master.svg)](https://hakiri.io/github/rickhull/compsci/master)
 
 # CompSci
