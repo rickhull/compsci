@@ -15,28 +15,28 @@ describe Node do
     nodes = [@martin_sheen, @charlie_sheen, @emilio_estevez]
     str = Node.display_line nodes: nodes, width: 80
     # TODO: it was 78 once.  Why < 80?
-    str.size.must_be :>=, 78  # it might overflow
+    expect(str.size).must_be :>=, 78  # it might overflow
 
     str = Node.display_line nodes: nodes, width: 200
-    str.size.must_be :>=, 198   # it won't overflow
+    expect(str.size).must_be :>=, 198   # it won't overflow
   end
 
 
   it "must start with no children" do
     [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
-      n.children.compact.must_be_empty
+      expect(n.children.compact).must_be_empty
     }
   end
 
   it "must not respond to :parent" do
-    @martin_sheen.respond_to?(:parent).must_equal false
+    expect(@martin_sheen.respond_to?(:parent)).must_equal false
   end
 
   it "must create a tree by adding children" do
     @martin_sheen[0] = @charlie_sheen
     @martin_sheen[1] = @emilio_estevez
-    @martin_sheen.children.must_include @charlie_sheen
-    @martin_sheen.children.must_include @emilio_estevez
+    expect(@martin_sheen.children).must_include @charlie_sheen
+    expect(@martin_sheen.children).must_include @emilio_estevez
   end
 end
 
@@ -49,18 +49,18 @@ describe KeyNode do
 
   it "must start with no children" do
     [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
-      n.children.compact.must_be_empty
+      expect(n.children.compact).must_be_empty
     }
   end
 
   it "must not respond to :parent" do
-    @martin_sheen.respond_to?(:parent).must_equal false
+    expect(@martin_sheen.respond_to?(:parent)).must_equal false
   end
 
   it "must have a key" do
-    @martin_sheen.key.must_equal 'marty'
-    @charlie_sheen.key.must_equal 'charles'
-    @emilio_estevez.key.must_equal 'emile'
+    expect(@martin_sheen.key).must_equal 'marty'
+    expect(@charlie_sheen.key).must_equal 'charles'
+    expect(@emilio_estevez.key).must_equal 'emile'
   end
 
   describe "KeyNode.key_cmp_idx" do
@@ -82,16 +82,17 @@ describe KeyNode do
 
       c2.each { |(new_key, key), expected|
         if expected == :raise
-          proc {
+          expect(proc {
             KeyNode.key_cmp_idx(new_key, key)
-          }.must_raise KeyNode::DuplicateKey
+          }).must_raise KeyNode::DuplicateKey
         else
-          KeyNode.key_cmp_idx(new_key, key).must_equal expected
+          expect(KeyNode.key_cmp_idx(new_key, key)).must_equal expected
         end
       }
 
       c3.each { |(new_key, key), expected|
-        KeyNode.key_cmp_idx(new_key, key, child_slots: 3).must_equal expected
+        expect(KeyNode.key_cmp_idx(new_key, key,
+                                   child_slots: 3)).must_equal expected
       }
     end
   end
@@ -111,20 +112,20 @@ describe KeyNode do
     end
 
     it "must link to inserted nodes" do
-      @root.children.wont_be_empty
-      @root.children[0].must_be_nil
+      expect(@root.children).wont_be_empty
+      expect(@root.children[0]).must_be_nil
       c1 = @root.children[1]
-      c1.wont_be_nil
-      c1.key.must_equal @keys[1]
-      c1.children[0].must_be_nil
+      expect(c1).wont_be_nil
+      expect(c1.key).must_equal @keys[1]
+      expect(c1.children[0]).must_be_nil
       cc1 = c1.children[1]
-      cc1.wont_be_nil
-      cc1.value.must_equal @values[2]
-      cc1.children[0].must_be_nil
+      expect(cc1).wont_be_nil
+      expect(cc1.value).must_equal @values[2]
+      expect(cc1.children[0]).must_be_nil
       ccc1 = cc1.children[1]
-      ccc1.wont_be_nil
-      ccc1.key.must_equal @keys[3]
-      ccc1.value.must_equal @values[3]
+      expect(ccc1).wont_be_nil
+      expect(ccc1.key).must_equal @keys[3]
+      expect(ccc1.value).must_equal @values[3]
     end
 
     it "must search nodes" do
@@ -142,23 +143,23 @@ describe KeyNode do
       3.times {
         key = Names::NATO[new_order.sample]
         found = node.search key
-        found.wont_be_nil
-        found.key.must_equal key
+        expect(found).wont_be_nil
+        expect(found.key).must_equal key
       }
 
-      node.search(Names::SOLAR.sample).must_be_nil
+      expect(node.search(Names::SOLAR.sample)).must_be_nil
     end
 
     it "must accept or reject duplicates" do
-      proc {
-        @root.insert(@keys[0], @values.sample)
-      }.must_raise KeyNode::DuplicateKey
+      expect(proc {
+               @root.insert(@keys[0], @values.sample)
+             }).must_raise KeyNode::DuplicateKey
 
       node = KeyNode.new(@values[0], key: @keys[0], duplicates: true)
       child = node.insert(@keys[0], @values[0])
-      child.must_be_kind_of KeyNode
-      node.children[1].must_equal child
-      node.children[0].must_be_nil
+      expect(child).must_be_kind_of KeyNode
+      expect(node.children[1]).must_equal child
+      expect(node.children[0]).must_be_nil
     end
   end
 
@@ -179,10 +180,10 @@ describe KeyNode do
     it "must insert a duplicate as the middle child" do
       node3 = KeyNode.new(@values[0], key: @keys[0], children: 3)
       child = node3.insert(@keys[0], @values[0])
-      child.must_be_kind_of KeyNode
-      node3.children[1].must_equal child
-      node3.children[0].must_be_nil
-      node3.children[2].must_be_nil
+      expect(child).must_be_kind_of KeyNode
+      expect(node3.children[1]).must_equal child
+      expect(node3.children[0]).must_be_nil
+      expect(node3.children[2]).must_be_nil
     end
   end
 end
@@ -196,36 +197,36 @@ describe ChildNode do
 
   it "must start with neither parent nor children" do
     [@martin_sheen, @charlie_sheen, @emilio_estevez].each { |n|
-      n.parent.must_be_nil
-      n.children.compact.must_be_empty
+      expect(n.parent).must_be_nil
+      expect(n.children.compact).must_be_empty
     }
   end
 
   it "must track parent and children" do
     @martin_sheen[0] = @charlie_sheen
-    @charlie_sheen.parent.must_equal @martin_sheen
-    @martin_sheen.children.must_include @charlie_sheen
+    expect(@charlie_sheen.parent).must_equal @martin_sheen
+    expect(@martin_sheen.children).must_include @charlie_sheen
 
-    @martin_sheen.children.wont_include @emilio_estevez
+    expect(@martin_sheen.children).wont_include @emilio_estevez
     @martin_sheen[1] = @emilio_estevez
-    @emilio_estevez.parent.must_equal @martin_sheen
-    @martin_sheen.children.must_include @emilio_estevez
-    @martin_sheen.children.must_include @charlie_sheen
+    expect(@emilio_estevez.parent).must_equal @martin_sheen
+    expect(@martin_sheen.children).must_include @emilio_estevez
+    expect(@martin_sheen.children).must_include @charlie_sheen
   end
 
   it "must track siblings" do
     @martin_sheen[0] = @charlie_sheen
     @martin_sheen[1] = @emilio_estevez
-    @charlie_sheen.siblings.must_include @emilio_estevez
+    expect(@charlie_sheen.siblings).must_include @emilio_estevez
     # TODO: should siblings not include self?
-    # @charlie_sheen.siblings.wont_include @charlie_sheen
-    @charlie_sheen.siblings.must_include @charlie_sheen
+    # expect(@charlie_sheen.siblings).wont_include @charlie_sheen
+    expect(@charlie_sheen.siblings).must_include @charlie_sheen
   end
 
   it "must track generation" do
     @martin_sheen[0] = @charlie_sheen
-    @charlie_sheen.gen.must_equal 1
+    expect(@charlie_sheen.gen).must_equal 1
     @charlie_sheen[0] = @emilio_estevez # kinky!
-    @emilio_estevez.gen.must_equal 2
+    expect(@emilio_estevez.gen).must_equal 2
   end
 end
