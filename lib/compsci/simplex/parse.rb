@@ -84,16 +84,16 @@ class CompSci::Simplex
 
   def self.problem(maximize: nil, constraints: [], **kwargs)
     if maximize
-      obj, maximize = maximize, true
+      expr, maximize = maximize, true
     elsif kwargs[:minimize]
-      obj, maximize = kwargs[:minimize], false
+      expr, maximize = kwargs[:minimize], false
     else
       raise(ArgumentError, "one of maximize/minimize expected")
     end
-    unless obj.is_a?(String)
+    unless expr.is_a?(String)
       raise(ArgumentError, "bad expr: #{expr} (#{expr.class})")
     end
-    obj_cof = Parse.expression(obj)
+    obj_cof = Parse.expression(expr)
 
     c = [] # coefficients of objective expression
     a = [] # array (per constraint) of the inequality's lhs coefficients
