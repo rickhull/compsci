@@ -2,6 +2,8 @@
 # which was forked in 2017 from https://github.com/danlucraft/simplex
 # which had its last commit in 2013
 
+module CompSci; end
+
 class CompSci::Simplex
   DEFAULT_MAX_PIVOTS = 10_000
 
