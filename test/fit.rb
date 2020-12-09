@@ -130,7 +130,8 @@ describe Fit do
     it "must accept power data" do
       [0.01, 7.5, 500, 1000, 5000, 9999].each { |a|
         [-114, -100, -10, -0.5, -0.1, 0.1, 0.75, 10, 50, 60].each { |b|
-          next if b == -114 # Fit.error warning: Bignum out of Float range
+          # note: on Ruby 2.4.x and older, b == -114 throws
+          # warning: Bignum out of Float range
           ary = Fit.power(@xs, @xs.map { |x| a * x**b })
           expect(ary[0]).must_be_close_to a
           expect(ary[1]).must_be_close_to b
