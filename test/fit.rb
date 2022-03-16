@@ -15,14 +15,14 @@ describe Fit do
   end
 
   describe "Fit.sigma" do
-    it "must answer correctly" do
+    it "answers correctly" do
       expect(Fit.sigma([1, 2, 3])).must_equal 6
       expect(Fit.sigma([1, 2, 3]) { |n| n ** 2 }).must_equal 14
     end
   end
 
   describe "Fit.error" do
-    it "must calculate r^2" do
+    it "calculates r^2" do
       expect(Fit.error([[1, 1], [2, 2], [3, 3]]) { |x| x }).must_equal 1.0
       expect(Fit.error([[1, 1], [2, 2], [3, 4]]) { |x|
                x
@@ -36,7 +36,7 @@ describe Fit do
   #       alternate measure.  A low slope and r2 for linear fit, maybe.
   #
   describe "Fit.constant" do
-    it "must stuff" do
+    it "returns zero variance with truly constant inputs" do
       [0, 1, 10, 100, 1000, 9999].each { |a|
         y_bar, variance = Fit.constant(@xs, @xs.map { |x| a })
         expect(y_bar).must_equal a
@@ -47,7 +47,7 @@ describe Fit do
 
   # y = a + b*ln(x)
   describe "Fit.logarithmic" do
-    it "must accept logarithmic data" do
+    it "accepts logarithmic data" do
       [-9999, -2000, -500, -0.01, 0.01, 500, 2000, 9999].each { |a|
         [-9999, -2000, -500, -0.01, 0.01, 500, 2000, 9999].each { |b|
           ary = Fit.logarithmic(@xs, @xs.map { |x| a + b * Math.log(x) })
@@ -61,7 +61,7 @@ describe Fit do
 
   # y = a + bx
   describe "Fit.linear" do
-    it "must accept linear data" do
+    it "accepts linear data" do
       [-9999, -2000, -500, -0.01, 0.01, 500, 2000, 9999].each { |a|
         [-9999, -2000, -500, -0.01, 0.01, 500, 2000, 9999].each { |b|
           ary = Fit.linear(@xs, @xs.map { |x| a + b * x })
@@ -72,7 +72,7 @@ describe Fit do
       }
     end
 
-    it "must accept constant data" do
+    it "accepts constant data" do
       [0, 1, 10, 100, 1000, 9999].each { |a|
         ary = Fit.linear(@xs, @xs.map { |x| a })
         expect(ary[0]).must_equal a
@@ -84,7 +84,7 @@ describe Fit do
     # note, this test can possibly fail depending on the uniformity of
     # rand's output for our sample
     #
-    it "must accept noisy constant data" do
+    it "accepts noisy constant data" do
       r2s = []
       [0, 1, 10, 100, 1000, 9999].each { |a|
         ary = Fit.linear(@xs, @xs.map { |x| a + noise() })
@@ -113,7 +113,7 @@ describe Fit do
 
   # y = ae^(bx)
   describe "Fit.exponential" do
-    it "must accept exponential data" do
+    it "accepts exponential data" do
       [0.001, 7.5, 500, 1000, 5000, 9999].each { |a|
         [-1.4, -1.1, -0.1, 0.01, 0.5, 0.75].each { |b|
           ary = Fit.exponential(@xs, @xs.map { |x| a * Math::E**(b * x) })
@@ -127,7 +127,7 @@ describe Fit do
 
   # y = ax^b
   describe "Fit.power" do
-    it "must accept power data" do
+    it "accepts power data" do
       [0.01, 7.5, 500, 1000, 5000, 9999].each { |a|
         [-114, -100, -10, -0.5, -0.1, 0.1, 0.75, 10, 50, 60].each { |b|
           # note: on Ruby 2.4.x and older, b == -114 throws
