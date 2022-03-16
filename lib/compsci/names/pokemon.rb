@@ -34,8 +34,8 @@ module CompSci::Names::Pokemon
   # a hash of all the names, keyed by the first letter
   def self.read_hash(path: DATAFILE)
     hsh = Hash.new { |h, k| h[k] = [] }
-    File.open(path).each_line { |l|
-      hsh[l[0]] << l.chomp
+    File.open(path).each_line { |line|
+      hsh[line.chr] << line.chomp
     }
     hsh
   end
