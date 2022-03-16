@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/rickhull/compsci.svg?branch=master)](https://travis-ci.org/rickhull/compsci)
-![GHA CI Status](https://github.com/rickhull/compsci/actions/workflows/ci/badge.svg)
+![GHA CI Status](https://github.com/rickhull/compsci/actions/workflows/ci.yaml/badge.svg)
 
 # CompSci
 
