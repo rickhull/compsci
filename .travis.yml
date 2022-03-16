@@ -1,6 +1,0 @@
-language: ruby
-rvm:
-  - ruby
-#  - ruby-head
-install: gem install minitest
-script: rake
