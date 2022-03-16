@@ -96,16 +96,14 @@ describe Fit do
       expect(mean_r2).must_be_close_to 0.15, 0.15
     end
 
-    it "must reject x^2" do
-      skip "it does not reject x^2 at r^2 < 0.99"
-      xs = [1, 10, 100, 1000]
-      _a, _b, r2 = Fit.linear(xs, xs.map { |x| x**2 })
+    it "rejects x^2" do
+      xs = Array.new(99) { |i| i }
+      a, b, r2 = Fit.linear(xs, xs.map { |x| x**2 })
       expect(r2).must_be :<, 0.99
     end
 
-    it "must reject x^3" do
-      skip "it does not reject x^3 at r^2 < 0.99"
-      xs = [1, 10, 100, 1000]
+    it "rejects x^3" do
+      xs = Array.new(99) { |i| i }
       _a, _b, r2 = Fit.linear(xs, xs.map { |x| x**3 })
       expect(r2).must_be :<, 0.99
     end
