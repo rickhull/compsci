@@ -127,7 +127,8 @@ describe Fit do
   describe "Fit.power" do
     it "accepts power data" do
       [0.01, 7.5, 500, 1000, 5000, 9999].each { |a|
-        [-114, -100, -10, -0.5, -0.1, 0.1, 0.75, 10, 50, 60].each { |b|
+        # [-114, -100, -10, -0.5, -0.1, 0.1, 0.75, 10, 50, 60].each { |b|
+        [        -100, -10, -0.5, -0.1, 0.1, 0.75, 10, 50, 60].each { |b|
           # note: on Ruby 2.4.x and older, b == -114 throws
           # warning: Bignum out of Float range
           ary = Fit.power(@xs, @xs.map { |x| a * x**b })
