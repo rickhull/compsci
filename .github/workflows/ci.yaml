@@ -23,8 +23,8 @@ jobs:
       fail-fast: false
       matrix:
         ruby: [ '2.4', '2.7', head, jruby ]
-	# ruby: [ '2.4', '2.7', head, jruby, truffleruby ]
-	# truffleruby has https://github.com/oracle/truffleruby/issues/2631
+      # ruby: [ '2.4', '2.7', head, jruby, truffleruby ]
+      # truffleruby has https://github.com/oracle/truffleruby/issues/2631
     name: Ruby ${{ matrix.ruby }}
     steps:
       - uses: actions/checkout@v2
