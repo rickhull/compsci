@@ -98,7 +98,7 @@ describe Fit do
 
     it "rejects x^2" do
       xs = Array.new(99) { |i| i }
-      a, b, r2 = Fit.linear(xs, xs.map { |x| x**2 })
+      _a, _b, r2 = Fit.linear(xs, xs.map { |x| x**2 })
       expect(r2).must_be :<, 0.99
     end
 
