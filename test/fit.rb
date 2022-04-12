@@ -140,4 +140,41 @@ describe Fit do
       }
     end
   end
+
+  describe "Fit.predict" do
+    before do
+      @a, @b, @x = 1, 2, 3
+    end
+
+    it "accepts a few different models" do
+      [:constant, :logarithmic, :linear, :exponential, :power].each { |model|
+        expect(Fit.predict(model, @a, @b, @x)).must_be_kind_of(Numeric)
+      }
+      expect { Fit.predict(:invalid, @a, @b, @x) }.must_raise RuntimeError
+    end
+
+    it "predicts constant relationships" do
+      expect(Fit.predict(:constant, @a, @b, @x)).must_equal @a
+      expect(Fit.predict(:constant, @a, @x, @b)).must_equal @a
+      expect(Fit.predict(:constant, @x, @a, @b)).must_equal @x
+    end
+
+    it "predicts logarithmic relationships" do
+      expect(Fit.predict(:logarithmic, @a, @b, @x)
+            ).must_equal @a + @b * Math.log(@x)
+    end
+
+    it "predicts linear relationships" do
+      expect(Fit.predict(:linear, @a, @b, @x)).must_equal @a + @b * @x
+    end
+
+    it "predicts exponential relationships" do
+      expect(Fit.predict(:exponential, @a, @b, @x)
+            ).must_equal @a * Math::E ** (@b * @x)
+    end
+
+    it "predicts power relationships" do
+      expect(Fit.predict(:power, @a, @b, @x)).must_equal @a * @x ** @b
+    end
+  end
 end

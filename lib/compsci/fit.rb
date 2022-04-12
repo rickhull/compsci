@@ -153,5 +153,22 @@ module CompSci
 
       return Math.exp(a), b, self.error(xys) { |x| (Math.exp(a) * (x ** b)) }
     end
+
+    def self.predict(model, a, b, x)
+      case model
+      when :constant
+        a
+      when :logarithmic
+        a + b * Math.log(x)
+      when :linear
+        a + b * x
+      when :exponential
+        a * Math::E ** (b * x)
+      when :power
+        a * x ** b
+      else
+        raise("unknown model: #{model}")
+      end
+    end
   end
 end
