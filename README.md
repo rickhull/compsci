@@ -1,4 +1,5 @@
 [![CI Status](https://github.com/rickhull/compsci/actions/workflows/ci.yaml/badge.svg)](https://github.com/rickhull/compsci/actions/workflows/ci.yaml)
+[![Gem Version](https://badge.fury.io/rb/compsci.svg)](https://badge.fury.io/rb/compsci)
 
 # CompSci
 
