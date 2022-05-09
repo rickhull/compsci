@@ -26,35 +26,34 @@ class CompSci::Simplex
     @max_pivots = DEFAULT_MAX_PIVOTS
 
     # Problem dimensions; these never change
-    @num_non_slack_vars = num_vars
-    @num_constraints    = num_inequalities
-    @num_vars           = @num_non_slack_vars + @num_constraints
+    @num_free_vars   = num_vars
+    @num_basic_vars = num_inequalities
+    @total_vars      = @num_free_vars + @num_basic_vars
 
     # Set up initial matrix A and vectors b, c
-    # store all scalar values as Rational (via #rationalize)
-    @c = c.map { |flt| -1 * flt.rationalize } + Array.new(@num_constraints, 0)
+    # store all input values as Rational (via #rationalize)
+    @c = c.map { |flt| -1 * flt.rationalize } + Array.new(@num_basic_vars, 0)
     @a = a.map.with_index { |ary, i|
-      if ary.size != @num_non_slack_vars
+      if ary.size != @num_free_vars
         raise ArgumentError, "a is inconsistent"
       end
       # add identity matrix
       ary.map { |flt| flt.rationalize } +
-        Array.new(@num_constraints) { |ci| ci == i ? 1 : 0 }
+        Array.new(@num_basic_vars) { |ci| ci == i ? 1 : 0 }
     }
     @b = b.map { |flt| flt.rationalize }
 
-    # set initial solution: all non-slack variables = 0
-    @basic_vars = (@num_non_slack_vars...@num_vars).to_a
+    @basic_vars = (@num_free_vars...@total_vars).to_a
     self.update_solution
   end
 
   # does not modify vector / matrix
   def update_solution
-    @x = Array.new(@num_vars, 0)
+    @x = Array.new(@total_vars, 0)
 
     @basic_vars.each { |basic_var|
       idx = nil
-      @num_constraints.times { |i|
+      @num_basic_vars.times { |i|
         if @a[i][basic_var] == 1
           idx = i
           break
@@ -80,7 +79,7 @@ class CompSci::Simplex
   end
 
   def current_solution
-    @x[0...@num_non_slack_vars]
+    @x[0...@num_free_vars]
   end
 
   def can_improve?
@@ -123,7 +122,7 @@ class CompSci::Simplex
     }
 
     # update A and B
-    @num_constraints.times { |i|
+    @num_basic_vars.times { |i|
       next if i == pivot_row
       r = @a[i][pivot_column]
       @a[i] = @a[i].map.with_index { |val, j| val - r * @a[pivot_row][j] }
@@ -136,7 +135,7 @@ class CompSci::Simplex
   def pivot_row(column_ix)
     min_ratio = nil
     idx = nil
-    @num_constraints.times { |i|
+    @num_basic_vars.times { |i|
       a, b = @a[i][column_ix], @b[i]
       next if a == 0 or (b < 0) ^ (a < 0)
       ratio = Rational(b, a)
