@@ -31,15 +31,17 @@ class CompSci::Simplex
     @num_vars           = @num_non_slack_vars + @num_constraints
 
     # Set up initial matrix A and vectors b, c
-    @c = c.map { |flt| -1 * flt } + Array.new(@num_constraints, 0)
+    # store all scalar values as Rational (via #rationalize)
+    @c = c.map { |flt| -1 * flt.rationalize } + Array.new(@num_constraints, 0)
     @a = a.map.with_index { |ary, i|
       if ary.size != @num_non_slack_vars
         raise ArgumentError, "a is inconsistent"
       end
-      # set diagonal to 1 (identity matrix?)
-      ary + Array.new(@num_constraints) { |ci| ci == i ? 1 : 0 }
+      # add identity matrix
+      ary.map { |flt| flt.rationalize } +
+        Array.new(@num_constraints) { |ci| ci == i ? 1 : 0 }
     }
-    @b = b
+    @b = b.map { |flt| flt.rationalize }
 
     # set initial solution: all non-slack variables = 0
     @basic_vars = (@num_non_slack_vars...@num_vars).to_a
