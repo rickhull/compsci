@@ -54,7 +54,7 @@ class CompSci::Simplex
       idx = nil
       @num_constraints.times { |i|
         if @a[i][basic_var] == 1
-          idx =i
+          idx = i
           break
         end
       }
