@@ -82,7 +82,11 @@ class CompSci::Simplex
     end
   end
 
-  def self.problem(maximize: nil, constraints: [], **kwargs)
+  def self.problem(**kwargs)
+    self.new *self.get_params(**kwargs)
+  end
+
+  def self.get_params(maximize: nil, constraints: [], **kwargs)
     if maximize
       expr, maximize = maximize, true
     elsif kwargs[:minimize]
@@ -116,7 +120,7 @@ class CompSci::Simplex
       a.push cofs
       b.push rhs
     }
-    self.new(c, a, b)
+    [c, a, b]
   end
 
   def self.maximize(expression, *ineqs)
