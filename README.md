@@ -211,6 +211,8 @@ alphabetical order.
 
 ## [`Simplex`](lib/compsci/simplex.rb) class
 
+### WORK IN PROGRESS; DO NOT USE
+
 The [Simplex algorithm](https://en.wikipedia.org/wiki/Simplex_algorithm)
 is a technique for
 [Linear programming](https://en.wikipedia.org/wiki/Linear_programming).
