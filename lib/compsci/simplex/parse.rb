@@ -83,7 +83,7 @@ class CompSci::Simplex
   end
 
   def self.problem(**kwargs)
-    self.new *self.get_params(**kwargs)
+    self.new(*self.get_params(**kwargs))
   end
 
   def self.get_params(maximize: nil, constraints: [], **kwargs)
