@@ -15,6 +15,8 @@ Gem::Specification.new do |s|
   s.files += Dir['test/**/*.rb']
   s.files += Dir['examples/**/*.rb']
 
+  s.add_dependency "matrix", "~> 0.4"
+
   s.add_development_dependency "buildar", "~> 3.0"
   s.add_development_dependency "minitest", "~> 5.0"
   s.add_development_dependency "rake", "~> 12.3" # CVE-2020-8130
