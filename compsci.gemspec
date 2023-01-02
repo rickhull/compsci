@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/rickhull/compsci"
   s.license = "LGPL-3.0"
 
-  s.required_ruby_version = "~> 2"
+  s.required_ruby_version = "~> 3.0"
 
   s.version = File.read(File.join(__dir__, 'VERSION')).chomp
 
@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.files += Dir['examples/**/*.rb']
 
   s.add_development_dependency "buildar", "~> 3.0"
-  s.add_development_dependency "minitest", ">= 5.0"
-  s.add_development_dependency "rake", ">= 12.3.3" # CVE-2020-8130
+  s.add_development_dependency "minitest", "~> 5.0"
+  s.add_development_dependency "rake", "~> 12.3" # CVE-2020-8130
   s.add_development_dependency "flog", "~> 0"
   s.add_development_dependency "flay", "~> 0"
   s.add_development_dependency "roodi", "~> 0"
