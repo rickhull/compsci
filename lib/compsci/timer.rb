@@ -38,7 +38,7 @@ module CompSci
     end
 
     # YYYY-MM-DD HH::MM::SS.mmm
-    def self.timestamp(t)
+    def self.timestamp(t = Time.now)
       t.strftime "%Y-%m-%d %H:%M:%S.%L"
     end
 
@@ -57,7 +57,7 @@ module CompSci
       hmsms.join('.')
     end
 
-    def restart(t = Time.now)
+    def restart(t = Timer.now)
       @start = t
       self
     end
@@ -71,25 +71,25 @@ module CompSci
       puts '-' * 70, timestamp(t), '-' * 70
     end
 
-    def elapsed(t = Time.now)
+    def elapsed(t = Timer.now)
       t - @start
     end
 
-    def elapsed_ms(t = Time.now)
+    def elapsed_ms(t = Timer.now)
       elapsed(t) * 1000
     end
 
-    def elapsed_display(t = Time.now)
+    def elapsed_display(t = Timer.now)
       self.class.elapsed_display(elapsed_ms(t))
     end
     alias_method :to_s, :elapsed_display
     alias_method :inspect, :elapsed_display
 
-    def stamp(msg = '', t = Time.now)
+    def stamp(msg = '', t = Timer.now)
       format("%s %s", elapsed_display(t), msg)
     end
 
-    def stamp!(msg = '', t = Time.now)
+    def stamp!(msg = '', t = Timer.now)
       puts stamp(msg, t)
     end
   end
