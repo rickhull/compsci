@@ -4,24 +4,24 @@ module CompSci
     MINS_PER_HOUR = 60
     SECS_PER_HOUR = SECS_PER_MIN * MINS_PER_HOUR
 
-    # lifted from seattlerb/minitest
+    # returns a float representing seconds since epoch
     if defined? Process::CLOCK_MONOTONIC
       def self.now
         Process.clock_gettime Process::CLOCK_MONOTONIC
       end
     else
       def self.now
-        Time.now
+        Time.now.to_f
       end
     end
 
-    def self.since(t)
-      self.now - t
+    def self.since f
+      self.now - f
     end
 
-    def self.elapsed(&work)
-      t = self.now
-      return yield, self.since(t)
+    def self.elapsed &work
+      f = self.now
+      return yield, self.since(f)
     end
 
     def self.loop_avg(count: 999, seconds: 1, &work)
@@ -34,16 +34,11 @@ module CompSci
         break if i >= count
         break if self.since(start) > seconds
       }
-      return val, self.since(start) / i.to_f
-    end
-
-    # YYYY-MM-DD HH::MM::SS.mmm
-    def self.timestamp(t = Time.now)
-      t.strftime "%Y-%m-%d %H:%M:%S.%L"
+      return val, self.since(start) / i
     end
 
     # HH::MM::SS.mmm.uuuuuuuu
-    def self.elapsed_display(elapsed_ms, show_us: false)
+    def self.elapsed_display(elapsed_ms, show_micro: false)
       elapsed_s, ms = elapsed_ms.divmod 1000
       ms_only, ms_fraction = ms.round(8).divmod 1
 
@@ -53,44 +48,33 @@ module CompSci
 
       hmsms = [[h, m, s].map { |i| i.to_s.rjust(2, '0') }.join(':'),
                ms_only.to_s.rjust(3, '0')]
-      hmsms << (ms_fraction * 10 ** 8).round.to_s.ljust(8, '0') if show_us
+      hmsms << (ms_fraction * 10 ** 8).round.to_s.ljust(8, '0') if show_micro
       hmsms.join('.')
     end
 
-    def restart(t = Timer.now)
-      @start = t
+    # YYYY-MM-DD HH::MM::SS.mmm
+    def self.timestamp(t = Time.now)
+      t.strftime "%Y-%m-%d %H:%M:%S.%L"
+    end
+
+    def restart(f = Timer.now)
+      @start = f
       self
     end
     alias_method :initialize, :restart
 
-    def timestamp(t = Time.now)
-      self.class.timestamp t
+    def elapsed(f = Timer.now)
+      f - @start
     end
 
-    def timestamp!(t = Time.now)
-      puts '-' * 70, timestamp(t), '-' * 70
+    def elapsed_ms(f = Timer.now)
+      elapsed(f) * 1000
     end
 
-    def elapsed(t = Timer.now)
-      t - @start
-    end
-
-    def elapsed_ms(t = Timer.now)
-      elapsed(t) * 1000
-    end
-
-    def elapsed_display(t = Timer.now)
-      self.class.elapsed_display(elapsed_ms(t))
+    def elapsed_display(f = Timer.now)
+      Timer.elapsed_display(elapsed_ms(f))
     end
     alias_method :to_s, :elapsed_display
     alias_method :inspect, :elapsed_display
-
-    def stamp(msg = '', t = Timer.now)
-      format("%s %s", elapsed_display(t), msg)
-    end
-
-    def stamp!(msg = '', t = Timer.now)
-      puts stamp(msg, t)
-    end
   end
 end
