@@ -9,6 +9,6 @@ group :development, optional: true do
   gem 'flog'
   gem 'flay'
   gem 'roodi'
-  gem 'ruby-prof'
   gem 'benchmark-ips'
+  gem 'ruby-prof', platforms: :mri
 end
