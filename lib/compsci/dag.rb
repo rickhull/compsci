@@ -74,10 +74,6 @@ module CompSci
 
     def reset_search!
       @visited, @finished = {}, {}
-      @vtxs.each { |v|
-        @visited[v] = false
-        @finished[v] = false
-      }
     end
 
     # @edge[from][to] => Edge; may raise CycleError if @check_add == true
