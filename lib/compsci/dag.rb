@@ -12,7 +12,7 @@ module CompSci
     end
 
     def to_s
-      contents.to_s
+      @contents.to_s
     end
   end
 
@@ -27,7 +27,7 @@ module CompSci
     end
 
     def to_s
-      [@from, @to, @contents].join("\t")
+      [@from, "-#{@contents}->", @to].join(" ")
     end
   end
 
