@@ -16,6 +16,7 @@ module CompSci
     end
   end
 
+  # Edge has references to 2 Vertices
   class Edge
     attr_reader :from, :to, :value, :meta
 
@@ -31,6 +32,7 @@ module CompSci
     end
   end
 
+  # consists of Vertices connected by Edges
   class Graph
     def self.multigraph
       # multigraph, multiple edges between 0 and 1
@@ -40,11 +42,11 @@ module CompSci
       # 0       1
       #  \__b__/
       #
-      # Graph will overwrite a with b
-      # MultiGraph will allow
-      # AcyclicGraph will overwrite a with b
-      # DirectedAcyclicGraph will overwrite a with b
-      # Deterministic FSM will overwrite a with b
+      #                Graph: overwrite a with b
+      #           MultiGraph: allow
+      #         AcyclicGraph: overwrite a with b
+      # DirectedAcyclicGraph: overwrite a with b
+      #    Deterministic FSM: overwrite a with b
 
       graph = self.new
       (0..1).each { |i| graph.v i } # create 2 vertices, 0 and 1
@@ -67,11 +69,11 @@ module CompSci
       #    \ /
       #     2
       #
-      # Graph will allow
-      # MG will allow
-      # AG will raise CycleError
-      # DAG will allow
-      # Deterministic FSM will allow
+      #                Graph: allow
+      #           MultiGraph: allow
+      #         AcyclicGraph: raise CycleError
+      # DirectedAcyclicGraph: allow
+      #    Deterministic FSM: allow
 
       graph = self.new
       (0..3).each { |i| graph.v i } # create 4 vertices, 0-3
@@ -188,7 +190,6 @@ module CompSci
           self.dfs(e.to, skip = v)
         end
       }
-
       @finished[v] = true
     end
   end
