@@ -1,4 +1,6 @@
 module CompSci
+  NEWLINE = $/ # platform-default line separator
+
   # thanks apeiros
   # https://gist.github.com/rickhull/d0b579aa08c85430b0dc82a791ff12d6
   def self.power_of?(num, base)

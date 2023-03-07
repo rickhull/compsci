@@ -96,7 +96,7 @@ describe FlexNode do
       # tree already has a root node
       (item_count - 1).times { @root.push(rand(99), @child_slots) }
       str = @root.display
-      line_count = str.split("\n").size
+      line_count = str.split(NEWLINE).size
       expect(line_count).must_equal Math.log(item_count + 1, 2).ceil
     end
 

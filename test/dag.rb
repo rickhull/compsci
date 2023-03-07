@@ -141,7 +141,7 @@ describe DAG do
     expect(dag.edges.count).must_equal 4
     # since the edges have references to the vertices, we return multiple
     # lines of text, one for each edge
-    expect(dag.to_s).must_include "\n"
+    expect(dag.to_s).must_include NEWLINE
     expect(dag.to_s.lines.count).must_equal 4
   end
 end

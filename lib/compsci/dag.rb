@@ -1,8 +1,7 @@
 require 'set'
+require 'compsci'
 
 module CompSci
-  NEWLINE = $/ # platform-default line separator
-
   class Vertex
     attr_reader :value, :meta
 

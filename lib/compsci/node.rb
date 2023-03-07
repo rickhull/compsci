@@ -1,3 +1,5 @@
+require 'compsci'
+
 module CompSci
   # has a value and an array of children; allows child gaps
   class Node
@@ -49,7 +51,7 @@ module CompSci
           memo + Array.new(@children.size) { |i| n and n.children[i] }
         }
       end
-      lines.join("\n")
+      lines.join(NEWLINE)
     end
   end
 
