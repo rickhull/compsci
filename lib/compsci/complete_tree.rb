@@ -1,3 +1,5 @@
+require 'compsci'
+
 module CompSci
   # A CompleteTree can very efficiently use an array for storage using
   # simple arithmetic to determine parent child relationships.
@@ -73,7 +75,7 @@ module CompSci
         val = val.to_s
         level = self.class.gen(i, @child_slots)
         if old_level != level
-          str += "\n"
+          str += NEWLINE
           old_level = level
         end
 
