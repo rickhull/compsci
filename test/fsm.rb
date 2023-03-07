@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require 'compsci/dag'
+require 'compsci/fsm'
 
 include CompSci
 
