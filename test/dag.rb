@@ -3,16 +3,40 @@ require 'compsci/dag'
 
 include CompSci
 
-# diamond pattern, starts at 0, ends at 3
-#     1
-#    / \
-#  a/   \c
-#  /     \
-# 0       3
-#  \     /
-#  b\   /d
-#    \ /
-#     2
+describe Vertex do
+  it "initializes with contents, possibly nil" do
+    expect(Vertex.new.contents).must_be_nil
+    expect(Vertex.new(0).contents).must_equal 0
+  end
+
+  it "has a string representation" do
+    expect(Vertex.new.to_s).must_be_kind_of String
+    expect(Vertex.new(0).to_s).must_be_kind_of String
+  end
+end
+
+describe Edge do
+  before do
+    @v0 = Vertex.new(0)
+    @v1 = Vertex.new(1)
+    @e = Edge.new(@v0, @v1)
+  end
+
+  it "has from-vertex, to-vertex, and contents, possibly nil" do
+    expect(@e.from).must_equal @v0
+    expect(@e.to).must_equal @v1
+    expect(@e.contents).must_be_nil
+
+    e = Edge.new(@v0, @v1, :hello_world)
+    expect(e.contents).must_equal :hello_world
+  end
+
+  it "has a string representation" do
+    expect(@e.to_s).must_be_kind_of String
+    expect(@e.to_s.length).must_be :>, 0
+    expect(Edge.new(@v0, @v1, :hello_world).to_s).must_be_kind_of String
+  end
+end
 
 describe AcyclicGraph do
   before do
@@ -26,21 +50,23 @@ describe AcyclicGraph do
     expect(@ag.vtxs.count).must_equal 4
 
     vtx = @ag.vtxs[0]
-    expect { @ag.e(vtx, vtx, "loop") }.must_raise
+    expect { @ag.e(vtx, vtx, "loop") }.must_raise CycleError
   end
 
   it "rejects a diamond pattern" do
-    expect(@ag).must_be_kind_of AcyclicGraph
-    expect(@ag.vtxs.count).must_equal 4
+    ag = AcyclicGraph.diamond
+    expect(ag).must_be_kind_of AcyclicGraph
+    expect(ag.vtxs.count).must_equal 4
+    expect(ag.edges.count).must_equal 4
+    expect { ag.check_cycle! }.must_raise CycleError
+  end
 
-    # create 4 edges, diamond pattern
-    v = @ag.vtxs
-    @ag.e(v[0], v[1], :a)
-    @ag.e(v[0], v[2], :b)
-    @ag.e(v[1], v[3], :c)
-    @ag.e(v[2], v[3], :d)
-
-    expect { @ag.check_cycle! }.must_raise
+  it "rejects a multipath pattern" do
+    ag = AcyclicGraph.multipath
+    expect(ag).must_be_kind_of AcyclicGraph
+    expect(ag.vtxs.count).must_equal 2
+    expect(ag.edges.count).must_equal 2
+    expect { ag.check_cycle! }.must_raise CycleError
   end
 
   it "rejects with check_add" do
@@ -55,23 +81,11 @@ describe AcyclicGraph do
     @ag.e(av[0], av[2], :b)
     @ag.e(av[1], av[3], :c)
 
-    expect { @ag.e(av[2], av[3], :d) }.must_raise
+    expect { @ag.e(av[2], av[3], :d) }.must_raise CycleError
   end
 end
 
 describe DAG do
-  def diamond
-    dag = DAG.new
-    (0..3).each { |i| dag.v i }
-    # create 4 edges, a-d
-    v = dag.vtxs
-    dag.e(v[0], v[1], :a)
-    dag.e(v[0], v[2], :b)
-    dag.e(v[1], v[3], :c)
-    dag.e(v[2], v[3], :d)
-    dag
-  end
-
   before do
     # create 4 vertices, 0-3
     @dag = DAG.new
@@ -79,10 +93,18 @@ describe DAG do
   end
 
   it "allows a diamond pattern" do
-    dag = diamond()
+    dag = DAG.diamond
     expect(dag).must_be_kind_of DAG
     expect(dag.vtxs.count).must_equal 4
     expect(dag.edges.count).must_equal 4
+    dag.check_cycle! # wont_raise
+  end
+
+  it "allows a multipath pattern" do
+    dag = DAG.multipath
+    expect(dag).must_be_kind_of DAG
+    expect(dag.vtxs.count).must_equal 2
+    expect(dag.edges.count).must_equal 2
     dag.check_cycle! # wont_raise
   end
 
@@ -91,7 +113,7 @@ describe DAG do
     expect(@dag.vtxs.count).must_equal 4
 
     vtx = @dag.vtxs[0]
-    expect { @dag.e(vtx, vtx, "loop") }.must_raise
+    expect { @dag.e(vtx, vtx, "loop") }.must_raise CycleError
   end
 
   it "rejects a directed loop" do
@@ -105,29 +127,16 @@ describe DAG do
     @dag.e(v[2], v[3], :c)
     @dag.e(v[3], v[0], :d)
 
-    expect { @dag.check_cycle! }.must_raise
+    expect { @dag.check_cycle! }.must_raise CycleError
   end
 
   it "has a multiline string representation" do
-    dag = diamond()
+    dag = DAG.diamond
     expect(dag.vtxs.count).must_equal 4
     expect(dag.edges.count).must_equal 4
     # since the edges have references to the vertices, we return multiple
     # lines of text, one for each edge
     expect(dag.to_s).must_include "\n"
     expect(dag.to_s.lines.count).must_equal 4
-  end
-end
-
-describe Edge do
-  before do
-    @v0 = Vertex.new(0)
-    @v1 = Vertex.new(1)
-    @edge = Edge.new(@v0, @v1, :a)
-  end
-
-  it "has a string representation" do
-    expect(@edge.to_s).must_be_kind_of String
-    expect(@edge.to_s.length).must_be :>, 0
   end
 end

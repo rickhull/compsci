@@ -35,6 +35,54 @@ module CompSci
 
   # Undirected Acyclic Graph
   class AcyclicGraph
+
+    def self.diamond
+      # diamond pattern, starts at 0, ends at 3
+      #     1
+      #    / \
+      #  a/   \c
+      #  /     \
+      # 0       3
+      #  \     /
+      #  b\   /d
+      #    \ /
+      #     2
+      #
+      # AG should not allow
+      # DAG should allow
+      # Deterministic FSM should allow
+
+      graph = self.new
+      (0..3).each { |i| graph.v i }
+      # create 4 edges, a-d
+      v = graph.vtxs
+      graph.e v[0], v[1], :a
+      graph.e v[0], v[2], :b
+      graph.e v[1], v[3], :c
+      graph.e v[2], v[3], :d
+      graph
+    end
+
+    def self.multipath
+      # multipath, starts at 0, ends at 1
+      #
+      #   __a__
+      #  /     \
+      # 0       1
+      #  \__b__/
+      #
+      # AG should not allow
+      # DAG should allow
+      # Deterministic FSM should not allow
+
+      graph = self.new
+      (0..1).each { |i| graph.v i }
+      v = graph.vtxs
+      graph.e v[0], v[1], :a
+      graph.e v[0], v[1], :b
+      graph
+    end
+
     attr_accessor :check_add
     attr_reader :vtxs, :edge
 
@@ -61,9 +109,9 @@ module CompSci
     # return a flat list of edges
     def edges(from = nil)
       if from.nil?
-        @edge.values.map { |hsh| hsh.values }.flatten
+        @edge.values.flatten
       else
-        @edge[from].values
+        @edge[from]
       end
     end
 
@@ -76,14 +124,14 @@ module CompSci
       @visited, @finished = {}, {}
     end
 
-    # @edge[from][to] => Edge; may raise CycleError if @check_add == true
+    # @edge[from] => [Edge, ... ]; may raise CycleError if @check_add == true
     def add_edge! e
       raise(CycleError, e) if e.from == e.to
-      @edge[e.from] ||= {}
-      @edge[e.from][e.to] = e
+      @edge[e.from] ||= []
+      @edge[e.from] << e
       if @check_add  # does the new edge create a cycle?
         vtx = e.from # start the *from* vertex; helpful for DAGs
-        # puts "starting #{vtx.contents}"
+        # puts "searching #{vtx.contents}"
         self.reset_search!
         self.dfs vtx # this can raise CycleError
       end
@@ -94,20 +142,25 @@ module CompSci
     def check_cycle!
       self.reset_search!
       @vtxs.each { |v|
-        # puts "starting #{v.contents}"
+        # puts
+        # puts "SEARCH #{v.contents}"
         self.dfs v
       }
     end
 
     # recursive depth first search
     def dfs(v, skip = nil)
+      #puts "skip: #{skip}"
+      #puts "vertex: #{v}"
+      #puts "visited: #{@visited.keys.map(&:to_s)}"
+      #puts "finished: #{@finished.keys.map(&:to_s)}"
       return true if @finished[v]
       raise CycleError if @visited[v]
       @visited[v] = true
 
       # search every neighbor (but don't search back to v)
-      @edge.each { |_, hsh|
-        hsh.each { |_, e|
+      @edge.values.each { |ary|
+        ary.each { |e|
           if e.to == v and e.from != skip
             self.dfs(e.from, skip = v)
           elsif e.from == v and e.to != skip
@@ -115,7 +168,7 @@ module CompSci
           end
         }
       }
-      # puts "finished #{v.contents}"
+      # puts "FINISH #{v.contents}"
       @finished[v] = true
     end
   end
@@ -124,9 +177,7 @@ module CompSci
     # roots have nothing pointing *to* them
     def roots
       invalid = Set.new
-      @edge.each { |_, hsh|
-        invalid.merge hsh.keys
-      }
+      @edge.values.each { |ary| invalid.merge(ary.map(&:to)) }
       @vtxs - invalid.to_a
     end
 
@@ -136,7 +187,7 @@ module CompSci
       raise(CycleError, "invalid state: no roots") if roots.empty?
       self.reset_search!
       roots.each { |v|
-        # puts "starting #{v.contents}"
+        # puts "searching #{v.contents}"
         self.dfs(v)
       }
     end
@@ -148,7 +199,7 @@ module CompSci
       @visited[v] = true
 
       # search via from -> to (but don't search back to v)
-      @edge[v]&.keys&.each { |to_vtx| self.dfs(to_vtx) }
+      @edge[v]&.each { |e| self.dfs(e.to) }
       # puts "finished #{v.contents}"
       @finished[v] = true
     end
