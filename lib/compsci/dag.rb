@@ -142,7 +142,7 @@ module CompSci
 
   class CycleError < RuntimeError; end
 
-  # Undirected Acyclic Graph
+  # Undirected Acyclic Graph, not a MultiGraph
   class AcyclicGraph < Graph
     attr_accessor :check_add
 
@@ -156,7 +156,7 @@ module CompSci
       self
     end
 
-    # @edge[from][to] => Edge; may raise CycleError if @check_add == true
+    # @edge[from][to] => Edge; may raise CycleError, especially with @check_add
     def add_edge! e
       raise(CycleError, e) if e.from == e.to
       @edge[e.from] ||= {}
@@ -164,7 +164,7 @@ module CompSci
       if @check_add  # does the new edge create a cycle?
         vtx = e.from # start the *from* vertex; helpful for DAGs
         self.reset_search!
-        self.dfs vtx # this can raise CycleError
+        self.dfs vtx # may raise CycleError
       end
       e
     end
@@ -208,6 +208,7 @@ module CompSci
       raise(CycleError, "invalid state: no roots") if roots.empty?
       self.reset_search!
       roots.each { |v| self.dfs(v) }
+      self
     end
 
     # recursive depth first search, following directed edges
@@ -216,7 +217,7 @@ module CompSci
       raise CycleError if @visited[v]
       @visited[v] = true
 
-      # search via from -> to (but don't search back to v)
+      # search via from -> to
       @edge[v]&.values&.each { |e| self.dfs(e.to) }
       @finished[v] = true
     end
