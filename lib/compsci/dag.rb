@@ -4,30 +4,30 @@ module CompSci
   NEWLINE = $/ # platform-default line separator
 
   class Vertex
-    attr_reader :contents, :meta
+    attr_reader :value, :meta
 
-    def initialize(contents = nil, **meta)
-      @contents = contents
+    def initialize(value = nil, **meta)
+      @value = value
       @meta = meta
     end
 
     def to_s
-      @contents.to_s
+      @value.to_s
     end
   end
 
   class Edge
-    attr_reader :from, :to, :contents, :meta
+    attr_reader :from, :to, :value, :meta
 
-    def initialize(from, to, contents = nil, **meta)
+    def initialize(from, to, value = nil, **meta)
       @from = from
       @to = to
-      @contents = contents
+      @value = value
       @meta = meta
     end
 
     def to_s
-      [@from, "-#{@contents}->", @to].join(" ")
+      [@from, "-#{@value}->", @to].join(" ")
     end
   end
 
@@ -91,15 +91,15 @@ module CompSci
     end
 
     # add a new vtx to @vtxs
-    def v(contents, **kwargs)
-      v = Vertex.new(contents, **kwargs)
+    def v(value, **kwargs)
+      v = Vertex.new(value, **kwargs)
       @vtxs << v
       v
     end
 
     # add a new edge to @edge
-    def e(from, to, contents, **kwargs)
-      e = Edge.new(from, to, contents, **kwargs)
+    def e(from, to, value, **kwargs)
+      e = Edge.new(from, to, value, **kwargs)
       self.add_edge! e
       e
     end
@@ -144,7 +144,7 @@ module CompSci
       @edge[e.from][e.to] = e
       if @check_add  # does the new edge create a cycle?
         vtx = e.from # start the *from* vertex; helpful for DAGs
-        # puts "searching #{vtx.contents}"
+        # puts "searching #{vtx.value}"
         self.reset_search!
         self.dfs vtx # this can raise CycleError
       end
@@ -161,7 +161,7 @@ module CompSci
       self.reset_search!
       @vtxs.each { |v|
         # puts
-        # puts "SEARCH #{v.contents}"
+        # puts "SEARCH #{v.value}"
         self.dfs v
       }
     end
@@ -186,7 +186,7 @@ module CompSci
           end
         }
       }
-      # puts "FINISH #{v.contents}"
+      # puts "FINISH #{v.value}"
       @finished[v] = true
     end
   end
@@ -205,7 +205,7 @@ module CompSci
       raise(CycleError, "invalid state: no roots") if roots.empty?
       self.reset_search!
       roots.each { |v|
-        # puts "searching #{v.contents}"
+        # puts "searching #{v.value}"
         self.dfs(v)
       }
     end
@@ -218,7 +218,7 @@ module CompSci
 
       # search via from -> to (but don't search back to v)
       @edge[v]&.values&.each { |e| self.dfs(e.to) }
-      # puts "finished #{v.contents}"
+      # puts "finished #{v.value}"
       @finished[v] = true
     end
   end
@@ -259,7 +259,7 @@ module CompSci
     end
 
     def to_s
-      [[@first, @final].map(&:contents).inspect, @dag].join(NEWLINE)
+      [[@first, @final].map(&:value).inspect, @dag].join(NEWLINE)
     end
 
     def accept?(input)
@@ -267,7 +267,7 @@ module CompSci
       input.each_char { |chr|
         hsh = @dag.edge[cursor]
         return false if hsh.nil?
-        edges = hsh.values.select { |e| e.contents == chr }
+        edges = hsh.values.select { |e| e.value == chr }
         case edges.count
         when 0
           return false

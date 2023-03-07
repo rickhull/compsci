@@ -4,9 +4,9 @@ require 'compsci/dag'
 include CompSci
 
 describe Vertex do
-  it "initializes with contents, possibly nil" do
-    expect(Vertex.new.contents).must_be_nil
-    expect(Vertex.new(0).contents).must_equal 0
+  it "initializes with value, possibly nil" do
+    expect(Vertex.new.value).must_be_nil
+    expect(Vertex.new(0).value).must_equal 0
   end
 
   it "has a string representation" do
@@ -22,13 +22,13 @@ describe Edge do
     @e = Edge.new(@v0, @v1)
   end
 
-  it "has from-vertex, to-vertex, and contents, possibly nil" do
+  it "has from-vertex, to-vertex, and value, possibly nil" do
     expect(@e.from).must_equal @v0
     expect(@e.to).must_equal @v1
-    expect(@e.contents).must_be_nil
+    expect(@e.value).must_be_nil
 
     e = Edge.new(@v0, @v1, :hello_world)
-    expect(e.contents).must_equal :hello_world
+    expect(e.value).must_equal :hello_world
   end
 
   it "has a string representation" do
