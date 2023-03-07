@@ -31,8 +31,7 @@ module CompSci
     end
   end
 
-  # allow multiple edges between any two vertices
-  class MultiGraph
+  class Graph
     def self.multigraph
       # multigraph, multiple edges between 0 and 1
       #
@@ -41,10 +40,11 @@ module CompSci
       # 0       1
       #  \__b__/
       #
-      # MG should allow
-      # AG should not allow
-      # DAG should not allow
-      # Deterministic FSM should not allow
+      # Graph will overwrite a with b
+      # MultiGraph will allow
+      # AcyclicGraph will overwrite a with b
+      # DirectedAcyclicGraph will overwrite a with b
+      # Deterministic FSM will overwrite a with b
 
       graph = self.new
       (0..1).each { |i| graph.v i } # create 2 vertices, 0 and 1
@@ -67,10 +67,11 @@ module CompSci
       #    \ /
       #     2
       #
-      # MG should allow
-      # AG should not allow
-      # DAG should allow
-      # Deterministic FSM should allow
+      # Graph will allow
+      # MG will allow
+      # AG will raise CycleError
+      # DAG will allow
+      # Deterministic FSM will allow
 
       graph = self.new
       (0..3).each { |i| graph.v i } # create 4 vertices, 0-3
@@ -87,7 +88,7 @@ module CompSci
 
     def initialize
       @vtxs = []
-      @edge = {}
+      @edge = {} # keyed by the *from* vertex
     end
 
     # add a new vtx to @vtxs
@@ -104,6 +105,26 @@ module CompSci
       e
     end
 
+    # @edge[from][to] => Edge
+    def add_edge! e
+      @edge[e.from] ||= {}
+      @edge[e.from][e.to] = e
+      e
+    end
+
+    # return a flat list of edges
+    def edges(from = nil)
+      from.nil? ? @edge.values.map(&:values).flatten : @edge[from].values
+    end
+
+    # edges include vertices; one edge per line
+    def to_s
+      self.edges.join(NEWLINE)
+    end
+  end
+
+  # allow multiple edges between any two vertices
+  class MultiGraph < Graph
     # @edge[from] => [Edge, Edge, ...]
     def add_edge! e
       @edge[e.from] ||= []
@@ -115,17 +136,12 @@ module CompSci
     def edges(from = nil)
       from.nil? ? @edge.values.flatten : @edge[from]
     end
-
-    # edges include vertices; one edge per line
-    def to_s
-      self.edges.join(NEWLINE)
-    end
   end
 
   class CycleError < RuntimeError; end
 
   # Undirected Acyclic Graph
-  class AcyclicGraph < MultiGraph
+  class AcyclicGraph < Graph
     attr_accessor :check_add
 
     def initialize
@@ -135,6 +151,7 @@ module CompSci
 
     def reset_search!
       @visited, @finished = {}, {}
+      self
     end
 
     # @edge[from][to] => Edge; may raise CycleError if @check_add == true
@@ -144,49 +161,34 @@ module CompSci
       @edge[e.from][e.to] = e
       if @check_add  # does the new edge create a cycle?
         vtx = e.from # start the *from* vertex; helpful for DAGs
-        # puts "searching #{vtx.value}"
         self.reset_search!
         self.dfs vtx # this can raise CycleError
       end
       e
     end
 
-    # return a flat list of edges
-    def edges(from = nil)
-      from.nil? ? @edge.values.map(&:values).flatten : @edge[from].values
-    end
-
     # perform depth first search from every vertex; may raise CycleError
     def check_cycle!
       self.reset_search!
-      @vtxs.each { |v|
-        # puts
-        # puts "SEARCH #{v.value}"
-        self.dfs v
-      }
+      @vtxs.each { |v| self.dfs v }
+      self
     end
 
     # recursive depth first search
     def dfs(v, skip = nil)
-      #puts "skip: #{skip}"
-      #puts "vertex: #{v}"
-      #puts "visited: #{@visited.keys.map(&:to_s)}"
-      #puts "finished: #{@finished.keys.map(&:to_s)}"
       return true if @finished[v]
       raise CycleError if @visited[v]
       @visited[v] = true
 
       # search every neighbor (but don't search back to v)
-      @edge.values.each { |hsh|
-        hsh.values.each { |e|
-          if e.to == v and e.from != skip
-            self.dfs(e.from, skip = v)
-          elsif e.from == v and e.to != skip
-            self.dfs(e.to, skip = v)
-          end
-        }
+      self.edges.each { |e|
+        if e.to == v and e.from != skip
+          self.dfs(e.from, skip = v)
+        elsif e.from == v and e.to != skip
+          self.dfs(e.to, skip = v)
+        end
       }
-      # puts "FINISH #{v.value}"
+
       @finished[v] = true
     end
   end
@@ -204,10 +206,7 @@ module CompSci
       roots = self.roots
       raise(CycleError, "invalid state: no roots") if roots.empty?
       self.reset_search!
-      roots.each { |v|
-        # puts "searching #{v.value}"
-        self.dfs(v)
-      }
+      roots.each { |v| self.dfs(v) }
     end
 
     # recursive depth first search, following directed edges
@@ -218,7 +217,6 @@ module CompSci
 
       # search via from -> to (but don't search back to v)
       @edge[v]&.values&.each { |e| self.dfs(e.to) }
-      # puts "finished #{v.value}"
       @finished[v] = true
     end
   end

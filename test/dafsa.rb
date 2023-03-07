@@ -23,7 +23,7 @@ describe DAFSAcceptor do
     hsh = @d.dag.edge[@d.first]
     expect(hsh).wont_be_nil
     expect(hsh.size).must_equal 1
-    expect(hsh.values.first.contents).must_equal 'j'
+    expect(hsh.values.first.value).must_equal 'j'
   end
 
   it "can accept: 'june'" do
