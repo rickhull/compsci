@@ -61,12 +61,14 @@ describe AcyclicGraph do
     expect { ag.check_cycle! }.must_raise CycleError
   end
 
-  it "rejects a multipath pattern" do
-    ag = AcyclicGraph.multipath
+  it "doesn't allow a multigraph" do
+    ag = AcyclicGraph.multigraph
     expect(ag).must_be_kind_of AcyclicGraph
     expect(ag.vtxs.count).must_equal 2
-    expect(ag.edges.count).must_equal 2
-    expect { ag.check_cycle! }.must_raise CycleError
+
+    # the second edge has overwritten the first
+    expect(ag.edges.count).must_equal 1
+    ag.check_cycle! # wont_raise
   end
 
   it "rejects with check_add" do
@@ -75,12 +77,13 @@ describe AcyclicGraph do
 
     @ag.check_add = true
 
-    # create 4 edges, a-d
+    # create 3 edges, a-d
     av = @ag.vtxs
     @ag.e(av[0], av[1], :a)
     @ag.e(av[0], av[2], :b)
     @ag.e(av[1], av[3], :c)
 
+    # the 4th edge creates a loop
     expect { @ag.e(av[2], av[3], :d) }.must_raise CycleError
   end
 end
@@ -100,11 +103,13 @@ describe DAG do
     dag.check_cycle! # wont_raise
   end
 
-  it "allows a multipath pattern" do
-    dag = DAG.multipath
+  it "doesn't allow a multigraph" do
+    dag = DAG.multigraph
     expect(dag).must_be_kind_of DAG
     expect(dag.vtxs.count).must_equal 2
-    expect(dag.edges.count).must_equal 2
+
+    # the second edge has overwritten the first
+    expect(dag.edges.count).must_equal 1
     dag.check_cycle! # wont_raise
   end
 
