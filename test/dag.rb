@@ -38,19 +38,80 @@ describe Edge do
   end
 end
 
+describe Graph do
+  before do
+    # create 4 vertices, 0-3
+    @graph = Graph.new
+    (0..3).each { |i| @graph.v i }
+  end
+
+  it "accepts a self-looping edge" do
+    expect(@graph).must_be_kind_of Graph
+    expect(@graph.vtxs.count).must_equal 4
+
+    vtx = @graph.vtxs[0]
+    @graph.e(vtx, vtx, "loop") # wont_raise
+  end
+
+  it "accepts a diamond pattern" do
+    graph = Graph.diamond
+    expect(graph).must_be_kind_of Graph
+    expect(graph.vtxs.count).must_equal 4
+    expect(graph.edges.count).must_equal 4
+  end
+
+  it "doesn't allow a multigraph" do
+    graph = Graph.multigraph
+    expect(graph).must_be_kind_of Graph
+    expect(graph.vtxs.count).must_equal 2
+    # the second edge has overwritten the first
+    expect(graph.edges.count).must_equal 1
+  end
+end
+
+describe MultiGraph do
+  before do
+    # create 4 vertices, 0-3
+    @graph = MultiGraph.new
+    (0..3).each { |i| @graph.v i }
+  end
+
+  it "accepts a self-looping edge" do
+    expect(@graph).must_be_kind_of MultiGraph
+    expect(@graph.vtxs.count).must_equal 4
+
+    vtx = @graph.vtxs[0]
+    @graph.e(vtx, vtx, "loop") # wont_raise
+  end
+
+  it "accepts a diamond pattern" do
+    graph = Graph.diamond
+    expect(graph).must_be_kind_of Graph
+    expect(graph.vtxs.count).must_equal 4
+    expect(graph.edges.count).must_equal 4
+  end
+
+  it "accepts a multigraph" do
+    graph = MultiGraph.multigraph
+    expect(graph).must_be_kind_of Graph
+    expect(graph.vtxs.count).must_equal 2
+    expect(graph.edges.count).must_equal 2
+  end
+end
+
 describe AcyclicGraph do
   before do
     # create 4 vertices, 0-3
-    @ag = AcyclicGraph.new
-    (0..3).each { |i| @ag.v i }
+    @graph = AcyclicGraph.new
+    (0..3).each { |i| @graph.v i }
   end
 
   it "rejects a self-looping edge" do
-    expect(@ag).must_be_kind_of AcyclicGraph
-    expect(@ag.vtxs.count).must_equal 4
+    expect(@graph).must_be_kind_of AcyclicGraph
+    expect(@graph.vtxs.count).must_equal 4
 
-    vtx = @ag.vtxs[0]
-    expect { @ag.e(vtx, vtx, "loop") }.must_raise CycleError
+    vtx = @graph.vtxs[0]
+    expect { @graph.e(vtx, vtx, "loop") }.must_raise CycleError
   end
 
   it "rejects a diamond pattern" do
@@ -72,19 +133,19 @@ describe AcyclicGraph do
   end
 
   it "rejects with check_add" do
-    expect(@ag).must_be_kind_of AcyclicGraph
-    expect(@ag.vtxs.count).must_equal 4
+    expect(@graph).must_be_kind_of AcyclicGraph
+    expect(@graph.vtxs.count).must_equal 4
 
-    @ag.check_add = true
+    @graph.check_add = true
 
-    # create 3 edges, a-d
-    av = @ag.vtxs
-    @ag.e(av[0], av[1], :a)
-    @ag.e(av[0], av[2], :b)
-    @ag.e(av[1], av[3], :c)
+    # create 3 edges, a-c
+    av = @graph.vtxs
+    @graph.e(av[0], av[1], :a)
+    @graph.e(av[0], av[2], :b)
+    @graph.e(av[1], av[3], :c)
 
-    # the 4th edge creates a loop
-    expect { @ag.e(av[2], av[3], :d) }.must_raise CycleError
+    # edge d creates a loop (undirected edges)
+    expect { @graph.e(av[2], av[3], :d) }.must_raise CycleError
   end
 end
 
