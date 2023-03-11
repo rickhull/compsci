@@ -67,6 +67,21 @@ describe Graph do
     # the second edge has overwritten the first
     expect(graph.edges.count).must_equal 1
   end
+
+  it "provides an array of edges" do
+    @graph.e(@graph.vtxs[0], @graph.vtxs[1], :a)
+    @graph.e(@graph.vtxs[1], @graph.vtxs[2], :b)
+    expect(@graph.edges).must_be_kind_of Array
+    expect(@graph.edges.count).must_equal 2
+
+    # edges(from)
+    from_0 = @graph.edges(@graph.vtxs[0])
+    from_3 = @graph.edges(@graph.vtxs[3])
+    expect(from_0).must_be_kind_of Array
+    expect(from_0.count).must_equal 1
+    expect(from_3).must_be_kind_of Array
+    expect(from_3).must_be_empty
+  end
 end
 
 describe MultiGraph do
@@ -96,6 +111,21 @@ describe MultiGraph do
     expect(graph).must_be_kind_of Graph
     expect(graph.vtxs.count).must_equal 2
     expect(graph.edges.count).must_equal 2
+  end
+
+  it "provides an array of edges" do
+    @graph.e(@graph.vtxs[0], @graph.vtxs[1], :a)
+    @graph.e(@graph.vtxs[1], @graph.vtxs[2], :b)
+    expect(@graph.edges).must_be_kind_of Array
+    expect(@graph.edges.count).must_equal 2
+
+    # edges(from)
+    from_0 = @graph.edges(@graph.vtxs[0])
+    from_3 = @graph.edges(@graph.vtxs[3])
+    expect(from_0).must_be_kind_of Array
+    expect(from_0.count).must_equal 1
+    expect(from_3).must_be_kind_of Array
+    expect(from_3).must_be_empty
   end
 end
 

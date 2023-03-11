@@ -115,7 +115,11 @@ module CompSci
 
     # return a flat list of edges
     def edges(from = nil)
-      from.nil? ? @edge.values.map(&:values).flatten : @edge[from].values
+      if from.nil?
+        @edge.values.map(&:values).flatten
+      else
+        (@edge[from] || Hash.new).values
+      end
     end
 
     # edges include vertices; one edge per line
@@ -135,7 +139,7 @@ module CompSci
 
     # return a flat list of edges
     def edges(from = nil)
-      from.nil? ? @edge.values.flatten : @edge[from]
+      from.nil? ? @edge.values.flatten : (@edge[from] || Array.new)
     end
   end
 
