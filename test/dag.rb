@@ -82,6 +82,19 @@ describe Graph do
     expect(from_3).must_be_kind_of Array
     expect(from_3).must_be_empty
   end
+
+  it "has a multiline string representation" do
+    graph = Graph.diamond
+    expect(graph.vtxs.count).must_equal 4
+    edge_count = 4
+    expect(graph.edges.count).must_equal edge_count
+
+    # since the edges have references to the vertices, we return multiple
+    # lines of text, one for each edge
+    str = graph.to_s
+    expect(str).must_include NEWLINE
+    expect(str.lines.count).must_equal edge_count
+  end
 end
 
 describe MultiGraph do
@@ -126,6 +139,18 @@ describe MultiGraph do
     expect(from_0.count).must_equal 1
     expect(from_3).must_be_kind_of Array
     expect(from_3).must_be_empty
+  end
+
+  it "has a multiline string representation" do
+    multi = MultiGraph.diamond
+    expect(multi.vtxs.count).must_equal 4
+    edge_count = 4
+    expect(multi.edges.count).must_equal edge_count
+    # since the edges have references to the vertices, we return multiple
+    # lines of text, one for each edge
+    str = multi.to_s
+    expect(str).must_include NEWLINE
+    expect(str.lines.count).must_equal edge_count
   end
 end
 
@@ -176,6 +201,26 @@ describe AcyclicGraph do
 
     # edge d creates a loop (undirected edges)
     expect { @graph.e(av[2], av[3], :d) }.must_raise CycleError
+  end
+
+  it "has a multiline string representation" do
+    expect(@graph).must_be_kind_of AcyclicGraph
+    expect(@graph.vtxs.count).must_equal 4
+
+    # create 3 edges, a-c
+    av = @graph.vtxs
+    @graph.e(av[0], av[1], :a)
+    @graph.e(av[0], av[2], :b)
+    @graph.e(av[1], av[3], :c)
+
+    edge_count = 3
+
+    expect(@graph.edges.count).must_equal edge_count
+    # since the edges have references to the vertices, we return multiple
+    # lines of text, one for each edge
+    str = @graph.to_s
+    expect(str).must_include NEWLINE
+    expect(str.lines.count).must_equal edge_count
   end
 end
 
@@ -229,10 +274,12 @@ describe DAG do
   it "has a multiline string representation" do
     dag = DAG.diamond
     expect(dag.vtxs.count).must_equal 4
-    expect(dag.edges.count).must_equal 4
+    edge_count = 4
+    expect(dag.edges.count).must_equal edge_count
     # since the edges have references to the vertices, we return multiple
     # lines of text, one for each edge
-    expect(dag.to_s).must_include NEWLINE
-    expect(dag.to_s.lines.count).must_equal 4
+    str = dag.to_s
+    expect(str).must_include NEWLINE
+    expect(str.lines.count).must_equal edge_count
   end
 end
