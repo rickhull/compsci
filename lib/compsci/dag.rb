@@ -149,11 +149,11 @@ module CompSci
     end
 
     # return a flat list of edges
-    def edges(from = nil)
-      if from.nil?
+    def edges(from_vtx = nil)
+      if from_vtx.nil?
         @edge.values.map(&:values).flatten
       else
-        (@edge[from] || Hash.new).values
+        (@edge[from_vtx] || Hash.new).values
       end
     end
 
@@ -173,8 +173,8 @@ module CompSci
     end
 
     # return a flat list of edges
-    def edges(from = nil)
-      from.nil? ? @edge.values.flatten : (@edge[from] || Array.new)
+    def edges(from_vtx = nil)
+      from_vtx.nil? ? @edge.values.flatten : (@edge[from_vtx] || Array.new)
     end
   end
 
