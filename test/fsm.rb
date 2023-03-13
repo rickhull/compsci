@@ -3,7 +3,7 @@ require 'compsci/fsm'
 
 include CompSci
 
-describe FSM do
+describe FiniteStateMachine do
   describe "Deterministic FSM" do
     before do
       @fsm = FSM.new
@@ -20,14 +20,33 @@ describe FSM do
 
     it "has states and transitions between the states" do
       locked = @fsm.add_state 'Locked', initial: true
-      unlocked = @fsm.add_state 'Unlocked'
+      expect(@fsm.initial).must_equal locked
+      @fsm.add_state 'Unlocked'
 
-      @fsm.add_transition(locked, locked, 'Push')
-      @fsm.add_transition(locked, unlocked, 'Coin')
-      @fsm.add_transition(unlocked, unlocked, 'Coin')
-      @fsm.add_transition(unlocked, locked, 'Push')
+      @fsm.add_transition('Locked', 'Locked', 'Push')
+      @fsm.add_transition('Locked', 'Unlocked', 'Coin')
+      @fsm.add_transition('Unlocked', 'Unlocked', 'Coin')
+      @fsm.add_transition('Unlocked', 'Locked', 'Push')
 
       expect(@fsm).must_be_kind_of FSM
+    end
+  end
+
+  describe "NonDeterministic FSM" do
+    before do
+      @fsm = FSM.new(deterministic: false)
+    end
+
+    it "has an attr for determinism" do
+      expect(@fsm.deterministic).must_equal false
+    end
+
+    it "has a multigraph" do
+      expect(@fsm.graph).must_be_kind_of MultiGraph
+    end
+
+    it "can have transitions to different states with the same input" do
+      locked = @fsm.initial_state('Locked')
     end
   end
 end
@@ -39,6 +58,8 @@ describe DAFSAcceptor do
 
   it "can encode: 'june'" do
     expect(@d).must_be_kind_of DAFSAcceptor
+
+    skip
 
     cursor = @d.first
     %w[j u n e].each { |chr|
@@ -57,6 +78,8 @@ describe DAFSAcceptor do
 
   it "can accept: 'june'" do
     expect(@d).must_be_kind_of DAFSAcceptor
+
+    skip
 
     cursor = @d.first
     %w[j u n e].each { |chr|

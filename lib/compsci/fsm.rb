@@ -27,13 +27,17 @@ module CompSci
     end
 
     def add_state(value, initial: false)
-      s = @graph.v(value)
+      s = @graph.vertex(value)
       @initial = s if initial
       s
     end
 
+    def initial_state(value)
+      self.add_state(value, initial: true)
+    end
+
     def add_transition(from, to, value)
-      @graph.e(from, to, value)
+      @graph.edge(from, to, value)
     end
 
     # state-transition table
@@ -90,13 +94,13 @@ module CompSci
     end
 
     def new_state
-      state, @id = @dag.v(@id), @id + 1
+      state, @id = @dag.vertex(@id), @id + 1
       state
     end
 
     def add_state(from_state, input)
       to_state = self.new_state
-      @dag.e from_state, to_state, input
+      @dag.edge from_state, to_state, input
       to_state
     end
 
