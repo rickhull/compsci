@@ -3,6 +3,35 @@ require 'compsci/fsm'
 
 include CompSci
 
+describe FSM do
+  describe "Deterministic FSM" do
+    before do
+      @fsm = FSM.new
+    end
+
+    it "has an attr for determinism" do
+      expect(@fsm.deterministic).must_equal true
+    end
+
+    it "has a graph, not a multigraph" do
+      expect(@fsm.graph).must_be_kind_of Graph
+      expect(@fsm.graph).wont_be_kind_of MultiGraph
+    end
+
+    it "has states and transitions between the states" do
+      locked = @fsm.add_state 'Locked', initial: true
+      unlocked = @fsm.add_state 'Unlocked'
+
+      @fsm.add_transition(locked, locked, 'Push')
+      @fsm.add_transition(locked, unlocked, 'Coin')
+      @fsm.add_transition(unlocked, unlocked, 'Coin')
+      @fsm.add_transition(unlocked, locked, 'Push')
+
+      expect(@fsm).must_be_kind_of FSM
+    end
+  end
+end
+
 describe DAFSAcceptor do
   before do
     @d = DAFSAcceptor.new
