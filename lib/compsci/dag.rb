@@ -37,55 +37,78 @@ module CompSci
       # multigraph, multiple edges between 0 and 1
       #
       #   __a__
-      #  /     \
+      #  /     v
       # 0       1
-      #  \__b__/
+      #  \__b__^
       #
       #                Graph: overwrite a with b
       #           MultiGraph: allow
       #         AcyclicGraph: overwrite a with b
       # DirectedAcyclicGraph: overwrite a with b
-      #    Deterministic FSM: overwrite a with b
+      #                  FSM: allow
 
       graph = self.new
-      (0..1).each { |i| graph.v i } # create 2 vertices, 0 and 1
+      (0..1).each { |i| graph.vertex i } # create 2 vertices, 0 and 1
       # create 2 edges, a and b, between 0 and 1
-      v = graph.vtxs
-      graph.e v[0], v[1], :a
-      graph.e v[0], v[1], :b
+      graph.edge 0, 1, :a
+      graph.edge 0, 1, :b
       graph
     end
 
     def self.diamond
       # diamond pattern, starts at 0, ends at 3
       #     1
-      #    / \
+      #    ^ \
       #  a/   \c
-      #  /     \
+      #  /     v
       # 0       3
-      #  \     /
+      #  \     ^
       #  b\   /d
-      #    \ /
+      #    v /
       #     2
       #
       #                Graph: allow
       #           MultiGraph: allow
       #         AcyclicGraph: raise CycleError
       # DirectedAcyclicGraph: allow
-      #    Deterministic FSM: allow
+      #                  FSM: allow
 
       graph = self.new
-      (0..3).each { |i| graph.v i } # create 4 vertices, 0-3
+      (0..3).each { |i| graph.vertex i } # create 4 vertices, 0-3
       # create 4 edges, a-d
-      v = graph.vtxs
-      graph.e v[0], v[1], :a
-      graph.e v[0], v[2], :b
-      graph.e v[1], v[3], :c
-      graph.e v[2], v[3], :d
+      graph.edge 0, 1, :a
+      graph.edge 0, 2, :b
+      graph.edge 1, 3, :c
+      graph.edge 2, 3, :d
       graph
     end
 
-    attr_reader :vtx, :edge
+    def self.fork
+      # fork pattern, 3 nodes, two edges with the same value
+      #     1
+      #    ^
+      #  a/
+      #  /
+      # 0
+      #  \
+      #  a\
+      #    v
+      #     2
+      #
+      #                Graph: allow
+      #           MultiGraph: allow
+      #         AcyclicGraph: allow
+      # DirectedAcyclicGraph: allow
+      #    Deterministic FSM: reject 2nd edge
+      # NonDeterministic FSM: allow
+
+      graph = self.new
+      (0..2).each { |i| graph.vertex i } # create 3 vertices, 0-2
+      # create 2 edges, both a
+      graph.edge 0, 1, :a
+      graph.edge 0, 2, :a
+      graph
+    end
 
     def initialize
       @vtx = {}  # keyed by value
@@ -93,13 +116,25 @@ module CompSci
     end
 
     # add a new vtx to @vtx
-    def v(value, **kwargs)
+    def vertex(value, **kwargs)
       @vtx[value] = Vertex.new(value, **kwargs)
     end
 
+    def v value
+      @vtx[value]
+    end
+
     # add a new edge to @edge
-    def e(from, to, value, **kwargs)
-      self.add_edge! Edge.new(from, to, value, **kwargs)
+    def edge(from_value, to_value, value, **kwargs)
+      raise(UnknownVertex) unless @vtx.key? from_value
+      raise(UnknownVertex) unless @vtx.key? to_value
+      edge = Edge.new(@vtx[from_value], @vtx[to_value], value, **kwargs)
+      self.add_edge! edge
+    end
+
+    def e from_value
+      raise(UnknownVertex) unless @vtx.key? from_value
+      @edge[@vtx[from_value]]
     end
 
     # @edge[from][to] => Edge

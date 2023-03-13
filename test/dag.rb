@@ -42,15 +42,13 @@ describe Graph do
   before do
     # create 4 vertices, 0-3
     @graph = Graph.new
-    (0..3).each { |i| @graph.v i }
+    (0..3).each { |i| @graph.vertex i }
   end
 
-  it "accepts a self-looping edge" do
+  it "acceptss a self-looping edge" do
     expect(@graph).must_be_kind_of Graph
     expect(@graph.vtxs.count).must_equal 4
-
-    vtx = @graph.vtxs[0]
-    @graph.e(vtx, vtx, "loop") # wont_raise
+    @graph.edge(0, 0, "loop") # wont_raise
   end
 
   it "accepts a diamond pattern" do
@@ -68,9 +66,16 @@ describe Graph do
     expect(graph.edges.count).must_equal 1
   end
 
+  it "allows a fork pattern" do
+    graph = Graph.fork
+    expect(graph).must_be_kind_of Graph
+    expect(graph.vtxs.count).must_equal 3
+    expect(graph.edges.count).must_equal 2
+  end
+
   it "provides an array of edges" do
-    @graph.e(@graph.vtxs[0], @graph.vtxs[1], :a)
-    @graph.e(@graph.vtxs[1], @graph.vtxs[2], :b)
+    @graph.edge(0, 1, :a)
+    @graph.edge(1, 2, :b)
     expect(@graph.edges).must_be_kind_of Array
     expect(@graph.edges.count).must_equal 2
 
@@ -101,20 +106,18 @@ describe MultiGraph do
   before do
     # create 4 vertices, 0-3
     @graph = MultiGraph.new
-    (0..3).each { |i| @graph.v i }
+    (0..3).each { |i| @graph.vertex i }
   end
 
   it "accepts a self-looping edge" do
     expect(@graph).must_be_kind_of MultiGraph
     expect(@graph.vtxs.count).must_equal 4
-
-    vtx = @graph.vtxs[0]
-    @graph.e(vtx, vtx, "loop") # wont_raise
+    @graph.edge(0, 0, "loop") # wont_raise
   end
 
   it "accepts a diamond pattern" do
-    graph = Graph.diamond
-    expect(graph).must_be_kind_of Graph
+    graph = MultiGraph.diamond
+    expect(graph).must_be_kind_of MultiGraph
     expect(graph.vtxs.count).must_equal 4
     expect(graph.edges.count).must_equal 4
   end
@@ -126,9 +129,16 @@ describe MultiGraph do
     expect(graph.edges.count).must_equal 2
   end
 
+  it "allows a fork pattern" do
+    graph = MultiGraph.fork
+    expect(graph).must_be_kind_of MultiGraph
+    expect(graph.vtxs.count).must_equal 3
+    expect(graph.edges.count).must_equal 2
+  end
+
   it "provides an array of edges" do
-    @graph.e(@graph.vtxs[0], @graph.vtxs[1], :a)
-    @graph.e(@graph.vtxs[1], @graph.vtxs[2], :b)
+    @graph.edge(0, 1, :a)
+    @graph.edge(1, 2, :b)
     expect(@graph.edges).must_be_kind_of Array
     expect(@graph.edges.count).must_equal 2
 
@@ -158,15 +168,13 @@ describe AcyclicGraph do
   before do
     # create 4 vertices, 0-3
     @graph = AcyclicGraph.new
-    (0..3).each { |i| @graph.v i }
+    (0..3).each { |i| @graph.vertex i }
   end
 
   it "rejects a self-looping edge" do
     expect(@graph).must_be_kind_of AcyclicGraph
     expect(@graph.vtxs.count).must_equal 4
-
-    vtx = @graph.vtxs[0]
-    expect { @graph.e(vtx, vtx, "loop") }.must_raise CycleError
+    expect { @graph.edge(0, 0, "loop") }.must_raise CycleError
   end
 
   it "rejects a diamond pattern" do
@@ -187,6 +195,13 @@ describe AcyclicGraph do
     ag.check_cycle! # wont_raise
   end
 
+  it "allows a fork pattern" do
+    graph = AcyclicGraph.fork
+    expect(graph).must_be_kind_of AcyclicGraph
+    expect(graph.vtxs.count).must_equal 3
+    expect(graph.edges.count).must_equal 2
+  end
+
   it "rejects with check_add" do
     expect(@graph).must_be_kind_of AcyclicGraph
     expect(@graph.vtxs.count).must_equal 4
@@ -194,13 +209,12 @@ describe AcyclicGraph do
     @graph.check_add = true
 
     # create 3 edges, a-c
-    av = @graph.vtxs
-    @graph.e(av[0], av[1], :a)
-    @graph.e(av[0], av[2], :b)
-    @graph.e(av[1], av[3], :c)
+    @graph.edge(0, 1, :a)
+    @graph.edge(0, 2, :b)
+    @graph.edge(1, 3, :c)
 
     # edge d creates a loop (undirected edges)
-    expect { @graph.e(av[2], av[3], :d) }.must_raise CycleError
+    expect { @graph.edge(2, 3, :d) }.must_raise CycleError
   end
 
   it "has a multiline string representation" do
@@ -209,9 +223,9 @@ describe AcyclicGraph do
 
     # create 3 edges, a-c
     av = @graph.vtxs
-    @graph.e(av[0], av[1], :a)
-    @graph.e(av[0], av[2], :b)
-    @graph.e(av[1], av[3], :c)
+    @graph.edge(0, 1, :a)
+    @graph.edge(0, 2, :b)
+    @graph.edge(1, 3, :c)
 
     edge_count = 3
 
@@ -228,7 +242,14 @@ describe DAG do
   before do
     # create 4 vertices, 0-3
     @dag = DAG.new
-    (0..3).each { |i| @dag.v i }
+    (0..3).each { |i| @dag.vertex i }
+  end
+
+  it "rejects a self-looping edge" do
+    expect(@dag).must_be_kind_of DAG
+    expect(@dag.vtxs.count).must_equal 4
+
+    expect { @dag.edge(0, 0, "loop") }.must_raise CycleError
   end
 
   it "allows a diamond pattern" do
@@ -249,12 +270,11 @@ describe DAG do
     dag.check_cycle! # wont_raise
   end
 
-  it "rejects a self-looping edge" do
-    expect(@dag).must_be_kind_of DAG
-    expect(@dag.vtxs.count).must_equal 4
-
-    vtx = @dag.vtxs[0]
-    expect { @dag.e(vtx, vtx, "loop") }.must_raise CycleError
+  it "allows a fork pattern" do
+    graph = DAG.fork
+    expect(graph).must_be_kind_of DAG
+    expect(graph.vtxs.count).must_equal 3
+    expect(graph.edges.count).must_equal 2
   end
 
   it "rejects a directed loop" do
@@ -263,10 +283,10 @@ describe DAG do
 
     # create 4 edges, a-d
     v = @dag.vtxs
-    @dag.e(v[0], v[1], :a)
-    @dag.e(v[1], v[2], :b)
-    @dag.e(v[2], v[3], :c)
-    @dag.e(v[3], v[0], :d)
+    @dag.edge(0, 1, :a)
+    @dag.edge(1, 2, :b)
+    @dag.edge(2, 3, :c)
+    @dag.edge(3, 0, :d)
 
     expect { @dag.check_cycle! }.must_raise CycleError
   end
