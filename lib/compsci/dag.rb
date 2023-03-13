@@ -33,6 +33,8 @@ module CompSci
 
   # consists of Vertices connected by Edges
   class Graph
+    class UnknownVertex < RuntimeError; end
+
     def self.multigraph
       # multigraph, multiple edges between 0 and 1
       #
