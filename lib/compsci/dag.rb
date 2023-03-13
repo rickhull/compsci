@@ -85,32 +85,32 @@ module CompSci
       graph
     end
 
-    attr_reader :vtxs, :edge
+    attr_reader :vtx, :edge
 
     def initialize
-      @vtxs = []
+      @vtx = {}  # keyed by value
       @edge = {} # keyed by the *from* vertex
     end
 
-    # add a new vtx to @vtxs
+    # add a new vtx to @vtx
     def v(value, **kwargs)
-      v = Vertex.new(value, **kwargs)
-      @vtxs << v
-      v
+      @vtx[value] = Vertex.new(value, **kwargs)
     end
 
     # add a new edge to @edge
     def e(from, to, value, **kwargs)
-      e = Edge.new(from, to, value, **kwargs)
-      self.add_edge! e
-      e
+      self.add_edge! Edge.new(from, to, value, **kwargs)
     end
 
     # @edge[from][to] => Edge
     def add_edge! e
       @edge[e.from] ||= {}
       @edge[e.from][e.to] = e
-      e
+    end
+
+    # return a flat list of vertices
+    def vtxs
+      @vtx.values
     end
 
     # return a flat list of edges
@@ -175,7 +175,7 @@ module CompSci
     # perform depth first search from every vertex; may raise CycleError
     def check_cycle!
       self.reset_search!
-      @vtxs.each { |v| self.dfs v }
+      @vtx.each_value { |v| self.dfs v }
       self
     end
 
@@ -201,8 +201,8 @@ module CompSci
     # roots have nothing pointing *to* them
     def roots
       invalid = Set.new
-      @edge.values.each { |hsh| invalid.merge(hsh.values.map(&:to)) }
-      @vtxs - invalid.to_a
+      @edge.each_value { |hsh| invalid.merge(hsh.values.map(&:to)) }
+      @vtx.values - invalid.to_a
     end
 
     # perform depth first search on every root; may raise CycleError
@@ -221,7 +221,7 @@ module CompSci
       @visited[v] = true
 
       # search via from -> to
-      @edge[v]&.values&.each { |e| self.dfs(e.to) }
+      @edge[v]&.each_value { |e| self.dfs(e.to) }
       @finished[v] = true
     end
   end
