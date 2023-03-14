@@ -2,20 +2,8 @@ require 'set'
 require 'compsci'
 
 module CompSci
-  class Vertex
-    attr_reader :value, :meta
-
-    def initialize(value = nil, **meta)
-      @value = value
-      @meta = meta
-    end
-
-    def to_s
-      @value.to_s
-    end
-  end
-
-  # Edge has references to 2 Vertices
+  # represents an edge between two vertices, *from* and *to*
+  # the vertices can be any Ruby object, probably string / symbol / int
   class Edge
     attr_reader :from, :to, :value, :meta
 
@@ -34,24 +22,93 @@ module CompSci
   # consists of Vertices connected by Edges
   class Graph
     class UnknownVertex < RuntimeError; end
+    class CycleError < RuntimeError; end
+
+    attr_reader :vtx
+
+    def initialize
+      @vtx = {}     # keyed by vertex, used like a Set
+      @edge = {} # keyed by the *from* vertex
+    end
+
+    # add a new edge to @edge
+    def edge(from_value, to_value, value, **kwargs)
+      # create vertices as needed; used like a Set
+      @vtx[from_value] ||= true
+      @vtx[to_value] ||= true
+      self.add_edge! Edge.new(from_value, to_value, value, **kwargs)
+    end
+
+    # @edge[from][to] => Edge
+    def add_edge! e
+      @edge[e.from] ||= {}
+      @edge[e.from][e.to] = e
+    end
+
+    # return a flat list of edges
+    def edges(from = nil)
+      if from.nil?
+        # @edge.values.map(&:values).flatten
+        ary = []
+        self.each_edge { |e| ary << e }
+        ary
+      else
+        raise UnknownVertex unless @edge.key? from
+        @edge[from].values
+      end
+    end
+
+    def each_edge
+      @edge.values.each { |hsh|
+        hsh.each_value { |e| yield e }
+      }
+      self
+    end
+
+    # edges include vertices; one edge per line
+    def to_s
+      self.edges.join(NEWLINE)
+    end
+
+    # return a flat list of vertices
+    def vtxs
+      @vtx.keys
+    end
+
+    #
+    # Pre-made patterns
+    #
+
+    def self.loop1
+      graph = self.new
+      graph.edge 0, 0, :loop
+      graph
+    end
+
+    def self.loop2
+      graph = self.new
+      graph.edge 0, 1, :out
+      graph.edge 1, 0, :back
+      graph
+    end
+
+    def self.loop3
+      graph = self.new
+      graph.edge 0, 1, :a
+      graph.edge 1, 2, :b
+      graph.edge 2, 0, :c
+      graph
+    end
 
     def self.multigraph
       # multigraph, multiple edges between 0 and 1
       #
-      #   __a__
-      #  /     v
-      # 0       1
-      #  \__b__^
-      #
-      #                Graph: overwrite a with b
-      #           MultiGraph: allow
-      #         AcyclicGraph: overwrite a with b
-      # DirectedAcyclicGraph: overwrite a with b
-      #                  FSM: allow
-
+      #   __a__                 Graph: overwrite a with b
+      #  /     v           MultiGraph: allow
+      # 0       1        AcyclicGraph: overwrite a with b
+      #  \__b__^                  DAG: overwrite a with b
+      #                           FSM: allow
       graph = self.new
-      (0..1).each { |i| graph.vertex i } # create 2 vertices, 0 and 1
-      # create 2 edges, a and b, between 0 and 1
       graph.edge 0, 1, :a
       graph.edge 0, 1, :b
       graph
@@ -60,24 +117,15 @@ module CompSci
     def self.diamond
       # diamond pattern, starts at 0, ends at 3
       #     1
-      #    ^ \
-      #  a/   \c
-      #  /     v
-      # 0       3
-      #  \     ^
+      #    ^ \               Graph: allow
+      #  a/   \c        MultiGraph: allow
+      #  /     v      AcyclicGraph: raise CycleError
+      # 0       3              DAG: allow
+      #  \     ^               FSM: allow
       #  b\   /d
       #    v /
       #     2
-      #
-      #                Graph: allow
-      #           MultiGraph: allow
-      #         AcyclicGraph: raise CycleError
-      # DirectedAcyclicGraph: allow
-      #                  FSM: allow
-
       graph = self.new
-      (0..3).each { |i| graph.vertex i } # create 4 vertices, 0-3
-      # create 4 edges, a-d
       graph.edge 0, 1, :a
       graph.edge 0, 2, :b
       graph.edge 1, 3, :c
@@ -88,84 +136,23 @@ module CompSci
     def self.fork
       # fork pattern, 3 nodes, two edges with the same value
       #     1
-      #    ^
-      #  a/
-      #  /
-      # 0
-      #  \
-      #  a\
+      #    ^                       Graph: allow
+      #  a/                   Multigraph: allow
+      #  /                  AcyclicGraph: allow
+      # 0                            DAG: allow
+      #  \             Deterministic FSM: reject 2nd edge
+      #  a\         NonDeterministic FSM: allow
       #    v
       #     2
-      #
-      #                Graph: allow
-      #           MultiGraph: allow
-      #         AcyclicGraph: allow
-      # DirectedAcyclicGraph: allow
-      #    Deterministic FSM: reject 2nd edge
-      # NonDeterministic FSM: allow
-
       graph = self.new
-      (0..2).each { |i| graph.vertex i } # create 3 vertices, 0-2
-      # create 2 edges, both a
       graph.edge 0, 1, :a
       graph.edge 0, 2, :a
       graph
     end
-
-    def initialize
-      @vtx = {}  # keyed by value
-      @edge = {} # keyed by the *from* vertex
-    end
-
-    # add a new vtx to @vtx
-    def vertex(value, **kwargs)
-      @vtx[value] = Vertex.new(value, **kwargs)
-    end
-
-    def v value
-      @vtx[value]
-    end
-
-    # add a new edge to @edge
-    def edge(from_value, to_value, value, **kwargs)
-      raise(UnknownVertex) unless @vtx.key? from_value
-      raise(UnknownVertex) unless @vtx.key? to_value
-      edge = Edge.new(@vtx[from_value], @vtx[to_value], value, **kwargs)
-      self.add_edge! edge
-    end
-
-    def e from_value
-      raise(UnknownVertex) unless @vtx.key? from_value
-      @edge[@vtx[from_value]]
-    end
-
-    # @edge[from][to] => Edge
-    def add_edge! e
-      @edge[e.from] ||= {}
-      @edge[e.from][e.to] = e
-    end
-
-    # return a flat list of vertices
-    def vtxs
-      @vtx.values
-    end
-
-    # return a flat list of edges
-    def edges(from_vtx = nil)
-      if from_vtx.nil?
-        @edge.values.map(&:values).flatten
-      else
-        (@edge[from_vtx] || Hash.new).values
-      end
-    end
-
-    # edges include vertices; one edge per line
-    def to_s
-      self.edges.join(NEWLINE)
-    end
   end
 
   # allow multiple edges between any two vertices
+  # store edges with Array rather than Hash
   class MultiGraph < Graph
     # @edge[from] => [Edge, Edge, ...]
     def add_edge! e
@@ -174,13 +161,26 @@ module CompSci
       e
     end
 
+    def each_edge
+      @edge.values.each { |ary|
+        ary.each { |e| yield e }
+      }
+      self
+    end
+
     # return a flat list of edges
-    def edges(from_vtx = nil)
-      from_vtx.nil? ? @edge.values.flatten : (@edge[from_vtx] || Array.new)
+    def edges(from = nil)
+      if from.nil?
+        # @edge.values.flatten
+        ary = []
+        self.each_edge { |e| ary << e }
+        ary
+      else
+        raise UnknownVertex unless @edge.key? from
+        @edge[from]
+      end
     end
   end
-
-  class CycleError < RuntimeError; end
 
   # Undirected Acyclic Graph, not a MultiGraph
   class AcyclicGraph < Graph
@@ -202,9 +202,8 @@ module CompSci
       @edge[e.from] ||= {}
       @edge[e.from][e.to] = e
       if @check_add  # does the new edge create a cycle?
-        vtx = e.from # start the *from* vertex; helpful for DAGs
         self.reset_search!
-        self.dfs vtx # may raise CycleError
+        self.dfs e.from # may raise CycleError
       end
       e
     end
@@ -212,11 +211,11 @@ module CompSci
     # perform depth first search from every vertex; may raise CycleError
     def check_cycle!
       self.reset_search!
-      @vtx.each_value { |v| self.dfs v }
+      @vtx.each_key { |value| self.dfs value }
       self
     end
 
-    # recursive depth first search
+    # recursive depth first search; may raise CycleError
     def dfs(v, skip = nil)
       return true if @finished[v]
       raise CycleError if @visited[v]
@@ -239,7 +238,7 @@ module CompSci
     def roots
       invalid = Set.new
       @edge.each_value { |hsh| invalid.merge(hsh.values.map(&:to)) }
-      @vtx.values - invalid.to_a
+      @vtx.keys - invalid.to_a
     end
 
     # perform depth first search on every root; may raise CycleError

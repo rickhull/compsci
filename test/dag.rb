@@ -3,22 +3,10 @@ require 'compsci/dag'
 
 include CompSci
 
-describe Vertex do
-  it "initializes with value, possibly nil" do
-    expect(Vertex.new.value).must_be_nil
-    expect(Vertex.new(0).value).must_equal 0
-  end
-
-  it "has a string representation" do
-    expect(Vertex.new.to_s).must_be_kind_of String
-    expect(Vertex.new(0).to_s).must_be_kind_of String
-  end
-end
-
 describe Edge do
   before do
-    @v0 = Vertex.new(0)
-    @v1 = Vertex.new(1)
+    @v0 = 0
+    @v1 = 1
     @e = Edge.new(@v0, @v1)
   end
 
@@ -40,15 +28,12 @@ end
 
 describe Graph do
   before do
-    # create 4 vertices, 0-3
     @graph = Graph.new
-    (0..3).each { |i| @graph.vertex i }
   end
 
-  it "acceptss a self-looping edge" do
-    expect(@graph).must_be_kind_of Graph
-    expect(@graph.vtxs.count).must_equal 4
+  it "accepts a self-looping edge" do
     @graph.edge(0, 0, "loop") # wont_raise
+    expect(@graph).must_be_kind_of Graph
   end
 
   it "accepts a diamond pattern" do
@@ -76,16 +61,15 @@ describe Graph do
   it "provides an array of edges" do
     @graph.edge(0, 1, :a)
     @graph.edge(1, 2, :b)
-    expect(@graph.edges).must_be_kind_of Array
-    expect(@graph.edges.count).must_equal 2
+    edges = @graph.edges
+    expect(edges).must_be_kind_of Array
+    expect(edges.count).must_equal 2
 
     # edges(from)
-    from_0 = @graph.edges(@graph.vtxs[0])
-    from_3 = @graph.edges(@graph.vtxs[3])
+    from_0 = @graph.edges(0)
+    expect { @graph.edges(3) }.must_raise
     expect(from_0).must_be_kind_of Array
     expect(from_0.count).must_equal 1
-    expect(from_3).must_be_kind_of Array
-    expect(from_3).must_be_empty
   end
 
   it "has a multiline string representation" do
@@ -104,15 +88,12 @@ end
 
 describe MultiGraph do
   before do
-    # create 4 vertices, 0-3
     @graph = MultiGraph.new
-    (0..3).each { |i| @graph.vertex i }
   end
 
   it "accepts a self-looping edge" do
-    expect(@graph).must_be_kind_of MultiGraph
-    expect(@graph.vtxs.count).must_equal 4
     @graph.edge(0, 0, "loop") # wont_raise
+    expect(@graph).must_be_kind_of MultiGraph
   end
 
   it "accepts a diamond pattern" do
@@ -143,12 +124,10 @@ describe MultiGraph do
     expect(@graph.edges.count).must_equal 2
 
     # edges(from)
-    from_0 = @graph.edges(@graph.vtxs[0])
-    from_3 = @graph.edges(@graph.vtxs[3])
+    from_0 = @graph.edges(0)
+    expect { @graph.edges(:does_not_exist) }.must_raise
     expect(from_0).must_be_kind_of Array
     expect(from_0.count).must_equal 1
-    expect(from_3).must_be_kind_of Array
-    expect(from_3).must_be_empty
   end
 
   it "has a multiline string representation" do
@@ -166,15 +145,12 @@ end
 
 describe AcyclicGraph do
   before do
-    # create 4 vertices, 0-3
     @graph = AcyclicGraph.new
-    (0..3).each { |i| @graph.vertex i }
   end
 
   it "rejects a self-looping edge" do
     expect(@graph).must_be_kind_of AcyclicGraph
-    expect(@graph.vtxs.count).must_equal 4
-    expect { @graph.edge(0, 0, "loop") }.must_raise CycleError
+    expect { @graph.edge(0, 0, "loop") }.must_raise Graph::CycleError
   end
 
   it "rejects a diamond pattern" do
@@ -182,7 +158,7 @@ describe AcyclicGraph do
     expect(ag).must_be_kind_of AcyclicGraph
     expect(ag.vtxs.count).must_equal 4
     expect(ag.edges.count).must_equal 4
-    expect { ag.check_cycle! }.must_raise CycleError
+    expect { ag.check_cycle! }.must_raise Graph::CycleError
   end
 
   it "doesn't allow a multigraph" do
@@ -204,8 +180,6 @@ describe AcyclicGraph do
 
   it "rejects with check_add" do
     expect(@graph).must_be_kind_of AcyclicGraph
-    expect(@graph.vtxs.count).must_equal 4
-
     @graph.check_add = true
 
     # create 3 edges, a-c
@@ -214,24 +188,19 @@ describe AcyclicGraph do
     @graph.edge(1, 3, :c)
 
     # edge d creates a loop (undirected edges)
-    expect { @graph.edge(2, 3, :d) }.must_raise CycleError
+    expect { @graph.edge(2, 3, :d) }.must_raise Graph::CycleError
   end
 
   it "has a multiline string representation" do
     expect(@graph).must_be_kind_of AcyclicGraph
-    expect(@graph.vtxs.count).must_equal 4
 
-    # create 3 edges, a-c
-    av = @graph.vtxs
     @graph.edge(0, 1, :a)
     @graph.edge(0, 2, :b)
     @graph.edge(1, 3, :c)
 
     edge_count = 3
-
     expect(@graph.edges.count).must_equal edge_count
-    # since the edges have references to the vertices, we return multiple
-    # lines of text, one for each edge
+
     str = @graph.to_s
     expect(str).must_include NEWLINE
     expect(str.lines.count).must_equal edge_count
@@ -240,16 +209,12 @@ end
 
 describe DAG do
   before do
-    # create 4 vertices, 0-3
     @dag = DAG.new
-    (0..3).each { |i| @dag.vertex i }
   end
 
   it "rejects a self-looping edge" do
     expect(@dag).must_be_kind_of DAG
-    expect(@dag.vtxs.count).must_equal 4
-
-    expect { @dag.edge(0, 0, "loop") }.must_raise CycleError
+    expect { @dag.edge(0, 0, "loop") }.must_raise Graph::CycleError
   end
 
   it "allows a diamond pattern" do
@@ -279,16 +244,14 @@ describe DAG do
 
   it "rejects a directed loop" do
     expect(@dag).must_be_kind_of DAG
-    expect(@dag.vtxs.count).must_equal 4
 
     # create 4 edges, a-d
-    v = @dag.vtxs
     @dag.edge(0, 1, :a)
     @dag.edge(1, 2, :b)
     @dag.edge(2, 3, :c)
     @dag.edge(3, 0, :d)
 
-    expect { @dag.check_cycle! }.must_raise CycleError
+    expect { @dag.check_cycle! }.must_raise Graph::CycleError
   end
 
   it "has a multiline string representation" do
@@ -296,8 +259,6 @@ describe DAG do
     expect(dag.vtxs.count).must_equal 4
     edge_count = 4
     expect(dag.edges.count).must_equal edge_count
-    # since the edges have references to the vertices, we return multiple
-    # lines of text, one for each edge
     str = dag.to_s
     expect(str).must_include NEWLINE
     expect(str.lines.count).must_equal edge_count
