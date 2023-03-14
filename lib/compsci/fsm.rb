@@ -1,4 +1,4 @@
-require 'compsci/dag'
+require 'compsci/graph'
 
 module CompSci
   class FiniteStateMachine
