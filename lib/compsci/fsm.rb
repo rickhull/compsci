@@ -2,15 +2,6 @@ require 'compsci/graph'
 
 module CompSci
   class FiniteStateMachine
-    def self.turnstile
-      fsm = self.new
-      fsm.transition(:locked, :locked, 'Push')
-      fsm.transition(:locked, :unlocked, 'Coin')
-      fsm.transition(:unlocked, :unlocked, 'Coin')
-      fsm.transition(:unlocked, :locked, 'Push')
-      fsm
-    end
-
     attr_reader :deterministic, :graph, :initial
 
     def initialize(deterministic: true)
@@ -59,6 +50,32 @@ module CompSci
       }
       rows.join("\n")
     end
+
+    #
+    # Pre-made FSMs
+    #
+
+    def self.cauchy
+      # https://blog.burntsushi.net/transducers/
+      fsm = self.new
+      fsm.transition(:asleep, :eating, :food)
+      fsm.transition(:eating, :hiding, :loud_noise)
+      fsm.transition(:hiding, :eating, :quiet_calm)
+      fsm.transition(:eating, :litterbox, :digest_food)
+      fsm.transition(:asleep, :playing, :something_moved)
+      fsm.transition(:playing, :asleep, :quiet_calm)
+      fsm.transition(:litterbox, :asleep, :pooped)
+      fsm
+    end
+
+    def self.turnstile
+      fsm = self.new
+      fsm.transition(:locked, :locked, 'Push')
+      fsm.transition(:locked, :unlocked, 'Coin')
+      fsm.transition(:unlocked, :unlocked, 'Coin')
+      fsm.transition(:unlocked, :locked, 'Push')
+      fsm
+    end
   end
 
   FSM = FiniteStateMachine
@@ -73,21 +90,22 @@ module CompSci
       raise(DeterministicError, "multiple edges for #{chr} from #{from}")
     end
 
-    attr_reader :graph, :initial, :final
+    attr_reader :graph, :id, :initial, :final
 
     def initialize
-      @graph = DAG.new
-      @id = 0
-      @initial = @id
-      # there is only one final vertex, though many edges will point to it
-      @final = nil
+      @graph = DAG.new  # directed acyclic graph
+      @id = 0           # auto-increment when edges are added
+      @initial = @id    # track initial state
+      @final = nil      # track final state
     end
 
+    # add a transition, auto-incrementing @id
     def transition(from, value)
       @id += 1
       @graph.edge(from, @id, value)
     end
 
+    # add final transition, intializing or reusing @final
     def transition_final(from, value)
       if @final.nil?
         @id += 1
@@ -96,10 +114,12 @@ module CompSci
       @graph.edge(from, @final, value)
     end
 
+    # initial, final, graph
     def to_s
       [[@initial, @final].inspect, @graph].join(NEWLINE)
     end
 
+    # store a string
     def encode(str)
       cursor = @initial
       str.each_char.with_index { |chr, i|
@@ -126,6 +146,7 @@ module CompSci
       self
     end
 
+    # is this string recognized?
     def accept?(str)
       raise("no final state") if @final.nil?
       cursor = @initial
