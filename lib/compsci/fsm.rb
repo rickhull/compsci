@@ -6,11 +6,7 @@ module CompSci
 
     def initialize(deterministic: true)
       @deterministic = deterministic
-      if @deterministic
-        @graph = Graph.new
-      else
-        @graph = MultiGraph.new
-      end
+      @graph = @deterministic ? Graph.new : MultiGraph.new
     end
 
     def transition(from, to, value)
@@ -18,7 +14,7 @@ module CompSci
       @graph.edge(from, to, value)
     end
 
-    # state-transition table
+    # state-transition table; @graph.to_s is usually nicer
     def to_s
       state_width = 0
       @graph.vtxs.each { |v|
@@ -123,21 +119,17 @@ module CompSci
     def encode(str)
       cursor = @initial
       str.each_char.with_index { |chr, i|
-        # is there a transition from cursor with value b?
-        priors = @graph.edges(from: cursor, value: chr)
-        case priors.count
-        when 0
-          if i < str.length - 1
-            # create intermediate transition
+        existing = @graph.edges(from: cursor, value: chr)
+        case existing.count
+        when 0 # create transition
+          if i < str.length - 1  # intermediate transition
             self.transition(cursor, chr)
             cursor = @id
-          else
-            # transition to @final
+          else # transition to @final
             self.transition_final(cursor, chr)
           end
-        when 1
-          # use existing transition
-          cursor = priors.first.to
+        when 1 # use existing transition
+          cursor = existing[0].to
         else
           self.nondeterministic!(cursor, chr)
         end
@@ -151,13 +143,13 @@ module CompSci
       raise("no final state") if @final.nil?
       cursor = @initial
       str.each_char { |chr|
-        edges = @graph.edges(from: cursor, value: chr)
-        return false if edges.empty?
-        case edges.count
+        transitions = @graph.edges(from: cursor, value: chr)
+        return false if transitions.empty?
+        case transitions.count
         when 0
           return false
-        when 1 # ok
-          cursor = edges[0].to
+        when 1 # ok so far
+          cursor = transitions[0].to
         else
           self.nondeterministic!(cursor, chr)
         end
