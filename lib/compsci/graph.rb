@@ -1,5 +1,4 @@
 require 'set'
-require 'compsci'
 
 module CompSci
   # represents an edge between two vertices, *from* and *to*

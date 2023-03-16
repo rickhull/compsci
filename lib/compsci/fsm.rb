@@ -1,12 +1,10 @@
 require 'compsci/graph'
 
 module CompSci
-
-  # deterministic
-  class FiniteStateMachine
-    attr_reader :graph, :initial
-
+  class FiniteStateMachine # deterministic
     class DeterministicError < RuntimeError; end
+
+    attr_reader :graph, :initial
 
     def initialize
       @graph = Graph.new
