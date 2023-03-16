@@ -50,44 +50,31 @@ end
 
 describe DAFSAcceptor do
   before do
-    skip
-    @d = DAFSAcceptor.new
+    @dafsa = DAFSAcceptor.new
   end
 
-  it "can encode: 'june'" do
-    skip
-
-    expect(@d).must_be_kind_of DAFSAcceptor
-
-    cursor = @d.first
-    %w[j u n e].each { |chr|
-      cursor = @d.add_state(cursor, chr)
-    }
-    @d.final = cursor
-
-    expect(@d.states.count).must_equal 5 # 'june' is stored on the edges
-
-    # any initial edges ('j', here)
-    hsh = @d.dag.edge[@d.first]
-    expect(hsh).wont_be_nil
-    expect(hsh.size).must_equal 1
-    expect(hsh.values.first.value).must_equal 'j'
+  it "encodes 'june'" do
+    expect(@dafsa).must_be_kind_of DAFSAcceptor
+    @dafsa.encode('june')
+    expect(@dafsa.graph.edges.count).must_equal 4
   end
 
-  it "can accept: 'june'" do
-    skip
+  it "accepts: 'june'" do
+    expect(@dafsa).must_be_kind_of DAFSAcceptor
+    @dafsa.encode('june')
 
-    expect(@d).must_be_kind_of DAFSAcceptor
+    expect(@dafsa.accept?('july')).must_equal false
+    expect(@dafsa.accept?('june')).must_equal true
+  end
 
-    cursor = @d.first
-    %w[j u n e].each { |chr|
-      cursor = @d.add_state(cursor, chr)
+  it "recognizes: march may june july" do
+    expect(@dafsa).must_be_kind_of DAFSAcceptor
+    trimester = %w[march may june july].sort
+    calendar  = %w[january february march may june
+                   july august september october november]
+    trimester.each { |good_month| @dafsa.encode good_month }
+    calendar.each { |month|
+      expect(@dafsa.accept? month).must_equal trimester.include? month
     }
-    @d.final = cursor
-
-    expect(@d.states.count).must_equal 5 # 'june' is stored on the edges
-
-    expect(@d.accept?('july')).must_equal false
-    expect(@d.accept?('june')).must_equal true
   end
 end

@@ -43,10 +43,12 @@ module CompSci
 
       rows = []
       # header first
-      rows << "STATE\t" + @graph.vtxs.map { |v|
+      rows << "STATE".ljust(input_width, ' ') + "\t" + @graph.vtxs.map { |v|
         v.to_s.ljust(state_width, ' ')
       }.join("\t")
-      rows << "INPUT\t" + @graph.vtxs.map { '-' * state_width }.join("\t")
+      rows << "INPUT".ljust(input_width, ' ') + "\t" + @graph.vtxs.map {
+        '-' * state_width
+      }.join("\t")
       rows += @graph.edges.map { |edge|
         input = edge.value.to_s.ljust(input_width, ' ')
         ary = [input]
@@ -62,55 +64,81 @@ module CompSci
   FSM = FiniteStateMachine
 
   # Deterministic Acyclic Finite State Acceptor
+  # Has a single initial state and a single final state
   #
   class DAFSAcceptor
     class DeterministicError < RuntimeError; end
 
-    attr_reader :dag, :first, :id
-    attr_accessor :final
+    def self.nondeterministic!(from, chr)
+      raise(DeterministicError, "multiple edges for #{chr} from #{from}")
+    end
+
+    attr_reader :graph, :initial, :final
 
     def initialize
-      @dag = DAG.new
+      @graph = DAG.new
       @id = 0
-      @first = self.new_state
+      @initial = @id
+      # there is only one final vertex, though many edges will point to it
+      @final = nil
     end
 
-    def states
-      @dag.vtxs
+    def transition(from, value)
+      @id += 1
+      @graph.edge(from, @id, value)
     end
 
-    def new_state
-      state, @id = @dag.vertex(@id), @id + 1
-      state
-    end
-
-    def add_state(from_state, input)
-      to_state = self.new_state
-      @dag.edge from_state, to_state, input
-      to_state
-    end
-
-    def add_final(from_state, input)
-      @final = self.add_state(from_state, input)
+    def transition_final(from, value)
+      if @final.nil?
+        @id += 1
+        @final = @id
+      end
+      @graph.edge(from, @final, value)
     end
 
     def to_s
-      [[@first, @final].map(&:value).inspect, @dag].join(NEWLINE)
+      [[@initial, @final].inspect, @graph].join(NEWLINE)
     end
 
-    def accept?(input)
-      cursor = @first
-      input.each_char { |chr|
-        hsh = @dag.edge[cursor]
-        return false if hsh.nil?
-        edges = hsh.values.select { |e| e.value == chr }
+    def encode(str)
+      cursor = @initial
+      str.each_char.with_index { |chr, i|
+        # is there a transition from cursor with value b?
+        priors = @graph.edges(from: cursor, value: chr)
+        case priors.count
+        when 0
+          if i < str.length - 1
+            # create intermediate transition
+            self.transition(cursor, chr)
+            cursor = @id
+          else
+            # transition to @final
+            self.transition_final(cursor, chr)
+          end
+        when 1
+          # use existing transition
+          cursor = priors.first.to
+        else
+          self.nondeterministic!(cursor, chr)
+        end
+      }
+      @final ||= cursor
+      self
+    end
+
+    def accept?(str)
+      raise("no final state") if @final.nil?
+      cursor = @initial
+      str.each_char { |chr|
+        edges = @graph.edges(from: cursor, value: chr)
+        return false if edges.empty?
         case edges.count
         when 0
           return false
         when 1 # ok
           cursor = edges[0].to
         else
-          raise(DeterministicError, "multiple edges for #{chr} from #{cursor}")
+          self.nondeterministic!(cursor, chr)
         end
       }
       cursor == @final
