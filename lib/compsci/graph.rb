@@ -21,7 +21,6 @@ module CompSci
 
   # consists of Vertices connected by Edges
   class Graph
-    class UnknownVertex < RuntimeError; end
     class CycleError < RuntimeError; end
 
     attr_reader :vtx
