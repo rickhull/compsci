@@ -84,6 +84,58 @@ describe Graph do
     expect(str).must_include NEWLINE
     expect(str.lines.count).must_equal edge_count
   end
+
+  it "iterates over each edge, with filters" do
+    graph = Graph.diamond
+
+    # 4 edges to a diamond
+    count = 0
+    graph.each_edge { |e|
+      expect(e).must_be_kind_of Edge
+      count += 1
+    }
+    expect(count).must_equal 4
+
+    # 2 edges from 0
+    count = 0
+    graph.each_edge(from: 0) { |e|
+      expect(e.from).must_equal 0
+      count += 1
+    }
+    expect(count).must_equal 2
+
+    # 0 edges from 27
+    count = 0
+    graph.each_edge(from: 27) { |e|
+      expect(true).must_equal false
+      count += 1
+    }
+    expect(count).must_equal 0
+
+    # 2 edges to 3
+    count = 0
+    graph.each_edge(to: 3) { |e|
+      expect(e.to).must_equal 3
+      count += 1
+    }
+    expect(count).must_equal 2
+
+    # 0 edges from 0 to 3
+    count = 0
+    graph.each_edge(from: 0, to: 3) { |e|
+      expect(true).must_equal false
+      count += 1
+    }
+    expect(count).must_equal 0
+
+    # 1 edge with value :c
+    count = 0
+    graph.each_edge(value: :c) { |e|
+      expect(e.value).must_equal :c
+      count += 1
+    }
+    expect(count).must_equal 1
+  end
 end
 
 describe MultiGraph do
@@ -128,6 +180,58 @@ describe MultiGraph do
     expect(@graph.edges(from: :does_not_exist)).must_be_empty
     expect(from_0).must_be_kind_of Array
     expect(from_0.count).must_equal 1
+  end
+
+  it "iterates over each edge, with filters" do
+    graph = MultiGraph.diamond
+
+    # 4 edges to a diamond
+    count = 0
+    graph.each_edge { |e|
+      expect(e).must_be_kind_of Edge
+      count += 1
+    }
+    expect(count).must_equal 4
+
+    # 2 edges from 0
+    count = 0
+    graph.each_edge(from: 0) { |e|
+      expect(e.from).must_equal 0
+      count += 1
+    }
+    expect(count).must_equal 2
+
+    # 0 edges from 27
+    count = 0
+    graph.each_edge(from: 27) { |e|
+      expect(true).must_equal false
+      count += 1
+    }
+    expect(count).must_equal 0
+
+    # 2 edges to 3
+    count = 0
+    graph.each_edge(to: 3) { |e|
+      expect(e.to).must_equal 3
+      count += 1
+    }
+    expect(count).must_equal 2
+
+    # 0 edges from 0 to 3
+    count = 0
+    graph.each_edge(from: 0, to: 3) { |e|
+      expect(true).must_equal false
+      count += 1
+    }
+    expect(count).must_equal 0
+
+    # 1 edge with value :c
+    count = 0
+    graph.each_edge(value: :c) { |e|
+      expect(e.value).must_equal :c
+      count += 1
+    }
+    expect(count).must_equal 1
   end
 
   it "has a multiline string representation" do
