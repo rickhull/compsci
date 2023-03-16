@@ -1,17 +1,37 @@
 require 'compsci/graph'
 
 module CompSci
-  class FiniteStateMachine
-    attr_reader :deterministic, :graph, :initial
 
-    def initialize(deterministic: true)
-      @deterministic = deterministic
-      @graph = @deterministic ? Graph.new : MultiGraph.new
+  # deterministic
+  class FiniteStateMachine
+    attr_reader :graph, :initial
+
+    class DeterministicError < RuntimeError; end
+
+    def initialize
+      @graph = Graph.new
     end
 
     def transition(from, to, value)
       @initial ||= from
       @graph.edge(from, to, value)
+    end
+
+    def walk(*inputs)
+      cursor = @initial
+      inputs.each { |input|
+        transitions = @graph.edges(from: cursor, value: input)
+        case transitions.count
+        when 0 # oops
+          return false
+        when 1 # great!
+          t = transitions[0]
+          cursor = t.to
+        else   # ND: ok, D: raise
+          raise DeterministicError
+        end
+      }
+      cursor
     end
 
     # state-transition table; @graph.to_s is usually nicer
@@ -75,6 +95,32 @@ module CompSci
   end
 
   FSM = FiniteStateMachine
+
+  class NonDeterministicFiniteStateMachine < FiniteStateMachine
+    def initialize
+      @graph = MultiGraph.new
+    end
+
+    def walk(*inputs)
+      cursor = @initial
+      inputs.each { |input|
+        transitions = @graph.edges(from: cursor, value: input)
+        case transitions.count
+        when 0 # oops
+          return false
+        when 1 # great!
+          t = transitions[0]
+          cursor = t.to
+        else
+          t = transitions.sample
+          cursor = t.to
+        end
+      }
+      cursor
+    end
+  end
+
+  NDFSM = NonDeterministicFiniteStateMachine
 
   # Deterministic Acyclic Finite State Acceptor
   # Has a single initial state and a single final state

@@ -9,10 +9,6 @@ describe FiniteStateMachine do
       @fsm = FSM.new
     end
 
-    it "has an attr for determinism" do
-      expect(@fsm.deterministic).must_equal true
-    end
-
     it "has a graph, not a multigraph" do
       expect(@fsm.graph).must_be_kind_of Graph
       expect(@fsm.graph).wont_be_kind_of MultiGraph
@@ -29,11 +25,7 @@ describe FiniteStateMachine do
 
   describe "NonDeterministic FSM" do
     before do
-      @fsm = FSM.new(deterministic: false)
-    end
-
-    it "has an attr for determinism" do
-      expect(@fsm.deterministic).must_equal false
+      @fsm = NDFSM.new
     end
 
     it "has a multigraph" do
