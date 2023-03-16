@@ -66,8 +66,8 @@ describe Graph do
     expect(edges.count).must_equal 2
 
     # edges(from)
-    from_0 = @graph.edges(0)
-    expect { @graph.edges(3) }.must_raise
+    from_0 = @graph.edges(from: 0)
+    expect(@graph.edges(from: 3)).must_be_empty
     expect(from_0).must_be_kind_of Array
     expect(from_0.count).must_equal 1
   end
@@ -124,8 +124,8 @@ describe MultiGraph do
     expect(@graph.edges.count).must_equal 2
 
     # edges(from)
-    from_0 = @graph.edges(0)
-    expect { @graph.edges(:does_not_exist) }.must_raise
+    from_0 = @graph.edges(from: 0)
+    expect(@graph.edges(from: :does_not_exist)).must_be_empty
     expect(from_0).must_be_kind_of Array
     expect(from_0.count).must_equal 1
   end

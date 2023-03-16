@@ -27,11 +27,11 @@ module CompSci
     attr_reader :vtx
 
     def initialize
-      @vtx = {}     # keyed by vertex, used like a Set
+      @vtx = {}  # keyed by vertex, used like a Set
       @edge = {} # keyed by the *from* vertex
     end
 
-    # add a new edge to @edge
+    # add a new edge to @edge, adding vertices to @vtx as needed
     def edge(from_value, to_value, value, **kwargs)
       # create vertices as needed; used like a Set
       @vtx[from_value] ||= true
@@ -45,24 +45,49 @@ module CompSci
       @edge[e.from][e.to] = e
     end
 
-    # return a flat list of edges
-    def edges(from = nil)
-      if from.nil?
-        # @edge.values.map(&:values).flatten
-        ary = []
-        self.each_edge { |e| ary << e }
-        ary
+    # iterate edges like: graph.each_edge { |e| puts e }
+    def each_edge(from: nil, to: nil, value: nil)
+      # filter on *from*
+      if from
+        return self unless @edge.key? from
+        hsh = @edge[from]
+        if hsh.nil? or hsh.empty? or !hsh.is_a? Hash
+          raise(UnexpectedError, hsh.inspect)
+        end
+
+        # filter on *to*
+        if to
+          return self unless hsh.key? to
+          edge = hsh[to]
+          if edge.nil? or !edge.is_a? Edge
+            raise(UnexpectedError, edge.inspect)
+          end
+          # filter on *value*
+          return self if value and edge.value != value
+          yield edge
+        else
+          hsh.each_value { |e|
+            next if value and e.value != value
+            yield e
+          }
+        end
       else
-        raise UnknownVertex unless @edge.key? from
-        @edge[from].values
+        @edge.values.each { |hsh|
+          hsh.each_value { |e|
+            next if to and e.to != to
+            next if value and e.value != value
+            yield e
+          }
+        }
       end
+      self
     end
 
-    def each_edge
-      @edge.values.each { |hsh|
-        hsh.each_value { |e| yield e }
-      }
-      self
+    # return a flat list of edges
+    def edges(from: nil, to: nil, value: nil)
+      ary = []
+      self.each_edge(from: from, to: to, value: value) { |e| ary << e }
+      ary
     end
 
     # edges include vertices; one edge per line
@@ -104,9 +129,9 @@ module CompSci
       # multigraph, multiple edges between 0 and 1
       #
       #   __a__                 Graph: overwrite a with b
-      #  /     v           MultiGraph: allow
+      #  /     \           MultiGraph: allow
       # 0       1        AcyclicGraph: overwrite a with b
-      #  \__b__^                  DAG: overwrite a with b
+      #  \__b__/                  DAG: overwrite a with b
       #                           FSM: allow
       graph = self.new
       graph.edge 0, 1, :a
@@ -117,13 +142,13 @@ module CompSci
     def self.diamond
       # diamond pattern, starts at 0, ends at 3
       #     1
-      #    ^ \               Graph: allow
-      #  a/   \c        MultiGraph: allow
-      #  /     v      AcyclicGraph: raise CycleError
-      # 0       3              DAG: allow
-      #  \     ^               FSM: allow
+      #    / \                  Graph: allow
+      #  a/   \c           MultiGraph: allow
+      #  /     \         AcyclicGraph: raise CycleError
+      # 0       3                 DAG: allow
+      #  \     /                  FSM: allow
       #  b\   /d
-      #    v /
+      #    \ /
       #     2
       graph = self.new
       graph.edge 0, 1, :a
@@ -136,13 +161,13 @@ module CompSci
     def self.fork
       # fork pattern, 3 nodes, two edges with the same value
       #     1
-      #    ^                       Graph: allow
-      #  a/                   Multigraph: allow
-      #  /                  AcyclicGraph: allow
-      # 0                            DAG: allow
-      #  \             Deterministic FSM: reject 2nd edge
-      #  a\         NonDeterministic FSM: allow
-      #    v
+      #    /                    Graph: allow
+      #  a/                Multigraph: allow
+      #  /               AcyclicGraph: allow
+      # 0                         DAG: allow
+      #  \          Deterministic FSM: reject 2nd edge
+      #  a\      NonDeterministic FSM: allow
+      #    \
       #     2
       graph = self.new
       graph.edge 0, 1, :a
@@ -161,24 +186,29 @@ module CompSci
       e
     end
 
-    def each_edge
-      @edge.values.each { |ary|
-        ary.each { |e| yield e }
-      }
-      self
-    end
+    def each_edge(from: nil, to: nil, value: nil)
+      if from
+        return self unless @edge.key? from
+        ary = @edge[from]
+        if ary.nil? or ary.empty? or !ary.is_a? Array
+          raise(UnexpectedError, ary.inspect)
+        end
 
-    # return a flat list of edges
-    def edges(from = nil)
-      if from.nil?
-        # @edge.values.flatten
-        ary = []
-        self.each_edge { |e| ary << e }
-        ary
+        ary.each { |e|
+          next if to and e.to != to
+          next if value and e.value != value
+          yield e
+        }
       else
-        raise UnknownVertex unless @edge.key? from
-        @edge[from]
+        @edge.values.each { |ary|
+          ary.each { |e|
+            next if to and e.to != to
+            next if value and e.value != value
+            yield e
+          }
+        }
       end
+      self
     end
   end
 
