@@ -82,6 +82,14 @@ module CompSci
       self
     end
 
+    # return the (to) vertex for an edge matching (from, value)
+    def follow(from, value)
+      hsh = @edge[from] or return false
+      dests = hsh.values.select { |e| e.value == value }.map(&:to)
+      return false if dests.empty?
+      dests.sample
+    end
+
     # return a flat list of edges
     def edges(from: nil, to: nil, value: nil)
       ary = []
