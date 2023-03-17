@@ -5,17 +5,17 @@ module CompSci
   # represents an edge between two vertices, *from* and *to*
   # the vertices can be any Ruby object, probably string / symbol / int
   class Edge
-    attr_reader :from, :to, :value, :meta
+    attr_reader :src, :dest, :value, :meta
 
-    def initialize(from, to, value = nil, **meta)
-      @from = from
-      @to = to
+    def initialize(src, dest, value = nil, **meta)
+      @src = src
+      @dest = dest
       @value = value
       @meta = meta
     end
 
     def to_s
-      [@from, "-#{@value}->", @to].join(" ")
+      [@src, "-#{@value}->", @dest].join(" ")
     end
   end
 
@@ -27,37 +27,37 @@ module CompSci
 
     def initialize
       @vtx = {}  # keyed by vertex, used like a Set
-      @edge = {} # keyed by the *from* vertex
+      @edge = {} # keyed by the *src* vertex
     end
 
     # add a new edge to @edge, adding vertices to @vtx as needed
-    def edge(from_value, to_value, value, **kwargs)
+    def edge(src_value, dest_value, value, **kwargs)
       # create vertices as needed; used like a Set
-      @vtx[from_value] ||= true
-      @vtx[to_value] ||= true
-      self.add_edge! Edge.new(from_value, to_value, value, **kwargs)
+      @vtx[src_value] ||= true
+      @vtx[dest_value] ||= true
+      self.add_edge! Edge.new(src_value, dest_value, value, **kwargs)
     end
 
-    # @edge[from][to] => Edge
+    # @edge[src][dest] => Edge
     def add_edge! e
-      @edge[e.from] ||= {}
-      @edge[e.from][e.to] = e
+      @edge[e.src] ||= {}
+      @edge[e.src][e.dest] = e
     end
 
     # iterate edges like: graph.each_edge { |e| puts e }
-    def each_edge(from: nil, to: nil, value: nil)
-      # filter on *from*
-      if from
-        return self unless @edge.key? from
-        hsh = @edge[from]
+    def each_edge(src: nil, dest: nil, value: nil)
+      # filter on *src*
+      if src
+        return self unless @edge.key? src
+        hsh = @edge[src]
         if hsh.nil? or hsh.empty? or !hsh.is_a? Hash
           raise(UnexpectedError, hsh.inspect)
         end
 
-        # filter on *to*
-        if to
-          return self unless hsh.key? to
-          edge = hsh[to]
+        # filter on *dest*
+        if dest
+          return self unless hsh.key? dest
+          edge = hsh[dest]
           if edge.nil? or !edge.is_a? Edge
             raise(UnexpectedError, edge.inspect)
           end
@@ -73,7 +73,7 @@ module CompSci
       else
         @edge.values.each { |hsh|
           hsh.each_value { |e|
-            next if to and e.to != to
+            next if dest and e.dest != dest
             next if value and e.value != value
             yield e
           }
@@ -82,18 +82,18 @@ module CompSci
       self
     end
 
-    # return the (to) vertex for an edge matching (from, value)
-    def follow(from, value)
-      hsh = @edge[from] or return false
-      dests = hsh.values.select { |e| e.value == value }.map(&:to)
+    # return the (dest) vertex for an edge matching (src, value)
+    def follow(src, value)
+      hsh = @edge[src] or return false
+      dests = hsh.values.select { |e| e.value == value }.map(&:dest)
       return false if dests.empty?
       dests.sample
     end
 
     # return a flat list of edges
-    def edges(from: nil, to: nil, value: nil)
+    def edges(src: nil, dest: nil, value: nil)
       ary = []
-      self.each_edge(from: from, to: to, value: value) { |e| ary << e }
+      self.each_edge(src: src, dest: dest, value: value) { |e| ary << e }
       ary
     end
 
@@ -186,30 +186,30 @@ module CompSci
   # allow multiple edges between any two vertices
   # store edges with Array rather than Hash
   class MultiGraph < Graph
-    # @edge[from] => [Edge, Edge, ...]
+    # @edge[src] => [Edge, Edge, ...]
     def add_edge! e
-      @edge[e.from] ||= []
-      @edge[e.from] << e
+      @edge[e.src] ||= []
+      @edge[e.src] << e
       e
     end
 
-    def each_edge(from: nil, to: nil, value: nil)
-      if from
-        return self unless @edge.key? from
-        ary = @edge[from]
+    def each_edge(src: nil, dest: nil, value: nil)
+      if src
+        return self unless @edge.key? src
+        ary = @edge[src]
         if ary.nil? or ary.empty? or !ary.is_a? Array
           raise(UnexpectedError, ary.inspect)
         end
 
         ary.each { |e|
-          next if to and e.to != to
+          next if dest and e.dest != dest
           next if value and e.value != value
           yield e
         }
       else
         @edge.values.each { |ary|
           ary.each { |e|
-            next if to and e.to != to
+            next if dest and e.dest != dest
             next if value and e.value != value
             yield e
           }
@@ -233,14 +233,14 @@ module CompSci
       self
     end
 
-    # @edge[from][to] => Edge; may raise CycleError, especially with @check_add
+    # @edge[src][dest] => Edge; may raise CycleError, especially with @check_add
     def add_edge! e
-      raise(CycleError, e) if e.from == e.to
-      @edge[e.from] ||= {}
-      @edge[e.from][e.to] = e
+      raise(CycleError, e) if e.src == e.dest
+      @edge[e.src] ||= {}
+      @edge[e.src][e.dest] = e
       if @check_add  # does the new edge create a cycle?
         self.reset_search!
-        self.dfs e.from # may raise CycleError
+        self.dfs e.src # may raise CycleError
       end
       e
     end
@@ -260,10 +260,10 @@ module CompSci
 
       # search every neighbor (but don't search back to v)
       self.edges.each { |e|
-        if e.to == v and e.from != skip
-          self.dfs(e.from, skip = v)
-        elsif e.from == v and e.to != skip
-          self.dfs(e.to, skip = v)
+        if e.dest == v and e.src != skip
+          self.dfs(e.src, skip = v)
+        elsif e.src == v and e.dest != skip
+          self.dfs(e.dest, skip = v)
         end
       }
       @finished[v] = true
@@ -274,7 +274,7 @@ module CompSci
     # roots have nothing pointing *to* them
     def roots
       invalid = Set.new
-      @edge.each_value { |hsh| invalid.merge(hsh.values.map(&:to)) }
+      @edge.each_value { |hsh| invalid.merge(hsh.values.map(&:dest)) }
       @vtx.keys - invalid.to_a
     end
 
@@ -293,8 +293,8 @@ module CompSci
       raise CycleError if @visited[v]
       @visited[v] = true
 
-      # search via from -> to
-      @edge[v]&.each_value { |e| self.dfs(e.to) }
+      # search via src -> dest
+      @edge[v]&.each_value { |e| self.dfs(e.dest) }
       @finished[v] = true
     end
   end

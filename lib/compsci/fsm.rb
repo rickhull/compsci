@@ -4,8 +4,8 @@ module CompSci
   class FiniteStateMachine # deterministic
     class DeterministicError < RuntimeError; end
 
-    def self.nondeterministic!(from, chr)
-      raise(DeterministicError, "multiple edges for #{chr} from #{from}")
+    def self.nondeterministic!(src, chr)
+      raise(DeterministicError, "multiple edges for #{chr} from #{src}")
     end
 
     attr_reader :graph, :initial
@@ -14,19 +14,19 @@ module CompSci
       @graph = Graph.new
     end
 
-    def transition(from, to, value)
-      @initial ||= from
-      @graph.edge(from, to, value)
+    def transition(src, dest, value)
+      @initial ||= src
+      @graph.edge(src, dest, value)
     end
 
     # we can't use Graph#follow because it allows nondeterminism
-    def follow(from, value)
-      transitions = @graph.edges(from: from, value: value)
+    def follow(src, value)
+      transitions = @graph.edges(src: src, value: value)
       case transitions.count
       when 0 then false
-      when 1 then transitions.first.to
+      when 1 then transitions.first.dest
       else
-        self.class.deterministic!(from, value)
+        self.class.deterministic!(src, value)
       end
     end
 
@@ -65,7 +65,7 @@ module CompSci
         input = edge.value.to_s.ljust(input_width, ' ')
         ary = [input]
         ary += @graph.vtxs.map { |vtx|
-          (edge.from == vtx ? edge.to.to_s : '').ljust(state_width, ' ')
+          (edge.src == vtx ? edge.dest.to_s : '').ljust(state_width, ' ')
         }
         ary.join("\t")
       }
@@ -106,8 +106,8 @@ module CompSci
       @graph = MultiGraph.new
     end
 
-    def follow(from, value)
-      @graph.follow(from, value)
+    def follow(src, value)
+      @graph.follow(src, value)
     end
   end
 
@@ -119,8 +119,8 @@ module CompSci
   class DAFSAcceptor
     class DeterministicError < RuntimeError; end
 
-    def self.nondeterministic!(from, chr)
-      raise(DeterministicError, "multiple edges for #{chr} from #{from}")
+    def self.nondeterministic!(src, chr)
+      raise(DeterministicError, "multiple edges for #{chr} from #{src}")
     end
 
     attr_reader :graph, :id, :initial, :final
@@ -133,27 +133,27 @@ module CompSci
     end
 
     # add a transition, auto-incrementing @id
-    def transition(from, value)
+    def transition(src, value)
       @id += 1
-      @graph.edge(from, @id, value)
+      @graph.edge(src, @id, value)
     end
 
     # add final transition, intializing or reusing @final
-    def transition_final(from, value)
+    def transition_final(src, value)
       if @final.nil?
         @id += 1
         @final = @id
       end
-      @graph.edge(from, @final, value)
+      @graph.edge(src, @final, value)
     end
 
-    def follow(from, value)
-      transitions = @graph.edges(from: from, value: value)
+    def follow(src, value)
+      transitions = @graph.edges(src: src, value: value)
       case transitions.count
       when 0 then false
-      when 1 then transitions.first.to
+      when 1 then transitions.first.dest
       else
-        self.class.deterministic!(from, value)
+        self.class.deterministic!(src, value)
       end
     end
 

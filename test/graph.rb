@@ -10,9 +10,9 @@ describe Edge do
     @e = Edge.new(@v0, @v1)
   end
 
-  it "has from-vertex, to-vertex, and value, possibly nil" do
-    expect(@e.from).must_equal @v0
-    expect(@e.to).must_equal @v1
+  it "has src-vertex, dest-vertex, and value, possibly nil" do
+    expect(@e.src).must_equal @v0
+    expect(@e.dest).must_equal @v1
     expect(@e.value).must_be_nil
 
     e = Edge.new(@v0, @v1, :hello_world)
@@ -65,9 +65,9 @@ describe Graph do
     expect(edges).must_be_kind_of Array
     expect(edges.count).must_equal 2
 
-    # edges(from)
-    from_0 = @graph.edges(from: 0)
-    expect(@graph.edges(from: 3)).must_be_empty
+    # edges(src)
+    from_0 = @graph.edges(src: 0)
+    expect(@graph.edges(src: 3)).must_be_empty
     expect(from_0).must_be_kind_of Array
     expect(from_0.count).must_equal 1
   end
@@ -98,15 +98,15 @@ describe Graph do
 
     # 2 edges from 0
     count = 0
-    graph.each_edge(from: 0) { |e|
-      expect(e.from).must_equal 0
+    graph.each_edge(src: 0) { |e|
+      expect(e.src).must_equal 0
       count += 1
     }
     expect(count).must_equal 2
 
     # 0 edges from 27
     count = 0
-    graph.each_edge(from: 27) { |e|
+    graph.each_edge(src: 27) { |e|
       expect(true).must_equal false
       count += 1
     }
@@ -114,15 +114,15 @@ describe Graph do
 
     # 2 edges to 3
     count = 0
-    graph.each_edge(to: 3) { |e|
-      expect(e.to).must_equal 3
+    graph.each_edge(dest: 3) { |e|
+      expect(e.dest).must_equal 3
       count += 1
     }
     expect(count).must_equal 2
 
     # 0 edges from 0 to 3
     count = 0
-    graph.each_edge(from: 0, to: 3) { |e|
+    graph.each_edge(src: 0, dest: 3) { |e|
       expect(true).must_equal false
       count += 1
     }
@@ -175,9 +175,9 @@ describe MultiGraph do
     expect(@graph.edges).must_be_kind_of Array
     expect(@graph.edges.count).must_equal 2
 
-    # edges(from)
-    from_0 = @graph.edges(from: 0)
-    expect(@graph.edges(from: :does_not_exist)).must_be_empty
+    # edges(src)
+    from_0 = @graph.edges(src: 0)
+    expect(@graph.edges(src: :does_not_exist)).must_be_empty
     expect(from_0).must_be_kind_of Array
     expect(from_0.count).must_equal 1
   end
@@ -195,15 +195,15 @@ describe MultiGraph do
 
     # 2 edges from 0
     count = 0
-    graph.each_edge(from: 0) { |e|
-      expect(e.from).must_equal 0
+    graph.each_edge(src: 0) { |e|
+      expect(e.src).must_equal 0
       count += 1
     }
     expect(count).must_equal 2
 
     # 0 edges from 27
     count = 0
-    graph.each_edge(from: 27) { |e|
+    graph.each_edge(src: 27) { |e|
       expect(true).must_equal false
       count += 1
     }
@@ -211,15 +211,15 @@ describe MultiGraph do
 
     # 2 edges to 3
     count = 0
-    graph.each_edge(to: 3) { |e|
-      expect(e.to).must_equal 3
+    graph.each_edge(dest: 3) { |e|
+      expect(e.dest).must_equal 3
       count += 1
     }
     expect(count).must_equal 2
 
     # 0 edges from 0 to 3
     count = 0
-    graph.each_edge(from: 0, to: 3) { |e|
+    graph.each_edge(src: 0, dest: 3) { |e|
       expect(true).must_equal false
       count += 1
     }
