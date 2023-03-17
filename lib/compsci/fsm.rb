@@ -19,13 +19,12 @@ module CompSci
       @graph.edge(from, to, value)
     end
 
+    # we can't use Graph#follow because it allows nondeterminism
     def follow(from, value)
       transitions = @graph.edges(from: from, value: value)
       case transitions.count
-      when 0
-        false
-      when 1
-        transitions.first.to
+      when 0 then false
+      when 1 then transitions.first.to
       else
         self.class.deterministic!(from, value)
       end
@@ -108,15 +107,7 @@ module CompSci
     end
 
     def follow(from, value)
-      transitions = @graph.edges(from: from, value: value)
-      case transitions.count
-      when 0
-        false
-      when 1
-        transitions.first.to
-      else
-        transitions.sample.to
-      end
+      @graph.follow(from, value)
     end
   end
 
@@ -159,10 +150,8 @@ module CompSci
     def follow(from, value)
       transitions = @graph.edges(from: from, value: value)
       case transitions.count
-      when 0
-        false
-      when 1
-        transitions.first.to
+      when 0 then false
+      when 1 then transitions.first.to
       else
         self.class.deterministic!(from, value)
       end
