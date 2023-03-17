@@ -4,6 +4,10 @@ module CompSci
   class FiniteStateMachine # deterministic
     class DeterministicError < RuntimeError; end
 
+    def self.nondeterministic!(from, chr)
+      raise(DeterministicError, "multiple edges for #{chr} from #{from}")
+    end
+
     attr_reader :graph, :initial
 
     def initialize
@@ -15,19 +19,23 @@ module CompSci
       @graph.edge(from, to, value)
     end
 
+    def follow(from, value)
+      transitions = @graph.edges(from: from, value: value)
+      case transitions.count
+      when 0
+        false
+      when 1
+        transitions.first.to
+      else
+        self.class.deterministic!(from, value)
+      end
+    end
+
     def walk(*inputs)
       cursor = @initial
       inputs.each { |input|
-        transitions = @graph.edges(from: cursor, value: input)
-        case transitions.count
-        when 0 # oops
-          return false
-        when 1 # great!
-          t = transitions[0]
-          cursor = t.to
-        else   # ND: ok, D: raise
-          raise DeterministicError
-        end
+        cursor = self.follow(cursor, input)
+        return false unless cursor
       }
       cursor
     end
@@ -99,22 +107,16 @@ module CompSci
       @graph = MultiGraph.new
     end
 
-    def walk(*inputs)
-      cursor = @initial
-      inputs.each { |input|
-        transitions = @graph.edges(from: cursor, value: input)
-        case transitions.count
-        when 0 # oops
-          return false
-        when 1 # great!
-          t = transitions[0]
-          cursor = t.to
-        else
-          t = transitions.sample
-          cursor = t.to
-        end
-      }
-      cursor
+    def follow(from, value)
+      transitions = @graph.edges(from: from, value: value)
+      case transitions.count
+      when 0
+        false
+      when 1
+        transitions.first.to
+      else
+        transitions.sample.to
+      end
     end
   end
 
@@ -154,6 +156,18 @@ module CompSci
       @graph.edge(from, @final, value)
     end
 
+    def follow(from, value)
+      transitions = @graph.edges(from: from, value: value)
+      case transitions.count
+      when 0
+        false
+      when 1
+        transitions.first.to
+      else
+        self.class.deterministic!(from, value)
+      end
+    end
+
     # initial, final, graph
     def to_s
       [[@initial, @final].inspect, @graph].join(NEWLINE)
@@ -163,19 +177,16 @@ module CompSci
     def encode(str)
       cursor = @initial
       str.each_char.with_index { |chr, i|
-        existing = @graph.edges(from: cursor, value: chr)
-        case existing.count
-        when 0 # create transition
+        existing = self.follow(cursor, chr)
+        if existing
+          cursor = existing
+        else
           if i < str.length - 1  # intermediate transition
             self.transition(cursor, chr)
             cursor = @id
           else # transition to @final
             self.transition_final(cursor, chr)
           end
-        when 1 # use existing transition
-          cursor = existing[0].to
-        else
-          self.nondeterministic!(cursor, chr)
         end
       }
       @final ||= cursor
@@ -187,16 +198,9 @@ module CompSci
       raise("no final state") if @final.nil?
       cursor = @initial
       str.each_char { |chr|
-        transitions = @graph.edges(from: cursor, value: chr)
-        return false if transitions.empty?
-        case transitions.count
-        when 0
-          return false
-        when 1 # ok so far
-          cursor = transitions[0].to
-        else
-          self.nondeterministic!(cursor, chr)
-        end
+        transition = self.follow(cursor, chr)
+        return false unless transition
+        cursor = transition
       }
       cursor == @final
     end
