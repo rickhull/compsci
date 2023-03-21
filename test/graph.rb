@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require 'compsci/graph'
+require 'compsci/graph/patterns'
 
 include CompSci
 
@@ -10,7 +10,7 @@ describe Edge do
     @e = Edge.new(@v0, @v1)
   end
 
-  it "has src-vertex, dest-vertex, and value, possibly nil" do
+  it "has src vertex, dest vertex, and value, possibly nil" do
     expect(@e.src).must_equal @v0
     expect(@e.dest).must_equal @v1
     expect(@e.value).must_be_nil
