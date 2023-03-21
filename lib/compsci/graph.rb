@@ -61,7 +61,6 @@ module CompSci
         if hsh.nil? or hsh.empty? or !hsh.is_a? Hash
           raise(UnexpectedError, hsh.inspect)
         end
-
         # filter on *dest*
         if dest
           return self unless hsh.key? dest
@@ -72,12 +71,14 @@ module CompSci
           # filter on *value*
           return self if value and edge.value != value
           yield edge
+        # filter on *value* (with *src*)
         else
           hsh.each_value { |e|
             next if value and e.value != value
             yield e
           }
         end
+      # filter on *dest* and *value*
       else
         @edge.values.each { |hsh|
           hsh.each_value { |e|
