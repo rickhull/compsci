@@ -1,8 +1,8 @@
-require 'set'
+require 'set'     # used by DAG to determine root vertices for DFS
 require 'compsci'
 
 module CompSci
-  # represents an edge between two vertices, *from* and *to*
+  # represents an edge between two vertices, *src* and *dest*
   # the vertices can be any Ruby object, probably string / symbol / int
   class Edge
     attr_reader :src, :dest, :value, :meta
@@ -11,11 +11,11 @@ module CompSci
       @src = src
       @dest = dest
       @value = value
-      @meta = meta
+      @meta = meta   # not currently used; but it could be
     end
 
     def to_s
-      [@src, "-#{@value}->", @dest].join(" ")
+      [@src, "--#{@value}-->", @dest].join(" ")
     end
   end
 
@@ -35,16 +35,24 @@ module CompSci
       # create vertices as needed; used like a Set
       @vtx[src_value] ||= true
       @vtx[dest_value] ||= true
-      self.add_edge! Edge.new(src_value, dest_value, value, **kwargs)
+      self.add_edge Edge.new(src_value, dest_value, value, **kwargs)
     end
 
-    # @edge[src][dest] => Edge
-    def add_edge! e
+    # @edge[src][dest] => Edge; MultiGraph uses a different array impl
+    def add_edge e
       @edge[e.src] ||= {}
       @edge[e.src][e.dest] = e
     end
 
-    # iterate edges like: graph.each_edge { |e| puts e }
+    # return the (dest) vertex for an edge matching (src, value)
+    def follow(src, value)
+      hsh = @edge[src] or return false
+      dests = hsh.values.select { |e| e.value == value }.map(&:dest)
+      return false if dests.empty?
+      dests.sample
+    end
+
+    # iterate edges like: graph.each_edge(**filters) { |e| puts e }
     def each_edge(src: nil, dest: nil, value: nil)
       # filter on *src*
       if src
@@ -82,14 +90,6 @@ module CompSci
       self
     end
 
-    # return the (dest) vertex for an edge matching (src, value)
-    def follow(src, value)
-      hsh = @edge[src] or return false
-      dests = hsh.values.select { |e| e.value == value }.map(&:dest)
-      return false if dests.empty?
-      dests.sample
-    end
-
     # return a flat list of edges
     def edges(src: nil, dest: nil, value: nil)
       ary = []
@@ -106,88 +106,13 @@ module CompSci
     def vtxs
       @vtx.keys
     end
-
-    #
-    # Pre-made patterns
-    #
-
-    def self.loop1
-      graph = self.new
-      graph.edge 0, 0, :loop
-      graph
-    end
-
-    def self.loop2
-      graph = self.new
-      graph.edge 0, 1, :out
-      graph.edge 1, 0, :back
-      graph
-    end
-
-    def self.loop3
-      graph = self.new
-      graph.edge 0, 1, :a
-      graph.edge 1, 2, :b
-      graph.edge 2, 0, :c
-      graph
-    end
-
-    def self.multigraph
-      # multigraph, multiple edges between 0 and 1
-      #
-      #   __a__                 Graph: overwrite a with b
-      #  /     \           MultiGraph: allow
-      # 0       1        AcyclicGraph: overwrite a with b
-      #  \__b__/                  DAG: overwrite a with b
-      #                           FSM: allow
-      graph = self.new
-      graph.edge 0, 1, :a
-      graph.edge 0, 1, :b
-      graph
-    end
-
-    def self.diamond
-      # diamond pattern, starts at 0, ends at 3
-      #     1
-      #    / \                  Graph: allow
-      #  a/   \c           MultiGraph: allow
-      #  /     \         AcyclicGraph: raise CycleError
-      # 0       3                 DAG: allow
-      #  \     /                  FSM: allow
-      #  b\   /d
-      #    \ /
-      #     2
-      graph = self.new
-      graph.edge 0, 1, :a
-      graph.edge 0, 2, :b
-      graph.edge 1, 3, :c
-      graph.edge 2, 3, :d
-      graph
-    end
-
-    def self.fork
-      # fork pattern, 3 nodes, two edges with the same value
-      #     1
-      #    /                    Graph: allow
-      #  a/                Multigraph: allow
-      #  /               AcyclicGraph: allow
-      # 0                         DAG: allow
-      #  \          Deterministic FSM: reject 2nd edge
-      #  a\      NonDeterministic FSM: allow
-      #    \
-      #     2
-      graph = self.new
-      graph.edge 0, 1, :a
-      graph.edge 0, 2, :a
-      graph
-    end
   end
 
   # allow multiple edges between any two vertices
   # store edges with Array rather than Hash
   class MultiGraph < Graph
     # @edge[src] => [Edge, Edge, ...]
-    def add_edge! e
+    def add_edge e
       @edge[e.src] ||= []
       @edge[e.src] << e
       e
@@ -233,8 +158,9 @@ module CompSci
       self
     end
 
-    # @edge[src][dest] => Edge; may raise CycleError, especially with @check_add
-    def add_edge! e
+    # @edge[src][dest] => Edge, like Graph
+    # may raise CycleError, especially with @check_add
+    def add_edge e
       raise(CycleError, e) if e.src == e.dest
       @edge[e.src] ||= {}
       @edge[e.src][e.dest] = e
@@ -300,4 +226,85 @@ module CompSci
   end
 
   DAG = DirectedAcyclicGraph
+
+  #
+  # Pre-made patterns
+  # Note: these are available for Graph and all its subclasses (self.new)
+  #
+
+  class Graph
+    # single vertex; allowed by anything not Acyclic
+    def self.loop1
+      graph = self.new
+      graph.edge 0, 0, :loop
+      graph
+    end
+
+    # two vertices; allowed by anything not Acyclic
+    def self.loop2
+      graph = self.new
+      graph.edge 0, 1, :out
+      graph.edge 1, 0, :back
+      graph
+    end
+
+    # three vertices; allowed by anything not Acyclic
+    def self.loop3
+      graph = self.new
+      graph.edge 0, 1, :a
+      graph.edge 1, 2, :b
+      graph.edge 2, 0, :c
+      graph
+    end
+
+    def self.multigraph
+      # multigraph, multiple (possibly directed) edges between 0 and 1
+      #
+      #   __a__                 Graph: overwrite a with b
+      #  /     \           MultiGraph: allow
+      # 0       1        AcyclicGraph: overwrite a with b
+      #  \__b__/                  DAG: overwrite a with b
+      #                           FSM: allow
+      graph = self.new
+      graph.edge 0, 1, :a
+      graph.edge 0, 1, :b
+      graph
+    end
+
+    def self.diamond
+      # diamond pattern, starts at 0, ends at 3
+      #     1
+      #    / \                  Graph: allow
+      #  a/   \c           MultiGraph: allow
+      #  /     \         AcyclicGraph: raise CycleError
+      # 0       3                 DAG: allow
+      #  \     /                  FSM: allow
+      #  b\   /d
+      #    \ /
+      #     2
+      graph = self.new
+      graph.edge 0, 1, :a
+      graph.edge 0, 2, :b
+      graph.edge 1, 3, :c
+      graph.edge 2, 3, :d
+      graph
+    end
+
+    def self.fork
+      # fork pattern, 3 nodes, two edges with the same value
+      #     1
+      #    /                    Graph: allow
+      #  a/                Multigraph: allow
+      #  /               AcyclicGraph: allow
+      # 0                         DAG: allow
+      #  \          Deterministic FSM: reject 2nd edge
+      #  a\      NonDeterministic FSM: allow
+      #    \
+      #     2
+      graph = self.new
+      graph.edge 0, 1, :a
+      graph.edge 0, 2, :a
+      graph
+    end
+  end
 end
