@@ -37,7 +37,7 @@ describe Graph do
   end
 
   it "rejects loop2" do
-    expect { Graph.loop2 }.must_raise Graph::MultiGraphError
+    expect { Graph.loop2 }.must_raise MultiGraphError
   end
 
   it "accepts a diamond pattern" do
@@ -48,7 +48,7 @@ describe Graph do
   end
 
   it "doesn't allow a multigraph" do
-    expect { Graph.multigraph }.must_raise Graph::MultiGraphError
+    expect { Graph.multigraph }.must_raise MultiGraphError
   end
 
   it "allows a fork pattern" do
@@ -254,9 +254,9 @@ describe AcyclicGraph do
   end
 
   it "rejects loop1, loop2, loop3" do
-    expect { AcyclicGraph.loop1 }.must_raise Graph::CycleError
-    expect { AcyclicGraph.loop2 }.must_raise Graph::MultiGraphError
-    expect { AcyclicGraph.loop3.check_cycle! }.must_raise Graph::CycleError
+    expect { AcyclicGraph.loop1 }.must_raise CycleError
+    expect { AcyclicGraph.loop2 }.must_raise MultiGraphError
+    expect { AcyclicGraph.loop3.check_cycle! }.must_raise CycleError
   end
 
   it "rejects a diamond pattern" do
@@ -264,11 +264,11 @@ describe AcyclicGraph do
     expect(ag).must_be_kind_of AcyclicGraph
     expect(ag.vtxs.count).must_equal 4
     expect(ag.edges.count).must_equal 4
-    expect { ag.check_cycle! }.must_raise Graph::CycleError
+    expect { ag.check_cycle! }.must_raise CycleError
   end
 
   it "doesn't allow a multigraph" do
-    expect { AcyclicGraph.multigraph }.must_raise Graph::MultiGraphError
+    expect { AcyclicGraph.multigraph }.must_raise MultiGraphError
   end
 
   it "allows a fork pattern" do
@@ -288,7 +288,7 @@ describe AcyclicGraph do
     @graph.edge(1, 3, :c)
 
     # edge d creates a loop (undirected edges)
-    expect { @graph.edge(2, 3, :d) }.must_raise Graph::CycleError
+    expect { @graph.edge(2, 3, :d) }.must_raise CycleError
   end
 
   it "has a multiline string representation" do
@@ -313,14 +313,14 @@ describe DAG do
   end
 
   it "rejects loop1, loop2, loop3" do
-    expect { DAG.loop1 }.must_raise Graph::CycleError
-    expect { DAG.loop2 }.must_raise Graph::MultiGraphError
-    expect { DAG.loop3.check_cycle! }.must_raise Graph::CycleError
+    expect { DAG.loop1 }.must_raise CycleError
+    expect { DAG.loop2 }.must_raise MultiGraphError
+    expect { DAG.loop3.check_cycle! }.must_raise CycleError
   end
 
   it "rejects a self-looping edge" do
     expect(@dag).must_be_kind_of DAG
-    expect { @dag.edge(0, 0, "loop") }.must_raise Graph::CycleError
+    expect { @dag.edge(0, 0, "loop") }.must_raise CycleError
   end
 
   it "allows a diamond pattern" do
@@ -332,7 +332,7 @@ describe DAG do
   end
 
   it "doesn't allow a multigraph" do
-    expect { DAG.multigraph }.must_raise Graph::MultiGraphError
+    expect { DAG.multigraph }.must_raise MultiGraphError
   end
 
   it "allows a fork pattern" do
@@ -351,7 +351,7 @@ describe DAG do
     @dag.edge(2, 3, :c)
     @dag.edge(3, 0, :d)
 
-    expect { @dag.check_cycle! }.must_raise Graph::CycleError
+    expect { @dag.check_cycle! }.must_raise CycleError
   end
 
   it "has a multiline string representation" do

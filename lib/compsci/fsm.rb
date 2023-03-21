@@ -1,77 +1,7 @@
 require 'compsci/graph'
 
 module CompSci
-  class FiniteStateMachine # deterministic
-    class DeterministicError < RuntimeError; end
-
-    def self.nondeterministic!(src, chr)
-      raise(DeterministicError, "multiple edges for #{chr} from #{src}")
-    end
-
-    attr_reader :graph, :initial
-
-    def initialize
-      @graph = MultiGraph.new
-    end
-
-    def transition(src, dest, value)
-      @initial ||= src
-      @graph.edge(src, dest, value)
-    end
-
-    # we can't use Graph#follow because it allows nondeterminism
-    def follow(src, value)
-      transitions = @graph.edges(src: src, value: value)
-      case transitions.count
-      when 0 then false
-      when 1 then transitions.first.dest
-      else
-        self.class.deterministic!(src, value)
-      end
-    end
-
-    def walk(*inputs)
-      cursor = @initial
-      inputs.each { |input|
-        cursor = self.follow(cursor, input)
-        return false unless cursor
-      }
-      cursor
-    end
-
-    # state-transition table; @graph.to_s is usually nicer
-    def to_s
-      state_width = 0
-      @graph.vtxs.each { |v|
-        str = v.to_s
-        state_width = str.length if str.length > state_width
-      }
-
-      input_width = 0
-      @graph.each_edge { |e|
-        str = e.value.to_s
-        input_width = str.length if str.length > input_width
-      }
-
-      rows = []
-      # header first
-      rows << "STATE".ljust(input_width, ' ') + "\t" + @graph.vtxs.map { |v|
-        v.to_s.ljust(state_width, ' ')
-      }.join("\t")
-      rows << "INPUT".ljust(input_width, ' ') + "\t" + @graph.vtxs.map {
-        '-' * state_width
-      }.join("\t")
-      rows += @graph.edges.map { |edge|
-        input = edge.value.to_s.ljust(input_width, ' ')
-        ary = [input]
-        ary += @graph.vtxs.map { |vtx|
-          (edge.src == vtx ? edge.dest.to_s : '').ljust(state_width, ' ')
-        }
-        ary.join("\t")
-      }
-      rows.join("\n")
-    end
-
+  class FiniteStateMachine
     #
     # Pre-made FSMs
     #
@@ -97,21 +27,57 @@ module CompSci
       fsm.transition(:unlocked, :locked, 'Push')
       fsm
     end
-  end
 
-  FSM = FiniteStateMachine
+    attr_reader :graph, :initial
 
-  class NonDeterministicFiniteStateMachine < FiniteStateMachine
     def initialize
       @graph = MultiGraph.new
+      @initial = nil
+    end
+
+    def transition(src, dest, value)
+      @initial ||= src
+      @graph.edge(src, dest, value)
+    end
+
+    def walk(*inputs)
+      cursor = @initial
+      inputs.each { |input|
+        cursor = self.follow(cursor, input)
+        return false unless cursor
+      }
+      cursor
     end
 
     def follow(src, value)
       @graph.follow(src, value)
     end
-  end
 
-  NDFSM = NonDeterministicFiniteStateMachine
+    def to_s
+      @graph.to_s
+    end
+  end
+  FSM  = FiniteStateMachine
+
+  class DeterministicFiniteStateMachine < FiniteStateMachine
+    class DeterministicError < RuntimeError; end
+
+    def self.nondeterministic!(src, chr)
+      raise(DeterministicError, "multiple edges for #{chr} from #{src}")
+    end
+
+    # we can't use Graph#follow because it allows nondeterminism
+    def follow(src, value)
+      transitions = @graph.edges(src: src, value: value)
+      case transitions.count
+      when 0 then false
+      when 1 then transitions.first.dest
+      else
+        self.class.deterministic!(src, value)
+      end
+    end
+  end
+  DFSM = DeterministicFiniteStateMachine
 
   # Deterministic Acyclic Finite State Acceptor
   # Has a single initial state and a single final state

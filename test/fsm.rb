@@ -4,9 +4,27 @@ require 'compsci/fsm'
 include CompSci
 
 describe FiniteStateMachine do
+  before do
+    @fsm = FSM.new
+  end
+
+  it "has a multigraph" do
+    expect(@fsm.graph).must_be_kind_of MultiGraph
+  end
+
+  it "can have transitions to different states with the same input" do
+    @fsm.transition('Locked', 'Unlocked', 'Coin')
+    @fsm.transition('Locked', 'Unlatched', 'Key')
+    expect(@fsm).must_be_kind_of FSM
+  end
+end
+
+
+
+describe DeterministicFiniteStateMachine do
   describe "Deterministic FSM" do
     before do
-      @fsm = FSM.new
+      @fsm = DFSM.new
     end
 
     it "has a multigraph" do
@@ -18,23 +36,7 @@ describe FiniteStateMachine do
       @fsm.transition('Locked', 'Unlocked', 'Coin')
       @fsm.transition('Unlocked', 'Unlocked', 'Coin')
       @fsm.transition('Unlocked', 'Locked', 'Push')
-      expect(@fsm).must_be_kind_of FSM
-    end
-  end
-
-  describe "NonDeterministic FSM" do
-    before do
-      @fsm = NDFSM.new
-    end
-
-    it "has a multigraph" do
-      expect(@fsm.graph).must_be_kind_of MultiGraph
-    end
-
-    it "can have transitions to different states with the same input" do
-      @fsm.transition('Locked', 'Unlocked', 'Coin')
-      @fsm.transition('Locked', 'Unlatched', 'Key')
-      expect(@fsm).must_be_kind_of FSM
+      expect(@fsm).must_be_kind_of DFSM
     end
   end
 end
