@@ -9,9 +9,8 @@ describe FiniteStateMachine do
       @fsm = FSM.new
     end
 
-    it "has a graph, not a multigraph" do
-      expect(@fsm.graph).must_be_kind_of Graph
-      expect(@fsm.graph).wont_be_kind_of MultiGraph
+    it "has a multigraph" do
+      expect(@fsm.graph).must_be_kind_of MultiGraph
     end
 
     it "has states and transitions between the states" do

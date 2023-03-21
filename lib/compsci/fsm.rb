@@ -11,7 +11,7 @@ module CompSci
     attr_reader :graph, :initial
 
     def initialize
-      @graph = Graph.new
+      @graph = MultiGraph.new
     end
 
     def transition(src, dest, value)

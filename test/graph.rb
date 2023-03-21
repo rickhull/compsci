@@ -31,9 +31,13 @@ describe Graph do
     @graph = Graph.new
   end
 
-  it "accepts a self-looping edge" do
-    @graph.edge(0, 0, "loop") # wont_raise
-    expect(@graph).must_be_kind_of Graph
+  it "accepts loop1, loop3" do
+    expect(Graph.loop1).must_be_kind_of Graph
+    expect(Graph.loop3).must_be_kind_of Graph
+  end
+
+  it "rejects loop2" do
+    expect { Graph.loop2 }.must_raise Graph::MultiGraphError
   end
 
   it "accepts a diamond pattern" do
@@ -44,11 +48,7 @@ describe Graph do
   end
 
   it "doesn't allow a multigraph" do
-    graph = Graph.multigraph
-    expect(graph).must_be_kind_of Graph
-    expect(graph.vtxs.count).must_equal 2
-    # the second edge has overwritten the first
-    expect(graph.edges.count).must_equal 1
+    expect { Graph.multigraph }.must_raise Graph::MultiGraphError
   end
 
   it "allows a fork pattern" do
@@ -143,9 +143,10 @@ describe MultiGraph do
     @graph = MultiGraph.new
   end
 
-  it "accepts a self-looping edge" do
-    @graph.edge(0, 0, "loop") # wont_raise
-    expect(@graph).must_be_kind_of MultiGraph
+  it "accepts loop1, loop2, loop3" do
+    expect(MultiGraph.loop1).must_be_kind_of MultiGraph
+    expect(MultiGraph.loop2).must_be_kind_of MultiGraph
+    expect(MultiGraph.loop3).must_be_kind_of MultiGraph
   end
 
   it "accepts a diamond pattern" do
@@ -252,9 +253,10 @@ describe AcyclicGraph do
     @graph = AcyclicGraph.new
   end
 
-  it "rejects a self-looping edge" do
-    expect(@graph).must_be_kind_of AcyclicGraph
-    expect { @graph.edge(0, 0, "loop") }.must_raise Graph::CycleError
+  it "rejects loop1, loop2, loop3" do
+    expect { AcyclicGraph.loop1 }.must_raise Graph::CycleError
+    expect { AcyclicGraph.loop2 }.must_raise Graph::MultiGraphError
+    expect { AcyclicGraph.loop3.check_cycle! }.must_raise Graph::CycleError
   end
 
   it "rejects a diamond pattern" do
@@ -266,13 +268,7 @@ describe AcyclicGraph do
   end
 
   it "doesn't allow a multigraph" do
-    ag = AcyclicGraph.multigraph
-    expect(ag).must_be_kind_of AcyclicGraph
-    expect(ag.vtxs.count).must_equal 2
-
-    # the second edge has overwritten the first
-    expect(ag.edges.count).must_equal 1
-    ag.check_cycle! # wont_raise
+    expect { AcyclicGraph.multigraph }.must_raise Graph::MultiGraphError
   end
 
   it "allows a fork pattern" do
@@ -316,6 +312,12 @@ describe DAG do
     @dag = DAG.new
   end
 
+  it "rejects loop1, loop2, loop3" do
+    expect { DAG.loop1 }.must_raise Graph::CycleError
+    expect { DAG.loop2 }.must_raise Graph::MultiGraphError
+    expect { DAG.loop3.check_cycle! }.must_raise Graph::CycleError
+  end
+
   it "rejects a self-looping edge" do
     expect(@dag).must_be_kind_of DAG
     expect { @dag.edge(0, 0, "loop") }.must_raise Graph::CycleError
@@ -330,13 +332,7 @@ describe DAG do
   end
 
   it "doesn't allow a multigraph" do
-    dag = DAG.multigraph
-    expect(dag).must_be_kind_of DAG
-    expect(dag.vtxs.count).must_equal 2
-
-    # the second edge has overwritten the first
-    expect(dag.edges.count).must_equal 1
-    dag.check_cycle! # wont_raise
+    expect { DAG.multigraph }.must_raise Graph::MultiGraphError
   end
 
   it "allows a fork pattern" do

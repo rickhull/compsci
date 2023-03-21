@@ -3,15 +3,15 @@ require 'compsci'
 
 module CompSci
   # represents an edge between two vertices, *src* and *dest*
-  # the vertices can be any Ruby object, probably string / symbol / int
   class Edge
     attr_reader :src, :dest, :value, :meta
 
+    # src, dest, value can be any Ruby object, probably string / symbol / int
     def initialize(src, dest, value = nil, **meta)
       @src = src
       @dest = dest
       @value = value
-      @meta = meta   # not currently used; but it could be
+      @meta = meta   # not currently used; but it may be
     end
 
     def to_s
@@ -22,6 +22,12 @@ module CompSci
   # consists of Vertices connected by Edges
   class Graph
     class CycleError < RuntimeError; end
+    class MultiGraphError < RuntimeError; end
+
+    def self.multigraph!(edge)
+      raise(MultiGraphError, format("%s is the second edge between %s and %s",
+                                    edge, edge.dest, edge.src))
+    end
 
     attr_reader :vtx
 
@@ -31,11 +37,22 @@ module CompSci
     end
 
     # add a new edge to @edge, adding vertices to @vtx as needed
-    def edge(src_value, dest_value, value, **kwargs)
+    def edge(src, dest, value, **kwargs)
+      # check if this would create MultiGraph
+      e = Edge.new(src, dest, value, **kwargs)
+      if !self.is_a? MultiGraph and self.edge_between?(dest, src)
+        self.class.multigraph!(e)
+      end
+
       # create vertices as needed; used like a Set
-      @vtx[src_value] ||= true
-      @vtx[dest_value] ||= true
-      self.add_edge Edge.new(src_value, dest_value, value, **kwargs)
+      @vtx[src] ||= true
+      @vtx[dest] ||= true
+      self.add_edge e
+    end
+
+    # check both directions
+    def edge_between?(src, dest)
+      @edge.dig(src, dest) or @edge.dig(dest, src)
     end
 
     # @edge[src][dest] => Edge; MultiGraph uses a different array impl
@@ -119,6 +136,15 @@ module CompSci
       e
     end
 
+    # check both directions
+    def edge_between?(src, dest)
+      edges = []
+      edges += @edge[src].select { |e| e.dest == dest } if @edge[src]
+      edges += @edge[dest].select { |e| e.dest == src } if @edge[dest]
+      !edges.empty?
+    end
+
+    # iterate edges like: graph.each_edge(**filters) { |e| puts e }
     def each_edge(src: nil, dest: nil, value: nil)
       if src
         return self unless @edge.key? src
@@ -241,7 +267,7 @@ module CompSci
       graph
     end
 
-    # two vertices; allowed by anything not Acyclic
+    # two vertices; creates a MultiGraph; allowed by MultiGraph
     def self.loop2
       graph = self.new
       graph.edge 0, 1, :out
