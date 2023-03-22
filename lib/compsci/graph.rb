@@ -48,7 +48,7 @@ module CompSci
       self.add_edge e
     end
 
-    # check both directions
+    # check both directions; return any edge found
     def edge_between?(src, dest)
       @edge.dig(src, dest) or @edge.dig(dest, src)
     end
@@ -134,12 +134,11 @@ module CompSci
       e
     end
 
-    # check both directions
+    # check both directions; return any edge found
     def edge_between?(src, dest)
-      edges = []
-      edges += @edge[src].select { |e| e.dest == dest } if @edge[src]
-      edges += @edge[dest].select { |e| e.dest == src } if @edge[dest]
-      !edges.empty?
+      @edge[src].each { |e| return e if e.dest == dest } if @edge[src]
+      @edge[dest].each { |e| return e if e.dest == src } if @edge[dest]
+      false
     end
 
     # iterate edges like: graph.each_edge(**filters) { |e| puts e }
