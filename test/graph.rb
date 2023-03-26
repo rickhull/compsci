@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require 'compsci/graph/patterns'
+require 'compsci/graph'
 
 include CompSci
 
@@ -80,7 +80,7 @@ describe Graph do
     # since the edges have references to the vertices, we return multiple
     # lines of text, one for each edge
     str = graph.to_s
-    expect(str).must_include NEWLINE
+    expect(str).must_include $/
     expect(str.lines.count).must_equal edge_count
   end
 
@@ -242,7 +242,7 @@ describe MultiGraph do
     # since the edges have references to the vertices, we return multiple
     # lines of text, one for each edge
     str = multi.to_s
-    expect(str).must_include NEWLINE
+    expect(str).must_include $/
     expect(str.lines.count).must_equal edge_count
   end
 end
@@ -301,7 +301,7 @@ describe AcyclicGraph do
     expect(@graph.edges.count).must_equal edge_count
 
     str = @graph.to_s
-    expect(str).must_include NEWLINE
+    expect(str).must_include $/
     expect(str.lines.count).must_equal edge_count
   end
 end
@@ -359,7 +359,7 @@ describe DAG do
     edge_count = 4
     expect(dag.edges.count).must_equal edge_count
     str = dag.to_s
-    expect(str).must_include NEWLINE
+    expect(str).must_include $/
     expect(str.lines.count).must_equal edge_count
   end
 end
