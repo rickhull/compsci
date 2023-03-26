@@ -8,6 +8,15 @@ module CompSci
     # Pre-made FSMs
     #
 
+    def self.turnstile
+      fsm = self.new
+      fsm.transition(:locked, :locked, 'Push')
+      fsm.transition(:locked, :unlocked, 'Coin')
+      fsm.transition(:unlocked, :unlocked, 'Coin')
+      fsm.transition(:unlocked, :locked, 'Push')
+      fsm
+    end
+
     def self.cauchy
       # https://blog.burntsushi.net/transducers/
       fsm = self.new
@@ -18,15 +27,6 @@ module CompSci
       fsm.transition(:asleep, :playing, :something_moved)
       fsm.transition(:playing, :asleep, :quiet_calm)
       fsm.transition(:litterbox, :asleep, :pooped)
-      fsm
-    end
-
-    def self.turnstile
-      fsm = self.new
-      fsm.transition(:locked, :locked, 'Push')
-      fsm.transition(:locked, :unlocked, 'Coin')
-      fsm.transition(:unlocked, :unlocked, 'Coin')
-      fsm.transition(:unlocked, :locked, 'Push')
       fsm
     end
 
@@ -62,26 +62,34 @@ module CompSci
   FSM  = FiniteStateMachine
 
   class DeterministicFiniteStateMachine < FiniteStateMachine
-    def self.nondeterministic!(src, val)
-      raise(DeterministicError, "multiple edges for #{val} from #{src}")
+    attr_accessor :check_follow, :check_add
+
+    def initialize
+      super()
+      @check_add    = true
+      @check_follow = false
     end
 
     def transition(src, dest, value)
-      if !@graph.edges(src: src, value: value).empty?
-        self.class.nondeterministic!(src, value)
+      if @check_add and !@graph.edges(src: src, value: value).empty?
+        raise(DeterministicError, "multiple edges for #{value} from #{src}")
       end
       @initial ||= src
       @graph.edge(src, dest, value)
     end
 
-    # we can't use Graph#follow because it allows nondeterminism
     def follow(src, value)
-      transitions = @graph.edges(src: src, value: value)
-      case transitions.count
-      when 0 then false
-      when 1 then transitions.first.dest
+      if @check_follow
+        # we can't use Graph#follow because it allows nondeterminism
+        transitions = @graph.edges(src: src, value: value)
+        case transitions.count
+        when 0 then false
+        when 1 then transitions.first.dest
+        else
+          raise(DeterministicError, "multiple edges for #{value} from #{src}")
+        end
       else
-        self.class.nondeterministic!(src, value)
+        @graph.follow(src, value)
       end
     end
   end
@@ -91,21 +99,23 @@ module CompSci
   # Has a single initial state and a single final state
   #
   class DAFSAcceptor
-    def self.nondeterministic!(src, chr)
-      raise(DeterministicError, "multiple edges for #{chr} from #{src}")
-    end
-
     attr_reader :graph, :id, :initial, :final
+    attr_accessor :check_add, :check_follow
 
     def initialize
       @graph = DAG.new  # directed acyclic graph
       @id = 0           # auto-increment when edges are added
       @initial = @id    # track initial state
       @final = nil      # track final state
+      @check_add = true
+      @check_follow = false
     end
 
     # add a transition, auto-incrementing @id
     def transition(src, value)
+      if @check_add and !@graph.edges(src: src, value: value).empty?
+        raise(DeterministicError, "multiple edges for #{value} from #{src}")
+      end
       @id += 1
       @graph.edge(src, @id, value)
     end
@@ -120,12 +130,16 @@ module CompSci
     end
 
     def follow(src, value)
-      transitions = @graph.edges(src: src, value: value)
-      case transitions.count
-      when 0 then false
-      when 1 then transitions.first.dest
+      if @check_follow
+        transitions = @graph.edges(src: src, value: value)
+        case transitions.count
+        when 0 then false
+        when 1 then transitions.first.dest
+        else
+          raise(DeterministicError, "multiple edges for #{value} from #{src}")
+        end
       else
-        self.class.nondeterministic!(src, value)
+        @graph.follow(src, value)
       end
     end
 

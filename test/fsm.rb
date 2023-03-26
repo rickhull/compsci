@@ -26,12 +26,6 @@ describe DeterministicFiniteStateMachine do
     @fsm = DFSM.new
   end
 
-  it "can have multiple transitions between two states" do
-    @fsm.transition(:locked, :unlocked, :key)
-    @fsm.transition(:locked, :unlocked, :master_key)
-    expect(@fsm).must_be_kind_of FSM
-  end
-
   it "has states and transitions between the states" do
     @fsm.transition('Locked', 'Locked', 'Push')
     @fsm.transition('Locked', 'Unlocked', 'Coin')
@@ -40,11 +34,27 @@ describe DeterministicFiniteStateMachine do
     expect(@fsm).must_be_kind_of DFSM
   end
 
+  it "can have multiple transitions between two states" do
+    @fsm.transition(:locked, :unlocked, :key)
+    @fsm.transition(:locked, :unlocked, :master_key)
+    expect(@fsm).must_be_kind_of FSM
+  end
+
   it "rejects nondeterminism" do
+    @fsm.check_add = true
     @fsm.transition(:a, :b, :input)
     expect {
       @fsm.transition(:a, :c, :input)
     }.must_raise DeterministicError
+
+    @fsm.check_add = false
+    @fsm.check_follow = false
+    @fsm.transition(:a, :c, :input)
+    state = @fsm.follow(:a, :input)
+    expect(state).wont_be_nil
+    expect(state).wont_equal :a
+    @fsm.check_follow = true
+    expect { @fsm.follow(:a, :input) }.must_raise DeterministicError
   end
 end
 
