@@ -131,6 +131,14 @@ module CompSci
       false
     end
 
+    # return the (dest) vertex for an edge matching (src, value)
+    def follow(src, value)
+      ary = @edge[src] or return false
+      dests = ary.select { |e| e.value == value }.map(&:dest)
+      return false if dests.empty?
+      dests.sample
+    end
+
     # iterate edges like: graph.each_edge(**filters) { |e| puts e }
     def each_edge(src: nil, dest: nil, value: nil)
       if src
