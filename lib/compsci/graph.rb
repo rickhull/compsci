@@ -25,13 +25,11 @@ module CompSci
     end
 
     # add a new edge to @edge, adding vertices to @vtx as needed
-    def edge(src, dest, value, **kwargs)
+    def edge(src, dest, value)
       # check if this would create MultiGraph
-      e = Edge.new(src, dest, value, **kwargs)
+      e = Edge.new(src, dest, value)
       if !self.is_a? MultiGraph and self.edge_between?(dest, src)
-        raise(MultiGraphError,
-              format("%s is the second edge between %s and %s",
-                     edge, edge.src, edge.dest))
+        raise(MultiGraphError, e.to_s)
       end
 
       # create vertices as needed; used like a Set
@@ -184,10 +182,8 @@ module CompSci
       @edge[e.src] ||= {}
       @edge[e.src][e.dest] = e
       if @check_add  # does the new edge create a cycle?
-        self.reset_search
         begin
           self.check_cycle!
-          # self.dfs e.src # may raise CycleError
         rescue CycleError => error
           @edge[e.src].delete(e.dest)
           raise error
@@ -200,7 +196,7 @@ module CompSci
     def check_cycle!
       self.reset_search
       @vtx.each { |v| self.dfs v }
-      self
+      self.reset_search
     end
 
     # recursive depth first search; may raise CycleError
@@ -236,7 +232,7 @@ module CompSci
       raise(CycleError, "invalid state: no roots") if roots.empty?
       self.reset_search
       roots.each { |v| self.dfs(v) }
-      self
+      self.reset_search
     end
 
     # recursive depth first search, following directed edges
@@ -341,6 +337,58 @@ module CompSci
       graph.edge 6, 7, :trunk
       graph.edge 7, 8, :branch
       graph.edge 7, 9, :branch
+      graph
+    end
+
+    # one center vertex; the rest are leaves
+    def self.star
+      graph = self.new
+      graph.edge 0, 1, :center
+      graph.edge 0, 2, :center
+      graph.edge 0, 3, :center
+      graph.edge 0, 4, :center
+      graph.edge 0, 5, :center
+      graph
+    end
+
+    # allows chains, not just leaves
+    def self.starlike
+      graph = self.new
+      graph.edge 0, 1, :center
+      graph.edge 0, 2, :center
+      graph.edge 0, 3, :center
+      graph.edge 0, 4, :center
+      graph.edge 0, 5, :center
+      graph.edge 5, 6, :ray
+      graph
+    end
+
+    # all vertices within distance 1 of a central path subgraph
+    def self.caterpillar
+      graph = self.new
+      graph.edge 0, 1, :head
+      graph.edge 1, 2, :trunk
+      graph.edge 2, 3, :trunk
+      graph.edge 3, 4, :trunk
+      graph.edge 4, 5, :tail
+      graph.edge 1, 6, :leg
+      graph.edge 1, 7, :leg
+      graph.edge 2, 8, :leg
+      graph.edge 2, 9, :leg
+      graph.edge 3, 10, :leg
+      graph.edge 3, 11, :leg
+      graph.edge 4, 12, :leg
+      graph.edge 4, 13, :leg
+      graph
+    end
+
+    # all vertices within distance 1 of a central path subgraph
+    def self.lobster
+      graph = self.caterpillar
+      graph.edge 6, 14, :claw
+      graph.edge 6, 15, :claw
+      graph.edge 7, 16, :claw
+      graph.edge 7, 17, :claw
       graph
     end
   end
