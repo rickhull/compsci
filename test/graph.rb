@@ -7,14 +7,13 @@ describe Edge do
   before do
     @v0 = 0
     @v1 = 1
-    @val = 'val'
-    @e = Edge.new(@v0, @v1, @val)
+    @e = Edge.new(@v0, @v1)
   end
 
-  it "has src vertex, dest vertex, and value" do
+  it "has src vertex, dest vertex, and value (possibly nil)" do
     expect(@e.src).must_equal @v0
     expect(@e.dest).must_equal @v1
-    expect(@e.value).must_equal @val
+    expect(@e.value).must_be_nil
 
     expect(Edge.new(@v0, @v1, :hello_world).value).must_equal :hello_world
   end
@@ -43,7 +42,7 @@ describe Graph do
   it "accepts a diamond pattern" do
     graph = Graph.diamond
     expect(graph).must_be_kind_of Graph
-    expect(graph.vtxs.count).must_equal 4
+    expect(graph.vtx.count).must_equal 4
     expect(graph.edges.count).must_equal 4
   end
 
@@ -54,7 +53,7 @@ describe Graph do
   it "allows a fork pattern" do
     graph = Graph.fork
     expect(graph).must_be_kind_of Graph
-    expect(graph.vtxs.count).must_equal 3
+    expect(graph.vtx.count).must_equal 3
     expect(graph.edges.count).must_equal 2
   end
 
@@ -74,7 +73,7 @@ describe Graph do
 
   it "has a multiline string representation" do
     graph = Graph.diamond
-    expect(graph.vtxs.count).must_equal 4
+    expect(graph.vtx.count).must_equal 4
     edge_count = 4
     expect(graph.edges.count).must_equal edge_count
 
@@ -152,21 +151,21 @@ describe MultiGraph do
   it "accepts a diamond pattern" do
     graph = MultiGraph.diamond
     expect(graph).must_be_kind_of MultiGraph
-    expect(graph.vtxs.count).must_equal 4
+    expect(graph.vtx.count).must_equal 4
     expect(graph.edges.count).must_equal 4
   end
 
   it "accepts a multigraph" do
     graph = MultiGraph.multigraph
     expect(graph).must_be_kind_of Graph
-    expect(graph.vtxs.count).must_equal 2
+    expect(graph.vtx.count).must_equal 2
     expect(graph.edges.count).must_equal 2
   end
 
   it "allows a fork pattern" do
     graph = MultiGraph.fork
     expect(graph).must_be_kind_of MultiGraph
-    expect(graph.vtxs.count).must_equal 3
+    expect(graph.vtx.count).must_equal 3
     expect(graph.edges.count).must_equal 2
   end
 
@@ -237,7 +236,7 @@ describe MultiGraph do
 
   it "has a multiline string representation" do
     multi = MultiGraph.diamond
-    expect(multi.vtxs.count).must_equal 4
+    expect(multi.vtx.count).must_equal 4
     edge_count = 4
     expect(multi.edges.count).must_equal edge_count
     # since the edges have references to the vertices, we return multiple
@@ -262,7 +261,7 @@ describe AcyclicGraph do
   it "rejects a diamond pattern" do
     ag = AcyclicGraph.diamond
     expect(ag).must_be_kind_of AcyclicGraph
-    expect(ag.vtxs.count).must_equal 4
+    expect(ag.vtx.count).must_equal 4
     expect(ag.edges.count).must_equal 4
     expect { ag.check_cycle! }.must_raise CycleError
   end
@@ -274,7 +273,7 @@ describe AcyclicGraph do
   it "allows a fork pattern" do
     graph = AcyclicGraph.fork
     expect(graph).must_be_kind_of AcyclicGraph
-    expect(graph.vtxs.count).must_equal 3
+    expect(graph.vtx.count).must_equal 3
     expect(graph.edges.count).must_equal 2
   end
 
@@ -326,7 +325,7 @@ describe DAG do
   it "allows a diamond pattern" do
     dag = DAG.diamond
     expect(dag).must_be_kind_of DAG
-    expect(dag.vtxs.count).must_equal 4
+    expect(dag.vtx.count).must_equal 4
     expect(dag.edges.count).must_equal 4
     dag.check_cycle! # wont_raise
   end
@@ -338,7 +337,7 @@ describe DAG do
   it "allows a fork pattern" do
     graph = DAG.fork
     expect(graph).must_be_kind_of DAG
-    expect(graph.vtxs.count).must_equal 3
+    expect(graph.vtx.count).must_equal 3
     expect(graph.edges.count).must_equal 2
   end
 
@@ -356,7 +355,7 @@ describe DAG do
 
   it "has a multiline string representation" do
     dag = DAG.diamond
-    expect(dag.vtxs.count).must_equal 4
+    expect(dag.vtx.count).must_equal 4
     edge_count = 4
     expect(dag.edges.count).must_equal edge_count
     str = dag.to_s

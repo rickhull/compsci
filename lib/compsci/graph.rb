@@ -1,12 +1,16 @@
-require 'set'                 # used by DAG to determine root vertices for DFS
+require 'set'
 require 'compsci'             # CompSci::NEWLINE
 require 'compsci/graph/error' # CompSci::CycleError, CompSci::MultiGraphError
 
 module CompSci
   # represents an edge between two vertices, *src* and *dest*
   Edge = Data.define(:src, :dest, :value) do
+    def initialize(src:, dest:, value: nil)
+      super(src: src, dest: dest, value: value)
+    end
+
     def to_s
-      format("%s --%s--> %s", src, dest, value)
+      format("%s --%s--> %s", src, value, dest)
     end
   end
 
@@ -17,8 +21,10 @@ module CompSci
                                     edge, edge.dest, edge.src))
     end
 
+    attr_reader :vtx
+
     def initialize
-      @vtx = {}  # keyed by vertex, used like a Set
+      @vtx  = Set.new
       @edge = {} # keyed by the *src* vertex
     end
 
@@ -31,8 +37,8 @@ module CompSci
       end
 
       # create vertices as needed; used like a Set
-      @vtx[src] ||= true
-      @vtx[dest] ||= true
+      @vtx.add(src)
+      @vtx.add(dest)
       self.add_edge e
     end
 
@@ -105,11 +111,6 @@ module CompSci
     def to_s
       self.edges.join(NEWLINE)
     end
-
-    # return a flat list of vertices
-    def vtxs
-      @vtx.keys
-    end
   end
 
   # allow multiple edges between any two vertices
@@ -160,12 +161,12 @@ module CompSci
   class AcyclicGraph < Graph
     attr_accessor :check_add
 
-    def initialize
-      @check_add = false
-      super
+    def initialize(check_add: false)
+      @check_add = check_add
+      super()
     end
 
-    def reset_search!
+    def reset_search
       @visited, @finished = {}, {}
       self
     end
@@ -177,27 +178,33 @@ module CompSci
       @edge[e.src] ||= {}
       @edge[e.src][e.dest] = e
       if @check_add  # does the new edge create a cycle?
-        self.reset_search!
-        self.dfs e.src # may raise CycleError
+        self.reset_search
+        begin
+          self.check_cycle!
+          # self.dfs e.src # may raise CycleError
+        rescue CycleError => error
+          @edge[e.src].delete(e.dest)
+          raise error
+        end
       end
       e
     end
 
     # perform depth first search from every vertex; may raise CycleError
     def check_cycle!
-      self.reset_search!
-      @vtx.each_key { |value| self.dfs value }
+      self.reset_search
+      @vtx.each { |v| self.dfs v }
       self
     end
 
     # recursive depth first search; may raise CycleError
     def dfs(v, skip = nil)
       return true if @finished[v]
-      raise CycleError if @visited[v]
+      raise(CycleError, "dfs(#{v})") if @visited[v]
       @visited[v] = true
 
       # search every neighbor (but don't search back to v)
-      self.edges.each { |e|
+      self.each_edge { |e|
         if e.dest == v and e.src != skip
           self.dfs(e.src, skip = v)
         elsif e.src == v and e.dest != skip
@@ -207,20 +214,21 @@ module CompSci
       @finished[v] = true
     end
   end
+  FOREST = AcyclicGraph
 
   class DirectedAcyclicGraph < AcyclicGraph
     # roots have nothing pointing *to* them
     def roots
       invalid = Set.new
       @edge.each_value { |hsh| invalid.merge(hsh.values.map(&:dest)) }
-      @vtx.keys - invalid.to_a
+      @vtx - invalid
     end
 
     # perform depth first search on every root; may raise CycleError
     def check_cycle!
       roots = self.roots
       raise(CycleError, "invalid state: no roots") if roots.empty?
-      self.reset_search!
+      self.reset_search
       roots.each { |v| self.dfs(v) }
       self
     end
@@ -228,7 +236,7 @@ module CompSci
     # recursive depth first search, following directed edges
     def dfs(v)
       return true if @finished[v]
-      raise CycleError if @visited[v]
+      raise(CycleError, "dfs(#{v})") if @visited[v]
       @visited[v] = true
 
       # search via src -> dest
@@ -236,6 +244,5 @@ module CompSci
       @finished[v] = true
     end
   end
-
   DAG = DirectedAcyclicGraph
 end
