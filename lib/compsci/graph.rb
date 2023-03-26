@@ -4,19 +4,9 @@ require 'compsci/graph/error' # CompSci::CycleError, CompSci::MultiGraphError
 
 module CompSci
   # represents an edge between two vertices, *src* and *dest*
-  class Edge
-    attr_reader :src, :dest, :value, :meta
-
-    # src, dest, value can be any Ruby object, probably string / symbol / int
-    def initialize(src, dest, value = nil, **meta)
-      @src = src
-      @dest = dest
-      @value = value
-      @meta = meta   # not currently used; but it may be
-    end
-
+  Edge = Data.define(:src, :dest, :value) do
     def to_s
-      [@src, "--#{@value}-->", @dest].join(" ")
+      format("%s --%s--> %s", src, dest, value)
     end
   end
 
@@ -26,8 +16,6 @@ module CompSci
       raise(MultiGraphError, format("%s is the second edge between %s and %s",
                                     edge, edge.dest, edge.src))
     end
-
-    attr_reader :vtx
 
     def initialize
       @vtx = {}  # keyed by vertex, used like a Set

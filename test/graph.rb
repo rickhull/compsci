@@ -7,16 +7,16 @@ describe Edge do
   before do
     @v0 = 0
     @v1 = 1
-    @e = Edge.new(@v0, @v1)
+    @val = 'val'
+    @e = Edge.new(@v0, @v1, @val)
   end
 
-  it "has src vertex, dest vertex, and value, possibly nil" do
+  it "has src vertex, dest vertex, and value" do
     expect(@e.src).must_equal @v0
     expect(@e.dest).must_equal @v1
-    expect(@e.value).must_be_nil
+    expect(@e.value).must_equal @val
 
-    e = Edge.new(@v0, @v1, :hello_world)
-    expect(e.value).must_equal :hello_world
+    expect(Edge.new(@v0, @v1, :hello_world).value).must_equal :hello_world
   end
 
   it "has a string representation" do
