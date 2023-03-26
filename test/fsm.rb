@@ -40,21 +40,27 @@ describe DeterministicFiniteStateMachine do
     expect(@fsm).must_be_kind_of FSM
   end
 
-  it "rejects nondeterminism" do
+  it "can reject nondeterminism when transitions are added" do
     @fsm.check_add = true
     @fsm.transition(:a, :b, :input)
-    expect {
-      @fsm.transition(:a, :c, :input)
-    }.must_raise DeterministicError
+    expect { @fsm.transition(:a, :c, :input) }.must_raise DeterministicError
 
     @fsm.check_add = false
-    @fsm.check_follow = false
     @fsm.transition(:a, :c, :input)
+    expect(@fsm).must_be_kind_of FSM
+  end
+
+  it "can reject nondeterminism when transitions are followed" do
+    @fsm.check_add = false
+    @fsm.check_follow = true
+    @fsm.transition(:a, :b, :input)
+    @fsm.transition(:a, :c, :input)
+    expect { @fsm.follow(:a, :input) }.must_raise DeterministicError
+
+    @fsm.check_follow = false
     state = @fsm.follow(:a, :input)
     expect(state).wont_be_nil
     expect(state).wont_equal :a
-    @fsm.check_follow = true
-    expect { @fsm.follow(:a, :input) }.must_raise DeterministicError
   end
 end
 
