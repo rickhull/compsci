@@ -22,7 +22,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [ '2.7', head, jruby-head, truffleruby-head ]
+        # lib/compsci/graph.rb uses new-for-3.2 Data class
+        # ruby: [ '2.7', head, jruby-head, truffleruby-head ]
+        ruby: [ head ]
     name: Ruby ${{ matrix.ruby }}
     steps:
       - uses: actions/checkout@v3
