@@ -277,10 +277,10 @@ module CompSci
     def self.multigraph
       # multigraph, multiple (possibly directed) edges between 0 and 1
       #
-      #   __a__                 Graph: overwrite a with b
+      #   __a__                 Graph: MultiGraphError
       #  /     \           MultiGraph: allow
-      # 0       1        AcyclicGraph: overwrite a with b
-      #  \__b__/                  DAG: overwrite a with b
+      # 0       1        AcyclicGraph: MultiGraphError
+      #  \__b__/                  DAG: MultiGraphError
       #                           FSM: allow
       graph = self.new
       graph.edge 0, 1, :a
@@ -293,7 +293,7 @@ module CompSci
       #     1
       #    / \                  Graph: allow
       #  a/   \c           MultiGraph: allow
-      #  /     \         AcyclicGraph: raise CycleError
+      #  /     \         AcyclicGraph: CycleError
       # 0       3                 DAG: allow
       #  \     /                  FSM: allow
       #  b\   /d
@@ -314,8 +314,8 @@ module CompSci
       #  a/                Multigraph: allow
       #  /               AcyclicGraph: allow
       # 0                         DAG: allow
-      #  \          Deterministic FSM: reject 2nd edge
-      #  a\      NonDeterministic FSM: allow
+      #  \                        FSM: allow
+      #  a\         Deterministic FSM: reject 2nd edge
       #    \
       #     2
       graph = self.new
