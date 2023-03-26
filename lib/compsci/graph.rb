@@ -17,11 +17,6 @@ module CompSci
 
   # consists of Vertices connected by Edges
   class Graph
-    def self.multigraph!(edge)
-      raise(MultiGraphError, format("%s is the second edge between %s and %s",
-                                    edge, edge.dest, edge.src))
-    end
-
     attr_reader :vtx
 
     def initialize
@@ -34,7 +29,9 @@ module CompSci
       # check if this would create MultiGraph
       e = Edge.new(src, dest, value, **kwargs)
       if !self.is_a? MultiGraph and self.edge_between?(dest, src)
-        self.class.multigraph!(e)
+        raise(MultiGraphError,
+              format("%s is the second edge between %s and %s",
+                     edge, edge.src, edge.dest))
       end
 
       # create vertices as needed; used like a Set
@@ -329,6 +326,21 @@ module CompSci
       graph = self.new
       graph.edge 0, 1, :a
       graph.edge 0, 2, :a
+      graph
+    end
+
+    # two separate trees
+    def self.forest
+      graph = self.new
+      graph.edge 0, 1, :root
+      graph.edge 1, 2, :trunk
+      graph.edge 2, 3, :branch
+      graph.edge 2, 4, :branch
+
+      graph.edge 5, 6, :root
+      graph.edge 6, 7, :trunk
+      graph.edge 7, 8, :branch
+      graph.edge 7, 9, :branch
       graph
     end
   end
