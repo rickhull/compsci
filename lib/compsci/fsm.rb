@@ -1,6 +1,8 @@
 require 'compsci/graph'
 
 module CompSci
+  class DeterministicError < RuntimeError; end
+
   class FiniteStateMachine
     #
     # Pre-made FSMs
@@ -60,10 +62,16 @@ module CompSci
   FSM  = FiniteStateMachine
 
   class DeterministicFiniteStateMachine < FiniteStateMachine
-    class DeterministicError < RuntimeError; end
+    def self.nondeterministic!(src, val)
+      raise(DeterministicError, "multiple edges for #{val} from #{src}")
+    end
 
-    def self.nondeterministic!(src, chr)
-      raise(DeterministicError, "multiple edges for #{chr} from #{src}")
+    def transition(src, dest, value)
+      if !@graph.edges(src: src, value: value).empty?
+        self.class.nondeterministic!(src, value)
+      end
+      @initial ||= src
+      @graph.edge(src, dest, value)
     end
 
     # we can't use Graph#follow because it allows nondeterminism
@@ -73,7 +81,7 @@ module CompSci
       when 0 then false
       when 1 then transitions.first.dest
       else
-        self.class.deterministic!(src, value)
+        self.class.nondeterministic!(src, value)
       end
     end
   end
@@ -83,8 +91,6 @@ module CompSci
   # Has a single initial state and a single final state
   #
   class DAFSAcceptor
-    class DeterministicError < RuntimeError; end
-
     def self.nondeterministic!(src, chr)
       raise(DeterministicError, "multiple edges for #{chr} from #{src}")
     end
@@ -119,7 +125,7 @@ module CompSci
       when 0 then false
       when 1 then transitions.first.dest
       else
-        self.class.deterministic!(src, value)
+        self.class.nondeterministic!(src, value)
       end
     end
 
@@ -160,6 +166,5 @@ module CompSci
       cursor == @final
     end
   end
-
   DAFSA = DAFSAcceptor
 end

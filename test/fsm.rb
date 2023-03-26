@@ -14,12 +14,10 @@ describe FiniteStateMachine do
 
   it "can have transitions to different states with the same input" do
     @fsm.transition('Locked', 'Unlocked', 'Coin')
-    @fsm.transition('Locked', 'Unlatched', 'Key')
+    @fsm.transition('Locked', 'Unlatched', 'Coin')
     expect(@fsm).must_be_kind_of FSM
   end
 end
-
-
 
 describe DeterministicFiniteStateMachine do
   describe "Deterministic FSM" do
@@ -37,6 +35,13 @@ describe DeterministicFiniteStateMachine do
       @fsm.transition('Unlocked', 'Unlocked', 'Coin')
       @fsm.transition('Unlocked', 'Locked', 'Push')
       expect(@fsm).must_be_kind_of DFSM
+    end
+
+    it "rejects nondeterminism" do
+      @fsm.transition(:a, :b, :input)
+      expect {
+        @fsm.transition(:a, :c, :input)
+      }.must_raise DeterministicError
     end
   end
 end
