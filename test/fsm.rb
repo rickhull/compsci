@@ -8,8 +8,10 @@ describe FiniteStateMachine do
     @fsm = FSM.new
   end
 
-  it "has a multigraph" do
-    expect(@fsm.graph).must_be_kind_of MultiGraph
+  it "can have multiple transitions between two states" do
+    @fsm.transition(:locked, :unlocked, :key)
+    @fsm.transition(:locked, :unlocked, :master_key)
+    expect(@fsm).must_be_kind_of FSM
   end
 
   it "can have transitions to different states with the same input" do
@@ -20,29 +22,29 @@ describe FiniteStateMachine do
 end
 
 describe DeterministicFiniteStateMachine do
-  describe "Deterministic FSM" do
-    before do
-      @fsm = DFSM.new
-    end
+  before do
+    @fsm = DFSM.new
+  end
 
-    it "has a multigraph" do
-      expect(@fsm.graph).must_be_kind_of MultiGraph
-    end
+  it "can have multiple transitions between two states" do
+    @fsm.transition(:locked, :unlocked, :key)
+    @fsm.transition(:locked, :unlocked, :master_key)
+    expect(@fsm).must_be_kind_of FSM
+  end
 
-    it "has states and transitions between the states" do
-      @fsm.transition('Locked', 'Locked', 'Push')
-      @fsm.transition('Locked', 'Unlocked', 'Coin')
-      @fsm.transition('Unlocked', 'Unlocked', 'Coin')
-      @fsm.transition('Unlocked', 'Locked', 'Push')
-      expect(@fsm).must_be_kind_of DFSM
-    end
+  it "has states and transitions between the states" do
+    @fsm.transition('Locked', 'Locked', 'Push')
+    @fsm.transition('Locked', 'Unlocked', 'Coin')
+    @fsm.transition('Unlocked', 'Unlocked', 'Coin')
+    @fsm.transition('Unlocked', 'Locked', 'Push')
+    expect(@fsm).must_be_kind_of DFSM
+  end
 
-    it "rejects nondeterminism" do
-      @fsm.transition(:a, :b, :input)
-      expect {
-        @fsm.transition(:a, :c, :input)
-      }.must_raise DeterministicError
-    end
+  it "rejects nondeterminism" do
+    @fsm.transition(:a, :b, :input)
+    expect {
+      @fsm.transition(:a, :c, :input)
+    }.must_raise DeterministicError
   end
 end
 
