@@ -3,6 +3,7 @@ require 'set'
 module CompSci
   class CycleError < RuntimeError; end
   class MultiGraphError < RuntimeError; end
+  class UnexpectedError < RuntimeError; end
 
   # represents an edge between two vertices, *src* and *dest*
   Edge = Data.define(:src, :dest, :value) do
@@ -33,20 +34,77 @@ module CompSci
       end
 
       # create vertices as needed; used like a Set
-      @vtx.add(src)
-      @vtx.add(dest)
       self.add_edge e
     end
 
-    # check both directions; return any edge found
-    def edge_between?(src, dest)
-      @edge.dig(src, dest) or @edge.dig(dest, src)
+    def assert_edge(src: nil, dest: nil, value: nil)
+      edges = self.edges(src: src, dest: dest, value: value)
+      case edges.count
+      when 0
+        raise(UnexpectedError, "no edges found")
+      when 1
+        edges[0]
+      else
+        raise(UnexpectedError, "multiple edges found: #{edges.inspect}")
+      end
     end
 
     # @edge[src][dest] => Edge; MultiGraph uses a different array impl
     def add_edge e
       @edge[e.src] ||= {}
       @edge[e.src][e.dest] = e
+      @vtx.add(e.src)
+      @vtx.add(e.dest)
+    end
+
+    def delete(edge)
+      @edge.each_value { |hsh| hsh.delete_if { |_, e| e == edge } }
+      self
+    end
+
+    def clear!(src: nil, dest: nil, value: nil)
+      if src
+        hsh = @edge[src] or return
+        if dest
+          if value # (src, dest, value)
+            hsh.delete(dest) if hsh[dest]&.value == value
+          else     # (src, dest, _)
+            hsh.delete(dest)
+          end
+        else
+          if value # (src, _, value)
+            hsh.delete_if { |_, e| e.value == value }
+          else     # (src, _, _)
+            @edge.delete(src)
+          end
+        end
+      else                                          # (_, ?, ?)
+        @edge.each_value { |hsh|
+          if dest
+            if value                                # (_, dest, value)
+              hsh.delete(dest) if edge[dest]&.value == value
+            else                                    # (_, dest, _)
+              hsh.delete(dest)
+            end
+          else                                      # (_, _, ?)
+            hsh.delete_if { |_, e| value and e.value == value }
+          end
+        }
+      end
+    end
+
+    # remove empty structures; update @vtx
+    def clean!
+      @edge.delete_if { |_, hsh| hsh.empty? }
+      @vtx.keep_if { |v|
+        @edge.key?(v) or @edge.values.any? { |hsh| hsh.key? v }
+      }
+      self
+    end
+
+    # check both directions; return any edge found
+    def edge_between?(src, dest)
+      @edge.dig(src, dest) or @edge.dig(dest, src)
     end
 
     # return the (dest) vertex for an edge matching (src, value)
@@ -59,38 +117,28 @@ module CompSci
 
     # iterate edges like: graph.each_edge(**filters) { |e| puts e }
     def each_edge(src: nil, dest: nil, value: nil)
-      # filter on *src*
       if src
-        return self unless @edge.key? src
-        hsh = @edge[src]
-        if hsh.nil? or hsh.empty? or !hsh.is_a? Hash
-          raise(UnexpectedError, hsh.inspect)
-        end
-        # filter on *dest*
-        if dest
-          return self unless hsh.key? dest
-          edge = hsh[dest]
-          if edge.nil? or !edge.is_a? Edge
-            raise(UnexpectedError, edge.inspect)
+        hsh = @edge[src] or return self
+        if dest   # (src, dest, ?)
+          if (e = hsh[dest])
+            yield e unless (value and e.value != value)
           end
-          # filter on *value*
-          return self if value and edge.value != value
-          yield edge
-        # filter on *value* (with *src*)
-        else
+        else      # (src, _, ?)
           hsh.each_value { |e|
-            next if value and e.value != value
-            yield e
+            yield e unless (value and e.value != value)
           }
         end
-      # filter on *dest* and *value*
-      else
+      else        # (_, ?, ?)
         @edge.values.each { |hsh|
-          hsh.each_value { |e|
-            next if dest and e.dest != dest
-            next if value and e.value != value
-            yield e
-          }
+          if dest # (_, dest, ?)
+            if (e = hsh[dest])
+              yield e unless (value and e.value != value)
+            end
+          else    # (_, _, ?)
+            hsh.each_value { |e|
+              yield e unless (value and e.value != value)
+            }
+          end
         }
       end
       self
@@ -116,7 +164,46 @@ module CompSci
     def add_edge e
       @edge[e.src] ||= []
       @edge[e.src] << e
+      @vtx.add(e.src)
+      @vtx.add(e.dest)
       e
+    end
+
+    def delete(edge)
+      @edge.each { |src, ary| ary.delete_if { |e| e == edge } }
+      self
+    end
+
+    def clear!(src: nil, dest: nil, value: nil)
+      if src
+        ary = @edge[src] or return
+        if dest         # (src, dest, ?)
+          ary.delete_if { |e|
+            e.dest == dest and (value.nil? or e.value == value)
+          }
+        else            # (src, _, ?)
+          if value.nil? # (src, _, _)
+            @edge.delete(src)
+          else          # (src, _, value)
+            ary.delete_if { |e| e.value == value }
+          end
+        end
+      else                                         # (_, ?, ?)
+        @edge.each_value { |ary|
+          ary.delete_if { |e|
+            (dest.nil? and value.nil?) or          # (_, _, _)
+              (dest.nil? and e.value == value) or  # (_, _, value)
+              (value.nil? and e.dest == dest) or   # (_, dest, _)
+              (e.dest == dest and e.value == value)# (_, dest, value)
+          }
+        }
+      end
+    end
+
+    def clean!
+      @edge.delete_if { |_, ary| ary.empty? }
+      @vtx.keep_if { |v| @edge.key?(v) or !self.edges(dest: v).empty? }
+      self
     end
 
     # check both directions; return any edge found
@@ -137,22 +224,17 @@ module CompSci
     # iterate edges like: graph.each_edge(**filters) { |e| puts e }
     def each_edge(src: nil, dest: nil, value: nil)
       if src
-        return self unless @edge.key? src
-        ary = @edge[src]
-        if ary.nil? or ary.empty? or !ary.is_a? Array
-          raise(UnexpectedError, ary.inspect)
-        end
-
+        ary = @edge[src] or return self      # filter on src
         ary.each { |e|
-          next if dest and e.dest != dest
-          next if value and e.value != value
+          next if dest and e.dest != dest    # filter on dest
+          next if value and e.value != value # filter on value
           yield e
         }
       else
         @edge.values.each { |ary|
           ary.each { |e|
-            next if dest and e.dest != dest
-            next if value and e.value != value
+            next if dest and e.dest != dest    # filter on dest
+            next if value and e.value != value # filter on value
             yield e
           }
         }
@@ -189,6 +271,8 @@ module CompSci
           raise error
         end
       end
+      @vtx.add(e.src)
+      @vtx.add(e.dest)
       e
     end
 

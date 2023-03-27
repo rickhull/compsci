@@ -84,6 +84,26 @@ describe Graph do
     expect(str.lines.count).must_equal edge_count
   end
 
+  it "chops a lobster in half" do
+    graph = Graph.lobster
+    expect(graph.edges(src: 3, dest: 4)).wont_be_empty
+    graph.clear!(src: 3, dest: 4)
+    expect(graph.edges(src: 3, dest: 4)).must_be_empty
+
+    # all vertices still exist, even though the edge between 3 and 4 is gone
+
+    expect(graph.edges(src: 2, dest: 3)).wont_be_empty
+    graph.clear!(src: 3)
+    graph.clear!(dest: 3)
+    expect(graph.edges(src: 2, dest: 3)).must_be_empty
+
+    # now vertex 3 is gone from the graph
+    # but it has not been cleaned from the set of vertices yet
+    expect(graph.vtx.include?(3)).must_equal true
+    graph.clean!
+    expect(graph.vtx.include?(3)).must_equal false
+  end
+
   it "iterates over each edge, with filters" do
     graph = Graph.diamond
 
@@ -180,6 +200,34 @@ describe MultiGraph do
     expect(@graph.edges(src: :does_not_exist)).must_be_empty
     expect(from_0).must_be_kind_of Array
     expect(from_0.count).must_equal 1
+  end
+
+  it "chops a lobster in half" do
+    graph = MultiGraph.lobster
+    expect(graph.edges(src: 3, dest: 4)).wont_be_empty
+    graph.clear!(src: 3, dest: 4)
+    expect(graph.edges(src: 3, dest: 4)).must_be_empty
+
+    # all vertices still exist, even though the edge between 3 and 4 is gone
+
+    expect(graph.edges(src: 2, dest: 3)).wont_be_empty
+    graph.clear!(src: 3)
+    graph.clear!(dest: 3)
+    expect(graph.edges(src: 2, dest: 3)).must_be_empty
+
+    # now vertex 3 is gone from the graph
+    # but it has not been cleaned from the set of vertices yet
+    expect(graph.vtx.include?(3)).must_equal true
+    graph.clean!
+    expect(graph.vtx.include?(3)).must_equal false
+  end
+
+  it "beheads a caterpillar" do
+    graph = MultiGraph.caterpillar
+    expect(graph.edges(src: 0, dest: 1)).wont_be_empty
+    graph.clear!(value: :head)
+    expect(graph.edges(src: 0, dest: 1)).must_be_empty
+    expect(graph.edges(value: :head)).must_be_empty
   end
 
   it "iterates over each edge, with filters" do
