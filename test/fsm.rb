@@ -69,6 +69,35 @@ describe DAFSAcceptor do
     @dafsa = DAFSAcceptor.new
   end
 
+  it "can have multiple transitions between two states" do
+    @dafsa.transition 0, :a
+    @dafsa.transition 0, :b
+    expect(@dafsa).is_a? DAFSAcceptor
+  end
+
+  it "can reject nondeterminism when transitions are added" do
+    @dafsa.check_add = true
+    @dafsa.transition(0, :a)
+    expect { @dafsa.transition(0, :a) }.must_raise DeterministicError
+
+    @dafsa.check_add = false
+    @dafsa.transition(0, :a)
+    expect(@dafsa).must_be_kind_of DAFSAcceptor
+  end
+
+  it "can reject nondeterminism when transitions are followed" do
+    @dafsa.check_add = false
+    @dafsa.check_follow = true
+    @dafsa.transition(0, :a)
+    @dafsa.transition(0, :a)
+    expect { @dafsa.follow(0, :a) }.must_raise DeterministicError
+
+    @dafsa.check_follow = false
+    state = @dafsa.follow(0, :a)
+    expect(state).wont_be_nil
+    expect(state).wont_equal 0
+  end
+
   it "encodes 'june'" do
     expect(@dafsa).must_be_kind_of DAFSAcceptor
     @dafsa.encode('june')
