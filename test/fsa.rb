@@ -138,7 +138,7 @@ describe FiniteStateAutomaton do
     expect(@fsa.cursor).must_be_kind_of State
     expect(@fsa.cursor.value).must_equal :final
 
-    @fsa.reset_cursor
+    @fsa.cursor = @fsa.initial
     expect(@fsa.cursor).must_equal @fsa.initial
 
     final = @fsa.follow(:transition)
