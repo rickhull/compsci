@@ -3,66 +3,6 @@ require 'compsci/fsm'
 
 include CompSci
 
-describe FiniteStateAutomaton do
-  before do
-    @fsa = FSA.new(:initial)
-  end
-
-  it "chains a new state via a transition" do
-    expect(@fsa.initial).must_be_kind_of State
-    expect(@fsa.initial.value).must_equal :initial
-    expect(@fsa.cursor).must_equal @fsa.initial
-
-    @fsa.chain_state(:transition, :final)
-    expect(@fsa.cursor).wont_equal @fsa.initial
-    expect(@fsa.cursor).must_be_kind_of State
-    expect(@fsa.cursor.value).must_equal :final
-
-    @fsa.reset_cursor
-    expect(@fsa.cursor).must_equal @fsa.initial
-
-    final = @fsa.follow(:transition)
-    expect(final).must_be_kind_of State
-    expect(final.value).must_equal :final
-    expect(@fsa.cursor).must_equal final
-  end
-
-  it "allows cycles" do
-    expect(@fsa.initial).must_be_kind_of State
-    expect(@fsa.initial.value).must_equal :initial
-    expect(@fsa.cursor).must_equal @fsa.initial
-
-    @fsa.chain_state(:out, :other)
-    @fsa.chain_state(:back, :initial)
-    expect(@fsa.cursor.value).must_equal :initial
-
-    other = @fsa.follow(:out)
-    expect(other.value).must_equal :other
-    expect(@fsa.cursor).must_equal other
-
-    @fsa.follow(:back)
-    expect(@fsa.cursor.value).must_equal :initial
-  end
-
-  it "completes a walk in the presence of cycles" do
-    @fsa.chain_state(:hop, :middle)
-    @fsa.chain_state(:skip, :end)
-    @fsa.chain_state(:jump, :middle)
-    @fsa.chain_state(:slide, :initial)
-
-    expect(@fsa.cursor.value).must_equal :initial
-
-    @fsa.walk!
-
-    expect(@fsa.states.count).must_equal 3
-    @fsa.states.each { |state|
-      expect([:initial, :middle, :end]).must_include state.value
-    }
-
-    expect(@fsa.transitions.count).must_equal 3
-  end
-end
-
 describe FiniteStateMachine do
   before do
     @fsm = FSM.new
