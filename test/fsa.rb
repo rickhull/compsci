@@ -133,7 +133,7 @@ describe FiniteStateAutomaton do
     expect(@fsa.initial.value).must_equal :initial
     expect(@fsa.cursor).must_equal @fsa.initial
 
-    @fsa.chain_new_state(:transition, :final)
+    @fsa.chain_state(:transition, :final)
     expect(@fsa.cursor).wont_equal @fsa.initial
     expect(@fsa.cursor).must_be_kind_of State
     expect(@fsa.cursor.value).must_equal :final
@@ -147,13 +147,25 @@ describe FiniteStateAutomaton do
     expect(@fsa.cursor).must_equal final
   end
 
+  it "can be created via explicit lists of transitions" do
+    @fsa.transition(:initial, :start, 0)
+    @fsa.transition(0, :a, 1)
+    @fsa.transition(0, :b, 2)
+    @fsa.transition(1, :c, 3)
+    @fsa.transition(2, :d, 3)
+    expect(@fsa.cursor.value).must_equal 3
+
+    @fsa.walk
+    expect(@fsa.states.count).must_equal 5
+  end
+
   it "allows cycles" do
     expect(@fsa.initial).must_be_kind_of State
     expect(@fsa.initial.value).must_equal :initial
     expect(@fsa.cursor).must_equal @fsa.initial
 
-    @fsa.chain_new_state(:out, :other)
-    @fsa.chain_extant_state(:back, :initial)
+    @fsa.chain_state(:out, :other)
+    @fsa.chain_state(:back, :initial)
     expect(@fsa.cursor.value).must_equal :initial
 
     other = @fsa.follow(:out)
@@ -165,20 +177,75 @@ describe FiniteStateAutomaton do
   end
 
   it "completes a walk in the presence of cycles" do
-    @fsa.chain_new_state(:hop, :middle)
-    @fsa.chain_new_state(:skip, :end)
-    @fsa.chain_extant_state(:jump, :middle)
-    @fsa.chain_extant_state(:slide, :initial)
+    @fsa.chain_state(:hop, :middle)
+    @fsa.chain_state(:skip, :end)
+    @fsa.chain_state(:jump, :middle)
+    @fsa.chain_state(:slide, :initial)
 
     expect(@fsa.cursor.value).must_equal :initial
 
-    @fsa.walk!
-
+    @fsa.walk
     expect(@fsa.states.count).must_equal 3
     @fsa.states.each { |state|
       expect([:initial, :middle, :end]).must_include state.value
     }
+  end
 
-    expect(@fsa.transitions.count).must_equal 3
+  it "has a settable cursor" do
+    cauchy = FSA.cauchy
+    cauchy.cursor = cauchy.initial
+    expect(cauchy.cursor).must_equal cauchy.initial
+
+    cauchy.next(:sample)
+    expect(cauchy.cursor).wont_equal cauchy.initial
+    tmp = cauchy.cursor
+
+    cauchy.next(:first)
+    expect(cauchy.cursor).wont_equal tmp
+    tmp = cauchy.cursor
+
+    cauchy.next(:last)
+    expect(cauchy.cursor).wont_equal tmp
+  end
+
+  it "follows specific transitions" do
+    cauchy = FSA.cauchy
+    cauchy.walk
+    expect(cauchy.initial.value).must_equal :asleep
+    state = cauchy.follow(:food)
+    expect(state.value).must_equal :eating
+    expect(cauchy.cursor).must_equal state
+
+    state = cauchy.follow(:harlem_shake)
+    expect(state).must_be_nil
+    expect(cauchy.cursor.value).must_equal :eating
+  end
+
+  it "retreats along specific transitions" do
+    cauchy = FSA.cauchy
+    cauchy.walk
+    expect(cauchy.initial.value).must_equal :asleep
+    state = cauchy.retreat(:pooped)
+    expect(state.value).must_equal :litterbox
+    expect(cauchy.cursor).must_equal state
+
+    state = cauchy.retreat(:harlem_shake)
+    expect(state).must_be_nil
+    expect(cauchy.cursor.value).must_equal :litterbox
+  end
+
+  it "can bump prev and next indefinitely" do
+    def strategy(i)
+      State::STRATEGY.to_a[i % State::STRATEGY.count]
+    end
+
+    @fsa.chain_state(:solo, :final)
+    expect(@fsa.cursor.value).must_equal :final
+    25.times { |i|
+      @fsa.prev strategy(i)
+      expect(@fsa.cursor.value).must_equal :initial
+      @fsa.next strategy(i)
+      expect(@fsa.cursor.value).must_equal :final
+    }
   end
 end

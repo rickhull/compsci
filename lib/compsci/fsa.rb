@@ -2,6 +2,7 @@ require 'set'
 
 module CompSci
   class NotFound < RuntimeError; end
+  class TransitionError < RuntimeError; end
 
   class State
     def self.turnstile
@@ -22,6 +23,13 @@ module CompSci
       asleep
     end
 
+    def self.comparable!(value)
+      value.kind_of?(Comparable) or
+        raise(TransitionError, "#{value.inspect} isn't Comparable")
+    end
+
+    STRATEGY = Set[:first, :last, :min, :max, :sample]
+
     attr_reader :src, :dest, :value
 
     def initialize(value)
@@ -32,6 +40,7 @@ module CompSci
 
     # add State to @dest
     def add_dest(transition, state)
+      self.class.comparable! transition
       @dest[transition] = state
     end
 
@@ -50,6 +59,7 @@ module CompSci
 
     # add State to @src
     def add_src(transition, state)
+      self.class.comparable! transition
       @src[transition] = state
     end
 
@@ -126,6 +136,16 @@ module CompSci
       @src[transition]
     end
 
+    def next(strategy)
+      raise "unknown: #{strategy.inspect}" unless STRATEGY.include? strategy
+      @dest.values.send(strategy)
+    end
+
+    def prev(strategy)
+      raise "unknown: #{strategy.inspect}" unless STRATEGY.include? strategy
+      @src.values.send(strategy)
+    end
+
     def to_s
       lines = [format("[%s]", @value)]
       @dest.each { |t, s|
@@ -152,16 +172,16 @@ module CompSci
       fsa.transition(:locked,   'Coin', :unlocked)
       fsa.transition(:unlocked, 'Coin', :unlocked)
       fsa.transition(:unlocked, 'Push', :locked)
-      fsa
+      fsa.walk
     end
 
     def self.chained
       fsa = self.new(:locked)
-      fsa.chain_extant_state('Push', :locked)
-      fsa.chain_new_state('Coin', :unlocked)
-      fsa.chain_extant_state('Coin', :unlocked)
-      fsa.chain_extant_state('Push', :locked)
-      fsa
+      fsa.chain_state('Push', :locked)
+      fsa.chain_state('Coin', :unlocked)
+      fsa.chain_state('Coin', :unlocked)
+      fsa.chain_state('Push', :locked)
+      fsa.walk
     end
 
     def self.cauchy
@@ -174,74 +194,98 @@ module CompSci
       fsa.transition(:asleep,    :movement,    :playing)
       fsa.transition(:playing,   :quiet_calm,  :asleep)
       fsa.transition(:litterbox, :pooped,      :asleep)
-      fsa
+      fsa.walk
     end
 
-    attr_reader :initial, :cursor, :transitions
+    attr_reader :initial, :states, :cursor, :transitions
 
     def initialize(initial)
       @initial = initial.is_a?(State) ? initial : State.new(initial)
+      @states = {}
+      @states[@initial.value] = @initial
       @cursor = @initial
-      self.walk!
+      self.walk
     end
 
+    def reset_cursor
+      @cursor = @initial
+    end
+
+    # set the cursor to a known state; may raise NotFound
     def cursor=(val)
-      # make sure it's reachable
       value = val.is_a?(State)? val.value : val
-      state = @initial.search(value)
-      state ? (@cursor = state) : raise(NotFound, value.inspect)
+      raise(NotFound, value.inspect) unless @states.key? value
+      @cursor = @states[value]
     end
 
+    # move cursor to follow the dest transition
     def follow(transition)
       found = @cursor.follow(transition)
       found ? (@cursor = found) : found
     end
 
+    # move cursor to follow the src transition
+    def retreat(transition)
+      found = @cursor.retreat(transition)
+      found ? (@cursor = found) : found
+    end
+
+    # bump cursor forward according to strategy
+    def next(strategy = :sample)
+      return unless state = @cursor.next(strategy)
+      @cursor = state
+    end
+
+    # bump cursor backward according to strategy
+    def prev(strategy = :sample)
+      return unless state = @cursor.prev(strategy)
+      @cursor = state
+    end
+
+    # search via dest transitions, first from @cursor, then from @initial
     def search(value)
       return @cursor if @cursor.value == value
       return @initial if @initial.value == value
-      if (res = @cursor.search(value))
+      if res = @cursor.search(value)
         res
-      elsif (res = @initial.search(value))
+      elsif res = @initial.search(value)
         res
       else
         false
       end
     end
 
+    # reverse search via src transitions, only from @cursor
     def rsearch(value)
       return @cursor if @cursor.value == value
       @cursor.rsearch(value)
     end
 
-    def chain_new_state(input, value)
-      @cursor = @cursor.new_dest(input, value)
-    end
-
-    def chain_extant_state(input, value)
-      raise(NotFound, value.inspect) unless state = self.search(value)
-      @cursor.add_dest!(input, state)
-      @cursor = state
-    end
-
+    # preemptively search for a state matching value; if not found, create it
     def chain_state(input, value)
-      begin
-        self.chain_extant_state(input, value)
-      rescue NotFound
-        self.chain_new_state(input, value)
+      known = @states[value]
+      if known
+        @cursor = @cursor.add_dest!(input, known)
+      else
+        @cursor = @cursor.new_dest(input, value)
+        @states[value] = @cursor
       end
+      self
     end
 
     # create new transition from src to dest
     # src, input, and dest are all values.  src and dest are *not* States
     def transition(src, input, dest)
-      raise(NotFound, src.inspect) unless state = self.search(src)
+      raise(NotFound, src.inspect) unless state = @states[src]
       @cursor = state
       self.chain_state(input, dest)
     end
 
-    def walk!
-      @transitions = @initial.walk
+    # register all reachable states and transitions starting from cursor
+    def walk(cursor = @initial)
+      @cursor = cursor
+      @transitions = @cursor.walk
+      self
     end
 
     def states
