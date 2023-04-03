@@ -3,6 +3,66 @@ require 'compsci/fsm'
 
 include CompSci
 
+describe FiniteStateAutomaton do
+  before do
+    @fsa = FSA.new(:initial)
+  end
+
+  it "chains a new state via a transition" do
+    expect(@fsa.initial).must_be_kind_of State
+    expect(@fsa.initial.value).must_equal :initial
+    expect(@fsa.cursor).must_equal @fsa.initial
+
+    @fsa.chain_state(:transition, :final)
+    expect(@fsa.cursor).wont_equal @fsa.initial
+    expect(@fsa.cursor).must_be_kind_of State
+    expect(@fsa.cursor.value).must_equal :final
+
+    @fsa.reset_cursor
+    expect(@fsa.cursor).must_equal @fsa.initial
+
+    final = @fsa.follow(:transition)
+    expect(final).must_be_kind_of State
+    expect(final.value).must_equal :final
+    expect(@fsa.cursor).must_equal final
+  end
+
+  it "allows cycles" do
+    expect(@fsa.initial).must_be_kind_of State
+    expect(@fsa.initial.value).must_equal :initial
+    expect(@fsa.cursor).must_equal @fsa.initial
+
+    @fsa.chain_state(:out, :other)
+    @fsa.chain_state(:back, :initial)
+    expect(@fsa.cursor.value).must_equal :initial
+
+    other = @fsa.follow(:out)
+    expect(other.value).must_equal :other
+    expect(@fsa.cursor).must_equal other
+
+    @fsa.follow(:back)
+    expect(@fsa.cursor.value).must_equal :initial
+  end
+
+  it "completes a walk in the presence of cycles" do
+    @fsa.chain_state(:hop, :middle)
+    @fsa.chain_state(:skip, :end)
+    @fsa.chain_state(:jump, :middle)
+    @fsa.chain_state(:slide, :initial)
+
+    expect(@fsa.cursor.value).must_equal :initial
+
+    @fsa.walk!
+
+    expect(@fsa.states.count).must_equal 3
+    @fsa.states.each { |state|
+      expect([:initial, :middle, :end]).must_include state.value
+    }
+
+    expect(@fsa.transitions.count).must_equal 3
+  end
+end
+
 describe FiniteStateMachine do
   before do
     @fsm = FSM.new
@@ -31,13 +91,21 @@ describe DeterministicFiniteStateMachine do
     @fsm.transition('Locked', 'Unlocked', 'Coin')
     @fsm.transition('Unlocked', 'Unlocked', 'Coin')
     @fsm.transition('Unlocked', 'Locked', 'Push')
-    expect(@fsm).must_be_kind_of DFSM
+
+    state = @fsm.walk('Coin', 'Push', 'Coin')
+    expect(state).must_equal 'Unlocked'
+    state = @fsm.walk('Push', 'Push', 'Push')
+    expect(state).must_equal 'Locked'
   end
 
   it "can have multiple transitions between two states" do
     @fsm.transition(:locked, :unlocked, :key)
     @fsm.transition(:locked, :unlocked, :master_key)
-    expect(@fsm).must_be_kind_of FSM
+
+    state = @fsm.walk(:key)
+    expect(state).must_equal :unlocked
+    state = @fsm.walk(:master_key)
+    expect(state).must_equal :unlocked
   end
 
   it "can reject nondeterminism when transitions are added" do
@@ -47,7 +115,9 @@ describe DeterministicFiniteStateMachine do
 
     @fsm.check_add = false
     @fsm.transition(:a, :c, :input)
-    expect(@fsm).must_be_kind_of FSM
+
+    state = @fsm.walk(:input)
+    expect([:b, :c]).must_include state
   end
 
   it "can reject nondeterminism when transitions are followed" do
@@ -55,24 +125,17 @@ describe DeterministicFiniteStateMachine do
     @fsm.check_follow = true
     @fsm.transition(:a, :b, :input)
     @fsm.transition(:a, :c, :input)
-    expect { @fsm.follow(:a, :input) }.must_raise DeterministicError
+    expect { @fsm.walk(:input) }.must_raise DeterministicError
 
     @fsm.check_follow = false
-    state = @fsm.follow(:a, :input)
-    expect(state).wont_be_nil
-    expect(state).wont_equal :a
+    state = @fsm.walk(:input)
+    expect([:b, :c]).must_include state
   end
 end
 
 describe DAFSAcceptor do
   before do
     @dafsa = DAFSAcceptor.new
-  end
-
-  it "can have multiple transitions between two states" do
-    @dafsa.transition 0, :a
-    @dafsa.transition 0, :b
-    expect(@dafsa).is_a? DAFSAcceptor
   end
 
   it "can reject nondeterminism when transitions are added" do
