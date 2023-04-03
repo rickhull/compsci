@@ -245,9 +245,6 @@ module CompSci
       [str[pos..], state]
     end
 
-    def add_suffix(state, str)
-    end
-
     # is this string recognized?
     def accept?(str)
       raise("no final state") if @final.nil?
