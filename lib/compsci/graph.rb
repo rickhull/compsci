@@ -33,7 +33,6 @@ module CompSci
         raise(MultiGraphError, e.to_s)
       end
 
-      # create vertices as needed; used like a Set
       self.add_edge e
     end
 
@@ -301,6 +300,66 @@ module CompSci
     end
   end
   FOREST = AcyclicGraph
+
+  class AcyclicMultiGraph < MultiGraph
+    attr_accessor :check_add
+
+    def initialize(check_add: false)
+      @check_add = check_add
+      super()
+    end
+
+    def reset_search
+      @visited, @finished = {}, {}
+      self
+    end
+
+    # @edge[src][dest] => Edge, like Graph
+    # may raise CycleError, especially with @check_add
+    def add_edge e
+      raise(CycleError, e) if e.src == e.dest
+      @edge[e.src] ||= {}
+      @edge[e.src][e.dest] = e
+      if @check_add  # does the new edge create a cycle?
+        begin
+          self.check_cycle!
+        rescue CycleError => error
+          @edge[e.src].delete(e.dest)
+          raise error
+        end
+      end
+      @vtx.add(e.src)
+      @vtx.add(e.dest)
+      e
+    end
+
+    # perform depth first search from every vertex; may raise CycleError
+    def check_cycle!
+      self.reset_search
+      @vtx.each { |v| self.dfs v }
+      self.reset_search
+    end
+
+    # recursive depth first search; may raise CycleError
+    def dfs(v, skip = nil)
+      return true if @finished[v]
+      raise(CycleError, "dfs(#{v})") if @visited[v]
+      @visited[v] = true
+
+      # search every neighbor (but don't search back to v)
+      self.each_edge { |e|
+        if e.dest == v and e.src != skip
+          self.dfs(e.src, skip = v)
+        elsif e.src == v and e.dest != skip
+          self.dfs(e.dest, skip = v)
+        end
+      }
+      @finished[v] = true
+    end
+  end
+
+  # TODO
+  class DirectedAcyclicMultiGraph < AcyclicMultiGraph; end
 
   class DirectedAcyclicGraph < AcyclicGraph
     # roots have nothing pointing *to* them
