@@ -186,9 +186,7 @@ describe FiniteStateAutomaton do
 
     @fsa.walk
     expect(@fsa.states.count).must_equal 3
-    @fsa.states.each { |state|
-      expect([:initial, :middle, :end]).must_include state.value
-    }
+    expect(@fsa.states.keys - [:initial, :middle, :end]).must_be_empty
   end
 
   it "has a settable cursor" do

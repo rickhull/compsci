@@ -288,8 +288,8 @@ module CompSci
       self
     end
 
-    def states
-      @transitions.keys
+    def to_s
+      self.states.values.join($/)
     end
 
     def to_s
