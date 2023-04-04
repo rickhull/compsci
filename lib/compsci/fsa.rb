@@ -5,24 +5,6 @@ module CompSci
   class TransitionError < RuntimeError; end
 
   class State
-    def self.turnstile
-      locked = State.new(:locked)
-      locked.add_dest!(:push, locked)
-      unlocked = locked.new_dest(:coin, :unlocked)
-      unlocked.add_dest!(:coin, unlocked)
-      unlocked.add_dest!(:push, locked)
-      locked
-    end
-
-    def self.cauchy
-      asleep = State.new(:asleep)
-      eating = asleep.new_dest(:food, :eating)
-      eating.new_dest(:loud_noise, :hiding).add_dest!(:quiet_calm, eating)
-      eating.new_dest(:digest_food, :litterbox).add_dest!(:pooped, asleep)
-      asleep.new_dest(:movement, :playing).add_dest!(:quiet_calm, asleep)
-      asleep
-    end
-
     def self.comparable!(value)
       value.kind_of?(Comparable) or
         raise(TransitionError, "#{value.inspect} isn't Comparable")
@@ -159,45 +141,33 @@ module CompSci
         src: @src.keys,
         dest: @dest.keys, }.to_s
     end
-  end
 
-  class FiniteStateAutomaton
     #
-    # Pre-made FSAs
+    # Pre-made patterns
     #
 
     def self.turnstile
-      fsa = self.new(:locked)
-      fsa.transition(:locked,   'Push', :locked)
-      fsa.transition(:locked,   'Coin', :unlocked)
-      fsa.transition(:unlocked, 'Coin', :unlocked)
-      fsa.transition(:unlocked, 'Push', :locked)
-      fsa.walk
+      locked = State.new(:locked)
+      locked.add_dest!(:push, locked)
+      unlocked = locked.new_dest(:coin, :unlocked)
+      unlocked.add_dest!(:coin, unlocked)
+      unlocked.add_dest!(:push, locked)
+      locked
     end
 
-    def self.chained
-      fsa = self.new(:locked)
-      fsa.chain_state('Push', :locked)
-      fsa.chain_state('Coin', :unlocked)
-      fsa.chain_state('Coin', :unlocked)
-      fsa.chain_state('Push', :locked)
-      fsa.walk
-    end
-
+    # https://blog.burntsushi.net/transducers/
     def self.cauchy
-      # https://blog.burntsushi.net/transducers/
-      fsa = self.new(:asleep)
-      fsa.transition(:asleep,    :food,        :eating)
-      fsa.transition(:eating,    :loud_noise,  :hiding)
-      fsa.transition(:hiding,    :quiet_calm,  :eating)
-      fsa.transition(:eating,    :digest_food, :litterbox)
-      fsa.transition(:asleep,    :movement,    :playing)
-      fsa.transition(:playing,   :quiet_calm,  :asleep)
-      fsa.transition(:litterbox, :pooped,      :asleep)
-      fsa.walk
+      asleep = State.new(:asleep)
+      eating = asleep.new_dest(:food, :eating)
+      eating.new_dest(:loud_noise, :hiding).add_dest!(:quiet_calm, eating)
+      eating.new_dest(:digest_food, :litterbox).add_dest!(:pooped, asleep)
+      asleep.new_dest(:movement, :playing).add_dest!(:quiet_calm, asleep)
+      asleep
     end
+  end
 
-    attr_reader :initial, :states, :cursor, :transitions
+  class FiniteStateAutomaton
+    attr_reader :initial, :cursor, :states, :transitions
 
     def initialize(initial)
       @initial = initial.is_a?(State) ? initial : State.new(initial)
@@ -292,8 +262,38 @@ module CompSci
       self.states.values.join($/)
     end
 
-    def to_s
-      self.states.map(&:to_s).join($/)
+    #
+    # Pre-made patterns
+    #
+
+    def self.turnstile
+      fsa = self.new(:locked)
+      fsa.transition(:locked,   'Push', :locked)
+      fsa.transition(:locked,   'Coin', :unlocked)
+      fsa.transition(:unlocked, 'Coin', :unlocked)
+      fsa.transition(:unlocked, 'Push', :locked)
+      fsa.walk
+    end
+
+    def self.chained
+      fsa = self.new(:locked)
+      fsa.chain_state('Push', :locked)
+      fsa.chain_state('Coin', :unlocked)
+      fsa.chain_state('Coin', :unlocked)
+      fsa.chain_state('Push', :locked)
+      fsa.walk
+    end
+
+    def self.cauchy
+      fsa = self.new(:asleep)
+      fsa.transition(:asleep,    :food,        :eating)
+      fsa.transition(:eating,    :loud_noise,  :hiding)
+      fsa.transition(:hiding,    :quiet_calm,  :eating)
+      fsa.transition(:eating,    :digest_food, :litterbox)
+      fsa.transition(:asleep,    :movement,    :playing)
+      fsa.transition(:playing,   :quiet_calm,  :asleep)
+      fsa.transition(:litterbox, :pooped,      :asleep)
+      fsa.walk
     end
   end
   FSA = FiniteStateAutomaton
