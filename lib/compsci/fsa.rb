@@ -6,7 +6,7 @@ module CompSci
 
   class State
     def self.comparable!(value)
-      value.kind_of?(Comparable) or
+      value.kind_of?(Comparable) and value or
         raise(TransitionError, "#{value.inspect} isn't Comparable")
     end
 
@@ -58,26 +58,26 @@ module CompSci
       state
     end
 
-    # recursive call; walk the FSA but never rewalk a transition
-    def walk(walked = {})
+    # recursive call; scan the FSA but never rescan a transition
+    def scan(scanned = {})
       deferred = {}
-      walked[self] ||= Set.new
+      scanned[self] ||= Set.new
 
       @dest.each { |t, s|
-        if walked.key?(s)
+        if scanned.key?(s)
           deferred[t] = s
         else
-          next if walked[self].include? t
-          walked[self].add(t)
-          s.walk(walked)
+          next if scanned[self].include? t
+          scanned[self].add(t)
+          s.scan(scanned)
         end
         deferred.each { |t, s|
-          next if walked[self].include? t
-          walked[self].add(t)
-          s.walk(walked)
+          next if scanned[self].include? t
+          scanned[self].add(t)
+          s.scan(scanned)
         }
       }
-      walked
+      scanned
     end
 
     # depth first search for a value, via @dest transitions
@@ -174,7 +174,7 @@ module CompSci
       @states = {}
       @states[@initial.value] = @initial
       @cursor = @initial
-      self.walk
+      self.scan
     end
 
     def reset_cursor
@@ -252,9 +252,9 @@ module CompSci
     end
 
     # register all reachable states and transitions starting from cursor
-    def walk(cursor = @initial)
+    def scan(cursor = @initial)
       @cursor = cursor
-      @transitions = @cursor.walk
+      @transitions = @cursor.scan
       self
     end
 
@@ -272,7 +272,7 @@ module CompSci
       fsa.transition(:locked,   'Coin', :unlocked)
       fsa.transition(:unlocked, 'Coin', :unlocked)
       fsa.transition(:unlocked, 'Push', :locked)
-      fsa.walk
+      fsa.scan
     end
 
     def self.chained
@@ -281,7 +281,7 @@ module CompSci
       fsa.chain_state('Coin', :unlocked)
       fsa.chain_state('Coin', :unlocked)
       fsa.chain_state('Push', :locked)
-      fsa.walk
+      fsa.scan
     end
 
     def self.cauchy
@@ -293,7 +293,7 @@ module CompSci
       fsa.transition(:asleep,    :movement,    :playing)
       fsa.transition(:playing,   :quiet_calm,  :asleep)
       fsa.transition(:litterbox, :pooped,      :asleep)
-      fsa.walk
+      fsa.scan
     end
   end
   FSA = FiniteStateAutomaton

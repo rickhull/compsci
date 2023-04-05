@@ -8,105 +8,123 @@ describe State do
     @state = State.new(:foo)
   end
 
+  describe "State.comparable!" do
+    it "passes the value along if it's Comparable" do
+      [0, :foo, 'asdf'].each { |value|
+        expect(State.comparable!(value)).must_equal value
+      }
+    end
+
+    it "raises TransitionError if it's not Comparable" do
+      [Object.new].each { |value|
+        expect { State.comparable!(value) }.must_raise TransitionError
+      }
+    end
+  end
+
   it "has a value" do
     expect(@state.value).must_equal :foo
   end
 
-  it "creates dest transitions" do
-    dax = @state.new_dest(:transition, :dax)
-    expect(dax).must_be_kind_of State
-    expect(dax.value).must_equal :dax
-    expect(@state.follow(:transition)).must_equal dax
+  describe "outbound transitions" do
+    it "creates dest transitions" do
+      dax = @state.new_dest(:transition, :dax)
+      expect(dax).must_be_kind_of State
+      expect(dax.value).must_equal :dax
+      expect(@state.follow(:transition)).must_equal dax
+    end
+
+    it "updates src transition when dest is added" do
+      dax = @state.new_dest(:transition, :dax)
+      expect(dax).must_be_kind_of State
+      expect(dax.value).must_equal :dax
+
+      source = dax.retreat(:transition)
+      expect(source).must_equal @state
+      expect(source.value).must_equal :foo
+    end
+
+    it "can simply add dest States" do
+      new_state = @state.add_dest(:transition, State.new(:bar))
+      expect(@state.follow(:transition)).must_equal new_state
+
+      # State#add_dest does not automatically update its src transition
+      expect(new_state.retreat(:transition)).must_be_nil
+
+      new_state = @state.add_dest!(:transition, State.new(:bar))
+      expect(@state.follow(:transition)).must_equal new_state
+
+      # State#add_dest! updates src transition for new_state
+      expect(new_state.retreat(:transition)).must_equal @state
+    end
+
+    it "efficiently scans forward even in the presence of cycles" do
+      cauchy = State.cauchy
+      scanned = cauchy.scan
+      expect(scanned.keys.count).must_equal 5
+      expect([:asleep, :eating, :hiding,
+              :litterbox, :playing]).must_include scanned.keys.sample.value
+
+      turnstile = State.turnstile
+      scanned = turnstile.scan
+      expect(scanned.keys.count).must_equal 2
+      expect([:unlocked, :locked]).must_include scanned.keys.sample.value
+    end
+
+    it "efficiently searches for State values" do
+      cauchy = State.cauchy
+      litterbox = cauchy.search(:litterbox)
+      expect(litterbox).must_be_kind_of State
+      expect(litterbox.value).must_equal :litterbox
+
+      playing = cauchy.search(:playing)
+      expect(playing).must_be_kind_of State
+      expect(playing.value).must_equal :playing
+    end
   end
 
-  it "updates src transition when dest is added" do
-    dax = @state.new_dest(:transition, :dax)
-    expect(dax).must_be_kind_of State
-    expect(dax.value).must_equal :dax
+  describe "inbound transitions" do
+    it "creates src transitions" do
+      sax = @state.new_src(:transition, :sax)
+      expect(sax).must_be_kind_of State
+      expect(sax.value).must_equal :sax
+      expect(@state.retreat(:transition)).must_equal sax
+    end
 
-    source = dax.retreat(:transition)
-    expect(source).must_equal @state
-    expect(source.value).must_equal :foo
-  end
+    it "updates dest transition when src is added" do
+      sax = @state.new_src(:transition, :sax)
+      expect(sax).must_be_kind_of State
+      expect(sax.value).must_equal :sax
 
-  it "creates src transitions" do
-    sax = @state.new_src(:transition, :sax)
-    expect(sax).must_be_kind_of State
-    expect(sax.value).must_equal :sax
-    expect(@state.retreat(:transition)).must_equal sax
-  end
+      source = sax.follow(:transition)
+      expect(source).must_equal @state
+      expect(source.value).must_equal :foo
+    end
 
-  it "updates dest transition when src is added" do
-    sax = @state.new_src(:transition, :sax)
-    expect(sax).must_be_kind_of State
-    expect(sax.value).must_equal :sax
+    it "can simply add src States" do
+      new_state = @state.add_src(:transition, State.new(:bar))
+      expect(@state.retreat(:transition)).must_equal new_state
 
-    source = sax.follow(:transition)
-    expect(source).must_equal @state
-    expect(source.value).must_equal :foo
-  end
+      # State#add_src does not automatically update its dest transition
+      expect(new_state.follow(:transition)).must_be_nil
 
-  it "can simply add dest States" do
-    new_state = @state.add_dest(:transition, State.new(:bar))
-    expect(@state.follow(:transition)).must_equal new_state
+      new_state = @state.add_src!(:transition, State.new(:bar))
+      expect(@state.retreat(:transition)).must_equal new_state
 
-    # State#add_dest does not automatically update its src transition
-    expect(new_state.retreat(:transition)).must_be_nil
+      # State#add_dest! updates src transition for new_state
+      expect(new_state.follow(:transition)).must_equal @state
+    end
 
-    new_state = @state.add_dest!(:transition, State.new(:bar))
-    expect(@state.follow(:transition)).must_equal new_state
+    it "efficiently reverse searches for State values" do
+      cauchy = State.cauchy
+      litterbox = cauchy.rsearch(:litterbox)
+      expect(litterbox).must_be_kind_of State
+      expect(litterbox.value).must_equal :litterbox
 
-    # State#add_dest! updates src transition for new_state
-    expect(new_state.retreat(:transition)).must_equal @state
-  end
-
-  it "can simply add src States" do
-    new_state = @state.add_src(:transition, State.new(:bar))
-    expect(@state.retreat(:transition)).must_equal new_state
-
-    # State#add_src does not automatically update its dest transition
-    expect(new_state.follow(:transition)).must_be_nil
-
-    new_state = @state.add_src!(:transition, State.new(:bar))
-    expect(@state.retreat(:transition)).must_equal new_state
-
-    # State#add_dest! updates src transition for new_state
-    expect(new_state.follow(:transition)).must_equal @state
-  end
-
-  it "efficiently walks forward even in the presence of cycles" do
-    cauchy = State.cauchy
-    walked = cauchy.walk
-    expect(walked.keys.count).must_equal 5
-    expect([:asleep, :eating, :hiding,
-            :litterbox, :playing]).must_include walked.keys.sample.value
-
-    turnstile = State.turnstile
-    walked = turnstile.walk
-    expect(walked.keys.count).must_equal 2
-    expect([:unlocked, :locked]).must_include walked.keys.sample.value
-  end
-
-  it "efficiently searches for State values" do
-    cauchy = State.cauchy
-    litterbox = cauchy.search(:litterbox)
-    expect(litterbox).must_be_kind_of State
-    expect(litterbox.value).must_equal :litterbox
-
-    playing = cauchy.search(:playing)
-    expect(playing).must_be_kind_of State
-    expect(playing.value).must_equal :playing
-  end
-
-  it "efficiently reverse searches for State values" do
-    cauchy = State.cauchy
-    litterbox = cauchy.rsearch(:litterbox)
-    expect(litterbox).must_be_kind_of State
-    expect(litterbox.value).must_equal :litterbox
-
-    playing = cauchy.rsearch(:playing)
-    expect(playing).must_be_kind_of State
-    expect(playing.value).must_equal :playing
+      playing = cauchy.rsearch(:playing)
+      expect(playing).must_be_kind_of State
+      expect(playing.value).must_equal :playing
+    end
   end
 
   it "responds to #to_s and #inspect" do
@@ -155,7 +173,7 @@ describe FiniteStateAutomaton do
     @fsa.transition(2, :d, 3)
     expect(@fsa.cursor.value).must_equal 3
 
-    @fsa.walk
+    @fsa.scan
     expect(@fsa.states.count).must_equal 5
   end
 
@@ -176,7 +194,7 @@ describe FiniteStateAutomaton do
     expect(@fsa.cursor.value).must_equal :initial
   end
 
-  it "completes a walk in the presence of cycles" do
+  it "completes a scan in the presence of cycles" do
     @fsa.chain_state(:hop, :middle)
     @fsa.chain_state(:skip, :end)
     @fsa.chain_state(:jump, :middle)
@@ -184,7 +202,7 @@ describe FiniteStateAutomaton do
 
     expect(@fsa.cursor.value).must_equal :initial
 
-    @fsa.walk
+    @fsa.scan
     expect(@fsa.states.count).must_equal 3
     expect(@fsa.states.keys - [:initial, :middle, :end]).must_be_empty
   end
@@ -208,7 +226,7 @@ describe FiniteStateAutomaton do
 
   it "follows specific transitions" do
     cauchy = FSA.cauchy
-    cauchy.walk
+    cauchy.scan
     expect(cauchy.initial.value).must_equal :asleep
     state = cauchy.follow(:food)
     expect(state.value).must_equal :eating
@@ -221,7 +239,7 @@ describe FiniteStateAutomaton do
 
   it "retreats along specific transitions" do
     cauchy = FSA.cauchy
-    cauchy.walk
+    cauchy.scan
     expect(cauchy.initial.value).must_equal :asleep
     state = cauchy.retreat(:pooped)
     expect(state.value).must_equal :litterbox
