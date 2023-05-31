@@ -16,7 +16,7 @@ describe State do
     end
 
     it "raises TransitionError if it's not Comparable" do
-      [Object.new].each { |value|
+      [Object.new, Array.new, Hash.new].each { |value|
         expect { State.comparable!(value) }.must_raise TransitionError
       }
     end
