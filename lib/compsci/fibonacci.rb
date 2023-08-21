@@ -11,22 +11,23 @@ module CompSci
       cache[n] ||= cache_recursive(n-1, cache) + cache_recursive(n-2, cache)
     end
 
+    # linear space and time
     def self.cache_iterative(n)
       cache = [0, 1]
       2.upto(n) { |i| cache[i] = cache[i-1] + cache[i-2] }
       cache[n]
     end
 
+    # constant space, linear time
     def self.dynamic(n)
       a, b = 0, 1
       n.times { a, b = b, a+b }
       a
     end
 
-    # https://gist.github.com/havenwood/02cf291b809327d96a3f
-    # slower than dynamic until around n == 500
+    # https://ianthehenry.com/posts/fibonacci/
     def self.matrix(n)
-      (Matrix[[0, 1], [1, 1]] ** n.pred)[1, 1].to_i
+      (Matrix[[1, 1], [1, 0]] ** n.pred)[0, 0]
     end
   end
 end
