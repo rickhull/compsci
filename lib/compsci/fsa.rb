@@ -4,7 +4,11 @@ module CompSci
   class NotFound < RuntimeError; end
   class TransitionError < RuntimeError; end
 
+  # FSA is a state (vertex) -oriented response to difficulties encountered
+  # with FSM, which is/was a transition (edge) -oriented approach to the
+  # same problem here.
   class State
+    # transitions should be Comparable
     def self.comparable!(value)
       value.kind_of?(Comparable) and value or
         raise(TransitionError, "#{value.inspect} isn't Comparable")
@@ -118,14 +122,16 @@ module CompSci
       @src[transition]
     end
 
-    def next(strategy)
-      raise "unknown: #{strategy.inspect}" unless STRATEGY.include? strategy
-      @dest.values.send(strategy)
+    # return [transition, state]
+    def next(strategy = :sample)
+      return unless t = @dest.keys.send(strategy)
+      [t, @dest[t]]
     end
 
-    def prev(strategy)
-      raise "unknown: #{strategy.inspect}" unless STRATEGY.include? strategy
-      @src.values.send(strategy)
+    # return [transition, state]
+    def prev(strategy = :sample)
+      return unless t = @src.keys.send(strategy)
+      [t, @src[t]]
     end
 
     def to_s
@@ -202,14 +208,16 @@ module CompSci
 
     # bump cursor forward according to strategy
     def next(strategy = :sample)
-      return unless state = @cursor.next(strategy)
-      @cursor = state
+      return unless ary = @cursor.next(strategy)
+      @cursor = ary[1]
+      ary[0]
     end
 
     # bump cursor backward according to strategy
     def prev(strategy = :sample)
-      return unless state = @cursor.prev(strategy)
-      @cursor = state
+      return unless ary = @cursor.prev(strategy)
+      @cursor = ary[1]
+      ary[0]
     end
 
     # search via dest transitions, first from @cursor, then from @initial
