@@ -1,3 +1,6 @@
+# based on https://people.ischool.berkeley.edu/~nick/aaronson-oracle/index.html
+# via https://github.com/elsehow/aaronson-oracle
+
 module CompSci
   module Oracle
     # A ring buffers stores only the last N items, characters in this case
