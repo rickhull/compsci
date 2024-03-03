@@ -1,10 +1,10 @@
 # stdlib
 require 'zlib'
-#require 'digest'    # this "autoloads" MD5 etc but doesn't play nice with rake
-require 'digest/md5' # workaround: require exactly what we need
-require 'digest/sha1'
-require 'digest/sha2'
-require 'digest/rmd160'
+# require 'digest'      # resolving Digest::MD5 is not threadsafe
+require 'digest/md5'    # MD5
+require 'digest/sha1'   # SHA1
+require 'digest/sha2'   # SHA256, SHA384, SHA512
+require 'digest/rmd160' # RMD160
 
 # gems
 require 'bitset'
@@ -18,22 +18,14 @@ module CompSci
       val = 0 # for cyclic hashing
       Array.new(num_hashes) { |i|
         case i
-        when 0
-          str.hash
-        when 1
-          Zlib.crc32(str)
-        when 2
-          Digest::MD5.hexdigest(str).to_i(16)
-        when 3
-          Digest::SHA1.hexdigest(str).to_i(16)
-        when 4
-          Digest::SHA256.hexdigest(str).to_i(16)
-        when 5
-          Digest::SHA384.hexdigest(str).to_i(16)
-        when 6
-          Digest::SHA512.hexdigest(str).to_i(16)
-        when 7
-          Digest::RMD160.hexdigest(str).to_i(16)
+        when 0 then str.hash
+        when 1 then Zlib.crc32(str)
+        when 2 then Digest::MD5.hexdigest(str).to_i(16)
+        when 3 then Digest::SHA1.hexdigest(str).to_i(16)
+        when 4 then Digest::SHA256.hexdigest(str).to_i(16)
+        when 5 then Digest::SHA384.hexdigest(str).to_i(16)
+        when 6 then Digest::SHA512.hexdigest(str).to_i(16)
+        when 7 then Digest::RMD160.hexdigest(str).to_i(16)
         else # cyclic hashing with CRC32
           val = Zlib.crc32(str, val)
         end % num_bits
