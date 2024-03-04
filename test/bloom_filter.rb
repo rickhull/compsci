@@ -4,7 +4,7 @@ require 'minitest/autorun'
 include CompSci
 
 describe BloomFilter do
-  # parallelize_me!
+  parallelize_me!
 
   it "has a bitmap for storage" do
     expect(BloomFilter.new.bitmap).must_be_kind_of Bitset
