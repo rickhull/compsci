@@ -6,6 +6,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe Names do
+  parallelize_me!
+
   describe "alphabetic constants" do
     it "must have size 26" do
       expect(Names::WW1.size).must_equal 26

@@ -1,8 +1,6 @@
 require 'compsci/fit'
 require 'minitest/autorun'
 
-Minitest::Test.parallelize_me!
-
 include CompSci
 
 def noise # range: -0.5 to 0.5
@@ -10,6 +8,8 @@ def noise # range: -0.5 to 0.5
 end
 
 describe Fit do
+  parallelize_me!
+
   before do
     @xs = [1, 2, 5, 10, 20, 50, 100, 200, 500]
   end

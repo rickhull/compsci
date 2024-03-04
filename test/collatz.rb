@@ -4,6 +4,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe Collatz do
+  parallelize_me!
+
   it "performs the Collatz operation on any positive integer" do
     # n/2 if n is even, 3n+1 otherwise
     { 2 => 1,

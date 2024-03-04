@@ -4,6 +4,8 @@ require 'compsci/fsm'
 include CompSci
 
 describe FiniteStateMachine do
+  parallelize_me!
+
   before do
     @fsm = FSM.new
   end

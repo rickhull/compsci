@@ -1,9 +1,9 @@
 require 'compsci'
 require 'minitest/autorun'
 
-Minitest::Test.parallelize_me!
-
 describe CompSci do
+  parallelize_me!
+
   it "must determine if num is a power of base" do
     powers = {}
     basemax = 12

@@ -4,6 +4,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe FlexNode do
+  parallelize_me!
+
   before do
     @martin_sheen = FlexNode.new 'martin'
     @charlie_sheen = FlexNode.new 'charlie'

@@ -4,6 +4,8 @@ require 'compsci/fsa'
 include CompSci
 
 describe State do
+  parallelize_me!
+
   before do
     @state = State.new(:foo)
   end

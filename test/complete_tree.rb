@@ -1,11 +1,11 @@
 require 'compsci/complete_tree'
 require 'minitest/autorun'
 
-Minitest::Test.parallelize_me!
-
 include CompSci
 
 describe CompleteTree do
+  parallelize_me!
+
   it "must calculate a parent index for N=2" do
     valid = {
       1 => 0,

@@ -4,6 +4,8 @@ require 'minitest/autorun'
 include CompSci::Oracle
 
 describe CompSci::Oracle do
+  parallelize_me!
+
   describe Ring do
     it "has a limited number of slots" do
       r = Ring.new(3)

@@ -4,6 +4,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe Heap do
+  parallelize_me!
+
   describe "MaxHeap" do
     before do
       @maxheap = Heap.new

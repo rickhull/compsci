@@ -4,6 +4,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe Simplex::Parse do
+  parallelize_me!
+
   P = Simplex::Parse
 
   describe "Parse.term" do

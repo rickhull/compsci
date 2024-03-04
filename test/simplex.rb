@@ -4,6 +4,8 @@ require 'compsci/simplex'
 include CompSci
 
 class SimplexTest < Minitest::Test
+  parallelize_me!
+
   def test_2x2
     result = Simplex.new(
       [1, 1],

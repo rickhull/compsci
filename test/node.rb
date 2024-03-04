@@ -5,6 +5,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe Node do
+  parallelize_me!
+
   before do
     @martin_sheen = Node.new 'martin'
     @charlie_sheen = Node.new 'charlie'

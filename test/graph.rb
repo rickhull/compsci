@@ -4,6 +4,8 @@ require 'compsci/graph'
 include CompSci
 
 describe Edge do
+  parallelize_me!
+
   before do
     @v0 = 0
     @v1 = 1
