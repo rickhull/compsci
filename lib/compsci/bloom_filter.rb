@@ -1,53 +1,99 @@
 # stdlib
 require 'zlib'
+require 'digest'
 require 'openssl'
-require 'digest/md5'
 
 # gems
 require 'bitset'
 
 module CompSci
   class BloomFilter
-    OPENSSL_DIGESTS = %w[SHA1
-                         SHA224 SHA256 SHA384 SHA512 SHA512-224 SHA512-256
-                         SHA3-224 SHA3-256 SHA3-384 SHA3-512
-                         BLAKE2s256 BLAKE2b512]
-    DIGEST_COUNT = OPENSSL_DIGESTS.count
+    # from 'digest'
+    DIGESTS = %w[MD5 SHA1 SHA256 SHA384 SHA512 RMD160].map { |name|
+      Digest(name).new
+    }
 
-    # return an array of bit indices ("on bits") via repeated string hashing
-    # start with the fastest/cheapest algos, up to 8 rounds
-    # beyond that, perform cyclic "hashing" with CRC32
-    def self.hash_bits(str, num_hashes:, num_bits:)
-      val = 0 # for cyclic hashing
-      Array.new(num_hashes) { |i|
-        case i
-        when 0 then str.hash
-        when 1 then Zlib.crc32(str)
-        when 2 then Digest::MD5.hexdigest(str).to_i(16)
-        when (3..(DIGEST_COUNT + 2))
-          # take the last 32 bits of the hash
-          OpenSSL::Digest.digest(OPENSSL_DIGESTS[i - 3], str).unpack('N*').last
-        else # cyclic hashing with CRC32
-          val = Zlib.crc32(str, val)
-        end % num_bits
+    # from 'openssl'
+    OPENSSL_DIGESTS = %w[SHA1
+                         SHA224 SHA256 SHA384 SHA512
+                         SHA512-224 SHA512-256
+                         SHA3-224 SHA3-256 SHA3-384 SHA3-512
+                         BLAKE2s256 BLAKE2b512].map { |name|
+      OpenSSL::Digest.new(name)
+    }
+
+    # the next two methods return an array of bit indices ("on bits")
+    # corresponding to multiple rounds of string hashing
+
+    # CRC32 is not true hashing but it should be random and uniform
+    # enough for our purposes, as well as being quite fast
+    def self.crc_bits(str, num_hashes:, num_bits:)
+      val = 0
+      Array.new(num_hashes) {
+        (val = Zlib.crc32(str, val)) % num_bits
       }
     end
 
-    attr_reader :bitmap
+    # use either Digest or OpenSSL::Digest (Digest by default)
+    # now we are computing MD5, SHA1, etc.
+    # these are cryptographic hashes which should be more uniform than
+    # CRC32 but not particularly so, and are relatively slow / expensive
+    def self.digest_bits(str, num_hashes:, num_bits:, digests: DIGESTS)
+      raise "#{num_hashes} hashes" if num_hashes > digests.count
+      Array.new(num_hashes) { |i|
+        # only consider the LSB 32-bit integer for modulo
+        digests[i].digest(str).unpack('N*').last % num_bits
+      }
+    end
+
+    attr_reader :num_bits, :num_hashes,
+                :use_string_hash, :use_crc32, :use_openssl,
+                :bitmap
 
     # The default values require 8 kilobytes of storage and recognize:
     # < 4000 strings; FPR 0.1%
     # < 7000 strings; FPR 1%
     # >  10k strings; FPR 5%
     # The false positive rate goes up as more strings are added
-    def initialize(num_bits: 2**16, num_hashes: 5)
+    def initialize(num_bits: 2**16, num_hashes: 5,
+                   use_string_hash: true,
+                   use_crc32: true,
+                   use_openssl: false)
       @num_bits = num_bits
       @num_hashes = num_hashes
       @bitmap = Bitset.new(@num_bits)
+      @use_string_hash = use_string_hash
+      @use_crc32 = use_crc32
+      @use_openssl = use_openssl
     end
 
     def hash_bits(str)
-      self.class.hash_bits(str, num_hashes: @num_hashes, num_bits: @num_bits)
+      @use_crc32 ? crc_bits(str) : digest_bits(str)
+    end
+
+    def crc_bits(str)
+      if @use_string_hash
+        BloomFilter.crc_bits(str,
+                             num_hashes: @num_hashes - 1,
+                             num_bits: @num_bits).push(str.hash % @num_bits)
+      else
+        BloomFilter.crc_bits(str, num_hashes: @num_hashes, num_bits: @num_bits)
+      end
+    end
+
+    def digest_bits(str)
+      digests = @use_openssl ? OPENSSL_DIGESTS : DIGESTS
+      if @use_string_hash
+        BloomFilter.digest_bits(str,
+                                num_hashes: @num_hashes - 1,
+                                num_bits: @num_bits,
+                                digests: digests).push(str.hash % @num_bits)
+      else
+        BloomFilter.digest_bits(str,
+                                num_hashes: @num_hashes,
+                                num_bits: @num_bits,
+                                digests: digests)
+      end
     end
 
     def add(str)
