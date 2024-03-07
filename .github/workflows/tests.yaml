@@ -33,5 +33,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler: none
+      - name: Install dependencies
+        run: gem install bitset
       - name: Run tests
         run: rake test
