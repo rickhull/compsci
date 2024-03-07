@@ -1,26 +1,42 @@
 require 'compsci/bloom_filter'
 
-include CompSci
+# conditionally require digest or openssl
+required = false
+use_string_hash = false
 
-[9, 99, 999, 9_999, 99_999, 999_999,
- 9_999_999, 99_999_999, 999_999_999].each { |items|
-  [0.2, 0.1, 0.05, 0.01, 0.001, 0.0001].each { |fpr|
-    nb, nh = BloomFilter.optimal(items, fpr: fpr)
-    amt, label = BloomFilter.bytes(nb)
-    puts format("%i items, FPR: %.4f: %i bits, %.1f %s, %i hashes",
-                items, fpr, nb, amt, label, nh)
-  }
-  puts
+ARGV.each { |arg|
+  if arg.match(/openssl/i) and !required
+    require 'compsci/bloom_filter/openssl'
+    puts "-------"
+    puts "OPENSSL"
+    puts "-------"
+    required = true
+  elsif arg.match(/digest/i) and !required
+    require 'compsci/bloom_filter/digest'
+    puts "------"
+    puts "DIGEST"
+    puts "------"
+    required = true
+  elsif arg.match(/use_string_hash/i)
+    use_string_hash = true
+  end
 }
 
-[8, 10, 16, 20, 30, 32, 40].each { |pow2|
-  num_bits = 2**pow2
-  amt, label = BloomFilter.bytes(num_bits)
-  [5,7,9].each { |num_hashes|
-    puts format("%i bits (2^%i) \t %.1f %s \t %i hashes",
-                num_bits, pow2, amt, label, num_hashes)
-    puts '-' * 20
-    puts BloomFilter.analysis(2**pow2, num_hashes)
-    puts
-  }
+puts "use_string_hash: #{use_string_hash}"
+
+bf = CompSci::BloomFilter.new(use_string_hash: use_string_hash)
+puts "Created bloom filter"
+puts bf
+puts
+
+iters = 9999
+iters.times { |i| bf << i.to_s }
+puts "Added #{iters} items"
+puts bf
+puts
+
+found = 0
+iters.times {
+  found += 1 if bf.include?(rand(iters * 2).to_s)
 }
+puts "Queried #{iters} items (50% seen), found #{found}"
