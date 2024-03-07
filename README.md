@@ -99,6 +99,120 @@ gets over [500k pushes per second](reports/examples#L533), constant up past
 * [test/heap.rb](test/heap.rb)
 * [test/bench/heap.rb](test/bench/heap.rb)
 
+## [`BloomFilter`](lib/compsci/bloom_filter.rb) class
+
+### Basics
+
+A Bloom filter is a probabilistic data structure which always yields true
+negatives and has a variable false positive rate.  It is like a mathematical
+set, in that it tracks whether items have been encountered previously.
+Occasionally, it will report that it has seen an item when truly it has
+confused the queried item with a different item that it
+**had seen previously**.
+
+### Operation
+
+The fundamental operation of a Bloom filter is to convert a string into a short
+series of numbers: *bit indices*.  For example, "asdf" might convert to
+(1,2,3,4) or even (79, 954, 22).  Hashing algorithms are used in this
+conversion process.  These *bit indices* indicate which bits in a bitmap
+(a long string of 1s and 0s) to "turn on".  The bitmap starts out empty, or
+zeroed out.  Maybe it has 1024 bits.  If "asdf" converts to (79, 954, 22), then
+we will turn on those corresponding bits.
+
+Now, we want to check if we have seen the string "qwerty".  "qwerty" converts,
+hypothetically, to (82, 105, 25).  We check if those bits are "on" in the
+bitmap and respond to the query accordingly.
+
+#### False Positives
+
+There are two distinct sources of false positives:
+
+1. Two different strings map to the exact same bit indices
+2. So many bits have been flipped on, from other additions, that the queried
+   bits have already been flipped on
+
+As the filter "fills up", the false positive rate goes up until all bits are
+`1` and every query results in a positive, false or not.
+
+#### Performance
+
+Performance has 2 main aspects:
+
+1. Logical performance: does it meet or exceed requirements?
+2. Runtime performance: at what cost in storage / time / cycles?
+
+A Bloom filter that is too small will fill up quickly and stop meeting
+false postive rate (FPR) goals.  If there are too many hashing rounds, then
+extra work is being done, and the filter fills up quicker with more bits
+being set.
+
+Some rules of thumb:
+
+* 1% is a reasonable FPR
+* 7 hashes are required to meet 1% FPR for the fewest bits
+* N items require N bytes (N * 2^3 bits) of storage around 1% FPR
+* 5 or 6 hashes might be preferable at the cost of additional storage
+
+When choosing Bloom filter parameters, it is best to start with requirements,
+typically formulated in terms of:
+
+* item count
+* acceptable false positive rate
+* hashing limits (e.g. 5 rounds instead of 7)
+* storage limits
+
+### Usage
+
+#### Included Scripts
+
+* [`ruby -Ilib test/bloom_filter.rb`](test/bloom_filter.rb)
+* [`ruby -Ilib examples/bloom_filter.rb`](examples/bloom_filter.rb)
+* [`ruby -Ilib examples/bloom_filter_theory.rb`](examples/bloom_filter_theory.rb)
+
+#### Basics
+
+* `Zlib.crc32` is used by default
+  - not true hashing but very fast and close enough
+  - able to feed the hash state forward for cyclic hashing
+  - Ruby's stdlib
+* `Digest:MD5` and friends are available
+  - cryptographic hashes are not ideal for Bloom filters
+  - they beat CRC32 on uniformity but lose on performance
+  - Ruby's stdlib
+  - `require 'compsci/bloom_filter/digest'`
+* `OpenSSL::Digest` is available
+  - more algos and supposedly more (thread)safe than `Digest`
+  - slightly slower than `Digest`
+  - Ruby's stdlib
+  - `require 'compsci/bloom_filter/openssl'`
+  - mutually incompatible with `Digest`, above
+
+Organizing the library this way keeps the default path very small and fast:
+
+```
+require 'compsci/bloom_filter'
+
+bf = CompSci::BloomFilter.new
+
+# add strings: "1" up to "999"
+999.times { |i|
+  bf.add(i.to_s)
+}
+
+bf.include?('asdf') #=> false
+
+bf #=> 65536 bits (8.0 kB, 5 hashes) 7% full; FPR: 0.000%
+
+bf.fpr #=> 1.97087379660843e-06
+
+bf.include?('123') #=> true
+
+bf['123'] #=> 0.9999980291262034
+
+bf['asdf'] #=> 0
+```
+
 ## [`Fibonacci`](lib/compsci/fibonacci.rb) module
 
 * `Fibonacci.classic(n)`         - naive, recursive
