@@ -1,38 +1,39 @@
 require 'compsci/bloom_filter'
-require 'benchmark/ips'
+# conditionally require digest or openssl
+ARGV.each { |arg|
+  if arg.match /openssl/i
+    require 'compsci/bloom_filter/openssl'
+    puts "-------"
+    puts "OPENSSL"
+    puts "-------"
+    break
+  elsif arg.match /digest/i
+    require 'compsci/bloom_filter/digest'
+    puts "------"
+    puts "DIGEST"
+    puts "------"
+    break
+  end
+}
+
+require 'benchmark/ips' # gem
 
 include CompSci
 
-iters = 999
-
-FILTERS = [
-  BloomFilter.new(use_string_hash: false, use_crc32: true), # pure CRC32
-  BloomFilter.new(use_string_hash: false, use_crc32: false, # pure Digest
-                  use_openssl: false),
-  BloomFilter.new(use_string_hash: false, use_crc32: false, # pure OpenSSL
-                  use_openssl: true),
-  BloomFilter.new(use_string_hash: true, use_crc32: true),  # fast CRC32
-  BloomFilter.new(use_string_hash: true, use_crc32: false,  # fast Digest
-                  use_openssl: false),
-  BloomFilter.new(use_string_hash: true, use_crc32: false,  # fast OpenSSL
-                  use_openssl: true),
-]
+iters = 1999
+num_bits = 2**16
+num_hashes = 6
 
 Benchmark.ips do |b|
-  b.config(time: 1, warmup: 0.2)
+  b.config(time: 2, warmup: 0.2)
 
-  FILTERS.each { |bf|
-    title = format("string:%s\tcrc32:%s\topenssl:%s",
-                   bf.use_string_hash,
-                   bf.use_crc32,
-                   bf.use_crc32 ? 'N/A' : bf.use_openssl)
-    b.report(title) {
-      iters.times { |i|
-        bf.add(i.to_s)
-      }
-      iters.times { |i|
-        bf.include?(rand(iters * 2).to_s)
-      }
+  [true, false].each { |use_string_hash|
+    b.report("use_string_hash: #{use_string_hash}") {
+      bf = BloomFilter.new(use_string_hash: use_string_hash,
+                           num_bits: num_bits,
+                           num_hashes: num_hashes)
+      iters.times { |i| bf.add(i.to_s) }
+      iters.times {     bf.include?(rand(iters * 2).to_s) }
     }
   }
 
