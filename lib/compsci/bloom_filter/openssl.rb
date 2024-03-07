@@ -10,11 +10,11 @@ module CompSci
       OpenSSL::Digest.new(name)
     }
 
-    def self.hash_bits(str, num_hashes:, num_bits:)
-      raise "#{num_hashes} hashes" if num_hashes > DIGESTS.count
-      Array.new(num_hashes) { |i|
+    def self.hash_bits(str, hashes:, bits:)
+      raise "#{hashes} hashes" if hashes > DIGESTS.count
+      Array.new(hashes) { |i|
         # only consider the LSB 32-bit integer for modulo
-        DIGESTS[i].digest(str).unpack('N*').last % num_bits
+        DIGESTS[i].digest(str).unpack('N*').last % bits
       }
     end
   end

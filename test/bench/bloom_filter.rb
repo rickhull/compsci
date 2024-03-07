@@ -20,9 +20,9 @@ require 'benchmark/ips' # gem
 
 include CompSci
 
-iters = 1999
-num_bits = 2**16
-num_hashes = 6
+iters = 999
+bits = 2**16
+hashes = 6
 
 Benchmark.ips do |b|
   b.config(time: 2, warmup: 0.2)
@@ -30,8 +30,8 @@ Benchmark.ips do |b|
   [true, false].each { |use_string_hash|
     b.report("use_string_hash: #{use_string_hash}") {
       bf = BloomFilter.new(use_string_hash: use_string_hash,
-                           num_bits: num_bits,
-                           num_hashes: num_hashes)
+                           bits: bits,
+                           hashes: hashes)
       iters.times { |i| bf.add(i.to_s) }
       iters.times {     bf.include?(rand(iters * 2).to_s) }
     }

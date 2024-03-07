@@ -6,10 +6,10 @@ module CompSci
       Digest(name).new
     }
 
-    def self.hash_bits(str, num_hashes:, num_bits:)
-      raise "#{num_hashes} hashes" if num_hashes > DIGESTS.count
-      Array.new(num_hashes) { |i|
-        DIGESTS[i].digest(str).unpack('N*').last % num_bits
+    def self.hash_bits(str, hashes:, bits:)
+      raise "Too many: #{hashes} hashes" if hashes > DIGESTS.count
+      Array.new(hashes) { |i|
+        DIGESTS[i].digest(str).unpack('N*').last % bits
       }
     end
   end
