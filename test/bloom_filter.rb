@@ -17,7 +17,7 @@ describe BloomFilter do
   end
 
   it "hashes with different algorithms to yield different bit indices" do
-    str = 'asdf'
+    str = 'qwerty'
     bit_indices = BloomFilter.digest_bits(str, num_hashes: 5, num_bits: 1024)
     first_bit = bit_indices[0]
     expect(bit_indices.all? { |i| i == first_bit }).wont_equal true
