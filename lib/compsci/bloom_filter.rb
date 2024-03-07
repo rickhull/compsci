@@ -24,9 +24,9 @@ module CompSci
 
     def hash_bits(str)
       @use_string_hash ?
-        BloomFilter.hash_bits(str, hashes: @hashes - 1, bits: @bits).
+        self.class.hash_bits(str, hashes: @hashes - 1, bits: @bits).
           push(str.hash % @bits) :
-        BloomFilter.hash_bits(str, hashes: @hashes, bits: @bits)
+        self.class.hash_bits(str, hashes: @hashes, bits: @bits)
     end
 
     def add(str)
