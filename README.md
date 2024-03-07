@@ -107,7 +107,7 @@ A Bloom filter is a probabilistic data structure which always yields true
 negatives and has a variable false positive rate.  It is like a mathematical
 set, in that it tracks whether items have been encountered previously.
 Occasionally, it will report that it has seen an item when truly it has
-confused the queried item with a different item that it
+confused the queried item with a *different item* that it
 **had seen previously**.
 
 ### Operation
@@ -135,7 +135,7 @@ There are two distinct sources of false positives:
 As the filter "fills up", the false positive rate goes up until all bits are
 `1` and every query results in a positive, false or not.
 
-#### Performance
+### Performance
 
 Performance has 2 main aspects:
 
@@ -162,6 +162,28 @@ typically formulated in terms of:
 * hashing limits (e.g. 5 rounds instead of 7)
 * storage limits
 
+#### Hashing
+
+When hashing a string, we ultimately want an integer value which,
+*modulo num_bits*, will be a bit index into an array of bits.  The ideal
+hashing algorithm will approximate the uniform distribution of possible hash
+values while prioritizing speed and minimizing storage and cycles.  A single
+bit flip, or byte increment, in the input string should result in a large
+change in the output hash value.
+
+By default, this library uses the CRC32 algorithm, which is not actually
+a hashing algorithm but instead a checksum algorithm.  It has less uniformity
+guarantees than most hashing algorithms, but it still may yield a wide enough
+distribution for our purposes.
+
+We cannot use the entire fidelity of the hash value, which may be something
+like 64 bytes.  If the bitmap is only 16 bytes, then modulo is already
+shrinking our domain of values.  CRC32 yields a 32-bit value, which is 4 bytes.
+
+In general, this library uses the last (least significant) 32 bits of any
+given hash value as the integer to be modulo'd.  As long as your Bloom filter
+is under half a gigabyte, the modulo arithmetic dominates the domain reduction.
+
 ### Usage
 
 #### Included Scripts
@@ -181,36 +203,41 @@ typically formulated in terms of:
   - they beat CRC32 on uniformity but lose on performance
   - Ruby's stdlib
   - `require 'compsci/bloom_filter/digest'`
+  - `CompSci::BloomFilter::Digest.new`
 * `OpenSSL::Digest` is available
   - more algos and supposedly more (thread)safe than `Digest`
   - slightly slower than `Digest`
   - Ruby's stdlib
   - `require 'compsci/bloom_filter/openssl'`
-  - mutually incompatible with `Digest`, above
+  - `CompSci::BloomFilter::OpenSSL.new`
 
 Organizing the library this way keeps the default path very small and fast:
 
-```
+```ruby
 require 'compsci/bloom_filter'
+# or, require 'compsci/bloom_filter/digest'   # for digest
+# or, require 'compsci/bloom_filter/openssl'  # for both digest and openssl
 
 bf = CompSci::BloomFilter.new
+# or, bf = CompSci::BloomFilter::Digest.new  # or, BloomFilter::OpenSSL.new
 
 # add strings: "1" up to "999"
 999.times { |i|
   bf.add(i.to_s)
 }
 
-bf.include?('asdf') #=> false
-
-bf #=> 65536 bits (8.0 kB, 5 hashes) 7% full; FPR: 0.000%
-
-bf.fpr #=> 1.97087379660843e-06
-
-bf.include?('123') #=> true
-
-bf['123'] #=> 0.9999980291262034
-
-bf['asdf'] #=> 0
+bf.include?('asdf')
+#=> false
+bf
+#=> 65536 bits (8.0 kB, 5 hashes) 7% full; FPR: 0.000%
+bf.fpr
+#=> 1.97087379660843e-06
+bf.include?('123')
+#=> true
+bf['123']
+#=> 0.9999980291262034
+bf['asdf']
+#=> 0
 ```
 
 ## [`Fibonacci`](lib/compsci/fibonacci.rb) module
