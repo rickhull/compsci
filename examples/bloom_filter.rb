@@ -1,42 +1,81 @@
 require 'compsci/bloom_filter'
 
-# conditionally require digest or openssl
-required = false
-use_string_hash = false
+include CompSci
 
+# simulate a db query that returns true for roughly 10% of queries
+# a true result means additional (hypothetical) processing is required
+def db_query(num, mod: 10, elapsed: 0.01)
+  sleep elapsed
+  num % mod == 0
+end
+
+# check ARGV for config directives
+use_string_hash = false
+klass = BloomFilter
 ARGV.each { |arg|
-  if arg.match(/openssl/i) and !required
-    require 'compsci/bloom_filter/openssl'
-    puts "-------"
-    puts "OPENSSL"
-    puts "-------"
-    required = true
-  elsif arg.match(/digest/i) and !required
+  if arg.match(/digest/i)
     require 'compsci/bloom_filter/digest'
-    puts "------"
     puts "DIGEST"
-    puts "------"
-    required = true
+    klass = BloomFilter::Digest
+  elsif arg.match(/openssl/i)
+    require 'compsci/bloom_filter/openssl'
+    puts "OPENSSL"
+    klass = BloomFilter::OpenSSL
   elsif arg.match(/use_string_hash/i)
     use_string_hash = true
   end
 }
-
 puts "use_string_hash: #{use_string_hash}"
 
-bf = CompSci::BloomFilter.new(use_string_hash: use_string_hash)
+bf = klass.new(use_string_hash: use_string_hash)
 puts "Created bloom filter"
 puts bf
 puts
 
-iters = 9999
-iters.times { |i| bf << i.to_s }
-puts "Added #{iters} items"
+# now we want to preload the filter to match the db
+# if the db returns true, we will take hypothetical further action
+# if the db returns false, no action necessary
+# so we want to load the filter with queries for which the db will return true
+# if the filter returns true, we still check the db
+# the db will probably return true but maybe false (BF false positive)
+# if the filter returns false, we're done
+
+iters = 999
+iters.times { |i|
+  bf.add(i.to_s) if db_query(i, mod: 10, elapsed: 0)
+}
+puts "Ran #{iters} queries to load the filter"
 puts bf
 puts
 
-found = 0
-iters.times {
-  found += 1 if bf.include?(rand(iters * 2).to_s)
+#################
+
+puts "Running queries straight to db..."
+t = Time.new
+counts = { true => 0, false => 0 }
+iters = 99
+iters.times { |i|
+  counts[db_query(i, mod: 10, elapsed: 0.05)] += 1
 }
-puts "Queried #{iters} items (50% seen), found #{found}"
+elapsed = Time.new - t
+puts format("Ran %i queries straight to db; %.2f s elapsed", iters, elapsed)
+puts counts
+puts
+
+#################
+
+puts "Running queries filtered by bloom filter..."
+t = Time.new
+counts = { true => 0, false => 0 }
+iters = 99
+iters.times { |i|
+  if bf.include?(i.to_s)
+    counts[db_query(i, mod: 10, elapsed: 0.05)] += 1
+  else
+    counts[false] += 1
+  end
+}
+elapsed = Time.new - t
+puts format("Ran %i filtered queries; %.2f s elapsed", iters, elapsed)
+puts counts
+puts
