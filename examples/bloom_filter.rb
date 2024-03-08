@@ -1,4 +1,4 @@
-require 'compsci/bloom_filter'
+require 'compsci/bloom_filter/openssl'
 
 include CompSci
 
@@ -14,21 +14,16 @@ use_string_hash = false
 klass = BloomFilter
 ARGV.each { |arg|
   if arg.match(/digest/i)
-    require 'compsci/bloom_filter/digest'
-    puts "DIGEST"
     klass = BloomFilter::Digest
   elsif arg.match(/openssl/i)
-    require 'compsci/bloom_filter/openssl'
-    puts "OPENSSL"
     klass = BloomFilter::OpenSSL
   elsif arg.match(/use_string_hash/i)
     use_string_hash = true
   end
 }
-puts "use_string_hash: #{use_string_hash}"
 
 bf = klass.new(use_string_hash: use_string_hash)
-puts "Created bloom filter"
+puts format("%s.new(use_string_hash: %s)", klass.name, use_string_hash)
 puts bf
 puts
 
@@ -55,7 +50,7 @@ t = Time.new
 counts = { true => 0, false => 0 }
 iters = 99
 iters.times { |i|
-  counts[db_query(i, mod: 10, elapsed: 0.05)] += 1
+  counts[db_query(i)] += 1
 }
 elapsed = Time.new - t
 puts format("Ran %i queries straight to db; %.2f s elapsed", iters, elapsed)
@@ -70,7 +65,7 @@ counts = { true => 0, false => 0 }
 iters = 99
 iters.times { |i|
   if bf.include?(i.to_s)
-    counts[db_query(i, mod: 10, elapsed: 0.05)] += 1
+    counts[db_query(i)] += 1
   else
     counts[false] += 1
   end
