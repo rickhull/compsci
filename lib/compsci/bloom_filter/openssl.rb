@@ -4,13 +4,22 @@ require 'openssl' # stdlib
 module CompSci
   class BloomFilter
     class OpenSSL < BloomFilter::Digest
-      ALGOS = %w[SHA1
-                 SHA224 SHA256 SHA384 SHA512
-                 SHA512-224 SHA512-256
-                 SHA3-224 SHA3-256 SHA3-384 SHA3-512
-                 BLAKE2s256 BLAKE2b512].map { |name|
-        ::OpenSSL::Digest.new(name)
+      SIZES = {
+        "SHA1"=>20,
+        "SHA224"=>28,
+        "SHA256"=>32,
+        "SHA384"=>48,
+        "SHA512"=>64,
+        "SHA512-224"=>28,
+        "SHA512-256"=>32,
+        "SHA3-224"=>28,
+        "SHA3-256"=>32,
+        "SHA3-384"=>48,
+        "SHA3-512"=>64,
+        "BLAKE2s256"=>32,
+        "BLAKE2b512"=>64,
       }
+      DIGESTS = SIZES.keys.map { |name| ::OpenSSL::Digest.new(name) }
     end
   end
 end

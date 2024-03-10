@@ -4,14 +4,20 @@ require 'digest'  # stdlib
 module CompSci
   class BloomFilter
     class Digest < BloomFilter
-      ALGOS = %w[MD5 SHA1 SHA256 SHA384 SHA512 RMD160].map { |name|
-        Digest(name).new
+      SIZES = {
+        "MD5"=>16,
+        "RMD160"=>20,
+        "SHA1"=>20,
+        "SHA256"=>32,
+        "SHA384"=>48,
+        "SHA512"=>64,
       }
+      DIGESTS = SIZES.keys.map { |name| Digest(name).new }
 
       def self.hash_bits(str, hashes:, bits:)
-        raise "Too many: #{hashes} hashes" if hashes > self::ALGOS.count
+        raise "Too many: #{hashes} hashes" if hashes > self::DIGESTS.count
         Array.new(hashes) { |i|
-          self::ALGOS[i].digest(str).unpack('N*').last % bits
+          self::DIGESTS[i].digest(str).unpack('N*').last % bits
         }
       end
     end
