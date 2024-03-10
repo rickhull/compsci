@@ -2,11 +2,11 @@ require 'compsci/bloom_filter/openssl'
 
 include CompSci
 
-# simulate a db query that returns true for roughly 10% of queries
-# a true result means additional (hypothetical) processing is required
+# simulate a db query that returns data for roughly 10% of queries
+# a non-nil result means additional (hypothetical) processing is required
 def db_query(num, mod: 10, elapsed: 0.01)
   sleep elapsed
-  num % mod == 0
+  Zlib.crc32(num.to_s) if num % mod == 0
 end
 
 # check ARGV for config directives
@@ -22,24 +22,32 @@ ARGV.each { |arg|
   end
 }
 
-bf = klass.new(use_string_hash: use_string_hash)
+bf = klass.new(use_string_hash: use_string_hash, bits: 1024)
 puts format("%s.new(use_string_hash: %s)", klass.name, use_string_hash)
 puts bf
 puts
 
 # now we want to preload the filter to match the db
-# if the db returns true, we will take hypothetical further action
-# if the db returns false, no action necessary
-# so we want to load the filter with queries for which the db will return true
+# if the db returns a record, we will take hypothetical further action
+# if the db returns nil, no action necessary
+# so we want to load the filter with queries for which the db has records
 # if the filter returns true, we still check the db
 # the db will probably return true but maybe false (BF false positive)
-# if the filter returns false, we're done
+# if the filter returns false, we're done, without checking the db
 
-iters = 999
-iters.times { |i|
-  bf.add(i.to_s) if db_query(i, mod: 10, elapsed: 0)
+
+# first dump all known records into the filter
+known_values = 999       # possible queries
+count = 0
+known_values.times { |i|
+  # since we're simulating a dump, these queries are free (elapsed: 0)
+  if db_query(i, elapsed: 0)
+    # a record was found; add it to the filter
+    count += 1
+    bf.add(i.to_s)
+  end
 }
-puts "Ran #{iters} queries to load the filter"
+puts "Considered #{known_values} values to load the filter with #{count} items"
 puts bf
 puts
 
@@ -47,30 +55,27 @@ puts
 
 puts "Running queries straight to db..."
 t = Time.new
-counts = { true => 0, false => 0 }
+counts = Hash.new(0)
 iters = 99
 iters.times { |i|
-  counts[db_query(i)] += 1
+  puts format("%i: %s", i, db_query(i) || 'not found')
 }
 elapsed = Time.new - t
-puts format("Ran %i queries straight to db; %.2f s elapsed", iters, elapsed)
-puts counts
 puts
+puts format("%i queries direct to db: %.2f s elapsed", iters, elapsed)
+puts
+sleep 0.5
 
 #################
 
 puts "Running queries filtered by bloom filter..."
 t = Time.new
-counts = { true => 0, false => 0 }
+counts = Hash.new(0)
 iters = 99
 iters.times { |i|
-  if bf.include?(i.to_s)
-    counts[db_query(i)] += 1
-  else
-    counts[false] += 1
-  end
+  puts format("%i: %s", i, bf.include?(i.to_s) ? db_query(i) : 'filtered')
 }
 elapsed = Time.new - t
-puts format("Ran %i filtered queries; %.2f s elapsed", iters, elapsed)
-puts counts
+puts
+puts format("%i filtered queries: %.2f s elapsed", iters, elapsed)
 puts
