@@ -18,6 +18,7 @@ OPENSSL_DIGESTS = %w[SHA1
 
 # so much faster, it throws off the comparison
 INCLUDE_CRC32 = false
+INCLUDE_DIGEST = false
 
 str = 'All work and no play makes Jack a very dull boy.'
 
@@ -30,11 +31,13 @@ Benchmark.ips do |b|
     }
   end
 
-  DIGESTS.each { |algo|
-    b.report(algo.class.to_s) {
-      algo.digest(str)
+  if INCLUDE_DIGEST
+    DIGESTS.each { |algo|
+      b.report(algo.class.to_s) {
+        algo.digest(str)
+      }
     }
-  }
+  end
 
   OPENSSL_DIGESTS.each { |algo|
     b.report("OpenSSL::Digest(#{algo.name})") {

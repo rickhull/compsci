@@ -10,20 +10,17 @@ def db_query(num, mod: 10, elapsed: 0.01)
 end
 
 # check ARGV for config directives
-use_string_hash = false
 klass = BloomFilter
 ARGV.each { |arg|
   if arg.match(/digest/i)
     klass = BloomFilter::Digest
   elsif arg.match(/openssl/i)
     klass = BloomFilter::OpenSSL
-  elsif arg.match(/use_string_hash/i)
-    use_string_hash = true
   end
 }
 
-bf = klass.new(use_string_hash: use_string_hash, bits: 1024)
-puts format("%s.new(use_string_hash: %s)", klass.name, use_string_hash)
+bf = klass.new(bits: 1024)
+puts klass.name
 puts bf
 puts
 

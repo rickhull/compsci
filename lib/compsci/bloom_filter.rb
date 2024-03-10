@@ -3,30 +3,22 @@ require 'bitset' # gem
 
 module CompSci
   class BloomFilter
-    # Return an array of bit indices ("on bits") corresponding to
-    # multiple rounds of string hashing (CRC32 is fast and ~fine~)
-    def self.hash_bits(str, hashes:, bits:)
-      val = 0
-      Array.new(hashes) { (val = Zlib.crc32(str, val)) % bits }
-    end
-
-    attr_reader :bits, :hashes, :bitmap, :use_string_hash
+    attr_reader :bits, :aspects, :bitmap
 
     # The default values require 8 kilobytes of storage and recognize:
     # < 7000 strings at 1% False Positive Rate (4k @ 0.1%) (10k @ 5%)
     # FPR goes up as more strings are added
-    def initialize(bits: 2**16, hashes: 5, use_string_hash: true)
+    def initialize(bits: 2**16, aspects: 5)
       @bits = bits
-      @hashes = hashes
+      @aspects = aspects
       @bitmap = Bitset.new(@bits)
-      @use_string_hash = use_string_hash
     end
 
+    # Return an array of bit indices ("on bits") corresponding to
+    # multiple rounds of string hashing (CRC32 is fast and ~fine~)
     def hash_bits(str)
-      @use_string_hash ?
-        self.class.hash_bits(str, hashes: @hashes - 1, bits: @bits).
-          push(str.hash % @bits) :
-        self.class.hash_bits(str, hashes: @hashes, bits: @bits)
+      val = 0
+      Array.new(@aspects) { (val = Zlib.crc32(str, val)) % @bits }
     end
 
     def add(str)
@@ -48,12 +40,16 @@ module CompSci
     end
 
     def fpr
-      self.percent_full**@hashes
+      self.percent_full**@aspects
+    end
+
+    def algo
+      'CRC32'
     end
 
     def to_s
-      format("%i bits (%.1f kB, %i hashes) %i%% full; FPR: %.3f%%",
-             @bits, @bits.to_f / 2**13, @hashes,
+      format("%i bits (%.1f kB, %i aspects %s) %i%% full; FPR: %.3f%%",
+             @bits, @bits.to_f / 2**13, @aspects, self.algo,
              self.percent_full * 100, self.fpr * 100)
     end
     alias_method(:inspect, :to_s)
