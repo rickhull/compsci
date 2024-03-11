@@ -7,20 +7,20 @@ include CompSci
   [0.2, 0.1, 0.05, 0.01, 0.001, 0.0001].each { |fpr|
     nb, nh = BloomFilter.optimal(items, fpr: fpr)
     amt, label = BloomFilter.bytes(nb)
-    puts format("%i items, FPR: %.4f: %i bits, %.1f %s, %i hashes",
+    puts format("%i items, FPR: %.4f: %i bits, %.1f %s, %i aspects",
                 items, fpr, nb, amt, label, nh)
   }
   puts
 }
 
-[8, 10, 16, 20, 30, 32, 40].each { |pow2|
-  num_bits = 2**pow2
-  amt, label = BloomFilter.bytes(num_bits)
-  [5,7,9].each { |num_hashes|
-    puts format("%i bits (2^%i) \t %.1f %s \t %i hashes",
-                num_bits, pow2, amt, label, num_hashes)
+[8, 10, 12, 16, 18, 20, 30, 32, 40].each { |pow2|
+  bits = 2**pow2
+  amt, label = BloomFilter.bytes(bits)
+  [5,7,9].each { |aspects|
+    puts format("%i bits (2^%i) \t %.1f %s \t %i aspects",
+                bits, pow2, amt, label, aspects)
     puts '-' * 20
-    puts BloomFilter.analysis(2**pow2, num_hashes)
+    puts BloomFilter.analysis(2**pow2, aspects)
     puts
   }
 }
