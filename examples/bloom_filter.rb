@@ -34,17 +34,17 @@ puts
 
 
 # first dump all known records into the filter
-known_values = 999       # possible queries
-count = 0
-known_values.times { |i|
+value_space = 999       # possible queries
+found = 0
+value_space.times { |i|
   # since we're simulating a dump, these queries are free (elapsed: 0)
   if db_query(i, elapsed: 0)
     # a record was found; add it to the filter
-    count += 1
+    found += 1
     bf.add(i.to_s)
   end
 }
-puts "Considered #{known_values} values to load the filter with #{count} items"
+puts "Checked #{value_space} values to load the filter with #{found} items"
 puts bf
 puts
 
