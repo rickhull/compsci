@@ -3,7 +3,7 @@ require 'benchmark/ips' # gem
 
 include CompSci
 
-iters = 999
+items = 999
 
 Benchmark.ips do |b|
   b.config(time: 2, warmup: 0.5)
@@ -13,8 +13,12 @@ Benchmark.ips do |b|
       b.report("#{klass} (#{aspect} aspects)") {
         [8, 10, 16, 24].each { |bitpow|
           bf = klass.new(bits: 2**bitpow, aspects: aspect)
-          iters.times { |i| bf.add(i.to_s) }
-          iters.times {     bf.include?(rand(iters * 2).to_s) }
+          # run ingestion once
+          items.times { |i| bf.add(i.to_s) }
+
+          # run 10x the number queries
+          # we've doubled the item space so expect 50% hit rate
+          (items * 10).times { bf.include?(rand(items * 2).to_s) }
         }
       }
     }
