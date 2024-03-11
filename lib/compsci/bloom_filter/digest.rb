@@ -41,7 +41,7 @@ module CompSci
       end
 
       # operate on 4-byte chunks of the hash value to yield 32 bit integers
-      def hash_bits(str)
+      def aspect_bits(str)
         @algo.digest(str).unpack('N*').last(@aspects).map { |i| i % @bits }
       end
 
