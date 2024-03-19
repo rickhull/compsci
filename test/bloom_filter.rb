@@ -12,14 +12,14 @@ describe BloomFilter do
 
   it "converts strings to a series of bit indices, using modulo(bits)" do
     bf = BloomFilter.new(aspects: 5, bits: 1024)
-    bit_indices = bf.aspect_bits('asdf')
+    bit_indices = bf.index('asdf')
     expect(bit_indices).must_be_kind_of Array
     expect(bit_indices.all? { |i| i >=0 and i < 1024 }).must_equal true
   end
 
   it "can use a single algorithm to generate multiple indices per string" do
     str = 'qwerty'
-    bit_indices = BloomFilter.new.aspect_bits(str)
+    bit_indices = BloomFilter.new.index(str)
     first_bit = bit_indices[0]
     expect(bit_indices.all? { |i| i == first_bit }).wont_equal true
   end

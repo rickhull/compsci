@@ -19,19 +19,19 @@ module CompSci
 
     # Return an array of bit indices ("on bits") corresponding to
     # multiple rounds of string hashing (CRC32 is fast and ~fine~)
-    def aspect_bits(str)
+    def index(str)
       val = 0
       Array.new(@aspects) { (val = Zlib.crc32(str, val)) % @bits }
     end
 
     def add(str)
-      @bitmap.set(*self.aspect_bits(str))
+      @bitmap.set(*self.index(str))
     end
     alias_method(:<<, :add)
 
     # true or false; a `true` result mayb be a "false positive"
     def include?(str)
-      @bitmap.set?(*self.aspect_bits(str))
+      @bitmap.set?(*self.index(str))
     end
 
     # returns either 0 or a number like 0.95036573
