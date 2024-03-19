@@ -116,7 +116,7 @@ module CompSci
     def self.analyze(bits, hashes)
       pct_full = 0 # 1 to 99, in practice
       results = []
-      fpr_targets = [0.001, 0.01, 0.05, 0.1, 0.25, 0.5]
+      fpr_targets = [0.001, 0.005, 0.01, 0.05, 0.1, 0.25, 0.5]
       while pct_full < 99
         pct_full += 1
         flt_full = pct_full / 100.0
