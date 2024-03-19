@@ -1,6 +1,11 @@
 require 'compsci/bloom_filter/theory'
+require 'compsci/bloom_filter/openssl'
 
 include CompSci
+
+def ingest(filter, items)
+  items.times { |i| filter.add(i.to_s) }
+end
 
 [9, 99, 999, 9_999, 99_999, 999_999,
  9_999_999, 99_999_999, 999_999_999].each { |items|
@@ -24,3 +29,34 @@ include CompSci
     puts
   }
 }
+
+POW = [10, 16, 20]
+ASPECTS = [4, 8, 12]
+
+unless ARGV.grep(/predict/i).empty?
+  POW.each { |pow2|
+    bits = 2**pow2
+    puts "Bits: 2^#{pow2} (#{bits})"
+    puts
+    ASPECTS.each { |aspects|
+      puts "Aspects: #{aspects}"
+      puts
+      [BloomFilter, BloomFilter::Digest, BloomFilter::OpenSSL].each { |klass|
+        puts "Class: #{klass} 2^#{pow2}"
+        puts
+        BloomFilter.analyze(bits, aspects).each { |(pct, items, fpr)|
+          # puts "Prediction: pct=#{pct} items=#{items} fpr=#{fpr}"
+          bf = klass.new(bits: bits, aspects: aspects)
+          items.times { |i| bf << i.to_s }
+          puts format("%.3f%% full\t(%.3f%% predicted)", bf.percent_full * 100, pct)
+          puts format("%.3f%% FPR \t(%.3f%% predicted)", bf.fpr, fpr)
+          puts
+        }
+        puts
+        puts
+      }
+      puts
+    }
+    puts
+  }
+end
