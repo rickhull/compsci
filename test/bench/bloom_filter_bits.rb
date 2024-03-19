@@ -11,11 +11,16 @@ sizing = {
   18 => 32000,
 }
 
+pokemans = CompSci::Names::Pokemon.read_file
+
 [4, 5, 7, 9, 11].each { |aspect|
-  puts "Aspects: #{aspect}"
-  puts "-------"
+  puts "=== #{aspect} Aspects ==="
+  puts
 
   sizing.each { |bitpow, items|
+    puts "--- 2^#{bitpow} Bits ---"
+    puts
+
     # relative to 7 aspects, more aspects means less items
     items = (items * 7.0 / aspect).round
 
@@ -25,7 +30,7 @@ sizing = {
 
       bf = klass.new(bits: 2**bitpow, aspects: aspect)
       while count < items
-        CompSci::Names::Pokemon.array.each { |name|
+        pokemans.each { |name|
           break if count >= items
           bf << "#{name}#{loops}"
           count += 1
@@ -34,10 +39,12 @@ sizing = {
       end
 
       puts bf
-      puts "items: #{count}"
-      puts "loops: #{loops}"
+      puts format("filled: %.3f%%", bf.percent_full * 100)
+      puts "items:  #{count}"
+      puts "loops:  #{loops}"
       puts
     }
+    puts
   }
   puts
 }
