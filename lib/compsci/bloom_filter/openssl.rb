@@ -29,7 +29,7 @@ module CompSci
       end
 
       def algo
-        @algo.name
+        "OpenSSL::#{@algo.name}"
       end
     end
   end
