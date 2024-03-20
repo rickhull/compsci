@@ -28,6 +28,8 @@ describe Edge do
 end
 
 describe Graph do
+  parallelize_me!
+
   before do
     @graph = Graph.new
   end
@@ -160,6 +162,8 @@ describe Graph do
 end
 
 describe MultiGraph do
+  parallelize_me!
+
   before do
     @graph = MultiGraph.new
   end
@@ -298,6 +302,8 @@ describe MultiGraph do
 end
 
 describe AcyclicGraph do
+  parallelize_me!
+
   before do
     @graph = AcyclicGraph.new
   end
@@ -357,6 +363,8 @@ describe AcyclicGraph do
 end
 
 describe DAG do
+  parallelize_me!
+
   before do
     @dag = DAG.new
   end

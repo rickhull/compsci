@@ -43,6 +43,8 @@ describe Node do
 end
 
 describe KeyNode do
+  parallelize_me!
+
   before do
     @martin_sheen =   KeyNode.new 'martin',  key: 'marty'
     @charlie_sheen =  KeyNode.new 'charlie', key: 'charles'
@@ -191,6 +193,8 @@ describe KeyNode do
 end
 
 describe ChildNode do
+  parallelize_me!
+
   before do
     @martin_sheen = ChildNode.new 'martin'
     @charlie_sheen = ChildNode.new 'charlie'

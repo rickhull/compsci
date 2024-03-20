@@ -144,6 +144,8 @@ describe State do
 end
 
 describe FiniteStateAutomaton do
+  parallelize_me!
+
   before do
     @fsa = FSA.new(:initial)
   end

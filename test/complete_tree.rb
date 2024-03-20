@@ -112,6 +112,8 @@ describe CompleteTree do
   end
 
   describe "instance" do
+    parallelize_me!
+
     before do
       @array = (0..99).sort_by { rand }
       @empty = CompleteTree.new(child_slots: 5)

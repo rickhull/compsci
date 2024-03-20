@@ -164,6 +164,8 @@ end
 
 
 describe ChildFlexNode do
+  parallelize_me!
+
   before do
     @martin_sheen = ChildFlexNode.new 'martin'
     @charlie_sheen = ChildFlexNode.new 'charlie'

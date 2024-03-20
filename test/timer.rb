@@ -4,6 +4,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe Timer do
+  parallelize_me!
+
   describe "elapsed" do
     it "returns the block value and a positive number" do
       answer, elapsed = Timer.elapsed { sleep 0.01; :foo }

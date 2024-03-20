@@ -24,6 +24,8 @@ describe FiniteStateMachine do
 end
 
 describe DeterministicFiniteStateMachine do
+  parallelize_me!
+
   before do
     @fsm = DFSM.new
   end
@@ -76,6 +78,8 @@ describe DeterministicFiniteStateMachine do
 end
 
 describe DAFSAcceptor do
+  parallelize_me!
+
   before do
     @dafsa = DAFSAcceptor.new
   end
