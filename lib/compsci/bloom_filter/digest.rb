@@ -29,7 +29,7 @@ module CompSci
       def initialize(bits: 2**16, aspects: 5, algo: nil)
         @bits = bits
         @aspects = aspects
-        @bitmap = Bitset.new(@bits)
+        @bitmap = BitSet.new(@bits)
         if algo
           unless self.class.valid?(algo, @aspects)
             raise "#{algo} is too small for #{@aspects} aspects"

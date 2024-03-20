@@ -7,7 +7,7 @@ describe BloomFilter do
   parallelize_me!
 
   it "has a bitmap for storage" do
-    expect(BloomFilter.new.bitmap).must_be_kind_of Bitset
+    expect(BloomFilter.new.bitmap).must_be_kind_of BitSet
   end
 
   it "converts strings to a series of bit indices, using modulo(bits)" do

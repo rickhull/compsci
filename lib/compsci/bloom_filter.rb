@@ -1,5 +1,5 @@
 require 'zlib'   # stdlib
-require 'bitset' # gem
+require 'compsci/bitset'
 
 module CompSci
   class BloomFilter
@@ -14,7 +14,7 @@ module CompSci
       @bits = bits
       raise("bits: #{@bits}") if @bits > MAX_BITS
       @aspects = aspects
-      @bitmap = Bitset.new(@bits)
+      @bitmap = BitSet.new(@bits)
     end
 
     # Return an array of bit indices ("on bits") corresponding to
@@ -25,13 +25,13 @@ module CompSci
     end
 
     def add(str)
-      @bitmap.set(*self.index(str))
+      @bitmap.set(self.index(str))
     end
     alias_method(:<<, :add)
 
     # true or false; a `true` result mayb be a "false positive"
     def include?(str)
-      @bitmap.set?(*self.index(str))
+      @bitmap.set?(self.index(str))
     end
 
     # returns either 0 or a number like 0.95036573
@@ -42,7 +42,7 @@ module CompSci
 
     # relatively expensive; don't test against this in a loop
     def percent_full
-      @bitmap.to_a.count.to_f / @bits
+      @bitmap.on_bits.count.to_f / @bits
     end
 
     def fpr
