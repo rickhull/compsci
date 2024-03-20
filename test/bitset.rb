@@ -44,4 +44,14 @@ describe BitSet do
       expect(bs.set? [i]).must_equal(i == 1)
     }
   end
+
+  it "can return an array of bit values" do
+    bs = BitSet.new(8, flip_even_bits: true)
+    expect(bs.bits.take(8)).must_equal [1, 0, 1, 0, 1, 0, 1, 0]
+  end
+
+  it "knows which bit indices are on" do
+    bs = BitSet.new(8, flip_even_bits: true)
+    expect(bs.on_bits.take(4)).must_equal [0, 2, 4, 6]
+  end
 end
