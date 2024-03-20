@@ -4,6 +4,8 @@ require 'minitest/autorun'
 include CompSci
 
 describe BitSet do
+  parallelize_me!
+
   it "initializes with the number of bits used for storage" do
     10.times { |i|
       bs = BitSet.new(BitSet::INT_WIDTH * (i + 1))
