@@ -1,4 +1,5 @@
 require 'rbconfig/sizeof'  # stdlib, to determine native int size
+# require 'fiddle'  # requires ruby to be built against libffi
 
 module CompSci
   # This is basically a bitmap, a data structure to hold a large number of
@@ -11,6 +12,7 @@ module CompSci
   class BitSet
     # in bits, e.g. 64 bit / 32 bit platforms.  SIZEOF returns byte width
     INT_WIDTH = RbConfig::SIZEOF.fetch('long') * 8
+    # INT_WIDTH = Fiddle::SIZEOF_LONG * 8
 
     # return an array of ones and zeroes, padded to INT_WIDTH
     def self.bits(int)
