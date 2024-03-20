@@ -16,5 +16,4 @@ Gem::Specification.new do |s|
   s.files += Dir['examples/**/*.rb']
 
   s.add_dependency "matrix", "~> 0.4"
-  s.add_dependency "bitset", "> 1.0"
 end
