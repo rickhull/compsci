@@ -42,17 +42,21 @@ unless ARGV.grep(/predict/i).empty?
       puts "Aspects: #{aspects}"
       puts
       [BloomFilter, BloomFilter::Digest, BloomFilter::OpenSSL].each { |klass|
-        puts "Class: #{klass} 2^#{pow2}"
-        puts
+        bf = klass.new(bits: bits, aspects: aspects)
+        puts bf
+        count = 0
         BloomFilter.analyze(bits, aspects).each { |(pct, items, fpr)|
           # puts "Prediction: pct=#{pct} items=#{items} fpr=#{fpr}"
-          bf = klass.new(bits: bits, aspects: aspects)
-          items.times { |i| bf << i.to_s }
-          puts format("%.3f%% full\t(%.3f%% predicted)", bf.percent_full * 100, pct)
-          puts format("%.3f%% FPR \t(%.3f%% predicted)", bf.fpr, fpr)
+          while count < items
+            bf << count.to_s
+            count += 1
+          end
+          puts format("%.3f%% full\t(%.3f%% predicted)",
+                      bf.percent_full * 100, pct)
+          puts format("%.3f%% FPR \t(%.3f%% predicted)",
+                      bf.fpr, fpr)
           puts
         }
-        puts
         puts
       }
       puts
