@@ -25,13 +25,13 @@ module CompSci
     end
 
     def add(str)
-      @bitmap.set(self.index(str))
+      self.index(str).each { |i| @bitmap.add(i) }
     end
     alias_method(:<<, :add)
 
     # true or false; a `true` result mayb be a "false positive"
     def include?(str)
-      @bitmap.set?(self.index(str))
+      self.index(str).all? { |i| @bitmap.include?(i) }
     end
 
     # returns either 0 or a number like 0.95036573
