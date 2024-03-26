@@ -51,6 +51,7 @@ unless ARGV.grep(/predict/i).empty?
             bf << count.to_s
             count += 1
           end
+          puts "Ingested #{count} items"
           puts format("%.3f%% full\t(%.3f%% predicted)",
                       bf.percent_full * 100, pct)
           puts format("%.3f%% FPR \t(%.3f%% predicted)",
