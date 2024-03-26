@@ -29,20 +29,26 @@ module CompSci
       @storage = Array.new((num_bits / INT_WIDTH.to_f).ceil, init)
     end
 
-    # ensure the given bit_indices are set to 1
-    def set(bit_indices)
-      bit_indices.each { |b|
-        slot, val = b.divmod(INT_WIDTH)
-        @storage[slot] |= (1 << val)
-      }
+    # set the bit_index to 1
+    def add(bit_index)
+      slot, val = bit_index.divmod(INT_WIDTH)
+      @storage[slot] |= (1 << val)
     end
 
-    # determine if all given bit indices are set to 1
+    # set bit_indices to 1
+    def set(bit_indices)
+      bit_indices.each { |b| self.add(b) }
+    end
+
+    # is the bit_index set to 1?
+    def include?(bit_index)
+      slot, val = bit_index.divmod(INT_WIDTH)
+      @storage[slot][val] != 0
+    end
+
+    # are all given bit_indices set to 1?
     def set?(bit_indices)
-      bit_indices.all? { |b|
-        slot, val = b.divmod(INT_WIDTH)
-        @storage[slot][val] != 0
-      }
+      bit_indices.all? { |b| self.include?(b) }
     end
 
     # returns an array of ones and zeroes, padded to INT_WIDTH
