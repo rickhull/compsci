@@ -8,7 +8,7 @@ describe BitSet do
 
   it "initializes with the number of bits used for storage" do
     10.times { |i|
-      bs = BitSet.new(BitSet::INT_WIDTH * (i + 1))
+      bs = BitSet.new(BitSet::INT_BITS * (i + 1))
       expect(bs.storage.count).must_equal(i + 1)
     }
   end
