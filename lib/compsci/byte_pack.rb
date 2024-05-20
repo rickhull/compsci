@@ -52,7 +52,7 @@ module CompSci
                  elsif hex
                    BytePack.hex2bin(hex)
                  elsif int
-                   BytePack.ints2bin(int.is_a?(Enumerable) ? int : [int])
+                   BytePack.ints2bin(int.is_a?(Array) ? int : [int])
                  else
                    "".b
                  end

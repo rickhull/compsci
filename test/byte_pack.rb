@@ -9,7 +9,7 @@ describe BytePack do
 
   it "converts an arbitrary length binary string to an array of ints" do
     ary = BytePack.bin2ints(VAL)
-    expect(ary).must_be_kind_of Enumerable
+    expect(ary).must_be_kind_of Array
     ary.each { |i|
       expect(i).must_be_kind_of Integer
       expect(i).must_be :>, 0
@@ -39,7 +39,7 @@ describe BytePack do
 
   it "converts an arbitrary length hex string to an array of ints" do
     ary = BytePack.hex2ints(HEXVAL)
-    expect(ary).must_be_kind_of Enumerable
+    expect(ary).must_be_kind_of Array
     ary.each { |i|
       expect(i).must_be_kind_of Integer
       expect(i).must_be :>, 0
