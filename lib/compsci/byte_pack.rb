@@ -1,58 +1,118 @@
+require 'compsci/string_pack'
 require 'rbconfig/sizeof'
 
 # Effortless conversion of bytewise (binary) data
-# To and from integers, binary strings, and hex strings
+# To and from integers, binary strings, hexadecimal and base64 strings
+
+# refinement to add String#pack
+using StringPack
 
 module CompSci
   class BytePack
     NATIVE = RbConfig::SIZEOF.fetch('long') # 64-bit: 8   32-bit: 4
+    INTMAX = 2 ** (NATIVE * 8) - 1
+
     VAL = "\xFF\x00\x00\x00"
     ENDIAN = VAL.unpack('N*') == VAL.unpack('L*') ? :big : :little
 
-    # return a (BINARY) string, null-padded to a multiple of NATIVE
-    def self.prepare(str)
+    def self.dump(hex)
+      cursor, step = 0, 8
+      chunks = []
+      while cursor < hex.bytesize
+        chunks << hex.slice(cursor, step)
+        cursor += step
+      end
+
+      cursor, step = 0, 2
+      combos = []
+      while cursor < chunks.count
+        combos << chunks.slice(cursor, 2).join(" ")
+        cursor += 2
+      end
+
+      cursor, step = 0, 4
+      lines = []
+      while cursor < combos.count
+        lines << combos.slice(cursor, step).join("  ").upcase
+        cursor += step
+      end
+
+      lines.join($/)
+    end
+
+    # generate a new BytePack using random integers
+    def self.random(length)
+      ints = Array.new((length.to_f / NATIVE).ceil) { rand(INTMAX) }
+      self.new(int: ints)
+    end
+
+    # return a (BINARY) string, null-padded to a multiple of width
+    def self.prepare(str, width: NATIVE, endian: ENDIAN)
       str = str.b
-      m = str.length % NATIVE
+      m = str.length % width
       return str if m == 0
-      width = str.length + NATIVE - m
-      ENDIAN == :little ? str.ljust(width, "\00") : str.rjust(width, "\x00")
+      w = str.length + width - m
+      ENDIAN == :little ? str.ljust(w, "\00") : str.rjust(w, "\x00")
     end
 
-    def self.hex2bin(hex_str)
-      [hex_str].pack('H*')             # encoding: BINARY
+    # array of 32b integers, network byte order
+    def self.bin2net(str)
+      self.prepare(str, width: 4, endian: :big).unpack('N*')
     end
 
-    def self.bin2hex(str)
-      str.unpack1('H*')                # encoding: US-ASCII
+    # encoding: BINARY, network byte order
+    def self.net2bin(ints)
+      ints.pack('N*')
     end
 
-    def self.ints2bin(ints)
-      ints.pack('J*')                  # encoding: BINARY
-    end
-
+    # array of integers, native width and endianness
     def self.bin2ints(str)
       self.prepare(str).unpack('J*')
     end
 
-    # hex -> binary -> ints
-    def self.hex2ints(hex_str)
-      self.bin2ints(self.hex2bin(hex_str))
+    # encoding: BINARY, native width and endianness
+    def self.ints2bin(ints)
+      ints.pack('J*')
     end
 
-    # ints -> binary -> hex
-    def self.ints2hex(ints)
-      self.bin2hex(self.ints2bin(ints)) # encoding: US-ASCII
+    # encoding: US-ASCII, lowercase hex
+    def self.bin2hex(str)
+      str.unpack1('H*')
+    end
+
+    # encoding: BINARY
+    def self.hex2bin(hex_str)
+      hex_str.pack('H*')
+    end
+
+    #
+    # note below:
+    # the pack/unpack pattern for base64 is inverted relative to hex
+    #
+
+    # encoding: US-ASCII, base64, no trailing newline
+    def self.bin2b64(str)
+      str.pack('m0')
+    end
+
+    # encoding: BINARY
+    def self.b642bin(b64_str)
+      b64_str.unpack1('m0')
     end
 
     attr_reader :storage
 
-    def initialize(str = nil, hex: nil, int: nil)
+    def initialize(str = nil, hex: nil, net: nil, int: nil, base64: nil)
       @storage = if str
-                   str
-                 elsif hex
-                   BytePack.hex2bin(hex)
+                   str.b
+                 elsif net
+                   BytePack.net2bin(net.is_a?(Array) ? net : [net])
                  elsif int
                    BytePack.ints2bin(int.is_a?(Array) ? int : [int])
+                 elsif hex
+                   BytePack.hex2bin(hex)
+                 elsif base64
+                   BytePack.b642bin(base64)
                  else
                    "".b
                  end
@@ -62,17 +122,29 @@ module CompSci
       @storage
     end
 
-    def hex
-      BytePack.bin2hex(@storage)
+    def net
+      BytePack.bin2net(@storage)
     end
-    alias_method :inspect, :hex
+
+    def [](idx)
+      self.net[idx]
+    end
 
     def ints
       BytePack.bin2ints(@storage)
     end
 
-    def [](idx)
-      self.ints[idx]
+    def hex
+      BytePack.bin2hex(@storage)
+    end
+    alias_method :inspect, :hex
+
+    def base64
+      BytePack.bin2b64(@storage)
+    end
+
+    def hexdump
+      BytePack.dump(self.hex)
     end
   end
 end
