@@ -117,5 +117,18 @@ describe BytePack do
       expect(s.encoding).must_equal Encoding::BINARY
       expect(s.bytesize).must_equal BytePack::NATIVE
     }
+
+    val = "\xFF\x00"
+
+    str = BytePack.prepare(val, width: 4, endian: :little)
+    expect(str.length).must_equal 4
+    expect(str).must_equal "\xFF\x00\x00\x00".b
+
+    str = BytePack.prepare(val, width: 8, endian: :big)
+    expect(str.length).must_equal 8
+    expect(str).must_equal "\x00\x00\x00\x00\x00\x00\xFF\x00".b
+
+    str = BytePack.prepare(val.b, width: 2)
+    expect(str).must_equal val.b
   end
 end

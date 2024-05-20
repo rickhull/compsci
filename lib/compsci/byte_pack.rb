@@ -12,7 +12,7 @@ module CompSci
     NATIVE = RbConfig::SIZEOF.fetch('long') # 64-bit: 8   32-bit: 4
     INTMAX = 2 ** (NATIVE * 8) - 1
 
-    VAL = "\xFF\x00\x00\x00"
+    VAL = "\xFF\x00\x00\x00".b
     ENDIAN = VAL.unpack('N*') == VAL.unpack('L*') ? :big : :little
 
     def self.dump(hex)
@@ -42,8 +42,7 @@ module CompSci
 
     # generate a new BytePack using random integers
     def self.random(length)
-      ints = Array.new((length.to_f / NATIVE).ceil) { rand(INTMAX) }
-      self.new(int: ints)
+      self.new(int: Array.new(length.ceildiv NATIVE) { rand(INTMAX) })
     end
 
     # return a (BINARY) string, null-padded to a multiple of width
@@ -52,7 +51,7 @@ module CompSci
       m = str.length % width
       return str if m == 0
       w = str.length + width - m
-      ENDIAN == :little ? str.ljust(w, "\00") : str.rjust(w, "\x00")
+      endian == :little ? str.ljust(w, "\x00") : str.rjust(w, "\x00")
     end
 
     # array of 32b integers, network byte order
@@ -84,11 +83,6 @@ module CompSci
     def self.hex2bin(hex_str)
       hex_str.pack('H*')
     end
-
-    #
-    # note below:
-    # the pack/unpack pattern for base64 is inverted relative to hex
-    #
 
     # encoding: US-ASCII, base64, no trailing newline
     def self.bin2b64(str)
