@@ -1,4 +1,4 @@
-require 'compsci/bitset'
+require 'compsci/bit_set'
 require 'minitest/autorun'
 
 include CompSci

@@ -1,5 +1,5 @@
 require 'zlib'   # stdlib
-require 'compsci/bitset'
+require 'compsci/bit_set'
 
 module CompSci
   class BloomFilter
