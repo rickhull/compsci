@@ -1,12 +1,12 @@
 require 'rbconfig/sizeof' # stdlib
 
 module CompSci
-  # This is basically a bitmap, a data structure to hold a large number of
-  # bits.  It is implemented as an array of integers, giving typically 64
-  # bits per array slot.  The fundamental operations revolve around passing
-  # an array of bit indices, like [2, 29, 5874, 13], to either ensure those
-  # particular bits are turned on, or to determine whether all those bits
-  # are already turned on
+  # This is basically a bitmap, a data structure to hold some number of bits.
+  # It is implemented as an array of integers, giving typically 64 bits
+  # per array slot.  The fundamental operations revolve around providing a
+  # bit index to either ensure that bit is turned on, or to query its status.
+  # Some light arithmetic is needed to address different bits across different
+  # array slots.
 
   class BitSet
     INT_BYTES = RbConfig::SIZEOF.fetch('long')    # 64-bit: 8
@@ -28,6 +28,7 @@ module CompSci
 
     # return a float and a label
     def self.size(bytes: 0, bits: 0)
+      # TODO: ceildiv
       bytes += (bits / 8.0).ceil
       if bytes < KiB
         [bytes, 'B']
@@ -50,6 +51,7 @@ module CompSci
     # create an array of integers, default 0; flip_even_bits for testing...
     def initialize(count, flip_even_bits: false)
       # normalize
+      # TODO: ceildiv
       div = (count / INT_BITS.to_f).ceil
       @count = div * INT_BITS
       @storage = Array.new(div, flip_even_bits ? EVEN_BYTE : 0)
