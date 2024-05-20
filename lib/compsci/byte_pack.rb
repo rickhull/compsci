@@ -3,28 +3,19 @@ require 'rbconfig/sizeof'
 # Effortless conversion of bytewise (binary) data
 # To and from integers, binary strings, and hex strings
 
-# All binary data is stored internally as an array of integers,
-# choosing either 32-bit or 64-bit integers based on platform capability
-
-# Strings, both binary and hex, are represented with least significant byte
-# first, so "\xff\x00" is stored as [255], whereas "\x00\xff" is [65280]
-# We are using the "packed data" conventions here
-
-# Ruby uses the opposite convention:
-#            255 == 0x00ff
-#          65280 == 0xff00
-#   255.to_s(16) == "ff"
-# 65280.to_s(16) == "ff00"
-
 module CompSci
   class BytePack
-    # 64-bit systems: 8 bytes;    32-bit systems: 4 bytes
-    NATIVE = RbConfig::SIZEOF.fetch('long')
+    NATIVE = RbConfig::SIZEOF.fetch('long') # 64-bit: 8   32-bit: 4
+    VAL = "\xFF\x00\x00\x00"
+    ENDIAN = VAL.unpack('N*') == VAL.unpack('L*') ? :big : :little
 
-    # return a (BINARY) string, null-padded to a multiple of NATIVE, LSB-first
+    # return a (BINARY) string, null-padded to a multiple of NATIVE
     def self.prepare(str)
-      m = str.bytesize % NATIVE
-      m == 0 ? str.b : str.b.ljust(str.length + NATIVE - m, "\x00")
+      str = str.b
+      m = str.length % NATIVE
+      return str if m == 0
+      width = str.length + NATIVE - m
+      ENDIAN == :little ? str.ljust(width, "\00") : str.rjust(width, "\x00")
     end
 
     def self.hex2bin(hex_str)
@@ -54,34 +45,34 @@ module CompSci
     end
 
     attr_reader :storage
-    alias_method :ints, :storage
 
     def initialize(str = nil, hex: nil, int: nil)
-      if str
-        self.from_s(str)
-      elsif hex
-        self.from_hex(hex)
-      elsif int
-        @storage = int.is_a?(Enumerable) ? int : [int]
-      else
-        @storage = []
-      end
-    end
-
-    def from_s(str)
-      @storage = BytePack.bin2ints(str)
+      @storage = if str
+                   str
+                 elsif hex
+                   BytePack.hex2bin(hex)
+                 elsif int
+                   BytePack.ints2bin(int.is_a?(Enumerable) ? int : [int])
+                 else
+                   "".b
+                 end
     end
 
     def to_s
-      BytePack.ints2bin(@storage)
+      @storage
     end
 
-    def from_hex(hex_str)
-      @storage = BytePack.hex2ints(hex_str)
+    def hex
+      BytePack.bin2hex(@storage)
+    end
+    alias_method :inspect, :hex
+
+    def ints
+      BytePack.bin2ints(@storage)
     end
 
-    def to_hex
-      BytePack.ints2hex(@storage)
+    def [](idx)
+      self.ints[idx]
     end
   end
 end
