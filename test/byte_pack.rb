@@ -16,13 +16,11 @@ describe BytePack do
     }
   end
 
-  it "converts an arbitrary length hex string to an array of ints" do
-    ary = BytePack.hex2ints(HEXVAL)
-    expect(ary).must_be_kind_of Enumerable
-    ary.each { |i|
-      expect(i).must_be_kind_of Integer
-      expect(i).must_be :>, 0
-    }
+  it "converts an array of ints to a binary string" do
+    str = BytePack.ints2bin([1,2,3,4])
+    expect(str).must_be_kind_of String
+    expect(str).wont_be_empty
+    expect(str.encoding) == Encoding::BINARY
   end
 
   it "converts an arbitrary length binary string to a hex string" do
@@ -37,6 +35,28 @@ describe BytePack do
     expect(str).must_be_kind_of String
     expect(str).wont_be_empty
     expect(str.encoding) == Encoding::BINARY
+  end
+
+  it "converts an arbitrary length hex string to an array of ints" do
+    ary = BytePack.hex2ints(HEXVAL)
+    expect(ary).must_be_kind_of Enumerable
+    ary.each { |i|
+      expect(i).must_be_kind_of Integer
+      expect(i).must_be :>, 0
+    }
+  end
+
+  it "converts an array of ints to a hex string" do
+    hex = BytePack.ints2hex([1,2,3,4])
+    expect(hex).must_be_kind_of String
+    expect(hex).wont_be_empty
+    expect(hex.match(/\A[0-9a-f]+\z/)).must_be_kind_of MatchData
+  end
+
+  it "can be initialized without params" do
+    b = BytePack.new
+    expect(b).must_be_kind_of BytePack
+    expect(b.storage).must_be_empty
   end
 
   it "can be initialized with a binary string" do
@@ -59,12 +79,6 @@ describe BytePack do
     b = BytePack.new(int: [1, 2, 3, 4])
     expect(b).must_be_kind_of BytePack
     expect(b.ints).must_equal [1, 2, 3, 4]
-  end
-
-  it "can be initialized with no params" do
-    b = BytePack.new
-    expect(b).must_be_kind_of BytePack
-    expect(b.storage).must_be_empty
   end
 
   it "prepares incoming binary strings before unpacking to ints" do
