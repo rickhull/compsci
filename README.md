@@ -99,6 +99,45 @@ gets over [500k pushes per second](reports/examples#L533), constant up past
 * [test/heap.rb](test/heap.rb)
 * [test/bench/heap.rb](test/bench/heap.rb)
 
+## [`BitSet`](lib/compsci/bit_set.rb) class
+
+### Basics
+
+A bitmap, or binary value, used as a data structure to hold a large number
+of bits.  These bits can track the on/off status for various items.  If we
+have 1000 students, then a 1024-bit bitmap can track whether each student
+attended school on a particular day, so long as we can assign a student to
+each bit somehow.
+
+### Implementation
+
+An array of integers, typically 32-bit or 64-bit integers.  The fundamental
+operations revolve around providing a bit index to change or query a bit's
+status.  Some light arithmentic is needed to address different bits across
+different array slots.
+
+### Example
+
+```ruby
+require 'compsci/bit_set'
+
+include CompSci
+
+# 512 bits  /  64 bytes  /  8 integers (64 bit)
+b = BitSet.new(512)
+
+# turn on the first 100 bits
+100.times { |i| b.add i }
+
+b.include?(400) # => false
+b.include?(0)   # => true
+b.include?(95)  # => true
+
+b.ratio         # => (25/128)
+b.storage       # => [18446744073709551615, 68719476735, 0, 0, 0, 0, 0, 0]
+b.to_s          # => "19.5% positive (64.0 B)"
+```
+
 ## [`BloomFilter`](lib/compsci/bloom_filter.rb) class
 
 ### Basics

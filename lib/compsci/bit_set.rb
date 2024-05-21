@@ -28,8 +28,7 @@ module CompSci
 
     # return a float and a label
     def self.size(bytes: 0, bits: 0)
-      # TODO: ceildiv
-      bytes += (bits / 8.0).ceil
+      bytes += bits.ceildiv(8)
       if bytes < KiB
         [bytes, 'B']
       elsif bytes < MiB
@@ -51,8 +50,7 @@ module CompSci
     # create an array of integers, default 0; flip_even_bits for testing...
     def initialize(count, flip_even_bits: false)
       # normalize
-      # TODO: ceildiv
-      div = (count / INT_BITS.to_f).ceil
+      div = count.ceildiv(INT_BITS)
       @count = div * INT_BITS
       @storage = Array.new(div, flip_even_bits ? EVEN_BYTE : 0)
       @bits = nil  # used for cache/memoization for the #bits method
@@ -60,8 +58,7 @@ module CompSci
 
     # return an array of ones and zeroes, padded to INT_BITS
     def bits
-      return @bits if @bits
-      @bits = @storage.flat_map { |i| self.class.bits(i) }
+      @bits ||= @storage.flat_map { |i| self.class.bits(i) }
     end
 
     # set the bit_index to 1
