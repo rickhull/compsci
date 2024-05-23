@@ -15,7 +15,8 @@ module CompSci
     VAL = "\xFF\x00\x00\x00".b
     ENDIAN = VAL.unpack('N*') == VAL.unpack('L*') ? :big : :little
 
-    def self.dump(hex)
+    # format hex with rows and cols
+    def self.format(hex)
       cursor, step = 0, 8
       chunks = []
       while cursor < hex.bytesize
@@ -42,7 +43,7 @@ module CompSci
 
     # generate a new BytePack using random integers
     def self.random(length)
-      self.new(int: Array.new(length.ceildiv NATIVE) { rand(INTMAX) })
+      self.new(int: Array.new(length.ceildiv NATIVE) { rand INTMAX })
     end
 
     # return a (BINARY) string, null-padded to a multiple of width
@@ -94,7 +95,9 @@ module CompSci
       b64_str.unpack1('m0')
     end
 
+    # fundamentally, this is a String, encoding: BINARY
     attr_reader :storage
+    alias_method :binary, :storage
 
     def initialize(str = nil, hex: nil, net: nil, int: nil, base64: nil)
       @storage = if str
@@ -112,33 +115,55 @@ module CompSci
                  end
     end
 
-    def to_s
-      @storage
-    end
-
+    # 32-bit integers, network byte order
     def net
       BytePack.bin2net(@storage)
     end
 
+    # address the network integers
     def [](idx)
       self.net[idx]
     end
 
+    # up to 64-bit integers, native byte order
     def ints
       BytePack.bin2ints(@storage)
     end
 
+    # calculate a giant integer from native integers, may be slow
+    def bignum
+      i = -1
+      self.ints.inject(0) { |memo, int|
+        i += 1
+        memo + int * (INTMAX+1) ** i
+      }
+    end
+
+    # calculate a giant integer from network integers, may be slow
+    def bignet
+      #i = -1
+      #self.net.reverse.inject(0) { |memo, int|
+      #  i += 1
+      #  memo + int * (2**32) ** i
+      #}
+      self.hex.to_i(16)   # 10x faster than above
+    end
+
+    # lowercase hex, encoding: US-ASCII
     def hex
       BytePack.bin2hex(@storage)
     end
     alias_method :inspect, :hex
+    alias_method :to_s, :hex
 
+    # encoding: US-ASCII
     def base64
       BytePack.bin2b64(@storage)
     end
 
+    # formatted with rows and cols
     def hexdump
-      BytePack.dump(self.hex)
+      BytePack.format(self.hex)
     end
   end
 end
