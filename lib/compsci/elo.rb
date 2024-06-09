@@ -2,36 +2,24 @@ require 'compsci'
 
 module CompSci
   class Elo
+    attr_reader :initial, :k, :c
+
+    def initialize(initial: 1000, k: 32, c: 480)
+      @initial = initial  # initial rating, typically 1500
+      @k = k              # maximum adjustment per update, typically 32
+      @c = c.to_f         # a constant, typically 400
+    end
+
     # rating_a and rating_b are positive numbers
-    def self.expected(rating_a, rating_b)
-      DEFAULT.expected(rating_a, rating_b)
+    def expected(rating_a, rating_b)
+      CompSci.positive!(rating_a) and CompSci.positive!(rating_b)
+      1 / (1 + 10**((rating_b - rating_a) / @c))
     end
 
     # outcome_a is number between 0 and 1
     # 1 indicates a "win" for A, 0 indicates a "win" for B
     # 0.5 indicates a draw
     # 0.6 might indicate a "win" for A, like best 3 sets out of 5.
-    def self.update(rating_a, rating_b, outcome_a)
-      DEFAULT.update(rating_a, rating_b, outcome_a)
-    end
-
-    attr_reader :initial, :k, :c
-
-    def initialize(initial: 1000, k: 32, c: 480)
-      @initial = initial
-      @k = k
-      @c = c.to_f
-    end
-
-    CLASSIC = { initial: 1500, k: 32, c: 400 }
-    MODERN = { initial: 1000, k: 32, c: 480 }
-    DEFAULT = self.new(**MODERN)
-
-    def expected(rating_a, rating_b)
-      CompSci.positive!(rating_a) and CompSci.positive!(rating_b)
-      1 / (1 + 10**((rating_b - rating_a) / @c))
-    end
-
     def update(rating_a, rating_b, outcome)
       raise(ArgumentError, outcome.inspect) unless (0..1).include? outcome
       exp_a = expected(rating_a, rating_b)
@@ -39,6 +27,18 @@ module CompSci
 
       [rating_a + @k * (outcome - exp_a),
        rating_b + @k * (1 - outcome - exp_b)].map(&:round)
+    end
+
+    CLASSIC = { initial: 1500, k: 32, c: 400 }
+    MODERN = { initial: 1000, k: 32, c: 480 }
+    DEFAULT = self.new(**MODERN)
+
+    def Elo.expected(rating_a, rating_b)
+      DEFAULT.expected(rating_a, rating_b)
+    end
+
+    def Elo.update(rating_a, rating_b, outcome_a)
+      DEFAULT.update(rating_a, rating_b, outcome_a)
     end
 
     class Player
