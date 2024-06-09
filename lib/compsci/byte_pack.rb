@@ -55,7 +55,29 @@ module CompSci
       endian == :little ? str.ljust(w, "\x00") : str.rjust(w, "\x00")
     end
 
-    # array of 32b integers, network byte order
+    # not used, maybe later
+    INT = {
+      native: {
+        name: :ints,
+        pack: 'J*',
+        width: NATIVE,
+        endian: ENDIAN,
+      },
+      vax32: {
+        name: :vax,
+        pack: 'L*',
+        width: 4,
+        endian: :little,
+      },
+      net32: {
+        name: :net,
+        pack: 'N*',
+        width: 4,
+        endian: :big,
+      },
+    }
+
+    # array of 32b integers, network byte order (big endian)
     def self.bin2net(str)
       self.prepare(str, width: 4, endian: :big).unpack('N*')
     end
@@ -63,6 +85,16 @@ module CompSci
     # encoding: BINARY, network byte order
     def self.net2bin(ints)
       ints.pack('N*')
+    end
+
+    # array of 32b integers, little endian
+    def self.bin2vax(str)
+      self.prepare(str, width: 4, endian: :little).unpack('V*')
+    end
+
+    # encoding: BINARY, little endian
+    def self.vax2bin(ints)
+      ints.pack('V*')
     end
 
     # array of integers, native width and endianness
