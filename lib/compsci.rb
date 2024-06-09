@@ -9,4 +9,26 @@ module CompSci
     num, mod = num.divmod(base) until num == 1 || mod > 0
     mod == 0
   end
+
+  def self.numeric!(num)
+    raise(ArgumentError, num.inspect) unless num.is_a?(Numeric)
+    num
+  end
+
+  def self.positive!(num)
+    numeric!(num)
+    raise(ArgumentError, num.inspect) unless num >= 0
+    num
+  end
+
+  def self.string!(str)
+    raise(ArgumentError, str.inspect) unless str.is_a?(String)
+    str
+  end
+
+  def self.nonempty!(str)
+    string!(str)
+    raise(ArgumentError, str.inspect) if str.empty?
+    str
+  end
 end
