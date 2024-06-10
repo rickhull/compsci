@@ -25,7 +25,7 @@ end
 
 num_players = 99
 num_matches = 9999
-elo = Elo.new
+elo = Elo.new(initial: 1500)
 players = Elo::Player.init_pool(num_players, elo).each { |p|
   p.skill = rand.round(3)
 }
@@ -53,10 +53,10 @@ num_matches.times { |i|
   a, b = matchup(players)
   players[a].simulate players[b]
   if i % (num_matches / 10) == num_matches / 15
-    puts "Played #{i} matches"
-    puts format("Retired: %s", retire(players).join(', '))
+    puts format("Played %i matches, retired %s", i, retire(players).join(', '))
   end
 }
+puts
 
 players.each { |p| puts p }
 puts
@@ -76,10 +76,10 @@ num_matches.times { |i|
     players[a].simulate(players[b])
   end
   if i % (num_matches / 10) == num_matches / 15
-    puts "Played #{i} matches"
-    puts format("Retired: %s", retire(players).join(', '))
+    puts format("Played %i matches, retired %s", i, retire(players).join(', '))
   end
 }
+puts
 
 players.each { |p| puts p }
 puts
