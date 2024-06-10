@@ -120,8 +120,10 @@ module CompSci
         @rating, opp.rating = @elo.update(@rating, opp.rating, outcome)
       end
 
-      def simulate(opp)
-        update(opp, Player.skill_roll(@skill, opp.skill))
+      def simulate(opp, type: :default)
+        outcome = Player.skill_roll(@skill, opp.skill, type: type)
+        update(opp, outcome)
+        outcome
       end
 
       def record
