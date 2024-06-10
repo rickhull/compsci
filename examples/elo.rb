@@ -2,68 +2,90 @@ require 'compsci/elo'
 
 include CompSci
 
-def outcome(type = :default)
-  case type
-  when :default       # win=1  lose=0   draw=0.5
-    d100 = rand(100)
-    case d100
-    when 0, 1
-      0.5 # draw
-    else
-      d100 % 2 == 0 ? 1 : 0
-    end
-  when :rand          # any float 0..1
-    rand
-  when :no_draw       # win=1  lose=0
-    rand(2) == 0 ? 1 : 0
-  else
-    raise "unexpected type: #{type.inspect}"
-  end
+def avg_rating(players)
+  (players.map(&:rating).sum.to_f / players.count).round
 end
 
-include_retirement = true
+# return two different indices, 0..players.count
+def matchup(players)
+  a = rand(players.count)
+  [a, (a + rand(players.count - 1) + 1) % players.count]
+end
+
+def retire(players)
+  retired = Set.new
+  elo = players[0].elo
+  (players.count / 10).times {
+    i = rand(players.count - 1) + 1  # don't retire idx 0
+    players[i] = Elo::Player.new(elo, skill: rand.round(3))
+    retired.add i
+  }
+  retired.sort
+end
+
 num_players = 99
 num_matches = 9999
 elo = Elo.new
-players = Elo::Player.init_pool(num_players, elo)
+players = Elo::Player.init_pool(num_players, elo).each { |p|
+  p.skill = rand.round(3)
+}
+
+puts
+puts "#{num_matches} matches without retirement"
+puts
 
 num_matches.times { |i|
-  a, b = rand(num_players), rand(num_players)
-  b = (a + 1) % num_players if a == b
-  players[a].update(players[b], outcome())
+  a, b = matchup(players)
+  players[a].simulate players[b]
+}
 
-  if include_retirement and i % 500 == 0
-    # 10% of players retire and are replaced by newbies
-    (num_players / 10).times {
-      players[rand(num_players)].rating = elo.initial
-    }
+players.each { |p| puts p }
+puts
+puts "Avg Rating: #{avg_rating(players)}"
+puts
+
+########
+
+puts "#{num_matches} matches with 10x 10% retirement"
+puts
+
+num_matches.times { |i|
+  a, b = matchup(players)
+  players[a].simulate players[b]
+  if i % (num_matches / 10) == num_matches / 15
+    puts "Played #{i} matches"
+    puts format("Retired: %s", retire(players).join(', '))
   end
 }
 
-avg = players.map(&:rating).sum.to_f / num_players
-
-p players.map(&:rating)
+players.each { |p| puts p }
 puts
-puts "Avg Rating: #{avg.round}"
-
-# now introduce a shark
+puts "Avg Rating: #{avg_rating(players)}"
 puts
-puts "Now idx 0 is a shark"
+
+#########
+
+puts "Now idx 0 is a shark, with retirement"
 puts
 
 num_matches.times { |i|
-  a, b = rand(num_players), rand(num_players)
-  b = (a + 1) % num_players if a == b
+  a, b = matchup(players)
   if a == 0 or b == 0
-    outcome = a == 0 ? 1 : 0  # idx 0 always wins
+    players[a].update(players[b], a == 0 ? 1 : 0)  # idx 0 always wins
   else
-    outcome = outcome()
+    players[a].simulate(players[b])
   end
-  players[a].update(players[b], outcome)
+  if i % (num_matches / 10) == num_matches / 15
+    puts "Played #{i} matches"
+    puts format("Retired: %s", retire(players).join(', '))
+  end
 }
 
-avg = players.map(&:rating).sum.to_f / num_players
-
-p players.map(&:rating)
+players.each { |p| puts p }
 puts
-puts "Avg Rating: #{avg.round}"
+puts "Avg Rating: #{avg_rating(players)}"
+puts
+
+puts "SORTED:"
+players.sort_by { |p| -1 * p.rating }.each { |p| puts p }
+puts
