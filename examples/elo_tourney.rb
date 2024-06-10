@@ -24,6 +24,7 @@ pool_size = 999
 pool_matchups = 99_999
 tourney_size = 64
 iters = 5
+play_7 = true
 
 # randomize skill levels
 pool = Elo::Player.init_pool(pool_size).each { |player|
@@ -73,23 +74,28 @@ iters.times { |i|
       b = a + 1
       puts format("%s    vs    %s", tpool[a], tpool[b])
 
-      # best 4 out of 7
-      wins, losses = 0, 0
-      while (wins < 4 and losses < 4) or (wins == losses)
-        outcome = tpool[a].simulate(tpool[b])
-        if outcome == 0.5
-          wins += 0.5
-          losses += 0.5
-        elsif outcome < 0.5
-          losses += 1
-        else
-          wins += 1
+      if play_7
+        # best 4 out of 7
+        wins, losses = 0, 0
+        while (wins < 4 and losses < 4) or (wins == losses)
+          outcome = tpool[a].simulate(tpool[b])
+          if outcome == 0.5
+            wins += 0.5
+            losses += 0.5
+          elsif outcome < 0.5
+            losses += 1
+          else
+            wins += 1
+          end
         end
-      end
-      if wins > losses
-        outcome, winner = 1, tpool[a]
+        if wins > losses
+          outcome, winner = 1, tpool[a]
+        else
+          outcome, winner = 0, tpool[b]
+        end
       else
-        outcome, winner = 0, tpool[b]
+        outcome = tpool[a].simulate(tpool[b], type: :rand)
+        winner = tpool[outcome >= 0.5 ? a : b]
       end
       next_round << winner
       puts "Outcome: #{outcome}\tWinner: #{winner}"
