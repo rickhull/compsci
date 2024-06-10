@@ -54,11 +54,11 @@ module CompSci
       def self.roll(type = :default)
         case type
         when :default      # win=1   lose=0   draw=0.5
-          d100 = rand(100)
-          case d100
-          when 0, 1        # draw, 2%
+          d200 = rand(200)
+          case d200
+          when 0,1         # draw, 1%
             0.5
-          else             # even wins 49%, odd loses 49%
+          else             # even wins 49.5%, odd loses 49.5%
             d100 % 2 == 0 ? 1 : 0
           end
         when :rand         # any float 0..1
@@ -75,13 +75,13 @@ module CompSci
         r = rand
         case type
         when :default      # win=1   lose=0   draw=0.5
-          if r <= 0.02 # 2% chance of a draw
+          if r <= 0.01 # 1% chance of a draw
             0.5
-          else         # 49% chance of a win
-            r <= (0.02 + skill * 0.98) ? 1 : 0
+          else
+            r <= (0.01 + skill * 0.99) ? 1 : 0
           end
         when :rand
-          (skill + r) / 2.0
+          (r + skill - 0.5).clamp(0, 1)
         when :no_draw
           r <= skill ? 1 : 0
         else
