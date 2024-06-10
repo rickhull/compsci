@@ -51,7 +51,7 @@ module CompSci
         Array.new(count) { Player.new(elo: elo) }
       end
 
-      def self.roll(type = :default)
+      def self.roll(type: :default)
         case type
         when :default      # win=1   lose=0   draw=0.5
           d200 = rand(200)
