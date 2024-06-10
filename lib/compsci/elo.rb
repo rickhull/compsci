@@ -48,22 +48,86 @@ module CompSci
         Array.new(count) { Player.new(elo) }
       end
 
-      attr_accessor :rating, :elo
+      def self.roll(type = :default)
+        case type
+        when :default      # win=1   lose=0   draw=0.5
+          d100 = rand(100)
+          case d100
+          when 0, 1        # draw, 2%
+            0.5
+          else             # even wins 49%, odd loses 49%
+            d100 % 2 == 0 ? 1 : 0
+          end
+        when :rand         # any float 0..1
+          rand
+        when :no_draw      # win=1   lose=1
+          rand(2) == 0 ? 1 : 0
+        else
+          raise(ArgumentError, type.inspect)
+        end
+      end
 
-      def initialize(elo)
+      def self.skill_roll(skill_a = 0.5, skill_b = 0.5, type: :default)
+        skill = (skill_a + (1 - skill_b)) / 2.0
+        r = rand
+        case type
+        when :default      # win=1   lose=0   draw=0.5
+          if r <= 0.02 # 2% chance of a draw
+            0.5
+          else         # 49% chance of a win
+            r <= (0.02 + skill * 0.98) ? 1 : 0
+          end
+        when :rand
+          (skill + r) / 2.0
+        when :no_draw
+          r <= skill ? 1 : 0
+        else
+          raise(ArgumentError, type.inspect)
+        end
+      end
+
+      attr_accessor :rating, :elo, :skill, :wins, :losses, :draws
+
+      def initialize(elo, skill: 0.5)
         raise(ArgumentError, elo.inspect) unless elo.is_a? Elo
         @elo = elo
         @rating = @elo.initial
+        @skill = skill
+        @wins = 0
+        @losses = 0
+        @draws = 0
       end
 
       def <=>(opponent)
         @rating <=> opponent.rating
       end
 
-      def update(opponent, outcome)
-        @rating, opponent.rating = @elo.update(@rating,
-                                               opponent.rating,
-                                               outcome)
+      def update(opp, outcome)
+        if outcome < 0.5
+          @losses += 1
+          opp.wins += 1
+        elsif outcome > 0.5
+          @wins += 1
+          opp.losses += 1
+        else
+          @draws += 1
+          opp.draws += 1
+        end
+        @rating, opp.rating = @elo.update(@rating, opp.rating, outcome)
+      end
+
+      def simulate(opp)
+        update(opp, Player.skill_roll(@skill, opp.skill))
+      end
+
+      def record
+        win_pct = 100.0 * (@wins + 0.5 * @draws) / (@wins + @losses + @draws)
+        win_pct = 0 if win_pct.nan?
+        format("%i-%i-%i  %.1f %%", @wins, @losses, @draws, win_pct)
+      end
+
+      def to_s
+        format("(%.3f) %s: %s", @skill, @rating.to_s.rjust(4, ' '), record())
       end
     end
   end
