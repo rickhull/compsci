@@ -14,21 +14,40 @@ end
 
 def retire(players)
   retired = Set.new
-  elo = players[0].elo
-  (players.count / 10).times {
-    i = rand(players.count - 1) + 1  # don't retire idx 0
-    players[i] = Elo::Player.new(elo, skill: rand.round(3))
-    retired.add i
+
+  # take 1 from the top 10 or 20
+  if rand(3) % 2 == 1
+    retired.add rand(10)
+  else
+    retired.add rand(10) + 10
+  end
+  # take the bottom 4
+  (players.count - 4).upto(players.count - 1) { |i| retired.add i }
+  # 5 others randomly outside the top 10 and bottom 5
+  5.times { retired.add rand(players.count - 14) + 10 }
+
+  retired.each { |i|
+    players[i] = Elo::Player.new(elo: ELO, skill: rand.round(3))
   }
   retired.sort
 end
 
+ELO = Elo.new(initial: 1500)
+
 num_players = 99
 num_matches = 9999
-elo = Elo.new(initial: 1500)
-players = Elo::Player.init_pool(num_players, elo).each { |p|
+retirement_periods = 3
+offset = 7
+
+players = Elo::Player.init_pool(num_players, elo: ELO).each { |p|
   p.skill = rand.round(3)
 }
+
+class Array
+  def rank
+    sort { |a, b| b <=> a }
+  end
+end
 
 puts
 puts "#{num_matches} matches without retirement"
@@ -39,26 +58,27 @@ num_matches.times { |i|
   players[a].simulate players[b]
 }
 
-players.each { |p| puts p }
+puts players = players.rank
 puts
 puts "Avg Rating: #{avg_rating(players)}"
 puts
 
 ########
 
-puts "#{num_matches} matches with 10x 10% retirement"
+puts "#{num_matches} matches with #{retirement_periods}x 10% retirement"
 puts
 
 num_matches.times { |i|
   a, b = matchup(players)
   players[a].simulate players[b]
-  if i % (num_matches / 10) == num_matches / 15
+  if i % (num_matches / retirement_periods) == num_matches / offset
+    players = players.rank
     puts format("Played %i matches, retired %s", i, retire(players).join(', '))
   end
 }
 puts
 
-players.each { |p| puts p }
+puts players = players.rank
 puts
 puts "Avg Rating: #{avg_rating(players)}"
 puts
@@ -75,17 +95,13 @@ num_matches.times { |i|
   else
     players[a].simulate(players[b])
   end
-  if i % (num_matches / 10) == num_matches / 15
+  if i % (num_matches / retirement_periods) == num_matches / offset
     puts format("Played %i matches, retired %s", i, retire(players).join(', '))
   end
 }
 puts
 
-players.each { |p| puts p }
+puts players = players.rank
 puts
 puts "Avg Rating: #{avg_rating(players)}"
-puts
-
-puts "SORTED:"
-players.sort_by { |p| -1 * p.rating }.each { |p| puts p }
 puts
