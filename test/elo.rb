@@ -5,7 +5,7 @@ include CompSci
 
 describe Elo do
   it "is configured with 3 variables: initial, k, and c" do
-    # ntoe, these values are not very sensible
+    # note, these values are not very sensible
     e = Elo.new(initial: 5, k: 10, c: 15)
     expect(e.initial).must_equal 5
     expect(e.k).must_equal 10
