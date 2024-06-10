@@ -47,8 +47,8 @@ module CompSci
     class Player
       include Comparable
 
-      def self.init_pool(count, elo)
-        Array.new(count) { Player.new(elo) }
+      def self.init_pool(count, elo: nil)
+        Array.new(count) { Player.new(elo: elo) }
       end
 
       def self.roll(type = :default)
@@ -91,7 +91,8 @@ module CompSci
 
       attr_accessor :rating, :elo, :skill, :wins, :losses, :draws
 
-      def initialize(elo, skill: 0.5)
+      def initialize(elo: nil, skill: 0.5)
+        elo = Elo.new if elo.nil?
         raise(ArgumentError, elo.inspect) unless elo.is_a? Elo
         @elo = elo
         @rating = @elo.initial
