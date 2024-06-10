@@ -29,16 +29,19 @@ module CompSci
        rating_b + @k * (1 - outcome - exp_b)].map(&:round)
     end
 
-    CLASSIC = { initial: 1500, k: 32, c: 400 }
-    MODERN = { initial: 1000, k: 32, c: 480 }
-    DEFAULT = self.new(**MODERN)
+    # Elo's choice of 1500 was somewhat arbitrary, perhaps intended to keep
+    # all worthy ratings at 4 digits, effectively ignoring ratings below 1000
+    # See
+    # https://en.wikipedia.org/wiki/Elo_rating_system#Suggested_modification
+    # for why C=480 might be preferable to C=400
+    CLASSIC = self.new(initial: 1500, k: 32, c: 400)
 
     def Elo.expected(rating_a, rating_b)
-      DEFAULT.expected(rating_a, rating_b)
+      CLASSIC.expected(rating_a, rating_b)
     end
 
     def Elo.update(rating_a, rating_b, outcome_a)
-      DEFAULT.update(rating_a, rating_b, outcome_a)
+      CLASSIC.update(rating_a, rating_b, outcome_a)
     end
 
     class Player
