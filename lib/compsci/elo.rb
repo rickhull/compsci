@@ -22,28 +22,36 @@ module CompSci
     # 0.6 might indicate a "win" for A, like best 3 sets out of 5.
     def update(rating_a, rating_b, outcome)
       raise(ArgumentError, outcome.inspect) unless (0..1).include? outcome
-      exp_a = expected(rating_a, rating_b)
-      exp_b = expected(rating_b, rating_a)
+      ea, eb = expected(rating_a, rating_b), expected(rating_b, rating_a)
 
-      [rating_a + @k * (outcome - exp_a),
-       rating_b + @k * (1 - outcome - exp_b)].map(&:round)
+      [rating_a + @k * (outcome - ea),
+       rating_b + @k * (1 - outcome - eb)].map(&:round)
     end
+  end
 
+  # That's all we need, above.  Here, have some convenience methods:
+
+  class Elo
     # Elo's choice of 1500 was somewhat arbitrary, perhaps intended to keep
     # all worthy ratings at 4 digits, effectively ignoring ratings below 1000
     # See
     # https://en.wikipedia.org/wiki/Elo_rating_system#Suggested_modification
     # for why C=480 might be preferable to C=400
-    CLASSIC = self.new(initial: 1500, k: 32, c: 400)
+    CHESS = self.new(initial: 1500, k: 32, c: 400)
+    DEFAULT = self.new
 
     def Elo.expected(rating_a, rating_b)
-      CLASSIC.expected(rating_a, rating_b)
+      DEFAULT.expected(rating_a, rating_b)
     end
 
     def Elo.update(rating_a, rating_b, outcome_a)
-      CLASSIC.update(rating_a, rating_b, outcome_a)
+      DEFAULT.update(rating_a, rating_b, outcome_a)
     end
+  end
 
+  # Let's add a Player class to track Elo config, player rating, record, etc.
+
+  class Elo
     class Player
       include Comparable
 
