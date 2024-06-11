@@ -14,21 +14,21 @@ describe Elo do
 
   it "has sensible defaults" do
     e = Elo.new
-    expect(e.initial).must_be :<=, 99999
-    expect(e.initial).must_be :>=, 100
-    expect(e.k).must_be :<=, 100
-    expect(e.k).must_be :>=, 5
-    expect(e.c).must_be :<=, 1000
-    expect(e.c).must_be :>=, 100
+    expect(e.initial).must_be :<=, 9999
+    expect(e.initial).must_be :>=, 99
+    expect(e.k).must_be :<=, 99
+    expect(e.k).must_be :>=, 1
+    expect(e.c).must_be :<=, 999
+    expect(e.c).must_be :>=, 99
   end
 
-  it "calculates an expected score, given a matchup with two ratings" do
+  it "calculates an expected score (0..1), given a matchup with two ratings" do
     e = Elo.new
     score = e.expected(500, 500)
     expect(score).must_equal 0.5
-    expect(e.expected(1000, 500)).must_be :>, 0.5
-    expect(e.expected(500, 1000)).must_be :<, 0.5
-    expect(e.expected(1500, 1400)).must_be :>, 0.5
+    expect(e.expected(1000, 500)).must_be :>, 0.5    # 1000 >  500
+    expect(e.expected(500, 1000)).must_be :<, 0.5    #  500 < 1000
+    expect(e.expected(1500, 1400)).must_be :>, 0.5   # 1500 > 1400
   end
 
   it "updates ratings given the outcome of a match" do
@@ -56,11 +56,11 @@ describe Elo do
     expect(new_b3).must_be :>, new_b2
   end
 
-  it "provides a CLASSIC configuration" do
-    expect(Elo::CLASSIC).must_be_kind_of Elo
-    expect(Elo::CLASSIC.initial).must_equal 1500
-    expect(Elo::CLASSIC.k).must_equal 32
-    expect(Elo::CLASSIC.c).must_equal 400
+  it "provides a CHESS configuration" do
+    expect(Elo::CHESS).must_be_kind_of Elo
+    expect(Elo::CHESS.initial).must_equal 1500
+    expect(Elo::CHESS.k).must_equal 32
+    expect(Elo::CHESS.c).must_equal 400
   end
 
   it "has class methods that use the classic configuration" do
@@ -101,7 +101,7 @@ describe Elo do
       expect(a > b).must_equal true
     end
 
-    it "can initialize a pool of players" do
+    it "initializes a pool of players" do
       pool = Elo::Player.init_pool(99)
       expect(pool).must_be_kind_of Array
       pool.each { |player| player.rating = rand(2000) }
@@ -126,7 +126,7 @@ describe Elo do
       expect(b.rating).must_be :>, b_rating
     end
 
-    it "can perform skill-based match simulations" do
+    it "performs skill-based match simulations" do
       a = Elo::Player.new(skill: 0.95)
       b = Elo::Player.new(skill: 0.3)
 
@@ -135,6 +135,13 @@ describe Elo do
       # 99 matches
       99.times { a.simulate(b) }
       expect(a > b).must_equal true    # a's rating should increase
+    end
+
+    it "rolls for win / lose / draw" do
+      99.times {
+        roll = Elo::Player.roll(type: :default)
+        expect([0, 0.5, 1]).must_include roll
+      }
     end
   end
 end
