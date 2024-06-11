@@ -59,7 +59,7 @@ module CompSci
           when 0,1         # draw, 1%
             0.5
           else             # even wins 49.5%, odd loses 49.5%
-            d100 % 2 == 0 ? 1 : 0
+            d200 % 2 == 0 ? 1 : 0
           end
         when :rand         # any float 0..1
           rand
