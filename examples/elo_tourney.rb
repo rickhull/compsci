@@ -53,7 +53,7 @@ iters.times { |i|
   (pool.count - rc).upto(pool.count - 1) { |i|
     pool[i] = Elo::Player.new(skill: rand.round(3))
   }
-  puts "Retired the bottom 10%; average rating: #{avg_rating(pool)}"
+  puts "Retired the bottom 5%; average rating: #{avg_rating(pool)}"
 
   # take top 64 for the tournament
   puts
