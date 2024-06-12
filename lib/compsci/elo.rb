@@ -59,6 +59,10 @@ module CompSci
         Array.new(count) { Player.new(elo: elo) }
       end
 
+      def self.avg_rating(pool)
+        (pool.map(&:rating).sum.to_f / pool.count).round
+      end
+
       def self.roll(type: :default)
         case type
         when :default      # win=1   lose=0   draw=0.5

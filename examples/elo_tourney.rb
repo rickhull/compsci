@@ -2,23 +2,7 @@ require 'compsci/elo'
 
 include CompSci
 
-# return two different integers 0..(pool.count -1)
-def pool_matchup(pool)
-  a = rand(pool.count)
-  [a, (a + rand(pool.count - 1) + 1) % pool.count]
-end
-
-# sum / divide / round
-def avg_rating(pool)
-  (pool.map(&:rating).sum.to_f / pool.count).round
-end
-
-class Array
-  # reverse sort
-  def rank
-    sort { |a, b| b <=> a }
-  end
-end
+P = Elo::Player
 
 pool_size = 999
 pool_matchups = 99_999
@@ -27,9 +11,7 @@ iters = 5
 play_7 = true
 
 # randomize skill levels
-pool = Elo::Player.init_pool(pool_size).each { |player|
-  player.skill = rand.round(3)
-}
+pool = P.init_pool(pool_size).each { |p| p.skill = rand.round(3) }
 
 # LETS GO
 
@@ -42,18 +24,19 @@ iters.times { |i|
 
   # pool matchups
   pool_matchups.times {
-    a, b = pool_matchup(pool)
+    a = rand(pool.count)
+    b = (a + rand(pool.count - 1) + 1) % pool.count
     pool[a].simulate(pool[b]) # win / lose / draw
   }
-  pool = pool.rank
-  puts "Ran #{pool_matchups} matchups; average rating: #{avg_rating(pool)}"
+  pool = pool.sort.reverse
+  puts "Ran #{pool_matchups} matchups; average rating: #{P.avg_rating(pool)}"
 
   # bottom 5% of pool retires
   rc = pool_size / 20
   (pool.count - rc).upto(pool.count - 1) { |i|
-    pool[i] = Elo::Player.new(skill: rand.round(3))
+    pool[i] = P.new(skill: rand.round(3))
   }
-  puts "Retired the bottom 5%; average rating: #{avg_rating(pool)}"
+  puts format("Retired the bottom 5%%; average rating: %i", P.avg_rating(pool))
 
   # take top 64 for the tournament
   puts
@@ -111,7 +94,7 @@ iters.times { |i|
   puts "Retired: #{retired.sort.join(', ')}"
   retired.each { |i|
     print pool[i]
-    pool[i] = Elo::Player.new(skill: rand.round(3))
+    pool[i] = P.new(skill: rand.round(3))
     puts "  ->  #{pool[i]}"
   }
   puts
@@ -123,20 +106,20 @@ iters.times { |i|
   }
   puts "Retired: #{retired.sort.join(', ')}"
   retired.each { |i|
-    pool[i] = Elo::Player.new(skill: rand.round(3))
+    pool[i] = P.new(skill: rand.round(3))
   }
 
-  pool = pool.rank
-  puts "Average rating: #{avg_rating(pool)}"
+  pool = pool.sort.reverse
+  puts "Average rating: #{P.avg_rating(pool)}"
   puts
 }
 
 # pool matchups
 pool_matchups.times {
-  a, b = pool_matchup(pool)
+  a = rand(pool.count)
+  b = (a + rand(pool.count - 1) + 1) % pool.count
   pool[a].simulate(pool[b]) # win / lose / draw
 }
-pool = pool.rank
-puts "Ran #{pool_matchups} matchups; average rating: #{avg_rating(pool)}"
+puts "Ran #{pool_matchups} matchups; average rating: #{P.avg_rating(pool)}"
 
-puts pool
+puts pool.sort.reverse
