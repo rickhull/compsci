@@ -9,9 +9,11 @@ module CompSci
   # array slots.
 
   class BitSet
+    # steep:ignore:start
     INT_BYTES = RbConfig::SIZEOF.fetch('long')    # 64-bit: 8
     INT_BITS = INT_BYTES * 8                      # 32-bit: 4 * 8
     EVEN_BYTE = (2**INT_BITS / 3r).to_i           # 0, 2, 4, etc bits set to 1
+    # steep:ignore:end
 
     # return an array of ones and zeroes, padded to INT_BITS
     def self.bits(int)

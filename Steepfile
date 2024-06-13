@@ -5,8 +5,8 @@ target :lib do
 
   check "lib/compsci/elo.rb"
   check "lib/compsci/string_pack.rb"
-  # check "lib/compsci/byte_pack.rb"   # 14 inconsequential errors
-  # check "lib/compsci/bit_set.rb"     #  2 inconsequential errors
+  check "lib/compsci/byte_pack.rb"
+  check "lib/compsci/bit_set.rb"
   check "lib/compsci/bloom_filter.rb"
 
   # library "pathname"              # Standard libraries
