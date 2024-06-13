@@ -1,6 +1,3 @@
-module StringPack
-end
-
 module CompSci
   class BytePack
     @storage: String
@@ -35,9 +32,13 @@ module CompSci
 
     alias binary storage
 
-    def initialize: (?String str, ?hex: String?, ?net: Array[Integer] | Integer | nil, ?int: Array[Integer] | Integer | nil, ?base64: String?) -> void
+    def initialize: (?String str,
+                     ?hex: String?,
+		     ?net: Array[Integer] | Integer | nil,
+		     ?int: Array[Integer] | Integer | nil,
+		     ?base64: String?) -> void
 
-def net: () -> Array[Integer]
+    def net: () -> Array[Integer]
     def []: (Integer idx) -> Integer
     def ints: () -> Array[Integer]
     def bignum: () -> Integer
