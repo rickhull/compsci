@@ -12,14 +12,14 @@ module CompSci
       void
     def expected: (Integer rating_a, Integer rating_b) -> Float
     def update: (Integer rating_a, Integer rating_b, Float outcome) ->
-      Array[Integer]
+      [Integer, Integer]
 
     CHESS: Elo
     DEFAULT: Elo
 
     def self.expected: (Integer rating_a, Integer rating_b) -> Float
     def self.update: (Integer rating_a, Integer rating_b, Float outcome) ->
-      Array[Integer]
+      [Integer, Integer]
 
     class Player
       @elo: Elo
@@ -46,7 +46,7 @@ module CompSci
 
       def initialize: (?elo: Elo | nil, ?skill: Float) -> void
       def <=>: (Player opponent) -> Integer
-      def update: (Player opp, Float outcome) -> Array[Integer]
+      def update: (Player opp, Float outcome) -> [Integer, Integer]
       def simulate: (Player opp, ?type: Symbol) -> Float
       def record: () -> String
       def to_s: () -> String

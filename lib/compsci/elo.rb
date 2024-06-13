@@ -21,8 +21,8 @@ module CompSci
       raise(ArgumentError, outcome.inspect) unless (0..1).include? outcome
       ea, eb = expected(rating_a, rating_b), expected(rating_b, rating_a)
 
-      [rating_a + @k * (outcome - ea),
-       rating_b + @k * (1 - outcome - eb)].map(&:round)
+      [(rating_a + @k * (outcome - ea)).round,
+       (rating_b + @k * (1 - outcome - eb)).round]#.map(&:round)
     end
   end
 
@@ -47,6 +47,8 @@ module CompSci
   end
 
   # Let's add a Player class to track Elo config, player rating, record, etc.
+  # This provides a source of randomness (roll for an outcome), with an
+  # optional notion of relative skill that can influence the roll.
 
   class Elo
     class Player
