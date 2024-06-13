@@ -1,49 +1,32 @@
-require 'compsci/string_pack'
 require 'rbconfig/sizeof'
 
 # Effortless conversion of bytewise (binary) data
 # To and from integers, binary strings, hexadecimal and base64 strings
 
-# refinement to add String#pack
-using StringPack
-
 module CompSci
   class BytePack
+    # steep:ignore:start
     NATIVE = RbConfig::SIZEOF.fetch('long') # 64-bit: 8   32-bit: 4
+    # steep:ignore:end
     INTMAX = 2 ** (NATIVE * 8) - 1
 
     VAL = "\xFF\x00\x00\x00".b
     ENDIAN = VAL.unpack('N*') == VAL.unpack('L*') ? :big : :little
 
-    # format hex with rows and cols
+    # multiline output targeting 80ch display
     def self.format(hex)
-      cursor, step = 0, 8
-      chunks = []
-      while cursor < hex.bytesize
-        chunks << hex.slice(cursor, step)
-        cursor += step
-      end
-
-      cursor, step = 0, 2
-      combos = []
-      while cursor < chunks.count
-        combos << chunks.slice(cursor, 2).join(" ")
-        cursor += 2
-      end
-
-      cursor, step = 0, 4
-      lines = []
-      while cursor < combos.count
-        lines << combos.slice(cursor, step).join("  ").upcase
-        cursor += step
-      end
-
-      lines.join($/)
+      hex.upcase.scan(/.{1,8}/)         # ["DEADBEEF", "DEADBEEF", ...]
+        .each_slice(2)                  # [["DEADBEEF", "DEADBEEF"], ...]
+        .map { |pair| pair.join(' ') }  # ["DEADBEEF DEADBEEF", ...]
+        .each_slice(4)                  # [[str1, str2, str3, str4], ...]
+        .map { |quad| quad.join('  ') } # ["str1  str2  str3  str4", ...]
     end
 
     # generate a new BytePack using random integers
     def self.random(length)
+      # steep:ignore:start
       self.new(int: Array.new(length.ceildiv NATIVE) { rand INTMAX })
+      # steep:ignore:end
     end
 
     # return a (BINARY) string, null-padded to a multiple of width
@@ -77,55 +60,65 @@ module CompSci
       },
     }
 
+    # steep:ignore:start
     # array of 32b integers, network byte order (big endian)
     def self.bin2net(str)
       self.prepare(str, width: 4, endian: :big).unpack('N*')
     end
+    # steep:ignore:end
 
     # encoding: BINARY, network byte order
     def self.net2bin(ints)
       ints.pack('N*')
     end
 
+    # steep:ignore:start
     # array of 32b integers, little endian
     def self.bin2vax(str)
       self.prepare(str, width: 4, endian: :little).unpack('V*')
     end
+    # steep:ignore:end
 
     # encoding: BINARY, little endian
     def self.vax2bin(ints)
       ints.pack('V*')
     end
 
+    # steep:ignore:start
     # array of integers, native width and endianness
     def self.bin2ints(str)
       self.prepare(str).unpack('J*')
     end
+    # steep:ignore:end
 
     # encoding: BINARY, native width and endianness
     def self.ints2bin(ints)
       ints.pack('J*')
     end
 
+    # steep:ignore:start
     # encoding: US-ASCII, lowercase hex
     def self.bin2hex(str)
       str.unpack1('H*')
     end
+    # steep:ignore:end
 
     # encoding: BINARY
     def self.hex2bin(hex_str)
-      hex_str.pack('H*')
+      [hex_str].pack('H*')
     end
 
     # encoding: US-ASCII, base64, no trailing newline
     def self.bin2b64(str)
-      str.pack('m0')
+      [str].pack('m0')
     end
 
+    # steep:ignore:start
     # encoding: BINARY
     def self.b642bin(b64_str)
       b64_str.unpack1('m0')
     end
+    # steep:ignore:end
 
     # fundamentally, this is a String, encoding: BINARY
     attr_reader :storage
@@ -167,7 +160,7 @@ module CompSci
       i = -1
       self.ints.inject(0) { |memo, int|
         i += 1
-        memo + int * (INTMAX+1) ** i
+        memo + int * (INTMAX+1) ** i # steep:ignore
       }
     end
 

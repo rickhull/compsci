@@ -3,12 +3,10 @@ require 'compsci/byte_pack'
 
 include CompSci
 
-using StringPack
-
 describe BytePack do
   VAL = [rand(999999999)].pack('N*')
   HEXVAL = VAL.unpack1('H*')
-  B64VAL = VAL.pack('m0')
+  B64VAL = [VAL].pack('m0')
 
   it "converts a binary string to an array of ints" do
     ary = BytePack.bin2ints(VAL)
