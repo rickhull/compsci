@@ -8,15 +8,18 @@ module CompSci
     attr_reader k: Integer
     attr_reader c: Float
 
-    def initialize: (?initial: Integer, ?k: Integer, ?c: Float) -> void
+    def initialize: (?initial: Integer, ?k: Integer, ?c: Integer | Float) ->
+      void
     def expected: (Integer rating_a, Integer rating_b) -> Float
-    def update: (Integer rating_a, Integer rating_b, Float outcome) -> Array[Integer]
+    def update: (Integer rating_a, Integer rating_b, Float outcome) ->
+      Array[Integer]
 
     CHESS: Elo
     DEFAULT: Elo
 
     def self.expected: (Integer rating_a, Integer rating_b) -> Float
-    def self.update: (Integer rating_a, Integer rating_b, Float outcome) -> Array[Integer]
+    def self.update: (Integer rating_a, Integer rating_b, Float outcome) ->
+      Array[Integer]
 
     class Player
       @elo: Elo
@@ -28,10 +31,11 @@ module CompSci
 
       include Comparable
 
-      def self.init_pool: (Integer count, ?elo: Elo) -> Array[Player]
+      def self.init_pool: (Integer count, ?elo: Elo | nil) -> Array[Player]
       def self.avg_rating: (Array[Player]) -> Integer
       def self.roll: (?type: Symbol) -> Float
-      def self.skill_roll: (?Float skill_a, ?Float skill_b, ?type: Symbol) -> Float
+      def self.skill_roll: (?Float skill_a, ?Float skill_b, ?type: Symbol) ->
+        Float
 
       attr_accessor rating: Integer
       attr_accessor elo: Elo
@@ -40,9 +44,9 @@ module CompSci
       attr_accessor losses: Integer
       attr_accessor draws: Integer
 
-      def initialize: (?elo: Elo, ?skill: Float) -> void
+      def initialize: (?elo: Elo | nil, ?skill: Float) -> void
       def <=>: (Player opponent) -> Integer
-      def update: (Player opp, Float outcome) -> void
+      def update: (Player opp, Float outcome) -> Array[Integer]
       def simulate: (Player opp, ?type: Symbol) -> Float
       def record: () -> String
       def to_s: () -> String

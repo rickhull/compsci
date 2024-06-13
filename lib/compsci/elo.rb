@@ -2,19 +2,19 @@ module CompSci
   class Elo
     attr_reader :initial, :k, :c
 
-    def initialize(initial: 1000, k: 32, c: 480.0)
+    def initialize(initial: 1000, k: 32, c: 480)
       @initial = initial  # initial rating, typically 1500
       @k = k              # maximum adjustment per update, typically 32
       @c = c.to_f         # a constant, typically 400
     end
 
-    # rating_a and rating_b are positive numbers
+    # rating_a and rating_b are positive numbers; return a float 0.0..1.0
     def expected(rating_a, rating_b)
       1 / (1 + 10.0**((rating_b - rating_a) / @c))
     end
 
     # outcome_a is number between 0 and 1
-    # 1 indicates a "win" for A, 0 indicates a "win" for B
+    # 1.0 indicates a "win" for A, 0.0 indicates a "win" for B
     # 0.5 indicates a draw
     # 0.6 might indicate a "win" for A, like best 3 sets out of 5.
     def update(rating_a, rating_b, outcome)
@@ -34,7 +34,7 @@ module CompSci
     # See
     # https://en.wikipedia.org/wiki/Elo_rating_system#Suggested_modification
     # for why C=480 might be preferable to C=400
-    CHESS = self.new(initial: 1500, k: 32, c: 400.0)
+    CHESS = self.new(initial: 1500, k: 32, c: 400)
     DEFAULT = self.new
 
     def Elo.expected(rating_a, rating_b)
