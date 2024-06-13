@@ -38,7 +38,7 @@ module CompSci
       elsif bytes < TiB
         [bytes.to_f / GiB, 'GiB']
       elsif bytes < PiB
-        [bytes.to_F / TiB, 'TiB']
+        [bytes.to_f / TiB, 'TiB']
       else
         [bytes.to_f / PiB, 'PiB']
       end
