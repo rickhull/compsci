@@ -36,7 +36,7 @@ module CompSci
 
     # returns either 0 or a number like 0.95036573
     def likelihood(str)
-      self.include?(str) ? 1.0 - self.fpr : 0
+      self.include?(str) ? 1.0 - self.fpr : 0.0
     end
     alias_method(:[], :likelihood)
 
