@@ -1,0 +1,33 @@
+module CompSci
+  class BitSet
+    @count: Integer
+    @storage: Array[Integer]
+    @bits: Array[Integer] | nil
+
+    INT_BYTES: Integer
+    INT_BITS: Integer
+    EVEN_BYTE: Integer
+
+    def self.bits: (Integer int) -> Array[Integer]
+
+    KiB: Integer
+    MiB: Integer
+    GiB: Integer
+    TiB: Integer
+    PiB: Integer
+
+    def self.size: (?bytes: Integer, ?bits: Integer) -> Array[untyped]
+
+    attr_reader storage: Array[Integer]
+    attr_reader count: Integer
+
+    def initialize: (Integer count, ?flip_even_bits: bool) -> void
+    def bits: () -> Array[Integer]
+    def add: (Integer bit_index) -> Integer
+    def include?: (Integer bit_index) -> bool
+    def ratio: () -> Rational
+    def on_bits: () -> Array[Integer]
+    def byte_count: () -> Integer
+    def to_s: () -> String
+  end
+end

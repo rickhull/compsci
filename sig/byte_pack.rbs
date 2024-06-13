@@ -1,0 +1,90 @@
+module StringPack
+end
+
+module CompSci
+  class BytePack
+    @storage: String
+
+    NATIVE: Integer
+    INTMAX: Integer
+    VAL: String
+    ENDIAN: Symbol
+
+    # format hex with rows and cols
+    def self.format: (String hex) -> String
+
+    # generate a new BytePack using random integers
+    def self.random: (Integer length) -> BytePack
+
+    # return a (BINARY) string, null-padded to a multiple of width
+    def self.prepare: (String str, ?width: Integer, ?endian: Symbol) -> String
+
+    # not used, maybe later
+    INT: { native: { name: :ints, pack: "J*", width: untyped, endian: untyped }, vax32: { name: :vax, pack: "L*", width: 4, endian: :little }, net32: { name: :net, pack: "N*", width: 4, endian: :big } }
+
+    # array of 32b integers, network byte order (big endian)
+    def self.bin2net: (String str) -> Array[Integer]
+
+    # encoding: BINARY, network byte order
+    def self.net2bin: (Array[Integer] ints) -> String
+
+    # array of 32b integers, little endian
+    def self.bin2vax: (String str) -> Array[Integer]
+
+    # encoding: BINARY, little endian
+    def self.vax2bin: (Array[Integer] ints) -> String
+
+    # array of integers, native width and endianness
+    def self.bin2ints: (String str) -> Array[Integer]
+
+    # encoding: BINARY, native width and endianness
+    def self.ints2bin: (Array[Integer] ints) -> String
+
+    # encoding: US-ASCII, lowercase hex
+    def self.bin2hex: (String str) -> String
+
+    # encoding: BINARY
+    def self.hex2bin: (String hex_str) -> String
+
+    # encoding: US-ASCII, base64, no trailing newline
+    def self.bin2b64: (String str) -> String
+
+    # encoding: BINARY
+    def self.b642bin: (String b64_str) -> String
+
+    # fundamentally, this is a String, encoding: BINARY
+    attr_reader storage: String
+
+    alias binary storage
+
+    def initialize: (?String str, ?hex: String?, ?net: Array[Integer] | Integer | nil, ?int: Array[Integer] | Integer | nil, ?base64: String?) -> void
+
+    # 32-bit integers, network byte order
+    def net: () -> Array[Integer]
+
+    # address the network integers
+    def []: (Integer idx) -> Integer
+
+    # up to 64-bit integers, native byte order
+    def ints: () -> Array[Integer]
+
+    # calculate a giant integer from native integers, may be slow
+    def bignum: () -> Integer
+
+    # calculate a giant integer from network integers, may be slow
+    def bignet: () -> Integer
+
+    # lowercase hex, encoding: US-ASCII
+    def hex: () -> String
+
+    alias inspect hex
+
+    alias to_s hex
+
+    # encoding: US-ASCII
+    def base64: () -> String
+
+    # formatted with rows and cols
+    def hexdump: () -> String
+  end
+end

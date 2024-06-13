@@ -1,0 +1,28 @@
+module CompSci
+  class BloomFilter
+    @bits: Integer
+    @aspects: Integer
+    @bitmap: BitSet
+
+    MAX_BITS: Integer
+
+    attr_reader bits: Integer
+    attr_reader aspects: Integer
+    attr_reader bitmap: BitSet
+
+    def initialize: (?bits: Integer, ?aspects: Integer) -> void
+    def index: (String str) -> Array[Integer]
+    def add: (String str) -> Array[Integer]
+    alias << add
+
+    def include?: (String str) -> bool
+    def likelihood: (String str) -> Float
+    alias [] likelihood
+
+    def percent_full: () -> Float
+    def fpr: () -> Float
+    def algo: () -> "CRC32"
+    def to_s: () -> String
+    alias inspect to_s
+  end
+end

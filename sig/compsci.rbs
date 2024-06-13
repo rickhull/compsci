@@ -1,0 +1,9 @@
+module CompSci
+  NEWLINE: String
+
+  def self.power_of?: (Numeric, Numeric) -> bool
+  def self.numeric!: (untyped) -> Numeric
+  def self.positive!: (untyped) -> Numeric
+  def self.string!: (untyped) -> String
+  def self.nonempty!: (untyped) -> String
+end
