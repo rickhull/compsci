@@ -1,10 +1,8 @@
-require 'compsci'
-
 module CompSci
   class Elo
     attr_reader :initial, :k, :c
 
-    def initialize(initial: 1000, k: 32, c: 480)
+    def initialize(initial: 1000, k: 32, c: 480.0)
       @initial = initial  # initial rating, typically 1500
       @k = k              # maximum adjustment per update, typically 32
       @c = c.to_f         # a constant, typically 400
@@ -12,8 +10,7 @@ module CompSci
 
     # rating_a and rating_b are positive numbers
     def expected(rating_a, rating_b)
-      CompSci.positive!(rating_a) and CompSci.positive!(rating_b)
-      1 / (1 + 10**((rating_b - rating_a) / @c))
+      1 / (1 + 10.0**((rating_b - rating_a) / @c))
     end
 
     # outcome_a is number between 0 and 1
@@ -37,7 +34,7 @@ module CompSci
     # See
     # https://en.wikipedia.org/wiki/Elo_rating_system#Suggested_modification
     # for why C=480 might be preferable to C=400
-    CHESS = self.new(initial: 1500, k: 32, c: 400)
+    CHESS = self.new(initial: 1500, k: 32, c: 400.0)
     DEFAULT = self.new
 
     def Elo.expected(rating_a, rating_b)
@@ -71,12 +68,12 @@ module CompSci
           when 0,1         # draw, 1%
             0.5
           else             # even wins 49.5%, odd loses 49.5%
-            d200 % 2 == 0 ? 1 : 0
+            d200 % 2 == 0 ? 1.0 : 0.0
           end
         when :rand         # any float 0..1
           rand
         when :no_draw      # win=1   lose=1
-          rand(2) == 0 ? 1 : 0
+          rand(2) == 0 ? 1.0 : 0.0
         else
           raise(ArgumentError, type.inspect)
         end
@@ -90,12 +87,12 @@ module CompSci
           if r <= 0.01 # 1% chance of a draw
             0.5
           else
-            r <= (0.01 + skill * 0.99) ? 1 : 0
+            r <= (0.01 + skill * 0.99) ? 1.0 : 0.0
           end
         when :rand
-          (r + skill - 0.5).clamp(0, 1)
+          (r + skill - 0.5).clamp(0.0, 1.0)
         when :no_draw
-          r <= skill ? 1 : 0
+          r <= skill ? 1.0 : 0.0
         else
           raise(ArgumentError, type.inspect)
         end
