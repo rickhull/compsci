@@ -1,5 +1,8 @@
 require 'rake/testtask'
 
+BINDIR = Dir[File.join(ENV['HOME'], '.local/share/gem/ruby/*/bin')].last
+STEEP = File.join(BINDIR, 'steep')
+
 Rake::TestTask.new :test do |t|
   t.pattern = "test/*.rb"
   t.warning = true
@@ -9,6 +12,11 @@ Rake::TestTask.new bench: [:test, :loadavg] do |t|
   t.pattern = "test/bench/*.rb"
   t.warning = true
   t.description = "Run benchmarks"
+end
+
+desc "Run type checks (RBS + Steep)"
+task :steep do
+  sh "#{STEEP} check"
 end
 
 desc "Run example scripts"
@@ -35,7 +43,7 @@ begin
     t.verbose = true
   end
 rescue LoadError
-  warn 'flog_task unavailable'
+  # warn 'flog_task unavailable'
 end
 
 begin
@@ -45,14 +53,14 @@ begin
     t.verbose = true
   end
 rescue LoadError
-  warn 'flay_task unavailable'
+  # warn 'flay_task unavailable'
 end
 
 begin
   require 'roodi_task'
   RoodiTask.new config: '.roodi.yml', patterns: ['lib/**/*.rb']
 rescue LoadError
-  warn "roodi_task unavailable"
+  # warn "roodi_task unavailable"
 end
 
 
