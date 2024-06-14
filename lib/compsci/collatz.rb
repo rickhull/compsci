@@ -18,14 +18,14 @@ module CompSci
       Hash.new(0)
     end
 
-    def self.summarize(freqs)
+    def self.summarize(reg)
       best_key = nil
       best_val = 0
 
-      total = freqs[1]
+      total = reg[1]
       pct = {}
 
-      freqs.each { |k, v|
+      reg.each { |k, v|
         # skip 1 as it will always dominate
         next if k == 1
         if v >= best_val

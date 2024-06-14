@@ -1,0 +1,13 @@
+module CompSci
+  module Collatz
+    def self.once: (Integer n) -> Integer
+    def self.loop: (Integer n, ?register: Hash[Integer, Integer]) ->
+      Hash[Integer, Integer]
+    def self.register: () -> Hash[Integer, Integer]
+    def self.summarize: (Hash[Integer, Integer] reg) -> {
+        top: Hash[Integer, Integer],
+        best_key: Integer | nil,
+        best_val: Integer,
+      }
+  end
+end
