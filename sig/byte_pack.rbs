@@ -1,21 +1,18 @@
 module CompSci
   class BytePack
-    @storage: String
-
     NATIVE: Integer
     INTMAX: Integer
     VAL: String
     ENDIAN: Symbol
-
-    def self.format: (String hex) -> Array[String]
-    def self.random: (Integer length) -> BytePack
-    def self.prepare: (String str, ?width: Integer, ?endian: Symbol) -> String
-
     INT: {
       native: { name: :ints, pack: "J*", width: Integer, endian: Symbol },
       vax32:  { name: :vax, pack: "L*", width: 4, endian: :little },
       net32:  { name: :net, pack: "N*", width: 4, endian: :big },
     }
+
+    def self.format: (String hex) -> Array[String]
+    def self.random: (Integer length) -> BytePack
+    def self.prepare: (String str, ?width: Integer, ?endian: Symbol) -> String
 
     def self.bin2net: (String str) -> Array[Integer]
     def self.net2bin: (Array[Integer] ints) -> String
@@ -28,15 +25,16 @@ module CompSci
     def self.bin2b64: (String str) -> String
     def self.b642bin: (String b64_str) -> String
 
-    attr_reader storage: String
+    @storage: String
 
+    attr_reader storage: String
     alias binary storage
 
     def initialize: (?String str,
                      ?hex: String?,
-		     ?net: Array[Integer] | Integer | nil,
-		     ?int: Array[Integer] | Integer | nil,
-		     ?base64: String?) -> void
+                     ?net: Array[Integer] | Integer | nil,
+                     ?int: Array[Integer] | Integer | nil,
+                     ?base64: String?) -> void
 
     def net: () -> Array[Integer]
     def []: (Integer idx) -> Integer
