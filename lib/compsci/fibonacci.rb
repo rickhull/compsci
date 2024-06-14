@@ -27,7 +27,7 @@ module CompSci
 
     # https://ianthehenry.com/posts/fibonacci/
     def self.matrix(n)
-      (Matrix[[1, 1], [1, 0]] ** n.pred)[0, 0]
+      (Matrix[[1, 1], [1, 0]] ** n.pred)[0, 0] # steep:ignore
     end
   end
 end

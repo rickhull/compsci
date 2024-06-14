@@ -1,0 +1,10 @@
+module CompSci
+  module Fibonacci
+    def self.classic: (Integer n) -> Integer
+    def self.cache_recursive: (Integer n, ?Hash[Integer, Integer] cache) ->
+      Integer
+    def self.cache_iterative: (Integer n) -> Integer
+    def self.dynamic: (Integer n) -> Integer
+    def self.matrix: (Integer n) -> Integer
+  end
+end

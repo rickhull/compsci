@@ -8,11 +8,13 @@ target :lib do
   check "lib/compsci/byte_pack.rb"
   check "lib/compsci/collatz.rb"
   check "lib/compsci/elo.rb"
+  check "lib/compsci/fibonacci.rb"
 
   # library "pathname"              # Standard libraries
   # library "strong_json"           # Gems
 
   library "zlib"
+  # library "matrix"
 
   # configure_code_diagnostics(D::Ruby.strict)
 end
