@@ -1,0 +1,42 @@
+module CompSci
+  # A CompleteTree can very efficiently use an array for storage using
+  # simple arithmetic to determine parent child relationships.
+  #
+  class CompleteTree
+    @array: Array[Integer]
+    @child_slots: Integer
+
+    def self.parent_idx: (Integer idx, Integer n) -> Integer
+    def self.children_idx: (Integer idx, Integer n) -> Array[Integer]
+    def self.gen: (Integer idx, Integer n) -> Integer
+
+    attr_reader array: Array[Integer]
+
+    def initialize: (?array: Array[Integer], ?child_slots: Integer) -> void
+
+    def push: (untyped val) -> untyped
+    def pop: () -> untyped
+    def size: () -> Integer
+    def last_idx: () -> (Integer | nil)
+    def bf_search: () { (untyped) -> untyped } -> untyped
+
+    def df_search: () { (?) -> untyped } -> untyped
+
+    # TODO: fixme
+    def display: (?width: ::Integer) -> untyped
+
+    alias to_s display
+  end
+
+  class CompleteBinaryTree < CompleteTree
+    def initialize: (?array: untyped) -> void
+  end
+
+  class CompleteTernaryTree < CompleteTree
+    def initialize: (?array: untyped) -> void
+  end
+
+  class CompleteQuaternaryTree < CompleteTree
+    def initialize: (?array: untyped) -> void
+  end
+end

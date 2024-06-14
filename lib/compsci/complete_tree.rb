@@ -5,6 +5,8 @@ module CompSci
   # simple arithmetic to determine parent child relationships.
   #
   class CompleteTree
+    class WIP < RuntimeError; end
+
     # integer math maps several children to one parent
     def self.parent_idx(idx, n)
       (idx-1) / n
@@ -50,6 +52,7 @@ module CompSci
 
     # or, ya know, just iterate @array
     def bf_search(&blk)
+      raise(WIP)
       destinations = [0]
       while !destinations.empty?
         idx = destinations.shift
@@ -64,11 +67,12 @@ module CompSci
     end
 
     def df_search(&blk)
-      puts "not yet"
+      raise(WIP)
     end
 
     # TODO: fixme
     def display(width: 80)
+      raise(WIP)
       str = ''
       old_level = 0
       @array.each_with_index { |val, i|
