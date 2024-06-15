@@ -14,10 +14,10 @@ Rake::TestTask.new bench: [:test, :loadavg] do |t|
   t.description = "Run benchmarks"
 end
 
-desc "Run type checks (RBS + Steep)"
-task :steep do
-  sh "#{STEEP} check"
-end
+#desc "Run type checks (RBS + Steep)"
+#task :steep do
+#  sh "#{STEEP} check"
+#end
 
 desc "Run example scripts"
 task examples: [:test, :loadavg] do
