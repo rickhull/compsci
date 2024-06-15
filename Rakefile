@@ -1,8 +1,5 @@
 require 'rake/testtask'
 
-BINDIR = Dir[File.join(ENV['HOME'], '.local/share/gem/ruby/*/bin')].last
-STEEP = File.join(BINDIR, 'steep')
-
 Rake::TestTask.new :test do |t|
   t.pattern = "test/*.rb"
   t.warning = true
@@ -14,10 +11,11 @@ Rake::TestTask.new bench: [:test, :loadavg] do |t|
   t.description = "Run benchmarks"
 end
 
-#desc "Run type checks (RBS + Steep)"
-#task :steep do
-#  sh "#{STEEP} check"
-#end
+desc "Run type checks (RBS + Steep)"
+task :steep do
+  bindir = Dir[File.join(ENV['HOME'], '.local/share/gem/ruby/*/bin')].last
+  sh "#{File.join(bindir, 'steep')} check"
+end
 
 desc "Run example scripts"
 task examples: [:test, :loadavg] do
