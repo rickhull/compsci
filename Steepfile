@@ -9,6 +9,7 @@ target :lib do
   check "lib/compsci/collatz.rb"
   check "lib/compsci/elo.rb"
   check "lib/compsci/fibonacci.rb"
+  check "lib/compsci/fit.rb"
 
   # library "pathname"              # Standard libraries
   # library "strong_json"           # Gems

@@ -1,0 +1,14 @@
+module CompSci
+  module Fit
+    def self.constant: (Array[Numeric] xs, Array[Numeric] ys) ->
+      Array[Numeric]
+    def self.best: (Array[Numeric] xs, Array[Numeric] ys) -> Array[untyped]
+    def self.sigma: (Enumerable enum) ?{ (?) -> Numeric } -> Numeric
+    def self.error: (untyped xys) { (untyped) -> untyped } -> untyped
+    def self.logarithmic: (untyped xs, untyped ys) -> ::Array[untyped]
+    def self.linear: (untyped xs, untyped ys) -> ::Array[untyped]
+    def self.exponential: (untyped xs, untyped ys) -> ::Array[untyped]
+    def self.power: (untyped xs, untyped ys) -> ::Array[untyped]
+    def self.predict: (untyped model, untyped a, untyped b, untyped x) -> untyped
+  end
+end
