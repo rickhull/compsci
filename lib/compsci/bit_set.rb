@@ -93,9 +93,8 @@ module CompSci
 
     # size, ratio of "on" bits
     def to_s
-      format("%.1f%% positive (%.1f %s)",
-             self.ratio * 100,
-             *self.class.size(bytes: self.byte_count))
+      size, label = self.class.size(bytes: self.byte_count)
+      format("%.1f%% positive (%.1f %s)", self.ratio * 100, size, label)
     end
   end
 end

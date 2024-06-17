@@ -16,7 +16,7 @@ module CompSci
     TiB: Integer
     PiB: Integer
 
-    def self.size: (?bytes: Integer, ?bits: Integer) -> Array[untyped]
+    def self.size: (?bytes: Integer, ?bits: Integer) -> [Float | Integer, String]
 
     attr_reader storage: Array[Integer]
     attr_reader count: Integer
