@@ -13,6 +13,9 @@ end
 
 desc "Run type checks (RBS + Steep)"
 task :steep do
+  puts ENV['RUBYOPT']
+  ENV['RUBYOPT'] = ENV['RUBYOPT'].sub('--enable-frozen-string-literal', '')
+  puts ENV['RUBYOPT']
   bindir = Dir[File.join(ENV['HOME'], '.local/share/gem/ruby/*/bin')].last
   sh "#{File.join(bindir, 'steep')} check"
 end
