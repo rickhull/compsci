@@ -20,7 +20,7 @@ module CompSci
     #
 
     def self.best xs, ys
-      vals = []
+      vals = [0.0, 0.0, 0.0, :default]
       max_r2 = 0
       [:logarithmic, :linear, :exponential, :power].each { |fn|
         a, b, r2 = Fit.send(fn, xs, ys)
@@ -45,8 +45,7 @@ module CompSci
     #   sigma([1, 2, 3]) { |n| n ** 2 } # => 1 + 4 + 9 => 14
 
     def self.sigma enum, &block
-      enum = enum.map(&block) if block
-      enum.inject { |sum, n| sum + n }
+      (block ? enum.map(&block) : enum).sum
     end
 
     ##
@@ -76,7 +75,7 @@ module CompSci
 
     def self.logarithmic xs, ys
       n     = xs.size
-      xys   = xs.zip(ys)
+      xys   = xs.zip(ys).take(n)
       slnx2 = sigma(xys) { |x, _| Math.log(x) ** 2 }
       slnx  = sigma(xys) { |x, _| Math.log(x)      }
       sylnx = sigma(xys) { |x, y| y * Math.log(x)  }
