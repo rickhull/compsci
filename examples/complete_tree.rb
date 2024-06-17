@@ -3,24 +3,18 @@ require 'compsci/complete_tree'
 include CompSci
 
 vals = Array.new(30) { rand 99 }
+puts "initial vals: #{vals.inspect}"
 
-[CompleteBinaryTree,
- CompleteTernaryTree,
- CompleteQuaternaryTree].each { |tree_class|
-
+[2, 3, 4].each { |child_slots|
   puts <<EOF
 
 #
-# Print #{tree_class} filled with static vals
+# Print CompleteTree(#{child_slots}) filled with static vals
 #
 
 EOF
 
-  my_vals = vals.dup
-  puts "initial vals: #{my_vals.inspect}"
-  tree = tree_class.new
-  tree.push my_vals.shift until my_vals.empty?
-
+  tree = CompleteTree.new(array: vals, child_slots: child_slots)
   p tree
   puts
   puts tree.display(width: 80)
@@ -36,7 +30,7 @@ EOF
 EOF
 
   my_vals = Array.new(30) { rand 99 }
-  puts "new vals: #{my_vals.inspect}"
+  puts "added vals: #{my_vals.inspect}"
 
   tree.push my_vals.shift until my_vals.empty?
   puts

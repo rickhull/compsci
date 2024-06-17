@@ -3,40 +3,24 @@ module CompSci
   # simple arithmetic to determine parent child relationships.
   #
   class CompleteTree
-    @array: Array[Integer]
+    @array: Array[untyped]
     @child_slots: Integer
 
     def self.parent_idx: (Integer idx, Integer n) -> Integer
     def self.children_idx: (Integer idx, Integer n) -> Array[Integer]
+    def self.gen_lookup: (Integer idx, Integer n) -> Integer
     def self.gen: (Integer idx, Integer n) -> Integer
+    def self.generation: (Integer idx, Integer n) -> [Integer, Integer]
 
-    attr_reader array: Array[Integer]
+    attr_reader array: Array[untyped]
 
-    def initialize: (?array: Array[Integer], ?child_slots: Integer) -> void
+    def initialize: (?array: Array[untyped], ?child_slots: Integer) -> void
 
     def push: (untyped val) -> untyped
     def pop: () -> untyped
     def size: () -> Integer
     def last_idx: () -> (Integer | nil)
-    def bf_search: () { (untyped) -> untyped } -> untyped
-
-    def df_search: () { (?) -> untyped } -> untyped
-
-    # TODO: fixme
-    def display: (?width: ::Integer) -> untyped
-
+    def display: (?width: Integer) -> Array[String]
     alias to_s display
-  end
-
-  class CompleteBinaryTree < CompleteTree
-    def initialize: (?array: untyped) -> void
-  end
-
-  class CompleteTernaryTree < CompleteTree
-    def initialize: (?array: untyped) -> void
-  end
-
-  class CompleteQuaternaryTree < CompleteTree
-    def initialize: (?array: untyped) -> void
   end
 end

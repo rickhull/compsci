@@ -69,12 +69,6 @@ determine parent/child relationships.
   - `#size`
   - `#last_idx`
   - `#display` - alias `#to_s`
-* `CompleteBinaryTree < CompleteTree`
-  - `@child_slots = 2`
-* `CompleteTernaryTree < CompleteTree`
-  - `@child_slots = 3`
-* `CompleteQuaternaryTree < CompleteTree`
-  - `@child_slots = 4`
 
 * [examples/complete_tree.rb](examples/complete_tree.rb)
 * [test/complete_tree.rb](test/complete_tree.rb)

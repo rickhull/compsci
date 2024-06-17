@@ -117,7 +117,7 @@ describe CompleteTree do
     before do
       @array = (0..99).sort_by { rand }
       @empty = CompleteTree.new(child_slots: 5)
-      @nonempty = CompleteQuaternaryTree.new(array: @array)
+      @nonempty = CompleteTree.new(array: @array, child_slots: 4)
     end
 
     it "must have a size" do

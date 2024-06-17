@@ -3,28 +3,45 @@ require 'compsci'
 module CompSci
   # A CompleteTree can very efficiently use an array for storage using
   # simple arithmetic to determine parent child relationships.
+  # Any type of value may be stored in the array / tree at any location.
   #
   class CompleteTree
     class WIP < RuntimeError; end
 
-    # integer math maps several children to one parent
+    # given a child index and child count (e.g. 2 for a binary tree)
+    # integer math maps several children to one parent index
     def self.parent_idx(idx, n)
       (idx-1) / n
     end
 
+    # given a parent index and child count
+    # integer math maps several children to one parent index
     def self.children_idx(idx, n)
       Array.new(n) { |i| n*idx + i + 1 }
     end
 
+    GEN = {}
+    [2, 3, 4, 5, 6].each { |n|
+      cursor = -1
+      GEN[n] = Array.new(10) { |i| cursor += n**i }
+    }
+
+    def self.gen_lookup(idx, n)
+      return nil unless GEN[n]
+      return nil unless idx <= GEN[n].last
+      GEN[n].each.with_index { |max, level| return level if idx <= max }
+      nil
+    end
+
     def self.gen(idx, n)
-      count = 0
-      loop {
-        pidx = self.parent_idx(idx, n)
-        break if pidx < 0
-        count += 1
-        idx = pidx
-      }
-      count
+      return 0 if idx <= 0
+      gen_lookup(idx, n) or gen(self.parent_idx(idx, n), n) + 1
+    end
+
+    # return generation level and sibling count at that level
+    def self.generation(idx, n)
+      level = gen(idx, n)
+      [level, n ** level]
     end
 
     attr_reader :array
@@ -50,65 +67,21 @@ module CompSci
       @array.size - 1 unless @array.empty?
     end
 
-    # or, ya know, just iterate @array
-    def bf_search(&blk)
-      raise(WIP)
-      destinations = [0]
-      while !destinations.empty?
-        idx = destinations.shift
-        return idx if yield @array[idx]
-
-        # idx has a val and the block is false
-        # add existent children to destinations
-        self.class.children_idx(idx, @child_slots).each { |cidx|
-          destinations.push(cidx) if cidx < @array.size
-        }
-      end
-    end
-
-    def df_search(&blk)
-      raise(WIP)
-    end
-
-    # TODO: fixme
     def display(width: 80)
-      raise(WIP)
-      str = ''
-      old_level = 0
+      result = []
+      level = 0
       @array.each_with_index { |val, i|
         val = val.to_s
-        level = self.class.gen(i, @child_slots)
-        if old_level != level
-          str += NEWLINE
-          old_level = level
-        end
+        level, slots = self.class.generation(i, @child_slots)
+        block_width = width / slots
 
         # center in block_width
-        slots = @child_slots**level
-        block_width = width / slots
         space = [(block_width + val.size) / 2, val.size + 1].max
-        str += val.ljust(space, ' ').rjust(block_width, ' ')
+        result[level] ||= ''
+        result[level] += val.ljust(space, ' ').rjust(block_width, ' ')
       }
-      str
+      result
     end
     alias_method :to_s, :display
-  end
-
-  class CompleteBinaryTree < CompleteTree
-    def initialize(array: [])
-      super(array: array, child_slots: 2)
-    end
-  end
-
-  class CompleteTernaryTree < CompleteTree
-    def initialize(array: [])
-      super(array: array, child_slots: 3)
-    end
-  end
-
-  class CompleteQuaternaryTree < CompleteTree
-    def initialize(array: [])
-      super(array: array, child_slots: 4)
-    end
   end
 end
