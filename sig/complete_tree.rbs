@@ -8,7 +8,6 @@ module CompSci
 
     def self.parent_idx: (Integer idx, Integer n) -> Integer
     def self.children_idx: (Integer idx, Integer n) -> Array[Integer]
-    def self.gen_lookup: (Integer idx, Integer n) -> Integer
     def self.gen: (Integer idx, Integer n) -> Integer
     def self.generation: (Integer idx, Integer n) -> [Integer, Integer]
 

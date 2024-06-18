@@ -20,22 +20,10 @@ module CompSci
       Array.new(n) { |i| n*idx + i + 1 }
     end
 
-    GEN = {}
-    [2, 3, 4, 5, 6].each { |n|
-      cursor = -1
-      GEN[n] = Array.new(10) { |i| cursor += n**i }
-    }
-
-    def self.gen_lookup(idx, n)
-      return nil unless GEN[n]
-      return nil unless idx <= GEN[n].last
-      GEN[n].each.with_index { |max, level| return level if idx <= max }
-      nil
-    end
-
+    # how many levels deep is the given index?
     def self.gen(idx, n)
       return 0 if idx <= 0
-      gen_lookup(idx, n) or gen(self.parent_idx(idx, n), n) + 1
+      gen(self.parent_idx(idx, n), n) + 1
     end
 
     # return generation level and sibling count at that level
