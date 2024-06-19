@@ -8,7 +8,7 @@ module CompSci
     # steep:ignore:start
     NATIVE = RbConfig::SIZEOF.fetch('long') # 64-bit: 8   32-bit: 4
     # steep:ignore:end
-    INTMAX = 2 ** (NATIVE * 8) - 1
+    INTMAX = Integer(2 ** (NATIVE * 8) - 1)
 
     VAL = "\xFF\x00\x00\x00".b
     ENDIAN = VAL.unpack('N*') == VAL.unpack('L*') ? :big : :little

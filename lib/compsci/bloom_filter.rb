@@ -3,14 +3,14 @@ require 'compsci/bit_set'
 
 module CompSci
   class BloomFilter
-    MAX_BITS = 2**32 # CRC32 yields 32-bit values
+    MAX_BITS = Integer(2**32) # CRC32 yields 32-bit values
 
     attr_reader :bits, :aspects, :bitmap
 
     # The default values require 8 kilobytes of storage and recognize:
     # < 7000 strings at 1% False Positive Rate (4k @ 0.1%) (10k @ 5%)
     # FPR goes up as more strings are added
-    def initialize(bits: 2**16, aspects: 5)
+    def initialize(bits: Integer(2**16), aspects: 5)
       @bits = bits
       raise("bits: #{@bits}") if @bits > MAX_BITS
       @aspects = aspects
