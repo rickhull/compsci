@@ -2,7 +2,7 @@ module CompSci
   class BitSet
     @count: Integer
     @storage: Array[Integer]
-    @bits: Array[Integer] | nil
+    @bits: Array[Integer]?
 
     INT_BYTES: Integer
     INT_BITS: Integer
