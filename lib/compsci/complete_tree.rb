@@ -6,8 +6,6 @@ module CompSci
   # Any type of value may be stored in the array / tree at any location.
   #
   class CompleteTree
-    class WIP < RuntimeError; end
-
     # given a child index and child count (e.g. 2 for a binary tree)
     # integer math maps several children to one parent index
     def self.parent_idx(idx, n)
