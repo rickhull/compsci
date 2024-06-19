@@ -30,7 +30,7 @@ module CompSci
     attr_reader storage: String
     alias binary storage
 
-    def initialize: (?String str,
+    def initialize: (?String? str,
                      ?hex: String?,
                      ?net: Array[Integer] | Integer | nil,
                      ?int: Array[Integer] | Integer | nil,
