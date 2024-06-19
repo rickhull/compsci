@@ -19,11 +19,13 @@ module CompSci
     end
 
     def self.summarize(reg)
-      best_key = nil
+      return { top: {}, best_key: 0, best_val: 0 } if reg.size <= 1
+
+      best_key = 0
       best_val = 0
 
-      total = reg[1]
-      pct = {}
+      total = reg.fetch(1)
+      pct = Hash.new
 
       reg.each { |k, v|
         # skip 1 as it will always dominate

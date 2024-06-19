@@ -6,7 +6,7 @@ module CompSci
     def self.register: () -> Hash[Integer, Integer]
     def self.summarize: (Hash[Integer, Integer] reg) -> {
         top: Hash[Integer, Integer],
-        best_key: Integer | nil,
+        best_key: Integer,
         best_val: Integer,
       }
   end
