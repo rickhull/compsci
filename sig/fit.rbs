@@ -1,28 +1,40 @@
 module CompSci
   module Fit
-    def self.constant: (Array[Float | Integer] xs,
-                        Array[Float | Integer] ys) -> [Float, (Float | Integer)]
-    def self.best: (Array[Float | Integer] xs,
-                    Array[Float | Integer] ys) -> Array[Float | Symbol]
+    def self.constant:
+      (Array[Float | Integer] xs, Array[Float | Integer] ys) ->
+        [Float, (Float | Integer)]
+    def self.best:
+      (Array[Float | Integer] xs, Array[Float | Integer] ys) ->
+        Array[Float | Symbol]
 
-    def self.sigma: (Array[Float | Integer] enum) ?{ (untyped) -> untyped } -> Float
-                  | (Array[[Float | Integer, Float | Integer]] enum) ?{ (untyped) -> untyped } -> Float
-		  | (Array[Array[Float | Integer]] enum) ?{ (untyped) -> untyped } -> Float
-		  | (Array[untyped] enum) ?{ (untyped) -> untyped } -> Float
+    def self.sigma:
+        (Array[Float | Integer] enum) ?{ (untyped) -> untyped } -> Float
+      | (Array[[Float | Integer, Float | Integer]] enum) ?{ (untyped) -> untyped } -> Float
+      | (Array[Array[Float | Integer]] enum) ?{ (untyped) -> untyped } -> Float
+      | (Array[untyped] enum) ?{ (untyped) -> untyped } -> Float
 
-    def self.error: (Array[Float | Integer] xys) { (untyped) -> untyped } -> Float
-                  | (Array[[Float | Integer, Float | Integer]] xys) { (untyped) -> untyped } -> Float
-                  | (Array[Array[Float | Integer]] xys) { (untyped) -> untyped } -> Float
-                  | (Array[untyped] xys) { (untyped) -> untyped } -> Float
+    def self.error:
+        (Array[Float | Integer] xys) { (untyped) -> untyped } -> Float
+      | (Array[[Float | Integer, Float | Integer]] xys) { (untyped) -> untyped } -> Float
+      | (Array[Array[Float | Integer]] xys) { (untyped) -> untyped } -> Float
+      | (Array[untyped] xys) { (untyped) -> untyped } -> Float
 
-    def self.logarithmic: (Array[Float | Integer] xs, Array[Float | Integer] ys) -> [Float, Float, Float]
+    def self.logarithmic:
+      (Array[Float | Integer] xs, Array[Float | Integer] ys) ->
+        [Float, Float, Float]
 
-    def self.linear: (Array[Float | Integer] xs, Array[Float | Integer] ys) -> [Float, Float, Float]
+    def self.linear:
+      (Array[Float | Integer] xs, Array[Float | Integer] ys) ->
+        [Float, Float, Float]
 
-    def self.exponential: (Array[Float | Integer] xs, Array[Float | Integer] ys) -> [Float, Float, Float]
+    def self.exponential:
+      (Array[Float | Integer] xs, Array[Float | Integer] ys) ->
+        [Float, Float, Float]
 
-    def self.power: (Array[Float | Integer] xs, Array[Float | Integer] ys) -> [Float, Float, Float]
+    def self.power: (Array[Float | Integer] xs, Array[Float | Integer] ys) ->
+      [Float, Float, Float]
 
-    def self.predict: (Symbol model, Float a, Float b, (Float | Integer) x) -> Float
+    def self.predict: (Symbol model, Float a, Float b, (Float | Integer) x) ->
+      Float
   end
 end

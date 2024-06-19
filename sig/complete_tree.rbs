@@ -1,7 +1,4 @@
 module CompSci
-  # A CompleteTree can very efficiently use an array for storage using
-  # simple arithmetic to determine parent child relationships.
-  #
   class CompleteTree
     @array: Array[untyped]
     @child_slots: Integer
