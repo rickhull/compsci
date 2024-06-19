@@ -17,5 +17,5 @@ target :lib do
   library "zlib"
   # library "matrix"
 
-  # configure_code_diagnostics(D::Ruby.strict)
+  configure_code_diagnostics(D::Ruby.strict)
 end
