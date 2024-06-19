@@ -22,11 +22,11 @@ module CompSci
     end
 
     # kilobytes, megabytes, etc
-    KiB = 2**10
-    MiB = 2**20
-    GiB = 2**30
-    TiB = 2**40
-    PiB = 2**50
+    KiB = 1024
+    MiB = KiB * KiB
+    GiB = KiB * MiB
+    TiB = KiB * GiB
+    PiB = KiB * TiB
 
     # return a float and a label
     def self.size(bytes: 0, bits: 0)
