@@ -9,9 +9,8 @@ describe CompSci::Oracle do
   describe Ring do
     it "has a limited number of slots" do
       r = Ring.new(3)
-      expect(r.count).must_equal 3
-      expect(r.storage.count).wont_equal 3
-      expect(r.storage.count).must_equal 0
+      expect(r.limit).must_equal 3
+      expect(r.storage.count).must_equal 3
 
       r.update(1)
       r.update(2)

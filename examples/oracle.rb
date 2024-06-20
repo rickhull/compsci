@@ -3,7 +3,7 @@ require 'pp'
 
 include CompSci
 
-model = Oracle::Model.new
+model = Oracle::Model.new(3)
 
 quit = false
 
@@ -16,16 +16,17 @@ while !quit do
     line.each_char { |c|
       pred = model.prediction
       if pred
-        puts format("Predicted: %s %.2f\tGot: %s\t%s\t%.2f%% CORRECT",
+        puts model
+        puts format("Predicted: %s %.2f\tGot: %s\t%s",
                     pred[:best_key],
                     pred[:best_pct] * 100,
                     c,
-                    pred[:best_key] == c ? 'CORRECT  ' : 'INCORRECT',
-                    model.correct_pct * 100)
+                    pred[:best_key] == c ? 'CORRECT  ' : 'INCORRECT')
+
       end
       model.update(c)
     }
-    puts model
+#    puts model
   end
   puts
 end

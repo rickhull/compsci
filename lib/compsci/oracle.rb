@@ -9,37 +9,29 @@ module CompSci
     # We use a cursor and modulo to pick where to insert.
     # The last 5 chars are not BBAAA but AAABB.
     class Ring
-      attr_reader :count, :cursor, :storage
+      attr_reader :limit, :cursor, :storage
 
-      def initialize(count = 5)
-        @count = count
+      def initialize(limit = 5)
+        @limit = limit
         @cursor = 0
-        @storage = Array.new
+        @storage = Array.new(@limit, '')
       end
 
       def update(val)
-        @storage[@cursor % @count] = val
+        @storage[@cursor % @limit] = val
         @cursor += 1
         self
       end
 
       def to_s
-        if @cursor < @count
-          @storage
-        else
-          cursor = @cursor % @count
-          @storage[cursor, @count - cursor] + @storage[0, cursor]
-        end.join
+        cursor = @cursor % @limit
+        # steep:ignore:start
+        (@storage[cursor, @limit - cursor] + @storage[0, cursor]).join
+        # steep:ignore:end
       end
 
       def full?
-        if @storage.count < @count
-          false
-        elsif @storage.count == @count
-          true
-        else
-          raise("@storage.count too large: #{@storage.inspect}")
-        end
+        @cursor >= @limit
       end
     end
 
@@ -50,7 +42,7 @@ module CompSci
       def self.summarize(hsh)
         best_key = nil
         best_val = 0
-        best_pct = 0
+        best_pct = 0.0
 
         total = hsh.values.sum
         pct = {}
@@ -72,36 +64,48 @@ module CompSci
 
       attr_reader :ring, :freq, :pred
 
-      def initialize(count = 5)
-        @ring = Ring.new(count)
+      def initialize(limit = 5)
+        @ring = Ring.new(limit)
         @freq = Hash.new
         @pred = Hash.new(0)
       end
 
       def to_s
-        format("%s\t%s", @ring, self.prediction)
+        format("%s\t%.1f%%", @ring, self.percentage)
       end
 
-      # [0..1]
-      def correct_pct
-        return 1 if @pred.empty?
-        @pred[:correct] / (@pred[:correct] + @pred[:incorrect]).to_f
+      # Rational 0..1, correct / total
+      def ratio
+        return 1r if @pred.empty?
+        Rational(@pred[:correct], @pred[:correct] + @pred[:incorrect])
+      end
+
+      # Float 0.0..100.0 based on ratio
+      def percentage
+        (self.ratio * 100.0).round(1).to_f # convince steep it's a Float
+      end
+
+      def prediction
+        h = @freq[@ring.to_s] and Model.summarize(h)
       end
 
       def update(val)
+        # only make predictions once the ring is full
         if @ring.full?
-          key = @ring.to_s
-          @freq[key] ||= Hash.new(0)
-          @freq[key][val] += 1
-        end
-        pred = self.prediction
-        if pred
-          if val == pred[:best_key]
-            @pred[:correct] += 1
-          else
-            @pred[:incorrect] += 1
+          buf = @ring.to_s
+
+          # update @pred if we've seen this sequence before
+          if (h = @freq[buf])
+            pred = Model.summarize(h)
+            @pred[(val == pred[:best_key]) ? :correct : :incorrect] += 1
           end
+
+          # update @freq
+          @freq[buf] ||= Hash.new(0)
+          @freq[buf][val] += 1
         end
+
+        # update @ring
         @ring.update(val)
         self
       end
@@ -110,13 +114,6 @@ module CompSci
         raise("unexpected: #{str.inspect}") if !str.is_a?(String) or str.empty?
         str.each_char { |c| self.update(c) }
         self
-      end
-
-      def prediction
-        if @ring.full?
-          h = @freq[@ring.to_s]
-          Model.summarize(h) if h and !h.empty?
-        end
       end
     end
   end
