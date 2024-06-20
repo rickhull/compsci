@@ -79,8 +79,7 @@ module CompSci
       return self if idx >= @tree.size
       cidxs = @tree.class.children_idx(idx, @tree.child_slots)
       # promote the heapiest child
-      cidx = self.heapiest(cidxs)
-      if !self.heapish?(idx, cidx)
+      if (cidx = self.heapiest(cidxs)) and !self.heapish?(idx, cidx)
         @tree.swap(idx, cidx)
         self.sift_down(cidx)
       end
@@ -96,7 +95,7 @@ module CompSci
     # return the heapiest idx in cidxs
     #
     def heapiest(cidxs)
-      idx = cidxs.first
+      idx = cidxs.first or return nil
       cidxs.each { |cidx|
         idx = cidx if cidx < @tree.size and heapish?(cidx, idx)
       }
@@ -108,7 +107,7 @@ module CompSci
     # * calls heapish? on idx's children and then heap? on them recursively
     #
     def heap?(idx: 0)
-      check_children = []
+      check_children = Array.new
       @tree.class.children_idx(idx, @tree.child_slots).each { |cidx|
         # cidx may not be valid
         if cidx < @tree.size

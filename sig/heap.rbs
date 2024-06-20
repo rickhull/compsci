@@ -1,0 +1,23 @@
+module CompSci
+  class Heap
+    @tree: CompleteTree
+    @cmp_val: Integer
+
+    attr_reader tree: CompleteTree
+    attr_reader cmp_val: Integer
+
+    def initialize: (?cmp_val: Integer,
+                     ?minheap: bool,
+		     ?child_slots: Integer) -> void
+
+    def push: (untyped node) -> self
+    def pop: () -> untyped
+    def sift_up: (?Integer idx) -> self
+    def sift_down: (?Integer idx) -> self
+    def heapish?: (Integer pidx, Integer cidx) -> bool
+    def heapiest: (Array[Integer] cidxs) -> Integer?
+    def heap?: (?idx: ::Integer) -> bool
+    def size: () -> Integer
+    alias count size
+  end
+end
