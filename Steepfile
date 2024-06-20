@@ -10,13 +10,14 @@ target :lib do
   check "lib/compsci/elo.rb"
   check "lib/compsci/fibonacci.rb"
   check "lib/compsci/fit.rb"
+  check "lib/compsci/heap.rb"
   # ...
   check "lib/compsci/oracle.rb"
 
-  # library "pathname"              # Standard libraries
-  # library "strong_json"           # Gems
-
   library "zlib"
+
+  # not actually needed
+  # library "forwardable"
   # library "matrix"
 
   configure_code_diagnostics(D::Ruby.strict)
