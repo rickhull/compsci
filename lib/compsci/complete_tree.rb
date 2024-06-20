@@ -32,7 +32,8 @@ module CompSci
       [level, n ** level]
     end
 
-    attr_reader :array
+    attr_reader :array, :child_slots
+
     def_delegators :@array,
                    :push, :pop, :shift, :unshift,
                    :size, :count, :first, :last, :[]
