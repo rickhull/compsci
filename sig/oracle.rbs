@@ -1,0 +1,36 @@
+module CompSci
+  module Oracle
+    class Ring
+      @limit: Integer
+      @cursor: Integer
+      @storage: Array[untyped]
+
+      attr_reader limit: Integer
+      attr_reader cursor: Integer
+      attr_reader storage: Array[untyped]
+
+      def initialize: (?Integer limit) -> void
+      def update: (untyped val) -> self
+      def to_s: () -> String
+      def full?: () -> bool
+    end
+
+    class Model
+      @ring: Ring
+      @freq: Hash[String, Hash[String, Integer]]
+      @pred: Hash[Symbol, Integer]
+
+      attr_reader ring: Ring
+      attr_reader freq: Hash[String, Hash[String, Integer]]
+      attr_reader pred: Hash[Symbol, Integer]
+
+      def initialize: (?Integer limit) -> void
+      def to_s: () -> String
+      def ratio: () -> Rational
+      def percentage: () -> Float
+      def prediction: () -> String?
+      def update: (String char) -> self
+      def accept: (String str) -> self
+    end
+  end
+end

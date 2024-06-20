@@ -64,14 +64,14 @@ module CompSci
 
       def prediction
         highest = -1
-        best = nil
+        best = ''
         @freq[@ring.to_s]&.each { |val, count|
           if count > highest
             best = val
             highest = count
           end
         }
-        best
+        best.empty? ? nil : best
       end
 
       def update(char)
