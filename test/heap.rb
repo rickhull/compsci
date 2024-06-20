@@ -32,7 +32,7 @@ describe Heap do
 
     it "must pop" do
       expect(@maxheap.pop).must_equal 10
-      expect(@maxheap.peek).wont_equal 10
+      expect(@maxheap.tree.last).wont_equal 10
       expect(@maxheap.heap?).must_equal true
     end
 
@@ -74,7 +74,7 @@ describe Heap do
 
     it "must pop" do
       expect(@minheap.pop).must_equal 1
-      expect(@minheap.peek).wont_equal 1
+      expect(@minheap.tree.last).wont_equal 1
       expect(@minheap.heap?).must_equal true
     end
 
@@ -117,7 +117,7 @@ describe Heap do
 
     it "must pop" do
       expect(@heap3.pop).must_equal 10
-      expect(@heap3.peek).wont_equal 10
+      expect(@heap3.tree.last).wont_equal 10
       expect(@heap3.heap?).must_equal true
     end
 

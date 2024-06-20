@@ -56,12 +56,6 @@ module CompSci
       node
     end
 
-    # * return what pop would return (avoid sifting)
-    #
-    def peek
-      @tree.first
-    end
-
     # * called recursively
     # * idx represents the node suspected to violate the heap
     # * intended to be O(log n) on heap size (log base child_slots)
@@ -125,5 +119,10 @@ module CompSci
       check_children.each { |cidx| return false unless self.heap?(idx: cidx) }
       true
     end
+
+    def size
+      @tree.size
+    end
+    alias_method :count, :size
   end
 end
