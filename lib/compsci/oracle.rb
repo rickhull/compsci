@@ -39,29 +39,6 @@ module CompSci
     #   adds a hash to track next-letter frequences,
     #   and tracks its record of predictions
     class Model
-      def self.summarize(hsh)
-        best_key = nil
-        best_val = 0
-        best_pct = 0.0
-
-        total = hsh.values.sum
-        pct = {}
-
-        hsh.each { |k, v|
-          if v > best_val
-            pct[k] = (v / total.to_f).round(4)
-            best_key = k
-            best_val = v
-            best_pct = pct[k]
-          end
-        }
-
-        { top: pct.sort_by { |k, v| -1 * v }.take(3).to_h,
-          best_key: best_key,
-          best_val: best_val,
-          best_pct: best_pct, }
-      end
-
       attr_reader :ring, :freq, :pred
 
       def initialize(limit = 5)
@@ -86,27 +63,33 @@ module CompSci
       end
 
       def prediction
-        h = @freq[@ring.to_s] and Model.summarize(h)
+        highest = -1
+        best = nil
+        @freq[@ring.to_s]&.each { |val, count|
+          if count > highest
+            best = val
+            highest = count
+          end
+        }
+        best
       end
 
-      def update(val)
+      def update(char)
         # only make predictions once the ring is full
         if @ring.full?
           buf = @ring.to_s
 
-          # update @pred if we've seen this sequence before
-          if (h = @freq[buf])
-            pred = Model.summarize(h)
-            @pred[(val == pred[:best_key]) ? :correct : :incorrect] += 1
-          end
+          # update @pred if we have a prediction
+          pred = self.prediction
+          @pred[(char == pred) ? :correct : :incorrect] += 1 if pred
 
           # update @freq
           @freq[buf] ||= Hash.new(0)
-          @freq[buf][val] += 1
+          @freq[buf][char] += 1
         end
 
         # update @ring
-        @ring.update(val)
+        @ring.update(char)
         self
       end
 

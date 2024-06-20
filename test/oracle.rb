@@ -78,10 +78,7 @@ describe CompSci::Oracle do
       expect(m.ring.to_s).must_equal '111'
       pred = m.prediction
       expect(pred).wont_be_nil
-      expect(pred[:best_key]).must_equal '1'
-      expect(pred[:best_val]).must_equal 1
-      expect(pred[:best_pct]).must_equal 1.0
-      expect(pred[:top]['1']).must_equal 1.0
+      expect(pred).must_equal '1'
 
       m.accept('2')
       expect(m.ring.to_s).must_equal '112'
@@ -91,10 +88,7 @@ describe CompSci::Oracle do
       expect(m.ring.to_s).must_equal '112'
       pred = m.prediction
       expect(pred).wont_be_nil
-      expect(pred[:best_key]).must_equal '3'
-      expect(pred[:best_val]).must_equal 1
-      expect(pred[:best_pct]).must_equal 1.0
-      expect(pred[:top]['3']).must_equal 1.0
+      expect(pred).must_equal '3'
     end
   end
 end

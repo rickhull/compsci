@@ -17,11 +17,10 @@ while !quit do
       pred = model.prediction
       if pred
         puts model
-        puts format("Predicted: %s %.2f\tGot: %s\t%s",
-                    pred[:best_key],
-                    pred[:best_pct] * 100,
+        puts format("Predicted: %s Got: %s\t%s",
+                    pred,
                     c,
-                    pred[:best_key] == c ? 'CORRECT  ' : 'INCORRECT')
+                    c == pred ? 'CORRECT  ' : 'INCORRECT')
 
       end
       model.update(c)
