@@ -45,6 +45,7 @@ module CompSci
 
     def swap(idx1, idx2)
       @array[idx1], @array[idx2] = @array[idx2], @array[idx1]
+      self
     end
 
     def display(width: 80)
