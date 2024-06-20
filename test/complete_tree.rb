@@ -124,12 +124,5 @@ describe CompleteTree do
       expect(@empty.size).must_equal 0
       expect(@nonempty.size).must_equal @array.size
     end
-
-    it "must have a last_idx, nil when empty" do
-      expect(@empty.last_idx.nil?).must_equal true
-      expect(@nonempty.last_idx).must_equal 99
-    end
-
-    # TODO: push, pop, display
   end
 end

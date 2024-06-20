@@ -1,4 +1,4 @@
-require 'compsci'
+require 'forwardable'
 
 module CompSci
   # A CompleteTree can very efficiently use an array for storage using
@@ -6,6 +6,8 @@ module CompSci
   # Any type of value may be stored in the array / tree at any location.
   #
   class CompleteTree
+    extend Forwardable
+
     # given a child index and child count (e.g. 2 for a binary tree)
     # integer math maps several children to one parent index
     def self.parent_idx(idx, n)
@@ -31,26 +33,17 @@ module CompSci
     end
 
     attr_reader :array
+    def_delegators :@array,
+                   :push, :pop, :shift, :unshift,
+                   :size, :count, :first, :last, :[]
 
     def initialize(array: [], child_slots: 2)
       @array = array
       @child_slots = child_slots
     end
 
-    def push val
-      @array.push val
-    end
-
-    def pop
-      @array.pop
-    end
-
-    def size
-      @array.size
-    end
-
-    def last_idx
-      @array.size - 1 unless @array.empty?
+    def swap(idx1, idx2)
+      @array[idx1], @array[idx2] = @array[idx2], @array[idx1]
     end
 
     def display(width: 80)

@@ -63,7 +63,8 @@ class CompSci::Heap < CompSci::CompleteTree
   # * idx represents the node suspected to violate the heap
   # * intended to be O(log n) on heap size (log base child_slots)
   #
-  def sift_up(idx)
+  def sift_up(idx = nil)
+    idx ||= @array.size - 1
     return self if idx <= 0
     pidx = self.class.parent_idx(idx, @child_slots)
     if !self.heapish?(pidx, idx)
@@ -78,7 +79,8 @@ class CompSci::Heap < CompSci::CompleteTree
   # * intended to be O(log n) on heap size (log base child_slots)
   # * slower than sift_up because one parent vs multiple children
   #
-  def sift_down(idx)
+  def sift_down(idx = nil)
+    idx ||= 0
     return self if idx >= @array.size
     cidxs = self.class.children_idx(idx, @child_slots)
     # promote the heapiest child

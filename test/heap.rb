@@ -26,7 +26,7 @@ describe Heap do
 
       @maxheap.array.push 10
       expect(@maxheap.heap?).must_equal false
-      @maxheap.sift_up @maxheap.last_idx
+      @maxheap.sift_up
       expect(@maxheap.heap?).must_equal true
     end
 
@@ -68,7 +68,7 @@ describe Heap do
 
       @minheap.array.push 0
       expect(@minheap.heap?).must_equal false
-      @minheap.sift_up @minheap.last_idx
+      @minheap.sift_up
       expect(@minheap.heap?).must_equal true
     end
 
@@ -111,7 +111,7 @@ describe Heap do
 
       @heap3.array.push 10
       expect(@heap3.heap?).must_equal false
-      @heap3.sift_up @heap3.last_idx
+      @heap3.sift_up
       expect(@heap3.heap?).must_equal true
     end
 
