@@ -8,8 +8,7 @@ module CompSci
 
     def initialize: (?cmp_val: Integer,
                      ?minheap: bool,
-		     ?child_slots: Integer) -> void
-
+                     ?child_slots: Integer) -> void
     def push: (untyped node) -> self
     def pop: () -> untyped
     def sift_up: (?Integer idx) -> self
