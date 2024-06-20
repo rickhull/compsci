@@ -14,17 +14,17 @@ describe Heap do
 
     it "must satisfy the heap property" do
       expect(@maxheap.heap?).must_equal true
-      expect(@maxheap.array).wont_equal @inserts
-      expect(@maxheap.array).wont_equal @inserts.reverse
+      expect(@maxheap.tree.array).wont_equal @inserts
+      expect(@maxheap.tree.array).wont_equal @inserts.reverse
     end
 
     it "must recognize heap violations" do
-      @maxheap.array.unshift 0
+      @maxheap.tree.unshift 0
       expect(@maxheap.heap?).must_equal false
-      @maxheap.array.shift
+      @maxheap.tree.shift
       expect(@maxheap.heap?).must_equal true
 
-      @maxheap.array.push 10
+      @maxheap.tree.push 10
       expect(@maxheap.heap?).must_equal false
       @maxheap.sift_up
       expect(@maxheap.heap?).must_equal true
@@ -37,7 +37,7 @@ describe Heap do
     end
 
     it "must heapish?" do
-      expect(@maxheap.array[0]).must_be :>, @maxheap.array[1]
+      expect(@maxheap.tree[0]).must_be :>, @maxheap.tree[1]
       expect(@maxheap.heapish?(0, 1)).must_equal true
     end
 
@@ -57,16 +57,16 @@ describe Heap do
 
     it "must satisfy the heap property" do
       expect(@minheap.heap?).must_equal true
-      expect(@minheap.array).must_equal @inserts
+      expect(@minheap.tree.array).must_equal @inserts
     end
 
     it "must recognize heap violations" do
-      @minheap.array.unshift 10
+      @minheap.tree.unshift 10
       expect(@minheap.heap?).must_equal false
-      @minheap.array.shift
+      @minheap.tree.shift
       expect(@minheap.heap?).must_equal true
 
-      @minheap.array.push 0
+      @minheap.tree.push 0
       expect(@minheap.heap?).must_equal false
       @minheap.sift_up
       expect(@minheap.heap?).must_equal true
@@ -79,7 +79,7 @@ describe Heap do
     end
 
     it "must heapish?" do
-      expect(@minheap.array[0]).must_be :<, @minheap.array[1]
+      expect(@minheap.tree[0]).must_be :<, @minheap.tree[1]
       expect(@minheap.heapish?(0, 1)).must_equal true
     end
 
@@ -99,17 +99,17 @@ describe Heap do
 
     it "must satisfy the heap property" do
       expect(@heap3.heap?).must_equal true
-      expect(@heap3.array).wont_equal @inserts
-      expect(@heap3.array).wont_equal @inserts.reverse
+      expect(@heap3.tree.array).wont_equal @inserts
+      expect(@heap3.tree.array).wont_equal @inserts.reverse
     end
 
     it "must recognize heap violations" do
-      @heap3.array.unshift 0
+      @heap3.tree.unshift 0
       expect(@heap3.heap?).must_equal false
-      @heap3.array.shift
+      @heap3.tree.shift
       expect(@heap3.heap?).must_equal true
 
-      @heap3.array.push 10
+      @heap3.tree.push 10
       expect(@heap3.heap?).must_equal false
       @heap3.sift_up
       expect(@heap3.heap?).must_equal true
@@ -122,7 +122,7 @@ describe Heap do
     end
 
     it "must heapish?" do
-      expect(@heap3.array[0]).must_be :>, @heap3.array[1]
+      expect(@heap3.tree[0]).must_be :>, @heap3.tree[1]
       expect(@heap3.heapish?(0, 1)).must_equal true
     end
 

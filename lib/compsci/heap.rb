@@ -18,110 +18,112 @@ require 'compsci/complete_tree'
 #   swap nodes at each layer of the tree, and there are log(n, base b) layers
 #   to the tree.
 #
-class CompSci::Heap < CompSci::CompleteTree
-  # * defaults to a MaxHeap, with the largest node at the root
-  # * specify a minheap with minheap: true or cmp_val: -1
-  #
-  def initialize(cmp_val: 1, minheap: false, child_slots: 2)
-    super(child_slots: child_slots)
-    cmp_val = -1 if minheap
-    case cmp_val
-    when -1, 1
-      @cmp_val = cmp_val
-    else
-      raise(ArgumentError, "unknown comparison value: #{cmp_val}")
-    end
-  end
+module CompSci
+  class Heap
+    attr_reader :tree, :cmp_val
 
-  # * append to the array
-  # * sift_up -- O(log n) on heap size
-  #
-  def push(node)
-    @array.push(node)
-    self.sift_up(@array.size - 1)
-  end
-
-  # * remove from the front of the array
-  # * move last node to root
-  # * sift_down -- O(log n) on heap size
-  #
-  def pop
-    node = @array.shift
-    replacement = @array.pop
-    @array.unshift replacement if replacement
-    self.sift_down(0)
-    node
-  end
-
-  # * return what pop would return (avoid sifting)
-  #
-  def peek
-    @array.first
-  end
-
-  # * called recursively
-  # * idx represents the node suspected to violate the heap
-  # * intended to be O(log n) on heap size (log base child_slots)
-  #
-  def sift_up(idx = nil)
-    idx ||= @array.size - 1
-    return self if idx <= 0
-    pidx = self.class.parent_idx(idx, @child_slots)
-    if !self.heapish?(pidx, idx)
-      @array[idx], @array[pidx] = @array[pidx], @array[idx]   # swap
-      self.sift_up(pidx)
-    end
-    self
-  end
-
-  # * called recursively
-  # * idx represents the node suspected to violate the heap
-  # * intended to be O(log n) on heap size (log base child_slots)
-  # * slower than sift_up because one parent vs multiple children
-  #
-  def sift_down(idx = nil)
-    idx ||= 0
-    return self if idx >= @array.size
-    cidxs = self.class.children_idx(idx, @child_slots)
-    # promote the heapiest child
-    cidx = self.heapiest(cidxs)
-    if !self.heapish?(idx, cidx)
-      @array[idx], @array[cidx] = @array[cidx], @array[idx]   # swap
-      self.sift_down(cidx)
-    end
-    self
-  end
-
-  # are values of parent and child (by index) in accordance with heap property?
-  #
-  def heapish?(pidx, cidx)
-    (@array[pidx] <=> @array[cidx]) != (@cmp_val * -1)
-  end
-
-  # return the heapiest idx in cidxs
-  #
-  def heapiest(cidxs)
-    idx = cidxs.first
-    cidxs.each { |cidx|
-      idx = cidx if cidx < @array.size and self.heapish?(cidx, idx)
-    }
-    idx
-  end
-
-  # * not used internally
-  # * checks that every node satisfies the heap property
-  # * calls heapish? on idx's children and then heap? on them recursively
-  #
-  def heap?(idx: 0)
-    check_children = []
-    self.class.children_idx(idx, @child_slots).each { |cidx|
-      # cidx is arithmetically produced; the corresponding child may not exist
-      if cidx < @array.size
-        return false unless self.heapish?(idx, cidx)
-        check_children << cidx
+    # * defaults to a MaxHeap, with the largest node at the root
+    # * specify a minheap with minheap: true or cmp_val: -1
+    #
+    def initialize(cmp_val: 1, minheap: false, child_slots: 2)
+      @tree = CompleteTree.new(child_slots: child_slots)
+      cmp_val = -1 if minheap
+      case cmp_val
+      when -1, 1
+        @cmp_val = cmp_val
+      else
+        raise(ArgumentError, "unknown comparison value: #{cmp_val}")
       end
-    }
-    check_children.each { |cidx| return false unless self.heap?(idx: cidx) }
-    true
+    end
+
+    # * append to the array
+    # * sift_up -- O(log n) on heap size
+    #
+    def push(node)
+      @tree.push(node)
+      self.sift_up(@tree.size - 1)
+    end
+
+    # * remove from the front of the array
+    # * move last node to root
+    # * sift_down -- O(log n) on heap size
+    #
+    def pop
+      node = @tree.shift
+      replacement = @tree.pop
+      @tree.unshift replacement if replacement
+      self.sift_down(0)
+      node
+    end
+
+    # * return what pop would return (avoid sifting)
+    #
+    def peek
+      @tree.first
+    end
+
+    # * called recursively
+    # * idx represents the node suspected to violate the heap
+    # * intended to be O(log n) on heap size (log base child_slots)
+    #
+    def sift_up(idx = @tree.size - 1)
+      return self if idx <= 0
+      pidx = @tree.class.parent_idx(idx, @tree.child_slots)
+      if !heapish?(pidx, idx)
+        @tree.swap(idx, pidx)
+        sift_up(pidx)
+      end
+      self
+    end
+
+    # * called recursively
+    # * idx represents the node suspected to violate the heap
+    # * intended to be O(log n) on heap size (log base child_slots)
+    # * slower than sift_up because one parent vs multiple children
+    #
+    def sift_down(idx = 0)
+      return self if idx >= @tree.size
+      cidxs = @tree.class.children_idx(idx, @tree.child_slots)
+      # promote the heapiest child
+      cidx = self.heapiest(cidxs)
+      if !self.heapish?(idx, cidx)
+        @tree.swap(idx, cidx)
+        self.sift_down(cidx)
+      end
+      self
+    end
+
+    # do values of parent and child (by index) meet the heap test?
+    #
+    def heapish?(pidx, cidx)
+      (@tree[pidx] <=> @tree[cidx]) != (@cmp_val * -1)
+    end
+
+    # return the heapiest idx in cidxs
+    #
+    def heapiest(cidxs)
+      idx = cidxs.first
+      cidxs.each { |cidx|
+        idx = cidx if cidx < @tree.size and heapish?(cidx, idx)
+      }
+      idx
+    end
+
+    # * not used internally
+    # * checks that every node satisfies the heap property
+    # * calls heapish? on idx's children and then heap? on them recursively
+    #
+    def heap?(idx: 0)
+      check_children = []
+      @tree.class.children_idx(idx, @tree.child_slots).each { |cidx|
+        # cidx may not be valid
+        if cidx < @tree.size
+          return false unless heapish?(idx, cidx)
+          check_children << cidx
+        end
+      }
+      check_children.each { |cidx| return false unless self.heap?(idx: cidx) }
+      true
+    end
   end
 end
