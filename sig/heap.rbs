@@ -9,8 +9,8 @@ module CompSci
     def initialize: (?cmp_val: Integer,
                      ?minheap: bool,
                      ?child_slots: Integer) -> void
-    def push: (untyped node) -> self
-    def pop: () -> untyped
+    def push: (Comparable node) -> self
+    def pop: () -> Comparable
     def sift_up: (?Integer idx) -> self
     def sift_down: (?Integer idx) -> self
     def heapish?: (Integer pidx, Integer cidx) -> bool
