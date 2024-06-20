@@ -20,7 +20,7 @@ puts <<EOF
 EOF
 
 ns.each { |n|
-  h = CompleteBinaryTree.new
+  h = CompleteTree.new
   n.times { h.push rand }
   _val, secs = Timer.loop_avg {
     h.push rand
@@ -45,7 +45,7 @@ puts <<EOF
 EOF
 
 ns.each { |n|
-  h = CompleteBinaryTree.new
+  h = CompleteTree.new
   _val, secs = Timer.loop_avg {
     n.times { h.push rand }
   }
