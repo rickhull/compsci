@@ -1,9 +1,9 @@
 module CompSci
   class Heap
-    @tree: CompleteTree
+    @tree: CompleteTree[Comparable]
     @cmp_val: Integer
 
-    attr_reader tree: CompleteTree
+    attr_reader tree: CompleteTree[Comparable]
     attr_reader cmp_val: Integer
 
     def initialize: (?cmp_val: Integer,
