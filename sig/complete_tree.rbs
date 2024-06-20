@@ -1,6 +1,6 @@
 module CompSci
-  class CompleteTree
-    @array: Array[untyped]
+  class CompleteTree[Elem]
+    @array: Array[Elem]
     @child_slots: Integer
 
     def self.parent_idx: (Integer idx, Integer n) -> Integer
@@ -8,17 +8,17 @@ module CompSci
     def self.gen: (Integer idx, Integer n) -> Integer
     def self.generation: (Integer idx, Integer n) -> [Integer, Integer]
 
-    attr_reader array: Array[untyped]
+    attr_reader array: Array[Elem]
     attr_reader child_slots: Integer
 
-    def initialize: (?array: Array[untyped], ?child_slots: Integer) -> void
+    def initialize: (?array: Array[Elem], ?child_slots: Integer) -> void
 
-    def push: (untyped val) -> Array[untyped]
-    def pop: () -> untyped
-    def unshift: (untyped val) -> Array[untyped]
-    def shift: () -> untyped
+    def push: (Elem val) -> Array[Elem]
+    def pop: () -> Elem
+    def unshift: (Elem val) -> Array[Elem]
+    def shift: () -> Elem
     def size: () -> Integer
-    def []: (Integer) -> untyped
+    def []: (Integer) -> Elem
     alias count size
     def swap: (Integer idx1, Integer idx2) -> self
     def display: (?width: Integer) -> Array[String]
