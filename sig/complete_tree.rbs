@@ -9,13 +9,18 @@ module CompSci
     def self.generation: (Integer idx, Integer n) -> [Integer, Integer]
 
     attr_reader array: Array[untyped]
+    attr_reader child_slots: Integer
 
     def initialize: (?array: Array[untyped], ?child_slots: Integer) -> void
 
-    def push: (untyped val) -> untyped
+    def push: (untyped val) -> Array[untyped]
     def pop: () -> untyped
+    def unshift: (untyped val) -> Array[untyped]
+    def shift: () -> untyped
     def size: () -> Integer
-    def last_idx: () -> (Integer | nil)
+    def []: (Integer) -> untyped
+    alias count size
+    def swap: (Integer idx1, Integer idx2) -> self
     def display: (?width: Integer) -> Array[String]
     alias to_s display
   end
