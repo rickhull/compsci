@@ -147,7 +147,7 @@ module CompSci
 
     # initial, final, graph
     def to_s
-      [[@initial, @final].inspect, @graph].join(NEWLINE)
+      [[@initial, @final].inspect, @graph].join($/)
     end
 
     def eval(state)

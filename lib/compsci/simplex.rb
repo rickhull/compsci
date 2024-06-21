@@ -2,8 +2,6 @@
 # which was forked in 2017 from https://github.com/danlucraft/simplex
 # which had its last commit in 2013
 
-require 'compsci'
-
 module CompSci
   class Simplex
     DEFAULT_MAX_PIVOTS = 10_000
@@ -168,7 +166,7 @@ module CompSci
       lines = result.map { |ary| ary.join("  ") }
       max_line_length = lines.map(&:length).max
       lines.insert(1, "-"*max_line_length)
-      lines.join(NEWLINE)
+      lines
     end
   end
 end

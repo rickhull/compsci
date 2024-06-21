@@ -237,7 +237,7 @@ class SimplexTest < Minitest::Test
       [0, 0, 1]
     )
     while simplex.can_improve?
-      assert simplex.formatted_tableau.is_a?(String)
+      assert simplex.formatted_tableau.is_a?(Array)
       simplex.pivot
     end
     result = simplex.solution
