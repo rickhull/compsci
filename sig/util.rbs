@@ -1,0 +1,3 @@
+module CompSci
+  def self.power_of?: (Integer, Integer) -> bool
+end

@@ -1,3 +1,0 @@
-module CompSci
-  def self.power_of?: (Numeric, Numeric) -> bool
-end

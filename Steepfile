@@ -13,6 +13,8 @@ target :lib do
   check "lib/compsci/heap.rb"
   # ...
   check "lib/compsci/oracle.rb"
+  # ...
+  check "lib/compsci/util.rb"
 
   library "zlib"
 
