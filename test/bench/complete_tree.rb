@@ -39,7 +39,7 @@ puts "best fit: #{fn} (%0.3f); a = %0.6f, b = %0.6f" % [r2, a, b]
 puts <<EOF
 
 #
-# timing CompleteTree#push where N is the count of pushes
+# timing CompleteTree#push where N is the count of pushes per batch
 #
 
 EOF
