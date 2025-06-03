@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'compsci/date'
-require 'date'
+autoload :Date, 'date'
 
 describe "CompSci::Date against Ruby's Date" do
   it "matches differences between dates" do
