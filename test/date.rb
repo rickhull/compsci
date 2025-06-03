@@ -1,7 +1,6 @@
 require 'minitest/autorun'
 require 'compsci/date'
 
-# include CompSci
 D = CompSci::Date
 
 describe D do
