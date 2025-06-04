@@ -1,6 +1,6 @@
 # Rational Prime Calendar
 
-*A rational basis for a calendar based on 61 day periods*
+*A rational basis for a calendar upon 61 day periods*
 
 The Gregorian calendar is a 400-year-old hack job.
 February's weird.
