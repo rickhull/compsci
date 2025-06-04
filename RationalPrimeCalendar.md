@@ -43,15 +43,16 @@ as traditional calendars.
 We can retain the Gregorian approach to leap years, which solves the problem
 of accounting for the remaining 0.2425 days in a solar year as years go by.
 We'll pick one month out of twelve that will have an extra day roughly every
-4 years.  If 366 days is our starting basis, then the leap month will have
-a one-day deficit in most years.
+4 years.
+If 366 days is our starting basis, then the leap month will have a one-day
+deficit in most years.
 
 ## Specifics
 
 For explication, a leap year is considered the base case, and a "normal year"
 is handled specially, in some sense, even though leap years are less frequent.
 
-### Base Case (Leap Year)
+### Base Case, Leap Year (366 days)
 
 * Always alternate 30-31
 
@@ -69,12 +70,13 @@ is handled specially, in some sense, even though leap years are less frequent.
 | Oct | 31 |
 | Nov | 30 |
 | Dec | 31 |
+| Total | 366 |
 
 * August through December retain their traditional lengths
 * Halloween, Oct 31
 * New Year's Eve, Dec 31
 
-### Normal Year
+### Typical Year (355 days)
 
 * February has a day removed
 
@@ -92,6 +94,8 @@ is handled specially, in some sense, even though leap years are less frequent.
 | Oct | 31 |
 | Nov | 30 |
 | Dec | 31 |
+| ----- | --- |
+| Total | 366 |
 
 * Retain all base case benefits
 * February continues as the traditional leap month
