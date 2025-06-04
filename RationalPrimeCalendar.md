@@ -55,20 +55,18 @@ is handled specially, in some sense, even though leap years are less frequent.
 
 * Always alternate 30-31
 
-Thus:
-
-1.  30 (January)
-2.  31 (February)
-3.  30 (March)
-4.  31 (April)
-5.  30 (May)
-6.  31 (June)
-7.  30 (July)
-8.  31 (August)
-9.  30 (September)
-10. 31 (October)
-11. 30 (November)
-12. 31 (December)
+| Jan | 30 |
+| Feb | 31 |
+| Mar | 30 |
+| Apr | 31 |
+| May | 30 |
+| Jun | 31 |
+| Jul | 30 |
+| Aug | 31 |
+| Sep | 30 |
+| Oct | 31 |
+| Nov | 30 |
+| Dec | 31 |
 
 * August through December retain their traditional lengths
 * Halloween, Oct 31
@@ -78,20 +76,18 @@ Thus:
 
 * February has a day removed
 
-Thus:
-
-1.  30 (January)
-2.  30 (February)
-3.  30 (March)
-4.  31 (April)
-5.  30 (May)
-6.  31 (June)
-7.  30 (July)
-8.  31 (August)
-9.  30 (September)
-10. 31 (October)
-11. 30 (November)
-12. 31 (December)
+| Jan | 30 |
+| Feb | 30 |
+| Mar | 30 |
+| Apr | 31 |
+| May | 30 |
+| Jun | 31 |
+| Jul | 30 |
+| Aug | 31 |
+| Sep | 30 |
+| Oct | 31 |
+| Nov | 30 |
+| Dec | 31 |
 
 * Retain all base case benefits
 * February continues as the traditional leap month
@@ -110,12 +106,6 @@ Thus:
 * Rational Prime maintains 30-31 throughout
 * August through December are identical to Gregorian month lengths
 * January through July mismatch the Gregorian pattern
-
-| Feature  | Gregorian | Rational Prime      |
-| -------- | --------- | ------------------- |
-| February | 28/29     | 30/31               |
-| Jul-Aug  | 31-31     | 30-31               |
-| Pattern  | Irregular | Cleanly alternating |
 
 #### Days Per Month
 
