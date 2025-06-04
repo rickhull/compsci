@@ -117,6 +117,23 @@ Thus:
 | Jul-Aug  | 31-31     | 30-31               |
 | Pattern  | Irregular | Cleanly alternating |
 
+#### Days Per Month
+
+| Month | Gregorian | Rational Prime |
+| ----- | --------- | -------------- |
+| Jan   | 31        | 30             |
+| Feb   | 29/29     | 30/31          |
+| Mar   | 31        | 30             |
+| Apr   | 30        | 31             |
+| May   | 31        | 30             |
+| Jun   | 30        | 31             |
+| Jul   | 31        | 30             |
+| Aug   | 31        | 31             |
+| Sep   | 30        | 30             |
+| Oct   | 31        | 31             |
+| Nov   | 30        | 30             |
+| Dec   | 31        | 31             |
+| Total | 365/366   | 365/366        |
 
 ### Why This Matters
 
