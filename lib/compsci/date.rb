@@ -32,21 +32,21 @@ module CompSci
     #
 
     # define month lengths
-    MAX_DAYS = 31
-    WEE_DAYS = 30
-    LEP_DAYS = 29
-    FEB_DAYS = 28
+    MON31 = 31 # Jan, Mar, May, Jul, Aug, Oct, Dec
+    MON30 = 30 # Apr, Jun, Sep, Nov
+    MON29 = 29 # Feb (leap)
+    MON28 = 28 # Feb
 
     # define lookup by month number, zero-indexed
     MONTH_DAYS =
-      [MAX_DAYS, FEB_DAYS, MAX_DAYS, WEE_DAYS, MAX_DAYS, WEE_DAYS,
-       MAX_DAYS, MAX_DAYS, WEE_DAYS, MAX_DAYS, WEE_DAYS, MAX_DAYS].freeze
+      [MON31, MON28, MON31, MON30, MON31, MON30,
+       MON31, MON31, MON30, MON31, MON30, MON31].freeze
     NUM_MONTHS = 12 # MONTH_DAYS.size
     
     # derive CUMULATIVE_DAYS from MONTH_DAYS, zero-indexed
     CUMULATIVE_DAYS = MONTH_DAYS.reduce([0]) { |acc, days|
       acc + [acc.last + days]
-    }
+    } # [0, 31, 59, 90, 120, ... 365]
     ANNUAL_DAYS = CUMULATIVE_DAYS.pop  # 365
     LEAP_YEAR_DAYS = ANNUAL_DAYS + 1   # 366
     CUMULATIVE_DAYS.freeze
@@ -56,7 +56,7 @@ module CompSci
     
     # implementation considerations
     MIN_Y, MIN_M, MIN_D = 1, 1, 1
-    MAX_Y, MAX_M, MAX_D = 9999, NUM_MONTHS, MAX_DAYS
+    MAX_Y, MAX_M, MAX_D = 9999, NUM_MONTHS, MON31
     EPOCH_Y, EPOCH_M, EPOCH_D = 1, 1, 1
     
     #
@@ -66,13 +66,13 @@ module CompSci
     # perform lookup by month number and year, one-indexed, with leap days
     def self.month_days(month, year)
       (month == 2 and self.leap_year?(year)) ?
-        LEP_DAYS : MONTH_DAYS.fetch(month - 1)
+        MON29 : MONTH_DAYS.fetch(month - 1)
     end
     
     # given a day count, what is the current month?
     # despite leap years, never guess too low, only too high
     def self.guess_month(days)
-      (days / WEE_DAYS + 1).clamp(EPOCH_M, NUM_MONTHS)
+      (days / MON30 + 1).clamp(MIN_M, MAX_M)
     end
     
     # perform lookup by month number and year, one-indexed, with leap days
