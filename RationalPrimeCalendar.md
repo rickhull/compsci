@@ -70,7 +70,7 @@ Thus:
 11. 30 (November)
 12. 31 (December)
 
-* August through September retain their traditional lengths
+* August through December retain their traditional lengths
 * Halloween, Oct 31
 * New Year's Eve, Dec 31
 
@@ -97,6 +97,8 @@ Thus:
 * February continues as the traditional leap month
 * Start the year with 30-30-30 and alternate after that
 
+## Review
+
 ### Compared to Gregorian
 
 * Most February weirdness is gone
@@ -109,11 +111,12 @@ Thus:
 * August through December are identical to Gregorian month lengths
 * January through July mismatch the Gregorian pattern
 
-| Feature  | Gregorian | Rational Prime
-| -------- | --------- | --------------
-| February | 28/29     | 30/31
-| Jul-Aug  | 31-31     | 30-31
-| Pattern  | Irregular | Cleanly alternating
+| Feature  | Gregorian | Rational Prime      |
+| -------- | --------- | ------------------- |
+| February | 28/29     | 30/31               |
+| Jul-Aug  | 31-31     | 30-31               |
+| Pattern  | Irregular | Cleanly alternating |
+
 
 ### Why This Matters
 
@@ -150,48 +153,3 @@ considered out of scope.
 This proposal is not intended to address local or global adoption.
 It is merely to lay out a more desirable scheme than the status quo.
 Adoption will have both costs and benefits.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Rational allocation of 365 (+1) days into 12 months
-# 366 / 6 =  61, so every 2 months add up to 61 in a leap year
-# Alternate 30 and 31 days, in either order, in a leap year
-# Pick a 31 month to have a day removed in most years
-# Most years will have a 30-30-30 sequence and otherwise alternate
-# February is the traditional leap month, so start January at 30 days
-# This retains the traditional month lengths from Aug-Dec
-# This removes most of the weirdness of February in Gregorian calendar
-# This removes the weird 31-31 sequence for Jul-Aug in Gregorian calendar
-
-1: 30
-2: 30 (+1 LY)
-3: 30
-4: 31
-5: 30
-6: 31
-7: 30
-8: 31
-9: 30
-10: 31
-11: 30
-12: 31
