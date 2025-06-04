@@ -116,7 +116,7 @@ is handled specially, in some sense, even though leap years are less frequent.
 | Month | Gregorian | Rational Prime |
 | ----- | --------- | -------------- |
 | Jan   | 31        | 30             |
-| Feb   | 29/29     | 30/31          |
+| Feb   | 28/29     | 30/31          |
 | Mar   | 31        | 30             |
 | Apr   | 30        | 31             |
 | May   | 31        | 30             |
