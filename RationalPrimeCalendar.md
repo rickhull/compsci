@@ -106,7 +106,7 @@ is handled specially, in some sense, even though leap years are less frequent.
   - Gregorian starts big-small, pairwise
   - August is due to be small but is big
   - Pattern is small-big after that
-  - Pairwise: big-small, big-big, small-big
+  - Pairwise: 3x big-small, 1x big-big, 2x small-big
 * Rational Prime maintains 30-31 throughout
 * August through December are identical to Gregorian month lengths
 * January through July mismatch the Gregorian pattern
