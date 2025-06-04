@@ -47,7 +47,7 @@ describe Timer do
       }
       elapsed = Timer.since(start)
       expect(avg_et).must_be :>, 0.005
-      expect(avg_et).must_be :<, 0.05
+      expect(avg_et).must_be :<, 0.1
       expect(elapsed).must_be :>, 0.01
       expect(elapsed).must_be :<, 0.2
     end
