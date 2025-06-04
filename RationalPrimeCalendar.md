@@ -162,5 +162,5 @@ considered out of scope.
 ### Implementation and Adoption Challenges
 
 This proposal is not intended to address local or global adoption.
-It is merely to lay out a more desirable scheme than the status quo.
+The intention is merely to lay out a more desirable scheme than the status quo.
 Adoption will have both costs and benefits.
