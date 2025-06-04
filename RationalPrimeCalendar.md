@@ -55,6 +55,8 @@ is handled specially, in some sense, even though leap years are less frequent.
 
 * Always alternate 30-31
 
+| Month | Length |
+| --- | -- |
 | Jan | 30 |
 | Feb | 31 |
 | Mar | 30 |
@@ -76,6 +78,8 @@ is handled specially, in some sense, even though leap years are less frequent.
 
 * February has a day removed
 
+| Month | Length |
+| ----- | ------ |
 | Jan | 30 |
 | Feb | 30 |
 | Mar | 30 |
