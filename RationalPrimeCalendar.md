@@ -94,8 +94,7 @@ is handled specially, in some sense, even though leap years are less frequent.
 | Oct | 31 |
 | Nov | 30 |
 | Dec | 31 |
-| ----- | --- |
-| Total | 366 |
+| Total | 365 |
 
 * Retain all base case benefits
 * February continues as the traditional leap month
