@@ -65,6 +65,7 @@ module CompSci
     
     # perform lookup by month number and year, one-indexed, with leap days
     def self.month_days(month, year)
+      raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
       (month == 2 and self.leap_year?(year)) ?
         MON29 : MONTH_DAYS.fetch(month - 1)
     end
@@ -77,6 +78,7 @@ module CompSci
     
     # perform lookup by month number and year, one-indexed, with leap days
     def self.cumulative_days(month, year)
+      raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
       days = CUMULATIVE_DAYS.fetch(month - 1)
       (month > 2 and self.leap_year?(year)) ? (days + 1) : days
     end
@@ -167,6 +169,7 @@ module CompSci
     
     # perform lookup of month name by month number, one-indexed
     def self.month_name(number)
+      raise(InvalidMonth, number.inspect) unless (1..12).cover?(number)
       MONTH_NAMES.fetch(number - 1)
     end
 
