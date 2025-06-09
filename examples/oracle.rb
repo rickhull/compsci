@@ -3,7 +3,7 @@ require 'pp'
 
 include CompSci
 
-model = Oracle::Model.new(3)
+model = Oracle::Model.new(4)
 
 quit = false
 
