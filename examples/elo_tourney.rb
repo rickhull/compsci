@@ -24,9 +24,8 @@ iters.times { |i|
 
   # pool matchups
   pool_matchups.times {
-    a = rand(pool.count)
-    b = (a + rand(pool.count - 1) + 1) % pool.count
-    pool[a].simulate(pool[b]) # win / lose / draw
+    a, b = pool.sample(2)
+    a.simulate(b)
   }
   pool = pool.sort.reverse
   puts "Ran #{pool_matchups} matchups; average rating: #{P.avg_rating(pool)}"
@@ -114,12 +113,13 @@ iters.times { |i|
   puts
 }
 
-# pool matchups
+# pool matchups to give the newbies a non-empty record
 pool_matchups.times {
-  a = rand(pool.count)
-  b = (a + rand(pool.count - 1) + 1) % pool.count
-  pool[a].simulate(pool[b]) # win / lose / draw
+  a, b = pool.sample(2)
+  a.simulate(b)
 }
 puts "Ran #{pool_matchups} matchups; average rating: #{P.avg_rating(pool)}"
+puts
 
+puts "Final Standings"
 puts pool.sort.reverse
