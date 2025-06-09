@@ -47,8 +47,7 @@ describe D do
     end
 
     it "looks up month names by month number" do
-      # 0 is not valid but the function will accept it
-      expect(D.month_name 0).must_equal 'December'
+      expect { D.month_name 0 }.must_raise
       expect(D.month_name 1).must_equal 'January'
       expect(D.month_name 12).must_equal 'December'
       expect { D.month_name 13 }.must_raise
