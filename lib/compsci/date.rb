@@ -13,7 +13,7 @@ module CompSci
     include Comparable
 
     # 
-    # Gregorian Calendar Leap Years
+    # Leap Years
     #
     
     # this is the crux of the Gregorian calendar
@@ -28,7 +28,7 @@ module CompSci
     end
 
     #
-    # Gregorian Calendar Definitions
+    # Definitions
     #
 
     # define month lengths
@@ -51,16 +51,17 @@ module CompSci
     LEAP_YEAR_DAYS = ANNUAL_DAYS + 1   # 366
     CUMULATIVE_DAYS.freeze
 
-    MEAN_ANNUAL_DAYS = 365.2425
-    MEAN_MONTH_DAYS = MEAN_ANNUAL_DAYS / NUM_MONTHS
-    
     # implementation considerations
     MIN_Y, MIN_M, MIN_D = 1, 1, 1
     MAX_Y, MAX_M, MAX_D = 9999, NUM_MONTHS, MON31
-    EPOCH_Y, EPOCH_M, EPOCH_D = 1, 1, 1
+
+    # currently unused
+    # EPOCH_Y, EPOCH_M, EPOCH_D = 1, 1, 1
+    # MEAN_ANNUAL_DAYS = 365.2425
+    # MEAN_MONTH_DAYS = MEAN_ANNUAL_DAYS / NUM_MONTHS
     
     #
-    # Gregorian Calendar Functions
+    # Functions
     #
     
     # perform lookup by month number and year, one-indexed, with leap days
@@ -76,6 +77,7 @@ module CompSci
       (days / MON30 + 1).clamp(MIN_M, MAX_M)
     end
     
+    # how many days have elapsed before the beginning of the month?
     # perform lookup by month number and year, one-indexed, with leap days
     def self.cumulative_days(month, year)
       raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
@@ -130,7 +132,7 @@ module CompSci
     end
 
     #
-    # Gregorian Calendar Coversions (days since Epoch, 0001-01-01)
+    # Coversions (days since Epoch, 0001-01-01)
     #
 
     # convert date (as year, month, day) to days since epoch
@@ -149,7 +151,7 @@ module CompSci
     end
     
     #
-    # Gregorian Month Names
+    # Month Names
     #
 
     # define lookup of month name by month number, zero-indexed
@@ -174,7 +176,7 @@ module CompSci
     end
 
     #
-    # Gregorian Calendar Instances
+    # Date Instances
     #
     
     attr_reader :day_count
