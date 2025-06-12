@@ -77,8 +77,13 @@ Benchmark.ips { |b|
   b.report("CompSci::Date new") {
     cd = CompSci::Date.new(*dates.sample)
     99.times {
-      cd + rand(9999)
-      cd - rand(9999)
+      val = rand(9999)
+      begin
+        cd + val
+        cd - val
+      rescue => e
+        puts format("Exception: %s: %s; %s +- %i", e.class, e.message, cd, val)
+      end
     }
   }
 

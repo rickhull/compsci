@@ -141,18 +141,18 @@ describe D do
     end
   end
   
-  describe "day count conversions" do
+  describe "ordinal day conversions" do
     it "maintains round-trip consistency" do
       TEST_DATES.each do |date|
-        reconstructed = D.from_days(date.day_count)
+        reconstructed = D.from_ordinal(date.ordinal_day)
         expect(reconstructed).must_equal date, 
                "Failed round-trip for #{date}: got #{reconstructed}"
       end
     end
     
     it "calculates epoch correctly" do
-      expect(EPOCH.day_count).must_equal 1
-      expect(D.from_days(1)).must_equal EPOCH
+      expect(EPOCH.ordinal_day).must_equal 1
+      expect(D.from_ordinal(1)).must_equal EPOCH
     end
   end
   

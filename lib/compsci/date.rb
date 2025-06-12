@@ -12,10 +12,10 @@ module CompSci
 
     include Comparable
 
-    # 
+    #
     # Leap Years
     #
-    
+
     # this is the crux of the Gregorian calendar
     def self.leap_year?(year)
       (year % 4).zero? and !(year % 100).zero? or (year % 400).zero?
@@ -42,7 +42,7 @@ module CompSci
       [MON31, MON28, MON31, MON30, MON31, MON30,
        MON31, MON31, MON30, MON31, MON30, MON31].freeze
     NUM_MONTHS = 12 # MONTH_DAYS.size
-    
+
     # derive CUMULATIVE_DAYS from MONTH_DAYS, zero-indexed
     CUMULATIVE_DAYS = MONTH_DAYS.reduce([0]) { |acc, days|
       acc + [acc.last + days]
@@ -55,28 +55,44 @@ module CompSci
     MIN_Y, MIN_M, MIN_D = 1, 1, 1
     MAX_Y, MAX_M, MAX_D = 9999, NUM_MONTHS, MON31
 
+    DAYS_400 = 146097 # self.year_days(400)
+    DAYS_100 = 36524  # self.year_days(100)
+    DAYS_4   = 1461   # self.year_days(4)
+
+
     # currently unused
     # EPOCH_Y, EPOCH_M, EPOCH_D = 1, 1, 1
-    # MEAN_ANNUAL_DAYS = 365.2425
+    MEAN_ANNUAL_DAYS = 365.2425 # DAYS_400 / 400.0
     # MEAN_MONTH_DAYS = MEAN_ANNUAL_DAYS / NUM_MONTHS
-    
+
     #
     # Functions
     #
-    
+
+    # how many days in the years since epoch
+    def self.year_days(years)
+      years * ANNUAL_DAYS + self.leap_days(years)
+    end
+
+    # given a day count, what is the current year?
+    # despite leap years, never guess too low, only too high
+    def self.guess_year(days)
+      ((days - 1) / MEAN_ANNUAL_DAYS).round + 1
+    end
+
     # perform lookup by month number and year, one-indexed, with leap days
     def self.month_days(month, year)
       raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
       (month == 2 and self.leap_year?(year)) ?
         MON29 : MONTH_DAYS.fetch(month - 1)
     end
-    
-    # given a day count, what is the current month?
+
+    # given an annual day count, what is the current month?
     # despite leap years, never guess too low, only too high
-    def self.guess_month(days)
-      (days / MON30 + 1).clamp(MIN_M, MAX_M)
+    def self.guess_month(day_of_year)
+      (day_of_year / MON30 + 1).clamp(MIN_M, MAX_M)
     end
-    
+
     # how many days have elapsed before the beginning of the month?
     # perform lookup by month number and year, one-indexed, with leap days
     def self.cumulative_days(month, year)
@@ -86,39 +102,26 @@ module CompSci
     end
 
     # given number of days, what is the current month and day
-    def self.rev_cumulative(days, year)
-      month = self.guess_month(days)
+    def self.month_and_day(day_of_year, year)
+      month = self.guess_month(day_of_year)
       month_days = self.cumulative_days(month, year)
 
       # rewind the guess by one month if needed
-      if month > 1 and month_days >= days
+      if month > 1 and month_days >= day_of_year
         month -= 1
         month_days = self.cumulative_days(month, year)
       end
 
-      [month, days - month_days]
+      [month, day_of_year - month_days]
     end
 
-    # given a day count, what is the current year?
-    # despite leap years, never guess too low, only too high
-    # mostly accurate, errs by 1 at most
-    def self.guess_year(days)
-      bias = 2 # minimum required to meet guarantees above
-      ((days + bias) / ANNUAL_DAYS + 1).clamp(MIN_Y, MAX_Y)
-    end
-
-    # how many days in the years since epoch
-    def self.year_days(years)
-      years * ANNUAL_DAYS + self.leap_days(years)
-    end
-    
     # how many days in a given year?
     def self.annual_days(year)
       self.leap_year?(year) ? LEAP_YEAR_DAYS : ANNUAL_DAYS
     end
-    
+
     # convert days to current year with days remaining
-    def self.year_count(days)
+    def self.year_and_day(days)
       year = self.guess_year(days)
       year_days = self.year_days(year - 1)
 
@@ -136,20 +139,20 @@ module CompSci
     #
 
     # convert date (as year, month, day) to days since epoch
-    def self.day_count(year, month, day)
+    def self.to_ordinal(year, month, day)
       self.year_days(year - 1) +
         self.cumulative_days(month, year) +
         day
     end
 
     # convert days since epoch back to Date
-    def self.from_days(days)
+    def self.from_ordinal(days)
       raise(RuntimeError, "days should be positive: #{days}") unless days > 0
-      year, days = self.year_count(days)
-      month, day = self.rev_cumulative(days, year)
+      year, days = self.year_and_day(days)
+      month, day = self.month_and_day(days, year)
       Date.new(year, month, day)
     end
-    
+
     #
     # Month Names
     #
@@ -162,13 +165,13 @@ module CompSci
     MONTH_NUMS = MONTH_NAMES.each.with_index.to_h { |name, i|
       [name.downcase.to_sym, i + 1]
     }.freeze
-        
+
     # perform lookup by month name, one-indexed
     def self.month_number(name)
       name = name.downcase.to_sym if name.is_a? String
       MONTH_NUMS.fetch name
     end
-    
+
     # perform lookup of month name by month number, one-indexed
     def self.month_name(number)
       raise(InvalidMonth, number.inspect) unless (1..12).cover?(number)
@@ -178,13 +181,13 @@ module CompSci
     #
     # Date Instances
     #
-    
-    attr_reader :day_count
-    
+
+    attr_reader :ordinal_day
+
     def initialize(year:, month:, day:)
       # validate year
       raise(InvalidYear, year) unless (MIN_Y..MAX_Y).cover?(year)
-      
+
       # handle month conversion
       case month
       when Integer
@@ -196,23 +199,23 @@ module CompSci
           raise InvalidMonth, month.inspect
         end
       end
-      
+
       # validate day
       max_days = Date.month_days(month, year)
       raise(InvalidDay, day) unless (MIN_D..max_days).cover?(day)
-      
+
       @leap_year = Date.leap_year?(year)
-      @day_count = Date.day_count(year, month, day)
-      
+      @ordinal_day = Date.to_ordinal(year, month, day)
+
       super(year:, month:, day:)
     end
-    
+
     def leap_year?
       @leap_year
     end
 
     def <=>(other)
-      @day_count <=> other.day_count
+      @ordinal_day <=> other.ordinal_day
     end
 
     def to_s
@@ -226,7 +229,7 @@ module CompSci
     # given a count of days, return a new Date
     def +(days)
       return self if days.zero?
-      Date.from_days(@day_count + days)
+      Date.from_ordinal(@ordinal_day + days)
     end
 
     def -(days)
@@ -235,7 +238,7 @@ module CompSci
 
     # given a Date, return a count of days, possibly negative
     def diff(other)
-      @day_count - other.day_count
+      @ordinal_day - other.ordinal_day
     end
   end
 end
