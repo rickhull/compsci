@@ -19,8 +19,8 @@ Julian-Gregorian transition.
     simple and intuitive date comparisons (`<`, `>`, `==`, `.between?`, etc.).
 *   **Date Arithmetic**: Easily add or subtract days from a date, or calculate
     the number of days between two dates.
-*   **Day Count Conversion**: Internally, each date is represented by a simple
-    integer: the number of days elapsed since the epoch.
+*   **Ordinal Day Conversion**: Internally, each date is represented by a
+    simple integer: the number of days elapsed since the epoch.
 *   **Zero Dependencies**: A self-contained, pure-Ruby implementation.
 
 ## Installation
@@ -150,21 +150,21 @@ CompSci::Date.leap_year?(1900) #=> false (divisible by 100 but not 400)
 CompSci::Date.leap_year?(2000) #=> true (divisible by 400)
 ```
 
-### Day Count Conversions
+### Ordinal Days
 
 The library's core logic is built on a "day count" —
 an integer representing the number of days since the epoch (`0001-01-01`).
 You can convert to and from this integer representation.
 
 ```ruby
-# Get the day count from a Date object
+# Get the ordinal day from a Date object
 epoch = CompSci::Date.new(year: 1, month: 1, day: 1)
-epoch.day_count #=> 1
+epoch.ordinal_day #=> 1
 
 d = CompSci::Date.new(year: 1, month: 2, day: 1)
-d.day_count     #=> 32 (31 days in Jan + 1)
+d.ordinal_day     #=> 32 (31 days in Jan + 1)
 
-# Create a Date object from a day count
+# Create a Date object from ordinal day
 CompSci::Date.from_days(366).to_s     #=> "0002-01-01"
 CompSci::Date.from_days(739_265).to_s #=> "2024-12-31"
 ```
