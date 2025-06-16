@@ -41,7 +41,6 @@ module CompSci
     MONTH_DAYS =
       [MON31, MON28, MON31, MON30, MON31, MON30,
        MON31, MON31, MON30, MON31, MON30, MON31].freeze
-    NUM_MONTHS = 12 # MONTH_DAYS.size
 
     # derive CUMULATIVE_DAYS from MONTH_DAYS, zero-indexed
     CUMULATIVE_DAYS = MONTH_DAYS.reduce([0]) { |acc, days|
@@ -53,7 +52,7 @@ module CompSci
 
     # implementation considerations
     MIN_Y, MIN_M, MIN_D = 1, 1, 1
-    MAX_Y, MAX_M, MAX_D = 9999, NUM_MONTHS, MON31
+    MAX_Y, MAX_M, MAX_D = 9999, MONTH_DAYS.size, MON31
 
     DAYS_400 = 146097 # self.year_days(400)
     DAYS_100 = 36524  # self.year_days(100)
@@ -76,8 +75,8 @@ module CompSci
 
     # given a day count, what is the current year?
     # despite leap years, never guess too low, only too high
-    def self.guess_year(days)
-      ((days - 1) / MEAN_ANNUAL_DAYS).round + 1
+    def self.guess_year(day_count)
+      ((day_count - 1) / MEAN_ANNUAL_DAYS).round + 1
     end
 
     # perform lookup by month number and year, one-indexed, with leap days
@@ -107,7 +106,7 @@ module CompSci
       month_days = self.cumulative_days(month, year)
 
       # rewind the guess by one month if needed
-      if month > 1 and month_days >= day_of_year
+      if month > MIN_M and month_days >= day_of_year
         month -= 1
         month_days = self.cumulative_days(month, year)
       end
@@ -121,17 +120,17 @@ module CompSci
     end
 
     # convert days to current year with days remaining
-    def self.year_and_day(days)
-      year = self.guess_year(days)
+    def self.year_and_day(day_count)
+      year = self.guess_year(day_count)
       year_days = self.year_days(year - 1)
 
       # rewind the guess as needed
-      while year > 1 and year_days >= days
+      while year > MIN_Y and year_days >= day_count
         year -= 1
         year_days -= self.annual_days(year)
       end
 
-      [year, days - year_days]
+      [year, day_count - year_days]
     end
 
     #
@@ -146,11 +145,13 @@ module CompSci
     end
 
     # convert days since epoch back to Date
-    def self.from_ordinal(days)
-      raise(RuntimeError, "days should be positive: #{days}") unless days > 0
-      year, days = self.year_and_day(days)
-      month, day = self.month_and_day(days, year)
-      Date.new(year, month, day)
+    def self.from_ordinal(day_count)
+      unless day_count > 0
+        raise(RuntimeError, "day_count should be positive: #{day_count}")
+      end
+      year, annual_days = self.year_and_day(day_count)
+      month, day = self.month_and_day(annual_days, year)
+      Date.new(year:, month:, day:, ordinal_day: day_count)
     end
 
     #
@@ -184,7 +185,7 @@ module CompSci
 
     attr_reader :ordinal_day
 
-    def initialize(year:, month:, day:)
+    def initialize(year:, month:, day:, ordinal_day: nil)
       # validate year
       raise(InvalidYear, year) unless (MIN_Y..MAX_Y).cover?(year)
 
@@ -205,7 +206,7 @@ module CompSci
       raise(InvalidDay, day) unless (MIN_D..max_days).cover?(day)
 
       @leap_year = Date.leap_year?(year)
-      @ordinal_day = Date.to_ordinal(year, month, day)
+      @ordinal_day = ordinal_day || Date.to_ordinal(year, month, day)
 
       super(year:, month:, day:)
     end
