@@ -124,7 +124,7 @@ module CompSci
       year = self.guess_year(day_count)
       year_days = self.year_days(year - 1)
 
-      # rewind the guess as needed
+      # rewind the guess as needed, typically 0 or 1x, rarely 2x
       while year > MIN_Y and year_days >= day_count
         year -= 1
         year_days -= self.annual_days(year)
@@ -146,12 +146,61 @@ module CompSci
 
     # convert days since epoch back to Date
     def self.from_ordinal(day_count)
+      year, month, day = Date.to_ymd_flt(day_count)
+      Date.new(year:, month:, day:, ordinal_day: day_count)
+    end
+
+    # use floating point and heuristic, very efficient
+    def self.to_ymd_flt(day_count)
       unless day_count > 0
         raise(RuntimeError, "day_count should be positive: #{day_count}")
       end
-      year, annual_days = self.year_and_day(day_count)
-      month, day = self.month_and_day(annual_days, year)
-      Date.new(year:, month:, day:, ordinal_day: day_count)
+      year = self.guess_year(day_count)
+      year_days = self.year_days(year - 1)
+
+      # rewind the guess as needed, typically 0 or 1x, rarely 2x
+      while year > MIN_Y and year_days >= day_count
+        year -= 1
+        year_days -= self.annual_days(year)
+      end
+
+      month, day = self.month_and_day(day_count - year_days, year)
+      [year, month, day]
+    end
+
+    # use pure divmod arithmetic and integers; constant time; ~same~ efficiency
+    def self.to_ymd_int(day_count)
+      unless day_count > 0
+        raise(RuntimeError, "day_count should be positive: #{day_count}")
+      end
+
+      # Convert to 0-based day count for easier math
+      days = day_count - 1
+
+      # 400 year cycle
+      n400, days = days.divmod(DAYS_400)
+
+      # 100-year cycle
+      n100 = days / DAYS_100
+      n100 = 3 if n100 == 4
+      days -= (n100 * DAYS_100)
+
+      # 4-year cycle
+      n4, days = days.divmod(DAYS_4)
+
+      # remaining years
+      n1 = days / ANNUAL_DAYS
+      n1 = 3 if n1 == 4
+
+      # remaining days
+      days -= (n1 * ANNUAL_DAYS)
+
+      # determine the year
+      year = 1 + (n400 * 400) + (n100 * 100) + (n4 * 4) + n1
+
+      # add 1 back to 1-based day_count to determine the month and day
+      month, day = self.month_and_day(days + 1, year)
+      [year, month, day]
     end
 
     #
@@ -205,14 +254,13 @@ module CompSci
       max_days = Date.month_days(month, year)
       raise(InvalidDay, day) unless (MIN_D..max_days).cover?(day)
 
-      @leap_year = Date.leap_year?(year)
+      # initialize
       @ordinal_day = ordinal_day || Date.to_ordinal(year, month, day)
-
       super(year:, month:, day:)
     end
 
     def leap_year?
-      @leap_year
+      Date.leap_year?(year)
     end
 
     def <=>(other)

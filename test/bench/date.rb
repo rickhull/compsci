@@ -35,57 +35,50 @@ end_year = 3000
   dates << [year, 8, rand(1..31)]
 }
 
-pairs = []
 
-999.times {
-  pairs << dates.sample(2)
-}
+# --- Benchmark 1: Object Creation ---
+puts "--- Benchmarking Object Creation (new) ---"
+d = dates.sample
 
 Benchmark.ips { |b|
   b.config(warmup: 0.2, time: 1)
-
-  b.report("Ruby Date Difference") {
-    pairs.each { |(d1, d2)|
-      rd1 = Date.new(*d1)
-      rd2 = Date.new(*d2)
-      rd1 - rd2
-    }
-  }
-
-  b.report("CompSciDate Difference") {
-    pairs.each { |(d1, d2)|
-      cd1 = CompSci::Date.new(*d1)
-      cd2 = CompSci::Date.new(*d2)
-      cd2.diff(cd1)
-    }
-  }
-
+  b.report("Ruby Date new") { Date.new(*d) }
+  b.report("CompSci::Date new") { CompSci::Date.new(*d) }
   b.compare!
 }
 
+# --- Benchmark 2: Date Arithmetic (+, -) ---
+# Create objects outside the loop so we only measure the arithmetic
+puts "\n--- Benchmarking Date Arithmetic (+, -) ---"
+rdate = Date.new(2024, 1, 1)
+cdate = CompSci::Date.new(year: 2024, month: 1, day: 1)
+days = rand(9999)
+
 Benchmark.ips { |b|
   b.config(warmup: 0.2, time: 1)
-
-  b.report("Ruby Date new") {
-    rd = Date.new(*dates.sample)
-    99.times {
-      rd + rand(9999)
-      rd - rand(9999)
-    }
+  b.report("Ruby Date +/-") {
+    rdate + days
+    rdate - days
   }
-
-  b.report("CompSci::Date new") {
-    cd = CompSci::Date.new(*dates.sample)
-    99.times {
-      val = rand(9999)
-      begin
-        cd + val
-        cd - val
-      rescue => e
-        puts format("Exception: %s: %s; %s +- %i", e.class, e.message, cd, val)
-      end
-    }
+  b.report("CompSci::Date +/-") {
+    cdate + days
+    cdate - days
   }
+  b.compare!
+}
 
+# --- Benchmark 3: Date Difference ---
+# Create objects outside the loop so we only measure the difference
+puts "\n--- Benchmarking Date Difference ---"
+d1, d2 = dates.sample(2)
+r1 = Date.new(*d1)
+r2 = Date.new(*d2)
+c1 = CompSci::Date.new(*d1)
+c2 = CompSci::Date.new(*d2)
+
+Benchmark.ips { |b|
+  b.config(warmup: 0.2, time: 1)
+  b.report("Ruby Date diff") { r1 - r2 }
+  b.report("CompSci::Date diff") { c1.diff(c2) }
   b.compare!
 }
