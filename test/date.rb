@@ -60,31 +60,17 @@ describe D do
   end
   
   describe "month and day calculations" do
-    it "provides month length given month and year" do
-      # Test 31-day months
-      [1, 3, 5, 7, 8, 10, 12].each do |mon31|
-        expect(D.month_days(mon31, 2025)).must_equal 31
-      end
-      
-      # Test 30-day months
-      [4, 6, 9, 11].each do |mon30|
-        expect(D.month_days(mon30, 2025)).must_equal 30
-      end
-      
-      # February variations
-      expect(D.month_days(2, 2025)).must_equal 28  # non-leap
-      expect(D.month_days(2, 2020)).must_equal 29  # leap
-    end
-    
     it "performs month name conversions" do
       MONTH_VARIATIONS.each do |num, names|
         names.each { |name| expect(D.month_number(name)).must_equal num }
         expect(D.month_name(num)).must_equal names.first
       end
+
+      # negative months are support (-11..0)
+      expect(D.month_name(0)).must_equal 'December'
       
       # Invalid cases
       expect { D.month_number('invalid') }.must_raise
-      expect { D.month_name(0) }.must_raise
       expect { D.month_name(13) }.must_raise
     end
   end

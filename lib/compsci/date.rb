@@ -1,5 +1,4 @@
-# This library implements a proleptic Gregorian calendar:
-# ---
+# This library implements a proleptic Gregorian calendar
 # The Julian-Gregorian transition in 1582 is ignored
 # The Gregorian calendar extends backwards to year 1
 # The epoch is 0001-01-01
@@ -10,7 +9,7 @@ module CompSci
     class InvalidMonth < RuntimeError; end
     class InvalidDay < RuntimeError; end
     class NegativeError < RuntimeError; end
-    
+
     include Comparable
 
     #
@@ -24,8 +23,7 @@ module CompSci
 
     # cumulative leap days from year 1 up to and including _year_
     def self.leap_days(year)
-      return 0 if year <= 3
-      (year / 4) - (year / 100) + (year / 400)
+      year <= 3 ? 0 : (year / 4) - (year / 100) + (year / 400)
     end
 
     #
@@ -55,7 +53,7 @@ module CompSci
     CUMULATIVE_LEAP_DAYS = CUMULATIVE_DAYS.map.with_index { |days, i|
       i < 2 ? days : days + 1
     }.freeze # [0, 31, 60, 91, 121, ... 335]
-    
+
     # implementation considerations
     MIN_Y, MIN_M, MIN_D = 1, 1, 1
     MAX_Y, MAX_M, MAX_D = 9999, MONTH_DAYS.size, MON31
@@ -64,82 +62,72 @@ module CompSci
     DAYS_100 = 36524  # self.year_days(100)
     DAYS_4   = 1461   # self.year_days(4)
 
+    MEAN_ANNUAL_DAYS = 365.2425 # DAYS_400 / 400.0
 
     # currently unused
     # EPOCH_Y, EPOCH_M, EPOCH_D = 1, 1, 1
-    MEAN_ANNUAL_DAYS = 365.2425 # DAYS_400 / 400.0
     # MEAN_MONTH_DAYS = MEAN_ANNUAL_DAYS / NUM_MONTHS
 
     #
-    # Functions
+    # Utility Functions
     #
 
     # how many days in the years since epoch
     def self.year_days(years)
-      years * ANNUAL_DAYS + self.leap_days(years)
+      years * ANNUAL_DAYS + leap_days(years)
     end
 
-    # perform lookup by month number and year, one-indexed, with leap days
-    def self.month_days(month, year)
-      raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
-      (month == 2 and self.leap_year?(year)) ?
-        MON29 : MONTH_DAYS.fetch(month - 1)
+    # given number of days, what is the current month and day
+    def self.month_and_day(day_of_year, year:)
+      tbl = cumulative_table(year)
+      idx = tbl.rindex { |c| c < day_of_year }
+      [idx + 1, day_of_year - tbl[idx]]
     end
 
     # select the table based on leap year status
     def self.cumulative_table(year)
-      self.leap_year?(year) ? CUMULATIVE_LEAP_DAYS : CUMULATIVE_DAYS
+      leap_year?(year) ? CUMULATIVE_LEAP_DAYS : CUMULATIVE_DAYS
     end
 
-    # fetch from the appropriate table, one-indexed
-    def self.cumulative_days(month, year:)
-      self.cumulative_table(year).fetch(month - 1)
-    end
-    
-    # given number of days, what is the current month and day
-    def self.month_and_day(day_of_year, year:)
-      tbl = self.cumulative_table(year)
-      idx = tbl.rindex { |c| c < day_of_year }
-      [idx + 1, day_of_year - tbl[idx]]
-    end
-    
     #
     # Ordinal Coversions (days since Epoch, 0001-01-01)
     #
 
     # convert date (as year, month, day) to days since epoch
     def self.to_ordinal(year, month, day)
-      raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
-      self.year_days(year - 1) + self.cumulative_days(month, year:) + day
+      this_year = cumulative_table(year)[month - 1] ||
+                  raise(InvalidMonth, month)
+      year_days(year - 1) + this_year + day
     end
 
     # convert days since epoch back to Date
+    # can use either to_ymd_flt or to_ymd_int (currently _flt)
     def self.from_ordinal(day_count)
-      year, month, day = Date.to_ymd_flt(day_count)
+      year, month, day = to_ymd_flt(day_count)
       Date.new(year:, month:, day:, ordinal_day: day_count)
     end
 
     # use floating point and heuristic, very efficient
     def self.to_ymd_flt(day_count)
-      raise(NegativeError, day_count.to_s) unless day_count > 0
+      raise(NegativeError, day_count) unless day_count > 0
 
       # this is a simple linear approximation; a guess
       year = ((day_count - 1) / MEAN_ANNUAL_DAYS).round + 1
-      year_days = self.year_days(year - 1)
+      year_days = year_days(year - 1)
 
       # rewind the guess as needed, typically 0 or 1x, rarely 2x
       while year > MIN_Y and year_days >= day_count
         year -= 1
-        year_days -= self.leap_year?(year) ? LEAP_YEAR_DAYS : ANNUAL_DAYS
+        year_days -= leap_year?(year) ? LEAP_YEAR_DAYS : ANNUAL_DAYS
       end
 
-      month, day = self.month_and_day(day_count - year_days, year:)
+      month, day = month_and_day(day_count - year_days, year:)
       [year, month, day]
     end
 
     # use pure divmod arithmetic and integers; constant time; ~same~ efficiency
     def self.to_ymd_int(day_count)
-      raise(NegativeError, day_count.to_s) unless day_count > 0
+      raise(NegativeError, day_count) unless day_count > 0
 
       # Convert to 0-based day count for easier math
       days = day_count - 1
@@ -166,7 +154,7 @@ module CompSci
       year = 1 + (n400 * 400) + (n100 * 100) + (n4 * 4) + n1
 
       # add 1 back to 1-based day_count to determine the month and day
-      month, day = self.month_and_day(days + 1, year:)
+      month, day = month_and_day(days + 1, year:)
       [year, month, day]
     end
 
@@ -191,8 +179,7 @@ module CompSci
 
     # perform lookup of month name by month number, one-indexed
     def self.month_name(number)
-      raise(InvalidMonth, number.inspect) unless (1..12).cover?(number)
-      MONTH_NAMES.fetch(number - 1)
+      MONTH_NAMES[number - 1] or raise(InvalidMonth, number)
     end
 
     #
@@ -211,17 +198,21 @@ module CompSci
       case month
       when Integer
         raise(InvalidMonth, month) unless (MIN_M..MAX_M).cover?(month)
+      when String, Symbol
+        month = Date.month_number(month) # may raise
       else
-        begin
-          month = Date.month_number(month)
-        rescue
-          raise InvalidMonth, month.inspect
-        end
+        raise(InvalidMonth, month)
       end
 
-      # validate day
-      max_days = Date.month_days(month, year)
-      raise(InvalidDay, day) unless (MIN_D..max_days).cover?(day)
+      @leap_year = Date.leap_year?(year)
+
+      # validate day, depends on @leap_year
+      max_d = if @leap_year and month == 2
+                MON29
+              else
+                MONTH_DAYS[month - 1] or raise(InvalidMonth, month)
+              end
+      raise(InvalidDay, day) unless (MIN_D..max_d).cover?(day)
 
       # initialize
       @ordinal_day = ordinal_day || Date.to_ordinal(year, month, day)
@@ -261,7 +252,7 @@ module CompSci
 
     # convenience
     def leap_year?
-      Date.leap_year?(year)
+      @leap_year
     end
   end
 end
