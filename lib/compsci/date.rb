@@ -232,8 +232,10 @@ module CompSci
     # Date Instances
     #
 
+    # day count since epoch
     attr_reader :ordinal_day
 
+    # ordinal_day will be calculated if not passed in
     def initialize(year:, month:, day:, ordinal_day: nil)
       # validate year
       raise(InvalidYear, year) unless (MIN_Y..MAX_Y).cover?(year)
@@ -259,20 +261,19 @@ module CompSci
       super(year:, month:, day:)
     end
 
-    def leap_year?
-      Date.leap_year?(year)
-    end
-
-    def <=>(other)
-      @ordinal_day <=> other.ordinal_day
-    end
-
+    # YYYY-MM-DD, per ISO 8601
     def to_s
       format('%04d-%02d-%02d', year, month, day)
     end
 
-    def name
-      format("%s %d, %d", Date.month_name(month), day, year)
+    # given a Date, return a count of days, possibly negative
+    def diff(other)
+      @ordinal_day - other.ordinal_day
+    end
+
+    # per Comparable, return (-1, 0, +1) (less than, equals, greater than)
+    def <=>(other)
+      @ordinal_day <=> other.ordinal_day
     end
 
     # given a count of days, return a new Date
@@ -281,13 +282,19 @@ module CompSci
       Date.from_ordinal(@ordinal_day + days)
     end
 
+    # "February 29, 2004"
+    def name
+      format("%s %d, %d", Date.month_name(month), day, year)
+    end
+
+    # convenience
     def -(days)
       self.+(-1 * days)
     end
 
-    # given a Date, return a count of days, possibly negative
-    def diff(other)
-      @ordinal_day - other.ordinal_day
+    # convenience
+    def leap_year?
+      Date.leap_year?(year)
     end
   end
 end
