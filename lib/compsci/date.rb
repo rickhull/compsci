@@ -9,7 +9,8 @@ module CompSci
     class InvalidYear < RuntimeError; end
     class InvalidMonth < RuntimeError; end
     class InvalidDay < RuntimeError; end
-
+    class NegativeError < RuntimeError; end
+    
     include Comparable
 
     #
@@ -45,11 +46,16 @@ module CompSci
     # derive CUMULATIVE_DAYS from MONTH_DAYS, zero-indexed
     CUMULATIVE_DAYS = MONTH_DAYS.reduce([0]) { |acc, days|
       acc + [acc.last + days]
-    } # [0, 31, 59, 90, 120, ... 365]
+    } # [0, 31, 59, 90, 120, ... 334, 365]
     ANNUAL_DAYS = CUMULATIVE_DAYS.pop  # 365
     LEAP_YEAR_DAYS = ANNUAL_DAYS + 1   # 366
     CUMULATIVE_DAYS.freeze
 
+    # derive CUMULATIVE_LEAP_DAYS from CUMULATIVE_DAYS, zero-indexed
+    CUMULATIVE_LEAP_DAYS = CUMULATIVE_DAYS.map.with_index { |days, i|
+      i < 2 ? days : days + 1
+    }.freeze # [0, 31, 60, 91, 121, ... 335]
+    
     # implementation considerations
     MIN_Y, MIN_M, MIN_D = 1, 1, 1
     MAX_Y, MAX_M, MAX_D = 9999, MONTH_DAYS.size, MON31
@@ -73,12 +79,6 @@ module CompSci
       years * ANNUAL_DAYS + self.leap_days(years)
     end
 
-    # given a day count, what is the current year?
-    # despite leap years, never guess too low, only too high
-    def self.guess_year(day_count)
-      ((day_count - 1) / MEAN_ANNUAL_DAYS).round + 1
-    end
-
     # perform lookup by month number and year, one-indexed, with leap days
     def self.month_days(month, year)
       raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
@@ -86,62 +86,31 @@ module CompSci
         MON29 : MONTH_DAYS.fetch(month - 1)
     end
 
-    # given an annual day count, what is the current month?
-    # despite leap years, never guess too low, only too high
-    def self.guess_month(day_of_year)
-      (day_of_year / MON30 + 1).clamp(MIN_M, MAX_M)
+    # select the table based on leap year status
+    def self.cumulative_table(year)
+      self.leap_year?(year) ? CUMULATIVE_LEAP_DAYS : CUMULATIVE_DAYS
     end
 
-    # how many days have elapsed before the beginning of the month?
-    # perform lookup by month number and year, one-indexed, with leap days
-    def self.cumulative_days(month, year)
-      raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
-      days = CUMULATIVE_DAYS.fetch(month - 1)
-      (month > 2 and self.leap_year?(year)) ? (days + 1) : days
+    # fetch from the appropriate table, one-indexed
+    def self.cumulative_days(month, year:)
+      self.cumulative_table(year).fetch(month - 1)
     end
-
+    
     # given number of days, what is the current month and day
-    def self.month_and_day(day_of_year, year)
-      month = self.guess_month(day_of_year)
-      month_days = self.cumulative_days(month, year)
-
-      # rewind the guess by one month if needed
-      if month > MIN_M and month_days >= day_of_year
-        month -= 1
-        month_days = self.cumulative_days(month, year)
-      end
-
-      [month, day_of_year - month_days]
+    def self.month_and_day(day_of_year, year:)
+      tbl = self.cumulative_table(year)
+      idx = tbl.rindex { |c| c < day_of_year }
+      [idx + 1, day_of_year - tbl[idx]]
     end
-
-    # how many days in a given year?
-    def self.annual_days(year)
-      self.leap_year?(year) ? LEAP_YEAR_DAYS : ANNUAL_DAYS
-    end
-
-    # convert days to current year with days remaining
-    def self.year_and_day(day_count)
-      year = self.guess_year(day_count)
-      year_days = self.year_days(year - 1)
-
-      # rewind the guess as needed, typically 0 or 1x, rarely 2x
-      while year > MIN_Y and year_days >= day_count
-        year -= 1
-        year_days -= self.annual_days(year)
-      end
-
-      [year, day_count - year_days]
-    end
-
+    
     #
-    # Coversions (days since Epoch, 0001-01-01)
+    # Ordinal Coversions (days since Epoch, 0001-01-01)
     #
 
     # convert date (as year, month, day) to days since epoch
     def self.to_ordinal(year, month, day)
-      self.year_days(year - 1) +
-        self.cumulative_days(month, year) +
-        day
+      raise(InvalidMonth, month.inspect) unless (1..12).cover?(month)
+      self.year_days(year - 1) + self.cumulative_days(month, year:) + day
     end
 
     # convert days since epoch back to Date
@@ -152,27 +121,25 @@ module CompSci
 
     # use floating point and heuristic, very efficient
     def self.to_ymd_flt(day_count)
-      unless day_count > 0
-        raise(RuntimeError, "day_count should be positive: #{day_count}")
-      end
-      year = self.guess_year(day_count)
+      raise(NegativeError, day_count.to_s) unless day_count > 0
+
+      # this is a simple linear approximation; a guess
+      year = ((day_count - 1) / MEAN_ANNUAL_DAYS).round + 1
       year_days = self.year_days(year - 1)
 
       # rewind the guess as needed, typically 0 or 1x, rarely 2x
       while year > MIN_Y and year_days >= day_count
         year -= 1
-        year_days -= self.annual_days(year)
+        year_days -= self.leap_year?(year) ? LEAP_YEAR_DAYS : ANNUAL_DAYS
       end
 
-      month, day = self.month_and_day(day_count - year_days, year)
+      month, day = self.month_and_day(day_count - year_days, year:)
       [year, month, day]
     end
 
     # use pure divmod arithmetic and integers; constant time; ~same~ efficiency
     def self.to_ymd_int(day_count)
-      unless day_count > 0
-        raise(RuntimeError, "day_count should be positive: #{day_count}")
-      end
+      raise(NegativeError, day_count.to_s) unless day_count > 0
 
       # Convert to 0-based day count for easier math
       days = day_count - 1
@@ -199,7 +166,7 @@ module CompSci
       year = 1 + (n400 * 400) + (n100 * 100) + (n4 * 4) + n1
 
       # add 1 back to 1-based day_count to determine the month and day
-      month, day = self.month_and_day(days + 1, year)
+      month, day = self.month_and_day(days + 1, year:)
       [year, month, day]
     end
 

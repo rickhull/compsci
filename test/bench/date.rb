@@ -36,8 +36,10 @@ end_year = 3000
 }
 
 
-# --- Benchmark 1: Object Creation ---
-puts "--- Benchmarking Object Creation (new) ---"
+#
+# Benchmark 1: Object Creation
+#
+
 d = dates.sample
 
 Benchmark.ips { |b|
@@ -47,9 +49,11 @@ Benchmark.ips { |b|
   b.compare!
 }
 
-# --- Benchmark 2: Date Arithmetic (+, -) ---
-# Create objects outside the loop so we only measure the arithmetic
-puts "\n--- Benchmarking Date Arithmetic (+, -) ---"
+
+#
+# Benchmark 2: Date Arithmetic
+#
+
 rdate = Date.new(2024, 1, 1)
 cdate = CompSci::Date.new(year: 2024, month: 1, day: 1)
 days = rand(9999)
@@ -67,9 +71,11 @@ Benchmark.ips { |b|
   b.compare!
 }
 
-# --- Benchmark 3: Date Difference ---
-# Create objects outside the loop so we only measure the difference
-puts "\n--- Benchmarking Date Difference ---"
+
+#
+# Benchmark 3: Date Difference
+#
+
 d1, d2 = dates.sample(2)
 r1 = Date.new(*d1)
 r2 = Date.new(*d2)
@@ -80,5 +86,17 @@ Benchmark.ips { |b|
   b.config(warmup: 0.2, time: 1)
   b.report("Ruby Date diff") { r1 - r2 }
   b.report("CompSci::Date diff") { c1.diff(c2) }
+  b.compare!
+}
+
+
+#
+# Benchmark 4: Date comparison
+#
+
+Benchmark.ips { |b|
+  b.config(warmup: 0.2, time: 1)
+  b.report("Ruby Date comparison") { r1 <=> r2 }
+  b.report("CompSci::Date comparison") { c1 <=> c2 }
   b.compare!
 }

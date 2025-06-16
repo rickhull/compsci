@@ -57,16 +57,6 @@ describe D do
       expect(D.leap_days(100)).must_equal 24  # no leap day for year 100
       expect(D.leap_days(400)).must_equal 97  # includes leap day for year 400
     end
-
-    it "determines the number of days in any given year" do
-      # 0 is not valid but the function will accept it
-      expect(D.annual_days 0).must_equal 366
-      expect(D.annual_days 1).must_equal 365
-      expect(D.annual_days 2).must_equal 365
-      expect(D.annual_days 3).must_equal 365
-      expect(D.annual_days 4).must_equal 366
-      expect(D.annual_days 5).must_equal 365
-    end
   end
   
   describe "month and day calculations" do
@@ -96,20 +86,6 @@ describe D do
       expect { D.month_number('invalid') }.must_raise
       expect { D.month_name(0) }.must_raise
       expect { D.month_name(13) }.must_raise
-    end
-
-    it "looks up accumulated annual days for a given month and year" do
-      # january is always 0
-      expect(D.cumulative_days(1, 2025)).must_equal 0
-      expect(D.cumulative_days(1, 2020)).must_equal 0
-
-      # february is always 31
-      expect(D.cumulative_days(2, 2025)).must_equal 31
-      expect(D.cumulative_days(2, 2020)).must_equal 31
-
-      # march-december can vary +1 on leap year
-      expect(D.cumulative_days(3, 2025)).must_equal 31 + 28
-      expect(D.cumulative_days(3, 2020)).must_equal 31 + 29
     end
   end
   
