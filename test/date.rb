@@ -73,6 +73,28 @@ describe D do
       expect { D.month_number('invalid') }.must_raise
       expect { D.month_name(13) }.must_raise
     end
+
+    it "converts day of year to month and day" do
+      expect(D.month_and_day(1, year: 1)).must_equal [1, 1]
+      expect(D.month_and_day(31, year: 1)).must_equal [1, 31]
+      expect(D.month_and_day(32, year: 1)).must_equal [2, 1]
+      expect(D.month_and_day(59, year: 1)).must_equal [2, 28]
+      expect(D.month_and_day(60, year: 1)).must_equal [3, 1]
+      expect(D.month_and_day(60, year: 4)).must_equal [2, 29]
+    end
+  end
+
+  describe "ordinal conversion" do
+    it "converts YMD to an ordinal day number" do
+      expect(D.to_ordinal(1, 1, 1)).must_equal 1
+      expect(D.to_ordinal(1, 1, 31)).must_equal 31
+      expect(D.to_ordinal(1, 2, 1)).must_equal 32
+      expect(D.to_ordinal(1, 2, 28)).must_equal 59
+      expect(D.to_ordinal(1, 3, 1)).must_equal 60
+      # interpreted as (1, 12, 1), below
+      expect(D.to_ordinal(1, 0, 1)).must_equal 335
+      expect { D.to_ordinal(1, 13, 1) }.must_raise
+    end
   end
   
   describe "date validation and initialization" do
