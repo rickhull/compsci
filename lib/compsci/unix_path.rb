@@ -24,13 +24,13 @@ module CompSci
   # In string form, directories are indicated with a trailing slash (/).
   # With no trailing slash, the last segment of a path is treated as a filename.
   #
-  # Internally, there is a @filename string, and if it is empty, this has
+  # Internally, there is a @file string, and if it is empty, this has
   #   semantic meaning: the UnixPath is a directory.
 
   # Basename and Extension
   # ===
   #
-  # For nonempty @filename, it may be further broken down into basename
+  # For nonempty @file, it may be further broken down into basename
   #   and extension, with an overly simple rule:
   #
   #                    Look for the last dot.
@@ -44,14 +44,14 @@ module CompSci
   # Concatenating basename and extension will always perfectly reconstruct
   #   the filename.
   #
-  # If @filename is empty, basename and extension are nil.
+  # If @file is empty, basename and extension are nil.
 
   # Internal Representation
   # ===
   #
   #   * abs: boolean indicating abspath vs relpath
-  #   * subdirs: array of strings, like %w[home user docs]
-  #   * filename: string, possibly empty
+  #   * dirs: array of strings, like %w[home user docs]
+  #   * file: string, possibly empty
 
   # Strings
   # ===
@@ -72,7 +72,7 @@ module CompSci
   #   * UnixPath.parse('/etc/systemd/system')
   #
   # Or construct by hand:
-  #   * UnixPath.new(abs: true, subdirs: %w[etc systemd system])
+  #   * UnixPath.new(abs: true, dirs: %w[etc systemd system])
 
   # Implementation Details
   # ===
@@ -129,23 +129,23 @@ module CompSci
         elsif path_str.start_with? CWD
           path_str = path_str[2..-1]
         end
-        subdirs = path_str.split SEP
-        filename = path_str.end_with?(SEP) ? '' : (subdirs.pop || '')
-        self.new(abs: abs, subdirs: subdirs, filename: filename)
+        dirs = path_str.split SEP
+        file = path_str.end_with?(SEP) ? '' : (dirs.pop || '')
+        self.new(abs: abs, dirs: dirs, file: file)
       end
 
       # Create absolute Path from Path or string
       def absolute(path)
         p = parse(path.to_s)
-        self.new(abs: true, subdirs: p.subdirs, filename: p.filename)
+        self.new(abs: true, dirs: p.dirs, file: p.file)
       end
 
       # Create directory Path from Path or string
       def directory(path)
         p = parse(path.to_s)
-        subdirs = p.subdirs.dup
-        subdirs << p.filename unless p.filename.empty?
-        self.new(abs: p.abs, subdirs: subdirs, filename: '')
+        dirs = p.dirs.dup
+        dirs << p.file unless p.file.empty?
+        self.new(abs: p.abs, dirs: dirs, file: '')
       end
     end
 
@@ -158,28 +158,28 @@ module CompSci
 
     # a pseudo-initialize method to be called by the base class #initialize
     # returns a hash
-    def handle_init(abs: false, subdirs: [], filename: '')
-      PathMixin.valid_filename!(filename)
+    def handle_init(abs: false, dirs: [], file: '')
+      PathMixin.valid_filename!(file)
       { abs: abs,
-        subdirs: subdirs.reject { |dir| dir == DOT },
-        filename: filename }
+        dirs: dirs.reject { |d| d == DOT },
+        file: file }
     end
 
     def sigil = self.abs ? SEP : CWD
     def path
-      self.subdirs.empty? ? self.filename :
-        (self.subdirs + [self.filename]).join(SEP)
+      self.dirs.empty? ? self.file :
+        (self.dirs + [self.file]).join(SEP)
     end
     def to_s = self.sigil + self.path
 
     def abs? = self.abs
-    def dir? = self.filename.empty?
+    def dir? = self.file.empty?
 
     def ==(other)
       other.is_a?(self.class) and
         self.abs == other.abs and
-        self.subdirs == other.subdirs and
-        self.filename == other.filename
+        self.dirs == other.dirs and
+        self.file == other.file
     end
 
     # Comparable: lexicographic -- relpaths before abspaths
@@ -201,24 +201,24 @@ module CompSci
     end
     alias_method :/, :slash
 
-    # whatever the filename is, up to the last dot; possibly empty: e.g. .bashrc
+    # whatever the file is, up to the last dot; possibly empty: e.g. .bashrc
     def basename
-      unless self.filename.empty?
-        idx = self.filename.rindex(DOT)
-        idx.nil? ? self.filename : self.filename[0...idx]
+      unless self.file.empty?
+        idx = self.file.rindex(DOT)
+        idx.nil? ? self.file : self.file[0...idx]
       end
     end
 
     # include the dot; empty if there is no extension: e.g. /bin/bash
     def extension
-      unless self.filename.empty?
-        idx = self.filename.rindex(DOT)
-        idx.nil? ? "" : self.filename[idx..-1]
+      unless self.file.empty?
+        idx = self.file.rindex(DOT)
+        idx.nil? ? "" : self.file[idx..-1]
       end
     end
 
     # ocean boiler; don't use this
-    def reconstruct_filename = [self.basename, self.extension].join
+    def reconstruct_file = [self.basename, self.extension].join
   end
 
 
@@ -226,7 +226,7 @@ module CompSci
   # ImmutablePath (Data)
   #
 
-  class ImmutablePath < Data.define(:abs, :subdirs, :filename)
+  class ImmutablePath < Data.define(:abs, :dirs, :file)
     include PathMixin # also extends PathMixin::FactoryMethods
 
     # rely on PathMixin#handle_init for initialize
@@ -236,35 +236,35 @@ module CompSci
 
     # rely on Data#with for efficient copying
     def slash_path(other)
-      # nonempty filename is now a subdir
-      dirs = self.subdirs.dup              # dup first
-      dirs << self.filename unless self.filename.empty?
-      dirs += other.subdirs
-      self.with(subdirs: dirs, filename: other.filename)
+      # nonempty file is now a subdir
+      new_dirs = self.dirs.dup              # dup first
+      new_dirs << self.file unless self.file.empty?
+      new_dirs += other.dirs
+      self.with(dirs: new_dirs, file: other.file)
     end
   end
 
   class MutablePath
     include PathMixin # also extends PathMixin::FactoryMethods
 
-    attr_reader :abs, :subdirs, :filename
+    attr_reader :abs, :dirs, :file
 
     # rely on PathMixin#handle_init for initialize
     def initialize(**kwargs)
-      @abs, @subdirs, @filename =
-        self.handle_init(**kwargs).values_at(:abs, :subdirs, :filename)
+      @abs, @dirs, @file =
+        self.handle_init(**kwargs).values_at(:abs, :dirs, :file)
     end
 
-    # enforce valid mutable filenames
-    def filename=(val)
-      @filename = PathMixin.valid_filename!(val)
+    # enforce valid mutable files
+    def file=(val)
+      @file = PathMixin.valid_filename!(val)
     end
 
     # simple update
     def slash_path(other)
-      @subdirs << @filename unless @filename.empty?
-      @subdirs += other.subdirs
-      @filename = other.filename
+      @dirs << @file unless @file.empty?
+      @dirs += other.dirs
+      @file = other.file
       self
     end
   end
