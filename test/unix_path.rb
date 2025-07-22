@@ -161,6 +161,18 @@ describe UnixPath do
     expect(muimmu.to_s).must_equal '/etc/systemd/var/lib'    
   end
 
+  it "handles complex slash chains with strings" do
+    # start with an abspath dir
+    path1 = UnixPath.parse('/home/user/')
+    result1 = path1 / 'docs/project' / 'file.txt'
+    expect(result1.to_s).must_equal '/home/user/docs/project/file.txt'
+
+    # start with a relpath file
+    path2 = UnixPath.parse('./relative/path')
+    result2 = path2 / 'more/dirs/' / '/etc/passwd'
+    expect(result2.to_s).must_equal './relative/path/more/dirs/etc/passwd'
+  end
+
   describe 'empty filename' do
     it "indicates a directory when empty" do
       path = UnixPath.parse("/home/user/docs/")
