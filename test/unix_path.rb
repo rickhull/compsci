@@ -131,51 +131,35 @@ describe UnixPath do
   end
 
   describe 'nonempty filename' do
-    it "is illegal to be a single dot" do
-      expect { UnixPath.parse('.') }.must_raise
-      expect { UnixPath.parse('/etc/.') }.must_raise
+    it "cannot be a single dot" do
+      expect { UnixPath.parse('.') }.must_raise PathMixin::FilenameError
+      expect { UnixPath.parse('/etc/.') }.must_raise PathMixin::FilenameError
 
       # . is fine as dir
       expect(UnixPath.parse('/etc/./').to_s).must_equal '/etc/'
     end
 
-    it "extracts basename for regular files" do
+    it "extracts basename and extension for regular files" do
       path = UnixPath.parse("file.txt")
       expect(path.basename).must_equal "file"
-    end
-
-    it "extracts basename for dotfiles" do
-      path = UnixPath.parse(".bashrc")
-      expect(path.basename).must_equal ""
-    end
-
-    it "extracts basename for multiple extensions" do
-      path = UnixPath.parse("archive.tar.gz")
-      expect(path.basename).must_equal "archive.tar"
-    end
-
-    it "extracts basename for files without extensions" do
-      path = UnixPath.parse("/etc/passwd")
-      expect(path.basename).must_equal "passwd"
-    end
-
-    it "extracts extension for regular files" do
-      path = UnixPath.parse("file.txt")
       expect(path.extension).must_equal ".txt"
     end
 
-    it "extracts extension for dotfiles" do
+    it "extracts basename and extension for dotfiles" do
       path = UnixPath.parse(".bashrc")
+      expect(path.basename).must_equal ""
       expect(path.extension).must_equal ".bashrc"
     end
 
-    it "extracts extension for multiple extensions" do
+    it "extracts basename and extension for multiple extensions" do
       path = UnixPath.parse("archive.tar.gz")
+      expect(path.basename).must_equal "archive.tar"
       expect(path.extension).must_equal ".gz"
     end
 
-    it "extracts empty extension for files without extensions" do
+    it "extracts basename and extension for files without extensions" do
       path = UnixPath.parse("/etc/passwd")
+      expect(path.basename).must_equal "passwd"
       expect(path.extension).must_equal ""
     end
   end
