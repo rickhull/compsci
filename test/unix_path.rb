@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require 'compsci/unix_path'
+require 'compsci/unix_path_immutable'
 
 include CompSci
 
@@ -34,12 +34,12 @@ describe UnixPath do
   end
 
   it "leads with a dot for all relpaths" do
-    p = UnixPath.new(abs: false, subdirs: %w[path to], filename: 'file.txt')
-    expect(p.to_s.start_with? './').must_equal true
+    path = UnixPath.new(abs: false, subdirs: %w[path to], filename: 'file.txt')
+    expect(path.to_s.start_with? './').must_equal true
   end
 
   it "leads with a slash for all abspaths" do
-    p = UnixPath.new(abs: true, subdirs: %w[path to], filename: 'file.txt')
-    expect(p.to_s.start_with? '/').must_equal true
+    path = UnixPath.new(abs: true, subdirs: %w[path to], filename: 'file.txt')
+    expect(path.to_s.start_with? '/').must_equal true
   end
 end
