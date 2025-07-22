@@ -210,7 +210,7 @@ module CompSci
     # rely on Data#with for efficient copying
     def slash_path(other)
       # nonempty filename is now a subdir
-      dirs = self.subdirs
+      dirs = self.subdirs.dup              # dup first
       dirs << self.filename unless self.filename.empty?
       dirs += other.subdirs
       self.with(subdirs: dirs, filename: other.filename)

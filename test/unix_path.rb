@@ -116,6 +116,51 @@ describe UnixPath do
     expect(full.to_s).must_equal "./src/components/forms/LoginForm.js"
   end
 
+  it "slashes other UnixPath objects" do
+    path1 = UnixPath.parse('/home/user/')
+    path2 = UnixPath.parse('./src/file.txt')
+    path3 = path1 / path2
+    expect(path3.to_s).must_equal '/home/user/src/file.txt'
+  end
+
+  it "slashes liberally, with abspaths and relpaths" do
+    abs = UnixPath.parse('/home/user')
+    rel = UnixPath.parse('./.emacs')
+
+    absrel = abs / rel
+    expect(absrel.to_s).must_equal '/home/user/.emacs'
+
+    relabs = rel / abs
+    expect(relabs.to_s).must_equal './.emacs/home/user'
+  end
+
+  it "slashes liberally, promoting base filename to a subdir" do
+    dot_emacs = UnixPath.parse('/home/user/.emacs')
+    init_el = UnixPath.parse('./.config/init.el')
+    slashed = dot_emacs / init_el
+
+    expect(dot_emacs.filename).must_equal '.emacs'
+    expect(slashed.subdirs).must_include '.emacs'
+    expect(slashed.to_s).must_equal '/home/user/.emacs/.config/init.el'
+  end
+
+  it "slashes liberally, with Mutable and ImmutablePaths" do
+    mu = MutablePath.parse('/etc/systemd')
+    immu = ImmutablePath.parse('/var/lib')
+
+    # check Immutable first, mu will not get mutated here
+    immumu = immu / mu
+    expect(immumu).must_be_kind_of ImmutablePath
+    expect(immumu.to_s).must_equal '/var/lib/etc/systemd'
+    expect(immumu).wont_equal immu
+
+    # now check the Mutable slash.  mu will get mutated here
+    muimmu = mu / immu
+    expect(muimmu).must_be_kind_of MutablePath
+    expect(muimmu).must_equal mu
+    expect(muimmu.to_s).must_equal '/etc/systemd/var/lib'    
+  end
+
   describe 'empty filename' do
     it "indicates a directory when empty" do
       path = UnixPath.parse("/home/user/docs/")
