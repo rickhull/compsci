@@ -1,22 +1,35 @@
 module CompSci
 
+  # Overview
+  # ===
+  #
   # This is a simplification of common Unix paths, as used in Linux, OS X, etc.
   # It is intended to cover 99.9% of the "good use cases" and "best practices"
   #   for path and filename conventions on Unix filesystems.
-
+  #
   # Some primary distinctions:
   #   1. Absolute vs Relative paths
-  #   2. File vs directory
-
+  #   2. File vs Directory
+  #
   # Absolute paths are indicated with a leading slash (/)
+  #   e.g. /etc/passwd or /home/user/.emacs
+  #
   # Relative paths are primarily indicated with a leading dot-slash (./)
   #   or they may omit the leading ./ for brevity.
+  #   e.g. ./a.out or path/to/file.txt
 
+  # Directories and Files
+  # ===
+  #
   # In string form, directories are indicated with a trailing slash (/).
   # With no trailing slash, the last segment of a path is treated as a filename.
+  #
   # Internally, there is a @filename string, and if it is empty, this has
   #   semantic meaning: the UnixPath is a directory.
 
+  # Basename and Extension
+  # ===
+  #
   # For nonempty @filename, it may be further broken down into basename
   #   and extension, with an overly simple rule:
   #
@@ -34,14 +47,22 @@ module CompSci
   # If @filename is empty, basename and extension are nil.
 
   # Internal Representation
+  # ===
+  #
   #   * abs: boolean indicating abspath vs relpath
   #   * subdirs: array of strings, like %w[home user docs]
   #   * filename: string, possibly empty
 
+  # Strings
+  # ===
+  #
   # Consume a string path with UnixPath.parse, creating a UnixPath instance.
   # Emit a string with UnixPath#to_s.
-  # Relative paths are emitted with leading ./
+  # Relative paths are emitted with leading dot-slash (./)
 
+  # Creation
+  # ===
+  #
   # Combine path components with `slash`, aliased to /, yielding a UnixPath
   #   * UnixPath.parse('/etc') / 'systemd' / 'system'
   #   * UnixPath.parse('/etc').slash('passwd')
@@ -53,6 +74,9 @@ module CompSci
   # Or construct by hand:
   #   * UnixPath.new(abs: true, subdirs: %w[etc systemd system])
 
+  # Implementation Details
+  # ===
+  #
   # Most of UnixPath is implemented via PathMixin and its FactoryMethods
   # These modules are mixed in to base classes ImmutablePath and MutablePath.
   # ImmutablePath is based on Ruby's Data.define, using Data.with for efficient
@@ -62,11 +86,14 @@ module CompSci
   # This pattern of assigning a constant can allow you to create your own Path
   #   in your own context.  e.g. MyPath = CompSci::MutablePath
 
-  # Note that these are logical paths and have no connection to any filesystem.
+  # Nota Bene
+  # ===
+  #
+  # These are logical paths and have no connection to any filesystem.
   # This library never looks at the local filesystem that it runs on.
-
-  # ImmutablePath and MutablePath both mix in this module via include
-  # N.B. @ivar references will not work with Data.define, so use self.ivar
+  # ImmutablePath and MutablePath both mix in this module via `include`.
+  # They also pull in class methods via `extend` via the `included` hook.
+  # @ivar references will not work with Data.define, so use self.ivar
   module PathMixin
     include Comparable
 
