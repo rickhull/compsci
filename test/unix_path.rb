@@ -5,17 +5,17 @@ include CompSci
 
 # Helper method to run parsing tests
 def assert_parsing(cases)
-  cases.each { |str, (abs, subdirs, filename)|
+  cases.each { |str, (abs, dirs, file)|
     path = UnixPath.parse(str)
     expect(path.abs).must_equal abs
-    expect(path.subdirs).must_equal subdirs
-    expect(path.filename).must_equal filename
+    expect(path.dirs).must_equal dirs
+    expect(path.file).must_equal file
   }
 end
 
 def assert_filenames(cases)
-  cases.each do |filename, (base, ext)|
-    path = UnixPath.parse(filename)
+  cases.each do |file, (base, ext)|
+    path = UnixPath.parse(file)
     expect(path.basename).must_equal base
     expect(path.extension).must_equal ext
   end
@@ -41,6 +41,7 @@ describe UnixPath do
       './file.txt'             => [false, [], 'file.txt'],
       './.emacs'               => [false, [], '.emacs'],
       './././././file.txt'     => [false, [], 'file.txt'],
+      './stuff/./things/.txt'  => [false, %w[stuff things], '.txt'],
     }
     assert_parsing(cases)
   end
@@ -57,7 +58,7 @@ describe UnixPath do
     assert_parsing(cases)
   end
 
-  it "parses directories with trailing slash; filename is empty" do
+  it "parses directories with trailing slash; file is empty" do
     cases = {
       '/'                      => [true, [], ''],
       '/home/'                 => [true, %w[home], ''],
@@ -69,7 +70,7 @@ describe UnixPath do
     assert_parsing(cases)
   end
 
-  it "parses filenames with no trailing slash; nonempty filename" do
+  it "parses files with no trailing slash; nonempty file" do
     cases = {
       '/home/user/documents'   => [true, %w[home user], 'documents'],
       '/home/user/file.txt'    => [true, %w[home user], 'file.txt'],
@@ -87,12 +88,12 @@ describe UnixPath do
   end
 
   it "leads with a dot for all relpaths" do
-    path = UnixPath.new(abs: false, subdirs: %w[path to], filename: 'file.txt')
+    path = UnixPath.new(abs: false, dirs: %w[path to], file: 'file.txt')
     expect(path.to_s.start_with? './').must_equal true
   end
 
   it "leads with a slash for all abspaths" do
-    path = UnixPath.new(abs: true, subdirs: %w[path to], filename: 'file.txt')
+    path = UnixPath.new(abs: true, dirs: %w[path to], file: 'file.txt')
     expect(path.to_s.start_with? '/').must_equal true
   end
 
@@ -134,13 +135,13 @@ describe UnixPath do
     expect(relabs.to_s).must_equal './.emacs/home/user'
   end
 
-  it "slashes liberally, promoting base filename to a subdir" do
+  it "slashes liberally, promoting base file to a subdir" do
     dot_emacs = UnixPath.parse('/home/user/.emacs')
     init_el = UnixPath.parse('./.config/init.el')
     slashed = dot_emacs / init_el
 
-    expect(dot_emacs.filename).must_equal '.emacs'
-    expect(slashed.subdirs).must_include '.emacs'
+    expect(dot_emacs.file).must_equal '.emacs'
+    expect(slashed.dirs).must_include '.emacs'
     expect(slashed.to_s).must_equal '/home/user/.emacs/.config/init.el'
   end
 
@@ -158,7 +159,7 @@ describe UnixPath do
     muimmu = mu / immu
     expect(muimmu).must_be_kind_of MutablePath
     expect(muimmu).must_equal mu
-    expect(muimmu.to_s).must_equal '/etc/systemd/var/lib'    
+    expect(muimmu.to_s).must_equal '/etc/systemd/var/lib'
   end
 
   it "handles complex slash chains with strings" do
@@ -173,11 +174,11 @@ describe UnixPath do
     expect(result2.to_s).must_equal './relative/path/more/dirs/etc/passwd'
   end
 
-  describe 'empty filename' do
+  describe 'empty file' do
     it "indicates a directory when empty" do
       path = UnixPath.parse("/home/user/docs/")
       expect(path.dir?).must_equal true
-      expect(path.filename).must_equal ""
+      expect(path.file).must_equal ""
     end
 
     it "has neither basename nor extension" do
