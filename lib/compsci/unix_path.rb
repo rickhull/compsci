@@ -1,19 +1,82 @@
 module CompSci
 
+  # This is a simplification of common Unix paths, as used in Linux, OS X, etc.
+  # It is intended to cover 99.9% of the "good use cases" and "best practices"
+  #   for path and filename conventions on Unix filesystems.
+
+  # Some primary distinctions:
+  #   1. Absolute vs Relative paths
+  #   2. File vs directory
+
+  # Absolute paths are indicated with a leading slash (/)
+  # Relative paths are primarily indicated with a leading dot-slash (./)
+  #   or they may omit the leading ./ for brevity.
+
+  # In string form, directories are indicated with a trailing slash (/).
+  # With no trailing slash, the last segment of a path is treated as a filename.
+  # Internally, there is a @filename string, and if it is empty, this has
+  #   semantic meaning: the UnixPath is a directory.
+
+  # For nonempty @filename, it may be further broken down into basename
+  #   and extension, with an overly simple rule:
+  #
+  #                    Look for the last dot.
+  #
+  # Everything up to the last dot is basename.  Possibly the entire filename.
+  # Possibly empty.
+  #
+  # Everything after the last dot is extension, including the last dot.
+  # Possibly the entire filename. Possibly empty.
+  #
+  # Concatenating basename and extension will always perfectly reconstruct
+  #   the filename.
+  #
+  # If @filename is empty, basename and extension are nil.
+
+  # Internal Representation
+  #   * abs: boolean indicating abspath vs relpath
+  #   * subdirs: array of strings, like %w[home user docs]
+  #   * filename: string, possibly empty
+
+  # Consume a string path with UnixPath.parse, creating a UnixPath instance.
+  # Emit a string with UnixPath#to_s.
+  # Relative paths are emitted with leading ./
+
+  # Combine path components with `slash`, aliased to /, yielding a UnixPath
+  #   * UnixPath.parse('/etc') / 'systemd' / 'system'
+  #   * UnixPath.parse('/etc').slash('passwd')
+  #   * UnixPath.parse('./') / 'a.out'
+  #
+  # Or just parse the full string:
+  #   * UnixPath.parse('/etc/systemd/system')
+  #
+  # Or construct by hand:
+  #   * UnixPath.new(abs: true, subdirs: %w[etc systemd system])
+
+  # Most of UnixPath is implemented via PathMixin and its FactoryMethods
+  # These modules are mixed in to base classes ImmutablePath and MutablePath.
+  # ImmutablePath is based on Ruby's Data.define, using Data.with for efficient
+  #   copies.
+  # MutablePath may be more efficient and has a simple implementation.
+  # UnixPath is itself a constant, currently referring to ImmutablePath.
+  # This pattern of assigning a constant can allow you to create your own Path
+  #   in your own context.  e.g. MyPath = CompSci::MutablePath
+
+  # Note that these are logical paths and have no connection to any filesystem.
+  # This library never looks at the local filesystem that it runs on.
+
   # ImmutablePath and MutablePath both mix in this module via include
   # N.B. @ivar references will not work with Data.define, so use self.ivar
   module PathMixin
     include Comparable
 
-    class Error < RuntimeError; end
-    class FilenameError < Error; end
-    class SlashError < Error; end
+    class FilenameError < RuntimeError; end
 
     SEP = '/'
     DOT = '.'
     CWD = DOT + SEP
 
-    # must be a String != '.'
+    # must be a String != DOT
     def self.valid_filename!(val)
       if !val.is_a?(String) or val == DOT
         raise(FilenameError, "illegal value: #{val.inspect}")
@@ -21,10 +84,15 @@ module CompSci
       val
     end
 
+    #
+    # module FactoryMethods: create new Paths
+    #
+
     # ImmutablePath and MutablePath both mix in this module via extend
     # This ensures self.new refers to the base class and not the mixin (module)
     # This extension happens automatically via an included hook on PathMixin
     # PathMixin#slash calls FactoryMethods#parse
+    #
     module FactoryMethods
       # return a new Path from a string
       def parse(path_str)
@@ -53,6 +121,10 @@ module CompSci
         self.new(abs: p.abs, subdirs: subdirs, filename: '')
       end
     end
+
+    #
+    # module PathMixin: provides most of the Path instance behavior
+    #
 
     # the base class automatically gets FactoryMethods at the "class layer"
     def self.included(base) = base.extend(FactoryMethods)
@@ -91,7 +163,6 @@ module CompSci
     # Enable path building with slash method
     # !!! base class must implement Klass#slash_path !!!
     def slash(other)
-      raise(SlashError, "can only slash on dirs") unless self.dir?
       case other
       when String
         other.empty? ? self : self.slash_path(self.class.parse(other))
@@ -121,6 +192,11 @@ module CompSci
     def reconstruct_filename = [self.basename, self.extension].join
   end
 
+
+  #
+  # ImmutablePath (Data)
+  #
+
   class ImmutablePath < Data.define(:abs, :subdirs, :filename)
     include PathMixin # also extends PathMixin::FactoryMethods
 
@@ -131,8 +207,11 @@ module CompSci
 
     # rely on Data#with for efficient copying
     def slash_path(other)
-      raise(SlashError, "can't slash an absolute path") if other.abs?
-      self.with(subdirs: subdirs + other.subdirs, filename: other.filename)
+      # nonempty filename is now a subdir
+      dirs = self.subdirs
+      dirs << self.filename unless self.filename.empty?
+      dirs += other.subdirs
+      self.with(subdirs: dirs, filename: other.filename)
     end
   end
 
@@ -154,13 +233,16 @@ module CompSci
 
     # simple update
     def slash_path(other)
-      raise(SlashError, "can't slash an absolute path") if other.abs?
+      @subdirs << @filename unless @filename.empty?
       @subdirs += other.subdirs
       @filename = other.filename
       self
     end
   end
 
-  # UnixPath = ImmutablePath
-  UnixPath = MutablePath
+  # you can do this too, in your own context:
+  # MyUnixPath = CompSci::MutablePath
+
+  UnixPath = ImmutablePath
+  # UnixPath = MutablePath
 end
