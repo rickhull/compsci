@@ -166,6 +166,8 @@ module CompSci
       case other
       when String
         other.empty? ? self : self.slash_path(self.class.parse(other))
+      when ImmutablePath, MutablePath
+        self.slash_path other
       else
         raise("unexpected: #{other.inspect}")
       end
